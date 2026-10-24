@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dream Achieve Moments · Combined slides proposal v3 (Gonzalo + Jin)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- Visual system (light brand theme, phone mockups, brain diagram, stat tiles) adapted from Jin's draft v4 in docs/gtm/slides-draft/.
+     Story and copy (crisis-to-opportunity hook, problem timeline, solution, personalized-consulting edge, growth path, revenue) from Gonzalo's proposal. -->
+<style>
+ @page{size:1920px 1080px;margin:0}
+ *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
+ body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#555}
+ .s{width:1920px;height:1080px;position:relative;overflow:hidden;background:#FBF9FE;color:#141018;page-break-after:always;margin:0 auto 40px}
+ .s::before{content:"";position:absolute;inset:0;background:radial-gradient(1100px 600px at 10% 5%,rgba(139,92,246,.22),transparent 60%),radial-gradient(900px 520px at 95% 90%,rgba(251,191,36,.18),transparent 60%),radial-gradient(700px 400px at 60% 40%,rgba(236,72,153,.08),transparent 60%)}
+ @media print{body{background:none}.s{margin:0}}
+ .team{position:absolute;top:52px;left:96px;font-size:26px;font-weight:700;color:rgba(20,16,24,.55)}
+ .topic{position:absolute;top:52px;right:96px;font-size:22px;font-weight:700;color:#7C3AED;letter-spacing:.06em}
+ .body{position:absolute;left:96px;right:96px;top:112px;height:780px}
+ .p{color:#7C3AED}.a{color:#D97706}
+ .lab{font-size:22px;font-weight:800;color:#7C3AED;letter-spacing:.1em}
+ .src{font-size:22px;color:rgba(20,16,24,.5);font-weight:500}
+ .phone{border-radius:40px;border:10px solid #1C1A22;background:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(60,30,120,.28)}
+ .phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+ .browser{border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 30px 70px rgba(60,30,120,.25);border:1px solid rgba(20,16,24,.08)}
+ .browser .bar{height:34px;background:#EFEAF8;display:flex;align-items:center;gap:8px;padding:0 16px}
+ .browser .bar i{width:12px;height:12px;border-radius:50%;background:#C9BFE6;display:block}
+ .browser img{width:100%;display:block;object-fit:cover;object-position:top}
+ /* slide 1 */
+ .s1{display:flex;flex-direction:column;gap:22px}
+ .hero{display:flex;gap:40px;flex:0 0 548px}
+ .hero .l{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px}
+ .brand{display:flex;align-items:center;gap:16px;font-size:32px;font-weight:800;color:#7C3AED}
+ .brand img{width:72px;height:72px;border-radius:18px;box-shadow:0 8px 22px rgba(60,30,120,.22);display:block}
+ .brand{font-size:36px}
+ h1{font-size:100px;font-weight:900;line-height:1;letter-spacing:-.03em}
+ h1 span{color:#7C3AED}
+ .sub{font-size:31px;line-height:1.35;color:rgba(20,16,24,.82)}
+ .strip{display:flex;gap:14px}
+ .pill{border:1px solid rgba(124,58,237,.3);border-radius:28px;padding:10px 22px;font-size:28px;line-height:1.25;background:#fff}
+ .pill b{color:#7C3AED}
+ .hero .r{flex:0 0 700px;position:relative}
+ .hero .browser{position:absolute;left:0;top:20px;width:620px;height:400px}
+ .hero .browser img{height:366px}
+ .hero .phone{position:absolute;right:0;top:100px;width:240px;height:440px;transform:rotate(5deg);z-index:2}
+ .stats{display:flex;gap:22px;flex:1}
+ .stat{flex:1;border-radius:26px;padding:16px 26px;background:#fff;border:1px solid rgba(124,58,237,.18);box-shadow:0 12px 30px rgba(60,30,120,.08);display:flex;flex-direction:column;justify-content:center;gap:4px}
+ .stat .when{font-size:22px;font-weight:800;letter-spacing:.1em;color:#D97706}
+ .stat .n{font-size:68px;font-weight:900;letter-spacing:-.03em;color:#7C3AED;line-height:1}
+ .stat .c{font-size:28px;line-height:1.28}
+ /* slide 2 */
+ .s2{display:flex;gap:30px}
+ .screens{flex:0 0 960px;display:flex;flex-direction:column;justify-content:center}
+ .shots3{display:flex;gap:16px;align-items:flex-start}
+ .shotcol{flex:1;display:flex;flex-direction:column;gap:12px;align-items:center}
+ .shotcol .phone{width:280px;height:560px}
+ .shotcol .cap{font-size:28px;line-height:1.22;text-align:center;font-weight:800}
+ .shotcol .cap span{display:block;font-size:22px;color:rgba(20,16,24,.6);font-weight:500;margin-top:4px}
+ .shotcol .cap em{font-style:normal;color:#7C3AED}
+ .arrowv{align-self:flex-start;margin-top:250px;font-size:44px;color:#7C3AED;font-weight:900}
+ .right{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
+ .box{border:1px solid rgba(124,58,237,.18);border-radius:24px;padding:14px 24px;background:#fff;box-shadow:0 12px 30px rgba(60,30,120,.06)}
+ .box .lab{display:block;margin-bottom:6px}
+ .box p{font-size:28px;line-height:1.3}
+ .steps{display:flex;flex-direction:column;gap:6px}
+ .step{display:flex;gap:14px;align-items:flex-start;font-size:28px;line-height:1.28}
+ .step .k{flex:0 0 40px;height:40px;border-radius:50%;background:#7C3AED;color:#fff;font-size:24px;font-weight:900;text-align:center;line-height:40px;margin-top:1px}
+ .foot{position:absolute;left:5%;right:5%;bottom:36px;height:auto}
+ .foot img{width:100%;display:block}
+
+<body>
+
+ /* v3 additions */
+ .hero .r.grow{display:flex;flex-direction:column;justify-content:center}
+ .growlab{font-size:22px;font-weight:800;color:#7C3AED;letter-spacing:.1em;margin-bottom:8px}
+ .s2v3{display:flex;flex-direction:column;gap:20px}
+ .toprow{display:flex;gap:26px;flex:0 0 520px}
+ .phones{display:flex;gap:18px;flex:0 0 560px}
+ .phones .shotcol .phone{width:260px;height:430px}
+ .arch{flex:1;display:flex;flex-direction:column;gap:10px}
+ .arch .flow{display:flex;align-items:stretch;gap:10px;flex:1}
+ .node{flex:1;border-radius:22px;background:#fff;border:1px solid rgba(124,58,237,.2);padding:14px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 12px 30px rgba(60,30,120,.06)}
+ .node.core{background:linear-gradient(160deg,#7C3AED,#5B21B6);color:#fff;flex:1.25}
+ .node .k{font-size:20px;font-weight:800;letter-spacing:.08em;color:#7C3AED}
+ .node.core .k{color:#E9D5FF}
+ .node h3{font-size:30px;font-weight:900;line-height:1.1}
+ .node p{font-size:24px;line-height:1.28}
+ .node .live{display:inline-block;font-size:20px;font-weight:800;color:#15803D;background:#DCFCE7;border-radius:999px;padding:2px 10px;margin-left:6px}
+ .node .next{display:inline-block;font-size:20px;font-weight:800;color:#B45309;background:#FEF3C7;border-radius:999px;padding:2px 10px;margin-left:6px}
+ .ar{align-self:center;font-size:36px;color:#7C3AED;font-weight:900}
+ .money{display:flex;gap:20px;flex:1}
+ .mcard{flex:1;border-radius:24px;background:#fff;border:1px solid rgba(124,58,237,.18);padding:16px 22px;box-shadow:0 12px 30px rgba(60,30,120,.06)}
+ .mcard .num{display:inline-block;width:40px;height:40px;border-radius:50%;background:#7C3AED;color:#fff;font-weight:900;font-size:24px;text-align:center;line-height:40px;margin-right:10px}
+ .mcard h3{font-size:30px;font-weight:900;display:flex;align-items:center;margin-bottom:6px}
+ .mcard p{font-size:26px;line-height:1.3}
+</style></head>
+<body>
+
+<section class="s">
+  <div class="team">팀 김박구이</div><div class="topic">TOPIC · SAVE 10M JOBS FROM AI (SCHMIDT)</div>
+  <div class="body s1">
+    <div class="hero">
+      <div class="l">
+        <div class="brand"><img src="logo.svg" alt="">Dream Achieve Moments</div>
+        <h1>AI: from crisis<br><span>to opportunity.</span></h1>
+        <div class="sub">A personal AI agent that turns what you already know into your next career, and walks it with you, <b class="p">week by week</b>.</div>
+        <div class="strip">
+          <div class="pill"><b>WHO</b> US freelance copywriters, 3–10 years in</div>
+          <div class="pill"><b>PAIN</b> “My clients write with ChatGPT now.” Alone, most give up.</div>
+        </div>
+      </div>
+      <div class="r grow">
+        <div class="growlab">HOW WE GROW · US + CANADA</div>
+        <svg width="700" height="470" viewBox="0 0 700 470" xmlns="http://www.w3.org/2000/svg" font-family="Pretendard Variable, Pretendard, sans-serif">
+          <defs><marker id="g" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#D97706"/></marker></defs>
+          <rect x="10"  y="300" width="200" height="160" rx="18" fill="#EDE4FF"/>
+          <rect x="245" y="200" width="200" height="260" rx="18" fill="#C4B0FA"/>
+          <rect x="480" y="70"  width="210" height="390" rx="18" fill="#7C3AED"/>
+          <text x="110" y="345" text-anchor="middle" font-size="22" font-weight="800" fill="#7C3AED">1 · START</text>
+          <text x="110" y="395" text-anchor="middle" font-size="46" font-weight="900" fill="#141018">91K</text>
+          <text x="110" y="430" text-anchor="middle" font-size="22" font-weight="600" fill="#141018">copywriters</text>
+          <text x="345" y="245" text-anchor="middle" font-size="22" font-weight="800" fill="#4C1D95">2 · EXPAND</text>
+          <text x="345" y="300" text-anchor="middle" font-size="46" font-weight="900" fill="#141018">2.4M</text>
+          <text x="345" y="335" text-anchor="middle" font-size="22" font-weight="600" fill="#141018">creatives +</text>
+          <text x="345" y="362" text-anchor="middle" font-size="22" font-weight="600" fill="#141018">professionals</text>
+          <text x="585" y="115" text-anchor="middle" font-size="22" font-weight="800" fill="#E9D5FF">3 · SCALE</text>
+          <text x="585" y="172" text-anchor="middle" font-size="50" font-weight="900" fill="#FFFFFF">12M</text>
+          <text x="585" y="208" text-anchor="middle" font-size="22" font-weight="600" fill="#FFFFFF">everyone AI</text>
+          <text x="585" y="235" text-anchor="middle" font-size="22" font-weight="600" fill="#FFFFFF">pushes out</text>
+          <text x="585" y="300" text-anchor="middle" font-size="22" font-weight="800" fill="#FDE68A">+ B2B:</text>
+          <text x="585" y="328" text-anchor="middle" font-size="22" font-weight="600" fill="#FFFFFF">employers &amp;</text>
+          <text x="585" y="355" text-anchor="middle" font-size="22" font-weight="600" fill="#FFFFFF">apps pay</text>
+          <path d="M60,270 C200,150 380,90 470,60" fill="none" stroke="#D97706" stroke-width="5" stroke-dasharray="10 8" marker-end="url(#g)"/>
+          <text x="20" y="25" font-size="22" font-weight="600" fill="rgba(20,16,24,.55)">workers · BLS 2025 · ESDC · estimate</text>
+        </svg>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="when">TODAY</div><div class="n">120,136</div><div class="c">US job cuts blamed on AI in 2026, the #1 reason <span class="src">· Challenger</span></div></div>
+      <div class="stat"><div class="when">BY 2027</div><div class="n">83M</div><div class="c">jobs employers expect to cut worldwide <span class="src">· WEF 2023, all causes</span></div></div>
+      <div class="stat"><div class="when">NEXT DECADE</div><div class="n">10–12M</div><div class="c">US workers AI could displace <span class="src">· Goldman Sachs 2025</span></div></div>
+    </div>
+  </div>
+  <div class="foot"><img src="footer-for-light-slides.png" alt=""></div>
+</section>
+
+<section class="s">
+  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO kpk2-second-draft.vercel.app</div>
+  <div class="body s2v3">
+    <div class="toprow">
+      <div class="phones">
+        <div class="shotcol"><div class="phone"><img src="app-2-paths.png" alt=""></div><div class="cap">Paths that <em>fit your life</em></div></div>
+        <div class="shotcol"><div class="phone"><img src="app-4-nottoday.png" alt="" style="object-position:bottom"></div><div class="cap">A <em>rest day</em>, not a failure</div></div>
+      </div>
+      <div class="arch">
+        <span class="lab">ARCHITECTURE · ONE BRAIN, EVERY DOOR</span>
+        <div class="flow">
+          <div class="node"><div class="k">01 · YOUR LIFE</div><h3>Opt-in data</h3><p>Notes, links, calendar. Messages off by default. Raw data stays on your device.</p></div>
+          <div class="ar">→</div>
+          <div class="node core"><div class="k">02 · THE CORE</div><h3>Decision Brain</h3><p>Who you are, what blocks you, today's smallest step. Built on behavioral science.</p></div>
+          <div class="ar">→</div>
+          <div class="node"><div class="k">03 · CLAUDE</div><h3>Writes the words</h3><p>One question at a time. Shows <b>why</b> on every answer.</p></div>
+          <div class="ar">→</div>
+          <div class="node"><div class="k">04 · EVERY DOOR</div><p><b>Web app</b><span class="live">LIVE</span></p><p><b>MCP</b><span class="live">LIVE</span></p><p><b>Partner apps</b><span class="next">NEXT</span></p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="lab" style="display:block;margin-bottom:10px">THREE WAYS WE MAKE MONEY</span>
+      <div class="money">
+        <div class="mcard"><h3><span class="num">1</span>Freemium</h3><p>Logging and a few goals are free. More goals and deep analysis are paid <span class="src">· $12/mo, estimate</span></p></div>
+        <div class="mcard"><h3><span class="num">2</span>Opt-in data</h3><p>Users can choose to sell their own data, anonymized and tokenized. We resell it to companies.</p></div>
+        <div class="mcard"><h3><span class="num">3</span>Brain by the token</h3><p>Companies pay per token to use the brain via MCP. We sell its use, <b class="p">never the pooled data</b>.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><img src="footer-for-light-slides.png" alt=""></div>
+</section>
+
+</body></html>

@@ -1,4 +1,4 @@
-# Competitor benchmarking — Dream Achieve Moments (draft v1, 2026-10-24 15:30)
+# Competitor benchmarking — Next Chapter (draft v1, 2026-10-24 15:30)
 
 Owner: Gonzalo (GTM). For the pitch. Evidence IDs (E17, E18, E70) and their labels are in `docs/gtm/market-claims.md`; do not raise a label.
 Labels: `verified` / `single-source` / `hypothesis` / `[check needed]`. App facts come from a web search on 2026-10-24, not a full store or trademark search.
@@ -59,7 +59,7 @@ To do before public use: USPTO trademark and domain check.
 | LinkedIn, resume tools | partial | – | – | – | – |
 | Human coach, outplacement | ✓ | partial | partial | – | – |
 | Habit apps | – | – | – | ✓ (rigid streaks) | – |
-| **Dream Achieve Moments** | ✓ | ✓ | ✓ | ✓ (rest day, not a missed day) | ✓ (anonymized, aggregate) |
+| **Next Chapter** | ✓ | ✓ | ✓ | ✓ (rest day, not a missed day) | ✓ (anonymized, aggregate) |
 
 The last row is our design goal, not proven results (`hypothesis`).
 

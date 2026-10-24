@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="health_access_title">Health</string>
+    <string name="health_access_asking">Waiting for Health Connect…</string>
+    <string name="health_access_unavailable">Health Connect is not available on this phone, so the Health source stays off.</string>
+    <string name="health_access_needs_install">Health Connect needs to be installed or updated before Second Draft can read steps, sleep and exercise.</string>
+    <string name="health_access_install">Get Health Connect</string>
+    <string name="health_access_denied">Health Connect did not grant access. You can allow steps, sleep and exercise in Health Connect.</string>
+    <string name="health_access_open_health_connect">Open Health Connect</string>
+    <string name="health_access_try_again">Ask again</string>
+    <string name="health_access_granted">Health is on. Second Draft will read %1$s once an hour.</string>
+    <string name="health_access_close">Close</string>
+
+    <string name="health_rationale_title">How Second Draft uses health data</string>
+    <string name="health_rationale_body">With your permission, Second Draft reads three things from Health Connect: your daily step total, how long you slept, and your exercise sessions with their type and length. It saves one short entry per day for each on this phone, where you can review, delete or export them. Nothing is sent anywhere. Turn the Health source off in Sources, or remove access in Health Connect, at any time.</string>
+
+    <string name="health_status_ok">Reading from Health Connect</string>
+    <string name="health_status_needs_install">Health Connect is not installed or needs an update</string>
+    <string name="health_status_unavailable">Health Connect is not available on this phone</string>
+    <string name="health_status_needs_permission">Allow steps, sleep or exercise in Health Connect</string>
+</resources>

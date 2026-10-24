@@ -1,6 +1,6 @@
 ---
 mode: event
-stage: decide
+stage: board
 ---
 # HANDOFF — HTHn 팀 상태
 

@@ -5,3 +5,4 @@ import './scaffold-core.test.mjs';
 import './fallback.test.mjs';
 import './serve.test.mjs';
 import './persona-data.test.mjs';
+import './career-logic.test.mjs';

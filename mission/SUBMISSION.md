@@ -5,7 +5,7 @@
 시각: 15:15
 소스 커밋: 38627aa
 배포 버전: 배포 시각 미확인(15:12 접근 확인) + 커밋 미확인 — Build 기입
-발표 파일 sha256: 미제출 — 초안 docs/gtm/slides-draft/slides.pdf 3da2c58887cfce5040d62d4eb322905995fe05b4efd568b2c72533b34cf0e4ac (pitch/slides.pdf 생성 후 교체)
+발표 파일 sha256: 미제출 — 초안 v2 docs/gtm/slides-draft/slides.pdf d4d3835e84c06a67f515e86147a966379d88d54ac35e9ff181f108cf86151b7a (pitch/slides.pdf 생성 후 교체)
 
 <!-- submit-gate 영수증. 머리의 `검사자:`는 영수증 작성자(기본 Sales)다 — 보통 확정자(PM)와 다른 사람이지만 검증하지 않는다 (행 단위 규칙은 X-5. PM은 체크 3·5·6을 검사하고 확정도 한다). 사람 표기는 `역할(이름)`.
 회차: 14:45 precheck = 체크 1–9 드라이런(제출 없음) · 15:30 final = 10행 전부. 16:00이 목표·상한 — PASS면 16:00 전에도 낸다. 16:50이 최종 한계이고 F1–F5(체크 1·3·4·5·10)가 PASS일 때만 그때까지 낸다.
@@ -39,6 +39,7 @@
 | 회차 | 시각 | 통과 단계 | 실패 | 조치 |
 |---|---|---|---|---|
 | 1 | 15:15 | 3/3 (배포 URL · 브라우저) | 없음 — 경로 카드 출처 `Sample output (offline)`(LLM 키 없음 폴백, SMOKE 기준 통과) | 결함(기능 영향 없음): 폰 폭 390px에서 Landing 소개 문단 오른쪽 잘림 → Build에게 HANDOFF 「제안」 |
+| 2 | 15:22 | 3/3 (배포 URL · Playwright headless Chrome 430×932) | 없음 — Load sample persona → Continue → Show my paths → What transfers 카드 3장(Skill overlap 67%) → Choose this path → This week 3개 → Not today → "Today was a rest day, not a missed day." · Moved to Sat · 0/3 done · 1 moved | 캡처 5장 `docs/gtm/slides-draft/shot-*.png` → 덱 2장에 삽입 |
 
 ## 알려진 결함
 

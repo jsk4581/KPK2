@@ -32,7 +32,12 @@
  .box li::before{content:"—";color:#FF6A2B;margin-right:12px;font-weight:800}
  .big{font-size:36px;font-weight:800;line-height:1.2}
  /* slide 2 */
- .flow{display:flex;gap:24px;align-items:stretch;flex:0 0 275px}
+ .flow{display:flex;gap:24px;align-items:stretch;flex:0 0 430px;min-height:0}
+ .shotp{flex:0 0 300px;border-radius:22px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);overflow:hidden;display:flex;flex-direction:column}
+ .shotp img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:top;display:block}
+ .shotp .cap{padding:12px 16px;font-size:22px;line-height:1.3;color:rgba(255,244,232,.85);background:#1C120D}
+ .side{flex:1;display:flex}
+ .side .box{flex:1}
  .row.fill{flex:1;min-height:0}.row.fill .box{overflow:hidden}
  .step{flex:1;border-radius:22px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);padding:22px 26px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
  .step .num{position:absolute;top:14px;right:22px;font-size:88px;font-weight:900;color:rgba(255,106,43,.18);line-height:1}
@@ -71,32 +76,26 @@
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>
 </section>
 <section class="s">
-  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO: URL PENDING</div>
+  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO kpk2-second-draft.vercel.app</div>
   <div class="body">
     <div class="flow">
-      <div class="step"><div class="num">1</div><h3>Tell your story</h3><p class="dim" style="font-size:28px">Three fields, five minutes. Not a résumé.</p>
-        <div><span class="chip">your career</span><span class="chip">what hurts</span><span class="chip">what pulls you</span></div>
-        <div class="src">[SIMULATION] sample persona “Dana” · screenshot pending</div></div>
-      <div class="step"><div class="num">2</div><h3>Three paths that <span class="o">transfer</span></h3>
-        <div><span class="chip hi">Messaging &amp; Positioning Consultant</span><span class="chip">Brand Voice &amp; Prompt Systems</span><span class="chip">Copy Educator</span></div>
-        <div class="src">each card: what transfers · what's missing · first 2 weeks</div></div>
-      <div class="step"><div class="num">3</div><h3>This week — and <span class="o">Not today</span></h3>
-        <div><span class="chip">Tue · before/after page · 25 min</span><span class="chip">Thu · pitch one client</span></div>
-        <div class="quote">“A rest day, not a missed day.” <span class="dim" style="font-weight:500">— a missed action moves. Never deleted.</span></div></div>
+      <div class="shotp"><img src="shot-landing.png" alt=""><div class="cap"><b>1 · Tell your story</b> — no login, nothing stored · <span class="g">[SIMULATION] persona Dana</span></div></div>
+      <div class="shotp"><img src="shot-paths.png" alt=""><div class="cap"><b>2 · Three paths that <span class="o">transfer</span></b> — what transfers · what's missing · first 2 weeks</div></div>
+      <div class="shotp"><img src="shot-nottoday.png" alt=""><div class="cap"><b>3 · This week · <span class="o">Not today</span></b> — “a rest day, not a missed day” · moved, never deleted</div></div>
+      <div class="side">
+        <div class="box"><span class="lab">HOW IT WORKS</span><ul>
+          <li><b>One Claude call</b> → 3 paths + this week's 3 actions (≤30 min)</li>
+          <li>Check-ins never shame — <b>move, don't delete</b></li>
+          <li><b class="o">One brain, two doors:</b> the same logic runs the web <b>and an MCP server</b> any app can plug into</li></ul></div>
+      </div>
     </div>
     <div class="row fill">
-      <div class="box"><span class="lab">HOW IT WORKS</span><ul>
-        <li><b>One Claude call</b> → 3 paths + this week's 3 actions (≤30 min)</li>
-        <li>Check-ins never shame — <b>move, don't delete</b></li>
-        <li><b class="o">One brain, two doors:</b> the same logic runs the web demo <b>and an MCP server</b> any app can plug into</li></ul></div>
       <div class="box"><span class="lab">WHY US</span><ul>
-        <li>Career Dreamer &amp; Coursera Coach <b>stop at a map</b></li>
-        <li>Outplacement sells résumés at <b class="o">$600–2,600</b>/employee <span class="src">· Intoo, RiseSmart</span></li>
-        <li><b>Nobody</b> pairs expertise transfer with a <b class="g">weekly habit loop</b></li></ul></div>
+        <li>Career Dreamer &amp; Coursera Coach <b>stop at a map</b> · outplacement sells résumés at <b class="o">$600–2,600</b>/employee <span class="src">· Intoo, RiseSmart</span></li>
+        <li><b>Nobody</b> pairs expertise transfer for AI-displaced roles with a <b class="g">weekly habit loop</b></li></ul></div>
       <div class="box"><span class="lab">MARKET · NEXT 7 DAYS</span>
-        <div class="ladder"><span class="rung"><b>700K</b> creative</span><span class="arrow">→</span><span class="rung"><b>3M</b> payable</span><span class="arrow">→</span><span class="rung"><b>11.8M</b> declining</span></div>
-        <p class="src" style="margin:2px 0 6px">BLS 2025–35 · estimates</p>
-        <ul><li>10 beta writers · <b>2-week check-in retention</b> · MCP server public</li><li><b class="o">Ask:</b> intros — outplacement buyer · Upwork · career-tech VC</li></ul></div>
+        <div class="ladder"><span class="rung"><b>700K</b> creative</span><span class="arrow">→</span><span class="rung"><b>3M</b> payable</span><span class="arrow">→</span><span class="rung"><b>11.8M</b> declining</span><span class="src">BLS 2025–35 · estimates</span></div>
+        <ul style="margin-top:6px"><li>10 beta writers · <b>2-week check-in retention</b></li><li><b class="o">Ask:</b> intros — outplacement buyer · Upwork · career-tech VC</li></ul></div>
     </div>
   </div>
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>

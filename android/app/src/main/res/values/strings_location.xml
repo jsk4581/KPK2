@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings used only by the Places (location) collector. -->
+<resources>
+    <string name="location_record_now">Record place now</string>
+    <string name="location_recording">Recording place…</string>
+    <string name="location_recorded">Place recorded on this phone.</string>
+    <string name="location_source_off">Turn on Places and allow location first.</string>
+    <string name="location_services_off">Location is off in system settings.</string>
+    <string name="location_no_fix">Could not get your location. Try again in a moment.</string>
+    <string name="location_imprecise">Location was too imprecise to record. Try again in a moment.</string>
+    <string name="location_not_saved">This place was not saved.</string>
+</resources>

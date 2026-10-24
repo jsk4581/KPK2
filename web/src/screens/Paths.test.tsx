@@ -45,10 +45,10 @@ describe('Paths', () => {
       const role = roles[i];
       expect(within(card).getByRole('heading', { level: 3 })).toHaveTextContent(role.title);
       expect(within(card).getByText(`LLM line for ${role.id}`)).toBeInTheDocument();
-      expect(within(card).getByText('What transfers')).toBeInTheDocument();
-      expect(within(card).getByText("What's missing")).toBeInTheDocument();
-      expect(within(card).getByText('First 2 weeks')).toBeInTheDocument();
-      expect(within(card).getByText(`Skill overlap: ${Math.round(role.ratio * 100)}%`)).toBeInTheDocument();
+      expect(within(card).getByText('What carries over')).toBeInTheDocument();
+      expect(within(card).getByText("What you'd need to build")).toBeInTheDocument();
+      expect(within(card).getByText("How you'd start")).toBeInTheDocument();
+      expect(within(card).getByText(`${Math.round(role.ratio * 100)}% skill match`)).toBeInTheDocument();
       expect(within(card).getByRole('button', { name: 'Choose this path' })).toBeInTheDocument();
     });
     expect(screen.getByText(SOURCE_LABELS.llm)).toBeInTheDocument();
@@ -107,10 +107,10 @@ describe('Paths', () => {
     expect(state().trace.at(-1)).toMatchObject({ fn: 'POST /api/paths', via: 'fallback' });
   });
 
-  it('server fallback answer is labelled Sample output (offline)', async () => {
+  it('server fallback answer is labelled Sample result', async () => {
     stubFetch(async () => jsonResponse({ source: 'fallback', paths: FALLBACK }));
     await toPaths();
-    expect(screen.getByText('Sample output (offline)')).toBeInTheDocument();
+    expect(screen.getByText('Sample result')).toBeInTheDocument();
   });
 
   it('Choose this path builds the week with logic.buildWeek and opens This week', async () => {
@@ -134,7 +134,7 @@ describe('Paths', () => {
   it('without paths it offers a way back to the inputs', () => {
     renderFlow({ ...stateAt('paths') });
     expect(screen.getByText('No paths yet. Fill in your story first.')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Back to my story' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit my story' }));
     expect(state().screen).toBe('inputs');
   });
 

@@ -121,7 +121,7 @@
   gap: 6px;
 }
 
-/* First 2 weeks: numbered rows with a mono counter in a ringed circle. */
+/* How you'd start: numbered rows with a mono counter in a ringed circle. */
 .path-steps {
   display: flex;
   flex-direction: column;

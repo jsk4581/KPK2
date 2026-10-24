@@ -8,7 +8,7 @@ import './Paths.css';
 
 export const SOURCE_LABELS = {
   llm: 'AI-drafted',
-  fallback: 'Sample output (offline)',
+  fallback: 'Sample result',
 } as const;
 
 const SKILL_NAMES = new Map(persona.skills.map((s) => [s.id, s.name]));
@@ -59,16 +59,16 @@ function PathCard({
         <div className="meter" style={{ '--value': `${percent}%` } as CSSProperties}>
           <span />
         </div>
-        <p className="path-overlap-text">Skill overlap: {percent}%</p>
+        <p className="path-overlap-text">{percent}% skill match</p>
       </div>
 
-      <h4 className="path-sub">What transfers</h4>
+      <h4 className="path-sub">What carries over</h4>
       <SkillList kind="have" ids={role.transfers} empty="Nothing matched yet. Add more about your work above." />
 
-      <h4 className="path-sub">What's missing</h4>
+      <h4 className="path-sub">What you'd need to build</h4>
       <SkillList kind="build" ids={role.missing} empty="You already have every skill this role lists." />
 
-      <h4 className="path-sub">First 2 weeks</h4>
+      <h4 className="path-sub">How you'd start</h4>
       <ol className="path-steps">
         {draft.first_two_weeks.slice(0, 2).map((step) => (
           <li key={step}>{step}</li>
@@ -94,7 +94,7 @@ export default function Paths() {
           <p className="lead">No paths yet. Fill in your story first.</p>
         </header>
         <button type="button" className="btn-tertiary paths-back" onClick={() => dispatch({ type: 'go', screen: 'inputs' })}>
-          <span className="roll">Back to my story</span>
+          <span className="roll">Edit my story</span>
         </button>
       </section>
     );

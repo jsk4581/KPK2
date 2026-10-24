@@ -408,7 +408,7 @@ function dateOrdinal(date) {
 }
 
 export const PROGRESS_RULES = {
-  momentum: 'score = 2 x Done + 1 x Not today + lifelog days in the last 7 days of the log (max 3); 6+ strong, 3+ building, else starting',
+  momentum: 'score = 2 x Done + 1 x Not today + activity days in the last 7 days of the log (max 3); 6+ strong, 3+ building, else starting',
   dropoutRisk: 'no check-ins yet: medium; latest check-ins end with 2+ Not today: high; with 1: medium; otherwise low',
   daysShownUp: 'distinct days with any check-in (Done or Not today); not a streak',
 };

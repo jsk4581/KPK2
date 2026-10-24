@@ -7,7 +7,7 @@
   <!-- STATIC FALLBACK SNAPSHOT — works from a double-click (file://): no modules, no fetch, no backend.
        Built by scripts/build_fallback.mjs from index.html + styles.css + logic.js + app.js + data/fixture.json.
        Re-build at the 14:00 freeze and before submit-gate check 8 (RECOVERY.md "정적 fallback 절차"). -->
-  <!-- synced: logic.js sha256=191dd8be9fe3 · fixture.json sha256=ada6a8f302e8 -->
+  <!-- synced: logic.js sha256=0f4ac0e43abe · fixture.json sha256=ada6a8f302e8 -->
   <style>
     /* styles.css — minimal, dependency-free. Light/dark via prefers-color-scheme. */
     :root {
@@ -597,7 +597,7 @@
     }
 
     const PROGRESS_RULES = {
-      momentum: 'score = 2 x Done + 1 x Not today + lifelog days in the last 7 days of the log (max 3); 6+ strong, 3+ building, else starting',
+      momentum: 'score = 2 x Done + 1 x Not today + activity days in the last 7 days of the log (max 3); 6+ strong, 3+ building, else starting',
       dropoutRisk: 'no check-ins yet: medium; latest check-ins end with 2+ Not today: high; with 1: medium; otherwise low',
       daysShownUp: 'distinct days with any check-in (Done or Not today); not a streak',
     };

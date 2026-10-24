@@ -16,7 +16,7 @@ const RISK_REASON: Record<string, string> = {
   low_condition: 'Energy has been low the last 3 days',
   low_self_efficacy: 'Fewer steps finished than tried lately',
   first_week: 'First week of the 12-week plan',
-  data_gap: 'No lifelog item for 2 or more days',
+  data_gap: 'No new activity for 2 or more days',
 };
 
 // Plain names for the brain's milestone ids (UI only; the brain keeps its ids and names).
@@ -98,8 +98,8 @@ function ScopeNote({ context }: { context: ThinkOutput['context'] }) {
   const lifelog = context?.lifelogCount;
   const counts =
     typeof checkins === 'number' && typeof lifelog === 'number'
-      ? `${plural(checkins, 'check-in')} and ${plural(lifelog, 'lifelog item')}`
-      : 'the check-ins and lifelog items sent to it';
+      ? `${plural(checkins, 'check-in')} and ${plural(lifelog, 'activity item')}`
+      : 'the check-ins and activity items sent to it';
   return (
     <p className="brain-muted brain-scope" data-testid="brain-scope">
       Why these can differ from the signals above: those count this week&apos;s check-ins on this device only.
@@ -227,7 +227,7 @@ export default function BrainPanel({ view }: { view: BrainView }) {
   if (view.status === 'offline') {
     return (
       <p className="brain-offline" data-testid="brain-offline">
-        Brain offline: showing on-device signals
+        Live analysis is unavailable, so this shows the signals from this device.
       </p>
     );
   }

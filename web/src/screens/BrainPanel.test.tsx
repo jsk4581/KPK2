@@ -41,7 +41,7 @@ describe('BrainPanel', () => {
     const note = screen.getByTestId('brain-scope');
     expect(note).toHaveTextContent('Why these can differ from the signals above');
     expect(note).toHaveTextContent("this week's check-ins on this device only");
-    expect(note).toHaveTextContent('These rules read 8 check-ins and 31 lifelog items');
+    expect(note).toHaveTextContent('These rules read 8 check-ins and 31 activity items');
   });
 
   it('says Not enough data instead of showing the brain starting values (no data yet)', () => {
@@ -135,7 +135,7 @@ describe('BrainPanel', () => {
 
   it('shows one small line when the brain is offline', () => {
     render(<BrainPanel view={{ status: 'offline', reason: 'network' }} />);
-    expect(screen.getByTestId('brain-offline')).toHaveTextContent('Brain offline: showing on-device signals');
+    expect(screen.getByTestId('brain-offline')).toHaveTextContent('Live analysis is unavailable, so this shows the signals from this device.');
     expect(screen.queryByTestId('brain-panel')).not.toBeInTheDocument();
   });
 });

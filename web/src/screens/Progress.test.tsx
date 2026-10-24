@@ -105,7 +105,8 @@ describe('Progress tab', () => {
       expect(within(step).getByTestId('step-fn')).toHaveTextContent(expectedFns[i]);
     });
     expect(steps[1]).toHaveTextContent('AI-drafted');
-    expect(steps[0]).toHaveTextContent('Rule (logic.js)');
+    expect(steps[0]).toHaveTextContent('Rule');
+    expect(steps[0]).not.toHaveTextContent('logic.js');
     // Inputs and outputs are the recorded summaries, not invented text.
     expect(steps[2]).toHaveTextContent(state.trace[2].output);
 

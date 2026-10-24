@@ -60,13 +60,13 @@ export function drawPlaceholderScreen() {
   x.font = font(400, 38); x.fillStyle = '#6e6e6e'; x.fillText('Seven years of copy, carried into new work.', 80, 410);
 
   rr(80, 480, 920, 340, 44, '#8e48b1');
-  x.fillStyle = '#ffffff'; x.font = font(500, 34); x.fillText('PATH 1 OF 3 \u00b7 SKILL OVERLAP 67%', 130, 555);
+  x.fillStyle = '#ffffff'; x.font = font(500, 34); x.fillText('PATH 1 OF 3 \u00b7 67% SKILL MATCH', 130, 555);
   x.font = font(700, 56); x.fillText('Messaging & Positioning', 130, 640); x.fillText('Consultant', 130, 705);
   x.font = font(400, 32); x.globalAlpha = 0.8; x.fillText('Synthetic persona \u00b7 example', 130, 770); x.globalAlpha = 1;
 
   const rows = [
-    ['What transfers', 'Discovery calls, positioning, workshops', '#e2f3e8', '#1f8a4c', ICONS.transfers],
-    ["What's missing", 'Case studies, project pricing', '#fdf0d8', '#b46d00', ICONS.missing],
+    ['What carries over', 'Discovery calls, positioning, workshops', '#e2f3e8', '#1f8a4c', ICONS.transfers],
+    ["What you'd need to build", 'Case studies, project pricing', '#fdf0d8', '#b46d00', ICONS.missing],
     ['This week', '3 actions \u00b7 30 minutes or less', '#f1e6f8', '#8e48b1', ICONS.week],
   ];
   rows.forEach(([t, s, tile, ink, icon], i) => {

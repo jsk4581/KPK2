@@ -49,7 +49,7 @@ const SOURCE_LABEL: Record<string, string> = {
 };
 
 const VIA_LABEL: Record<NonNullable<TraceEntry['via']>, string> = {
-  logic: 'Rule (logic.js)',
+  logic: 'Rule',
   llm: 'AI-drafted',
   fallback: 'Sample result',
   brain: 'Brain',

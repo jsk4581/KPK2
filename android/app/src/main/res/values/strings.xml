@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Second Draft</string>
+
+    <string name="tab_timeline">Timeline</string>
+    <string name="tab_sources">Sources</string>
+    <string name="tab_export">Export</string>
+
+    <string name="timeline_empty">Nothing recorded yet. Turn on a source to start your lifelog.</string>
+    <string name="sources_intro">Choose what Second Draft may record on this phone. Everything stays on the device.</string>
+    <string name="export_intro">Save your lifelog as a JSON file and choose where to send it.</string>
+</resources>

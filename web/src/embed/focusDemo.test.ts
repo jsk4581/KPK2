@@ -9,12 +9,12 @@ function fakeWindow(inFrame: boolean) {
 }
 
 describe('requestDemoFocus', () => {
-  it('posts dam:focus-demo to the parent when running inside an iframe', () => {
+  it('posts next-chapter:focus-demo to the parent when running inside an iframe', () => {
     const { win, parent } = fakeWindow(true);
     expect(requestDemoFocus(win)).toBe(true);
     expect(parent.postMessage).toHaveBeenCalledTimes(1);
     expect(parent.postMessage).toHaveBeenCalledWith({ type: FOCUS_DEMO_MESSAGE }, '*');
-    expect(FOCUS_DEMO_MESSAGE).toBe('dam:focus-demo');
+    expect(FOCUS_DEMO_MESSAGE).toBe('next-chapter:focus-demo');
   });
 
   it('does nothing when the app is the top window', () => {

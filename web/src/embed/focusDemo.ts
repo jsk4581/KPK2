@@ -1,6 +1,6 @@
 // When the app runs inside the landing page's demo phone, ask the host page to bring the
 // phone into focus. Outside an iframe (the app opened on its own) this does nothing.
-export const FOCUS_DEMO_MESSAGE = 'dam:focus-demo';
+export const FOCUS_DEMO_MESSAGE = 'next-chapter:focus-demo';
 
 type WindowLike = Pick<Window, 'self' | 'top' | 'parent'>;
 

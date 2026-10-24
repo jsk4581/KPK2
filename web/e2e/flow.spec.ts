@@ -201,8 +201,8 @@ test('browser falls back to the labelled sample when the function is unreachable
 
 test('landing page is the phone kit with the app inside its phone', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Dream Achieve Moments');
-  await expect(page.locator('nav .brand')).toHaveText('Dream Achieve Moments');
+  await expect(page).toHaveTitle('Next Chapter');
+  await expect(page.locator('nav .brand')).toHaveText('Next Chapter');
   await expect(page.locator('#why')).toBeAttached();
   // The See the demo card holds the promo video: poster first, nothing downloads until it scrolls into view.
   const reelVideo = page.locator('#reel video');
@@ -210,7 +210,7 @@ test('landing page is the phone kit with the app inside its phone', async ({ pag
   await expect(reelVideo).toHaveAttribute('preload', 'none');
   await expect(reelVideo).not.toHaveAttribute('autoplay', /.*/);
   await expect(reelVideo.locator('source')).toHaveAttribute('src', '/media/promo.mp4');
-  const play = page.getByRole('button', { name: 'Play the 40-second Dream Achieve Moments video' });
+  const play = page.getByRole('button', { name: 'Play the 40-second Next Chapter video' });
   await expect(play).toHaveText('See the demo');
 
   // Scrolled into view, a muted preview plays without controls; pressing the button plays it in place

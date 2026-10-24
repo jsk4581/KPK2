@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dream Achieve Moments</title>
+  <title>Next Chapter</title>
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <meta name="description" content="Dream Achieve Moments turns a freelance writer's career story and notes into three paths that keep their skills and three small actions for this week. Demo runs on a synthetic persona.">
+  <meta name="description" content="Next Chapter turns a freelance writer's career story and notes into three paths that keep their skills and three small actions for this week. Demo runs on a synthetic persona.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="phone-frame.css">
@@ -265,7 +265,7 @@
     <div class="wrap">
       <a class="brand" href="#">
         <img class="brand-mark" src="/logo.svg" alt="" width="30" height="30">
-        Dream Achieve Moments
+        Next Chapter
       </a>
       <div class="nav-links"><a href="#why">Why</a><a href="#now">Why now</a><a href="#how">How it works</a><a href="#demo">Demo</a><a href="#architecture">Architecture</a></div>
       <a class="btn btn-light btn-sm" href="#demo">Try the demo</a>
@@ -338,10 +338,10 @@
 
     <div class="wrap reel">
       <div class="reel-card" id="reel">
-        <video class="reel-video" id="reel-video" tabindex="-1" poster="/media/promo-poster.jpg" preload="none" playsinline aria-label="Dream Achieve Moments, 40-second video">
+        <video class="reel-video" id="reel-video" tabindex="-1" poster="/media/promo-poster.jpg" preload="none" playsinline aria-label="Next Chapter, 40-second video">
           <source src="/media/promo.mp4" type="video/mp4">
         </video>
-        <button class="play" id="reel-play" type="button" aria-label="Play the 40-second Dream Achieve Moments video"><i aria-hidden="true"></i>See the demo</button>
+        <button class="play" id="reel-play" type="button" aria-label="Play the 40-second Next Chapter video"><i aria-hidden="true"></i>See the demo</button>
       </div>
       <div class="features">
         <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><b>Three paths that keep your skills</b><span>Every card starts with What carries over, then What you'd need to build and How you'd start.</span></div>
@@ -390,7 +390,7 @@
           <div class="phone__bezel">
             <div class="phone__screen" id="screen">
               <div class="phone__island"></div>
-              <iframe class="phone__iframe" src="/app.html" title="Dream Achieve Moments demo app" loading="lazy"></iframe>
+              <iframe class="phone__iframe" src="/app.html" title="Next Chapter demo app" loading="lazy"></iframe>
               <div class="home-bar"></div>
             </div>
           </div>
@@ -410,7 +410,7 @@
         <p class="arch-hint" aria-hidden="true">Swipe sideways to see the whole diagram</p>
         <div class="arch-scroll">
           <svg viewBox="0 0 1120 608" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-flow-title arch-flow-desc">
-            <title id="arch-flow-title">How a click flows through Dream Achieve Moments</title>
+            <title id="arch-flow-title">How a click flows through Next Chapter</title>
             <desc id="arch-flow-desc">The browser loads the Vercel site, which shows the demo app in an iframe. The demo app calls /api/paths, a Vercel Function that makes one Claude Sonnet 5.5 call with a labelled fallback. The demo app also calls the rules-only decision brain on a team-hosted server through a Cloudflare tunnel, retries a backup tunnel when the primary fails, and falls back to on-device signals when both are down. An MCP client and the Android lifelog app are optional inputs.</desc>
             <defs>
               <marker id="arch-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-def" points="0 0, 8 3, 0 6"/></marker>
@@ -524,7 +524,7 @@
         <p class="arch-hint" aria-hidden="true">Swipe sideways to see the whole diagram</p>
         <div class="arch-scroll">
           <svg viewBox="0 0 1120 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-stack-title arch-stack-desc">
-            <title id="arch-stack-title">Dream Achieve Moments technology stack</title>
+            <title id="arch-stack-title">Next Chapter technology stack</title>
             <desc id="arch-stack-desc">Six layers: presentation, judgment, serving, AI, mobile and quality, with the technologies in each. The judgment layer, where deterministic rules make every decision, is highlighted.</desc>
 
             <text class="t-eyebrow" x="40" y="36">LAYER</text>
@@ -576,7 +576,7 @@
   </section>
 
   <footer>
-    <div class="wrap"><span>Dream Achieve Moments · Demo persona Dana and all demo data are synthetic [SIMULATION]. Nothing you type is stored.</span><span>Sources: Hui, Reshef &amp; Zhou 2023 (Upwork); BLS Occupational Outlook Handbook, 2025-35; Challenger, Gray &amp; Christmas, Sep 2026.</span></div>
+    <div class="wrap"><span>Next Chapter · Demo persona Dana and all demo data are synthetic [SIMULATION]. Nothing you type is stored.</span><span>Sources: Hui, Reshef &amp; Zhou 2023 (Upwork); BLS Occupational Outlook Handbook, 2025-35; Challenger, Gray &amp; Christmas, Sep 2026.</span></div>
   </footer>
 
   <script>
@@ -732,7 +732,7 @@
       }, { threshold: 0.5 }).observe(reel);
     })();
 
-    // Demo focus: the app inside the phone posts {type: 'dam:focus-demo'} after "Load sample persona".
+    // Demo focus: the app inside the phone posts {type: 'next-chapter:focus-demo'} after "Load sample persona".
     // The page centres the phone in the viewport below the sticky nav, lifts it and dims the rest; scrolling away,
     // a click outside the phone or Escape releases it. On narrow screens the phone fills the
     // column, so it only scrolls to the top. The iframe stays interactive throughout.
@@ -772,7 +772,7 @@
 
       addEventListener('message', (e) => {
         if (!frame || e.source !== frame.contentWindow || e.origin !== location.origin) return;
-        if (!e.data || e.data.type !== 'dam:focus-demo') return;
+        if (!e.data || e.data.type !== 'next-chapter:focus-demo') return;
         focusDemo();
       });
       addEventListener('scroll', () => {

@@ -3,3 +3,5 @@ dist/
 .env*
 .vercel/
 *.tsbuildinfo
+e2e/screens/
+e2e/test-results/

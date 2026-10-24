@@ -35,6 +35,14 @@ describe('BrainPanel', () => {
     expect(screen.queryByTestId('brain-offline')).not.toBeInTheDocument();
   });
 
+  it('says which inputs the brain read, since its momentum and risk can differ from the signals above', () => {
+    render(<BrainPanel view={{ status: 'ok', data, synthetic: true }} />);
+    const note = screen.getByTestId('brain-scope');
+    expect(note).toHaveTextContent('Why these can differ from the signals above');
+    expect(note).toHaveTextContent("this week's check-ins on this device only");
+    expect(note).toHaveTextContent('The brain reads 8 check-ins and 31 lifelog items');
+  });
+
   it('says Not enough data instead of showing the brain starting values (no data yet)', () => {
     // A Start user with nothing on record: the brain answers its starting constants.
     const empty = {

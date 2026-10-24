@@ -79,6 +79,27 @@ function DaysSoFar({ days }: { days: number }) {
   );
 }
 
+function plural(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
+}
+
+// The on-device signals above the panel and the brain both name a momentum and a drop-off
+// risk. They read different inputs, so the panel says which inputs each one used.
+function ScopeNote({ context }: { context: ThinkOutput['context'] }) {
+  const checkins = context?.checkinCount;
+  const lifelog = context?.lifelogCount;
+  const counts =
+    typeof checkins === 'number' && typeof lifelog === 'number'
+      ? `${plural(checkins, 'check-in')} and ${plural(lifelog, 'lifelog item')}`
+      : 'the check-ins and lifelog items sent to it';
+  return (
+    <p className="brain-muted brain-scope" data-testid="brain-scope">
+      Why these can differ from the signals above: those count this week&apos;s check-ins on this device only.
+      The brain reads {counts}, day by day, so its momentum and drop-off risk can come out different.
+    </p>
+  );
+}
+
 function constraintWhy(constraint: ThinkOutput['constraint']): string {
   const id = constraint.constraint;
   if (id === 'unknown' || !CONSTRAINT_TOPIC[id]) {
@@ -116,6 +137,7 @@ function BrainData({ data }: { data: ThinkOutput }) {
 
   return (
     <>
+      <ScopeNote context={data.context} />
       <dl className="brain-grid">
         <div className="brain-cell" data-testid="brain-energy">
           <dt>Energy</dt>

@@ -118,9 +118,9 @@
     .chip-ico::before { content: ""; position: absolute; right: 0; top: 0; width: 9px; height: 9px; background: linear-gradient(225deg, #fff 50%, rgba(255,255,255,.55) 50%); border-radius: 0 5px 0 2px; }
     .chip b { display: block; font-size: 14px; font-weight: 500; }
     .chip small { display: block; font: 400 11px/1.4 var(--mono); color: var(--muted); letter-spacing: .06em; }
-    .core { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 18px; background: linear-gradient(160deg, #a35fc6, #8e48b1 55%, #7a3a9b); display: grid; place-items: center; will-change: transform, opacity;
-      box-shadow: inset 0 -3px 0 rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.25), 0 18px 40px -12px rgba(142,72,177,.55); }
-    .core svg { width: 32px; height: 32px; }
+    .core { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 18px; background: #f7f8fb; display: grid; place-items: center; will-change: transform, opacity;
+      box-shadow: 0 0 0 1px var(--line), 0 18px 40px -12px rgba(142,72,177,.55); }
+    .core img { width: 100%; height: 100%; display: block; border-radius: inherit; }
     .core::after { content: ""; position: absolute; inset: -18px; border-radius: 30px; background: radial-gradient(closest-side, rgba(142,72,177,.35), transparent); opacity: var(--glow, 0); z-index: -1; }
     .merge-tag { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); margin: 0; font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: center; }
     .result { position: absolute; left: 50%; top: 50%; width: min(760px, 100% - 32px); transform: translate(-50%, -50%); margin: 0; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.22; letter-spacing: -.03em; font-weight: 500; opacity: 0; will-change: filter, opacity, transform; text-wrap: balance; }
@@ -145,7 +145,7 @@
     .feature span { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
     .quote { padding: 110px 0 120px; text-align: center; }
-    .quote-av { width: 52px; height: 52px; border-radius: 14px; margin: 0 auto; background: linear-gradient(135deg, #cdb4e6, #8e48b1); }
+    .quote-av { width: 52px; height: 52px; border-radius: 12px; margin: 0 auto; display: block; box-shadow: 0 0 0 1px var(--line); }
     .quote blockquote { margin: 22px auto 0; max-width: 640px; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.3; letter-spacing: -.02em; font-weight: 500; text-wrap: balance; }
     .quote cite { display: block; margin-top: 14px; font: 500 11px/1 var(--mono); letter-spacing: .1em; color: var(--muted); font-style: normal; text-transform: uppercase; }
     .quote .btn { margin-top: 26px; }
@@ -303,7 +303,7 @@
         <div class="chip" data-x="-1" data-y="1"><span class="chip-ico" style="background:#1f8a4c">LINK</span><div><b>AI drafts sound the same</b><small>SAVED LINK · OCT 10</small></div></div>
         <div class="chip" data-x="1" data-y="1"><span class="chip-ico" style="background:var(--accent)">TXT</span><div><b>Career: 7 yrs of copy</b><small>YOUR STORY · 3 BOXES</small></div></div>
         <p class="merge-tag">[SIMULATION] Sample inputs from Dana, a synthetic persona</p>
-        <div class="core" id="core"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h9a5 5 0 0 1 0 10h-3"/><path d="M25 23h-9a5 5 0 0 1 0-10h3"/><path d="m10 6-3 3 3 3M22 26l3-3-3-3"/></svg></div>
+        <div class="core" id="core"><img src="/logo.svg" alt="" width="76" height="76"></div>
         <p class="result" id="result">Your notes and story go in. Out come three paths that keep your skills and three actions for this week.</p>
       </div>
     </div>
@@ -322,7 +322,7 @@
 
     <div class="quote">
       <div class="wrap">
-        <div class="quote-av" aria-hidden="true"></div>
+        <img class="quote-av" src="/logo.svg" alt="" width="52" height="52">
         <blockquote>"My clients use ChatGPT now. What do I do?"</blockquote>
         <cite>[SIMULATION] Dana, 38, freelance copywriter · synthetic persona, not a real user</cite>
         <a class="btn btn-dark" href="#demo">Walk through Dana's week</a>

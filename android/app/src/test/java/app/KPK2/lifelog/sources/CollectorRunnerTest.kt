@@ -47,4 +47,20 @@ class CollectorRunnerTest {
         assertEquals(listOf(1, 0, 0), listOf(calendar.pulls, sms.pulls, health.pulls))
         assertEquals(mapOf("calendar" to 1), repo.sourceStats.first().mapValues { it.value.count })
     }
+
+    @Test
+    fun aSourceTurnedOnBeforeAccessStartsOnTheFirstSyncAfterAccessIsGranted() = runTest {
+        val settings = SourceSettings(context)
+        val usage = FakeCollector(SourceId.APP_USAGE, access = false)
+        settings.choose(SourceId.APP_USAGE, true)
+        val runner = CollectorRunner(context, repo, settings, listOf(usage))
+
+        runner.sync()
+        assertEquals(0, usage.starts)
+
+        // Granted on the system usage access screen; the app syncs when the person returns.
+        usage.access = true
+        runner.sync()
+        assertEquals(1, usage.starts)
+    }
 }

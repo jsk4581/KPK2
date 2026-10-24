@@ -3,6 +3,8 @@ package app.KPK2.lifelog.sources
 import android.content.Context
 import android.util.Log
 import app.KPK2.lifelog.data.LifelogRepository
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /** Starts, stops and pulls the registered collectors according to the person's choices. */
 class CollectorRunner(
@@ -11,13 +13,16 @@ class CollectorRunner(
     private val settings: SourceSettings,
     private val collectors: List<Collector> = CollectorRegistry.all,
 ) {
+    /** App start, every return to the app and every toggle call [sync]; one runs at a time. */
+    private val syncLock = Mutex()
+
     private fun active(): List<Collector> {
         val choices = settings.current()
         return collectors.filter { SourcePolicy.isOn(it, choices[it.id], it.hasAccess(context)) }
     }
 
     /** Brings every collector in line with the current choices and access. Safe to call repeatedly. */
-    suspend fun sync() {
+    suspend fun sync() = syncLock.withLock {
         val on = active().toSet()
         collectors.forEach { collector ->
             runCatching {

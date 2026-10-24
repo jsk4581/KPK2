@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.health.connect.client)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

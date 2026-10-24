@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_status_play_services_missing">Movement needs Google Play services, which this phone does not have. Nothing is recorded.</string>
+    <string name="motion_status_play_services_outdated">Update Google Play services to record movement.</string>
+    <string name="motion_status_play_services_disabled">Google Play services is turned off on this phone. Turn it on to record movement.</string>
+    <string name="motion_status_registration_failed">Movement updates could not start. Turn the source off and on to try again.</string>
+</resources>

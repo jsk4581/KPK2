@@ -61,6 +61,11 @@ export interface WeekAction {
 export interface Week {
   actions: WeekAction[];
   summary: string;
+  // Extra bookkeeping that logic.buildWeek / applyCheckin carry along.
+  pathId?: string;
+  pathTitle?: string;
+  today?: string | null;
+  pendingComeback?: boolean;
 }
 
 export interface CheckinRecord {
@@ -85,6 +90,9 @@ export interface AppState {
   fields: Fields;
   editedFields: Set<FieldKey>;
   enabledSources: LifelogSource[];
+  // True once the lifelog card has run (sample flow). A Start user never connects it,
+  // so their skills and progress evidence never include the synthetic lifelog.
+  lifelogConnected: boolean;
   rankedRoles: RankedRole[];
   paths: PathsResponse | null;
   chosenPathId: string | null;

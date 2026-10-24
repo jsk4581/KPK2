@@ -76,6 +76,7 @@ export default function LifelogCard() {
   useEffect(() => {
     if (didPrefill.current) return;
     didPrefill.current = true;
+    dispatch({ type: 'connectLifelog' });
     prefillFrom(state.enabledSources, state.fields, state.editedFields);
     // Runs on mount only; later recomputes happen in the toggle handler.
   }, []);

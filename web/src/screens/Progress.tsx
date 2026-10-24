@@ -54,10 +54,9 @@ const VIA_LABEL: Record<NonNullable<TraceEntry['via']>, string> = {
 const tracedProgressSignals = logic.withTrace('progressSignals', logic.progressSignals);
 
 // Lifelog items that were actually read in this session: only when the lifelog card
-// ran summarizeLifelog (recorded in the trace), and only the sources switched on.
+// was opened (lifelogConnected), and only the sources switched on.
 export function connectedLifelog(state: AppState): LifelogItem[] {
-  const read = state.trace.some((t) => t.fn === 'summarizeLifelog');
-  if (!read) return [];
+  if (!state.lifelogConnected) return [];
   const enabled = new Set<string>(state.enabledSources);
   return persona.lifelog.filter((item) => enabled.has(item.source));
 }

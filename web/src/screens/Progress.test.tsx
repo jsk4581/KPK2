@@ -42,6 +42,7 @@ function runFlow(kinds: Array<['a1' | 'a2' | 'a3', 'done' | 'not_today']>, opts:
   const state: AppState = {
     ...createInitialState(),
     screen: 'progress',
+    lifelogConnected: opts.lifelog,
     week,
     checkins,
     trace,

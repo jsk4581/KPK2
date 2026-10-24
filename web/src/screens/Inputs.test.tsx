@@ -1,9 +1,13 @@
 import persona from '@app/data/persona-dana.json';
-import { fireEvent, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FIELD_LABELS } from './Inputs';
 import { SIMULATION_LABEL } from './Landing';
-import { renderFlow, state } from './Paths.testkit';
+import { FALLBACK, jsonResponse, renderFlow, state, stubFetch } from './Paths.testkit';
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 function toInputs() {
   renderFlow();
@@ -39,5 +43,19 @@ describe('Inputs', () => {
     });
     expect(button).toBeEnabled();
     expect(screen.queryByText(SIMULATION_LABEL)).not.toBeInTheDocument();
+  });
+
+  it('Start: the synthetic lifelog is never read into the skills', async () => {
+    stubFetch(async () => jsonResponse({ source: 'fallback', paths: FALLBACK }));
+    renderFlow();
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+    fireEvent.change(screen.getByLabelText(FIELD_LABELS.career.label), {
+      target: { value: 'Ten years of email copy and landing pages.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Show my paths' }));
+    await waitFor(() => expect(state().screen).toBe('paths'));
+    expect(state().lifelogConnected).toBe(false);
+    const skillsStep = state().trace.find((t) => t.fn === 'extractSkills');
+    expect(skillsStep?.input).toMatch(/lifelog: 0 items/);
   });
 });

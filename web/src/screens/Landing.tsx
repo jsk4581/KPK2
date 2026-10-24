@@ -25,8 +25,6 @@ export default function Landing() {
 
   return (
     <section aria-label="Landing" className="p0">
-      {/* Screen name for assistive tech; the visible lead is the empathy line. */}
-      <h2 className="p0-sr-only">Landing</h2>
       <p className="p0-lead">{p.headline}</p>
       <p className="p0-muted">
         Your expertise, redrafted for the AI era. Tell us what you did and where you are; get three

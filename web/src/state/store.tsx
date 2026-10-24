@@ -23,6 +23,7 @@ export function createInitialState(): AppState {
     fields: { ...EMPTY_FIELDS },
     editedFields: new Set<FieldKey>(),
     enabledSources: [...DEFAULT_ENABLED_SOURCES],
+    lifelogConnected: false,
     rankedRoles: [],
     paths: null,
     chosenPathId: null,
@@ -41,6 +42,8 @@ export type Action =
   // Prefill from lifelog or sample persona: skips fields the user edited.
   | { type: 'prefillFields'; fields: Partial<Fields> }
   | { type: 'setEnabledSources'; sources: LifelogSource[] }
+  // The lifelog card opened: enabled lifelog items now count as the user's data.
+  | { type: 'connectLifelog' }
   | { type: 'setRankedRoles'; roles: RankedRole[] }
   | { type: 'setPaths'; paths: PathsResponse | null }
   // Choosing (or re-choosing) a path starts a fresh week and clears check-ins.
@@ -71,6 +74,8 @@ export function reducer(state: AppState, action: Action): AppState {
     }
     case 'setEnabledSources':
       return { ...state, enabledSources: [...action.sources] };
+    case 'connectLifelog':
+      return { ...state, lifelogConnected: true };
     case 'setRankedRoles':
       return { ...state, rankedRoles: action.roles };
     case 'setPaths':

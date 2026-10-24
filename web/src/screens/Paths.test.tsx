@@ -163,6 +163,7 @@ function stateAt(screenName: 'paths') {
     fields: { career: '', now: '', pull: '' },
     editedFields: new Set<'career' | 'now' | 'pull'>(),
     enabledSources: ['note' as const, 'saved_link' as const, 'calendar' as const],
+    lifelogConnected: true,
     rankedRoles: [],
     paths: null,
     chosenPathId: null,

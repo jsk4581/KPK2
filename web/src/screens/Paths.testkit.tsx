@@ -1,5 +1,6 @@
 // Test-only harness for the P0 screens: renders the current screen from the store
-// and exposes the latest state. The lifelog card is a stand-in with a Continue button.
+// and exposes the latest state. The lifelog card is a stand-in with a Continue button
+// that marks the lifelog as connected, as the real card does when it opens.
 import persona from '@app/data/persona-dana.json';
 import { render } from '@testing-library/react';
 import { vi } from 'vitest';
@@ -14,7 +15,13 @@ export const current: { state: AppState | null } = { state: null };
 function LifelogStandIn() {
   const { dispatch } = useStore();
   return (
-    <button type="button" onClick={() => dispatch({ type: 'go', screen: 'inputs' })}>
+    <button
+      type="button"
+      onClick={() => {
+        dispatch({ type: 'connectLifelog' });
+        dispatch({ type: 'go', screen: 'inputs' });
+      }}
+    >
       Continue (test)
     </button>
   );

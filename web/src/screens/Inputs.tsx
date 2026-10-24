@@ -109,7 +109,9 @@ export default function Inputs() {
   const onShowPaths = async () => {
     setBusy(true);
     try {
-      const result = await showPaths(state.fields, state.enabledSources);
+      // Lifelog items count only when the user went through the lifelog card.
+      const sources = state.lifelogConnected ? state.enabledSources : [];
+      const result = await showPaths(state.fields, sources);
       dispatch({ type: 'setRankedRoles', roles: result.rankedRoles });
       dispatch({ type: 'setPaths', paths: result.paths });
       dispatch({ type: 'addTrace', entries: result.trace });

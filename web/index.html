@@ -182,6 +182,28 @@
     .home-bar { position: absolute; z-index: 12; bottom: .9em; left: 50%; width: 13.5em; height: .5em; transform: translateX(-50%); border-radius: 1em; background: #0f0f0f; }
 
     /* Architecture: two inline SVG diagrams drawn with the page palette */
+    /* Go to market band: three stages, numbers cite mission evidence IDs */
+    .gtm { padding: 90px 0 100px; border-top: 1px solid var(--line); }
+    .gtm h2 { margin: 18px 0 0; max-width: 760px; font-size: clamp(30px,4vw,46px); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
+    .gtm-lead { margin: 18px 0 0; max-width: 620px; color: var(--muted); font-size: 17px; text-wrap: pretty; }
+    .gtm-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 40px; }
+    .gtm-card { display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: 18px; background: var(--surface); min-height: 300px; }
+    .gtm-card.roadmap { background: var(--bg); border: 1px dashed var(--faint); }
+    .gtm-status { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .gtm-status i { width: 7px; height: 7px; border-radius: 50%; background: #1f8a4c; box-shadow: 0 0 0 3px #e2f3e8; }
+    .gtm-card.roadmap .gtm-status i { background: none; border: 1.5px solid var(--faint); box-shadow: none; }
+    .gtm-card h3 { margin: 6px 0 0; font-size: 18px; line-height: 1.2; letter-spacing: -.02em; font-weight: 600; }
+    .gtm-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+    .gtm-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px; }
+    .gtm-foot code, .gtm-foot span { font: 500 11px/1 var(--mono); letter-spacing: .02em; padding: 6px 8px; border-radius: 6px; background: var(--bg); color: var(--ink); }
+    .gtm-card.roadmap .gtm-foot span { background: var(--surface); color: var(--muted); }
+    .gtm-num { font-size: 34px; font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+    .gtm-num small { display: block; margin-top: 8px; font: 400 12px/1.4 var(--mono); letter-spacing: .02em; color: var(--muted); }
+    .gtm-status.plan i { background: none; border: 1.5px solid var(--faint); box-shadow: none; }
+    .gtm-note { margin: 16px 0 0; font: 400 12px/1.4 var(--mono); color: var(--muted); }
+    .gtm-foot small { width: 100%; font: 400 11px/1.4 var(--mono); color: var(--muted); letter-spacing: .02em; }
+    @media (max-width: 860px) { .gtm-grid { grid-template-columns: 1fr; } .gtm-card { min-height: 0; } }
+
     .arch { padding: 90px 0 120px; border-top: 1px solid var(--line); }
     .arch h2 { margin: 18px 0 0; max-width: 760px; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
     .arch-lead { margin: 18px 0 0; max-width: 620px; color: var(--muted); font-size: 17px; text-wrap: pretty; }
@@ -397,6 +419,38 @@
       </div>
     </div>
   </section>
+
+  <section class="gtm" id="gtm">
+  <div class="wrap">
+    <span class="eyebrow">Go to market</span>
+    <h2>Free for people first. Then we sell the brain.</h2>
+    <p class="gtm-lead">One decision brain, two businesses: a free app that earns people's trust while AI reshapes their work, and a paid brain API for the companies that already pay to move people into new work.</p>
+    <div class="gtm-grid">
+      <article class="gtm-card">
+        <span class="gtm-status"><i></i>Now · demo live</span>
+        <div class="gtm-num">53.2M<small>US workers in jobs where AI exposure is very high</small></div>
+        <h3>Anyone whose work AI is changing</h3>
+        <p>Bring your story and your notes; get paths that keep your skills and small steps for this week. We reach people where they already work and talk, with a sample result, not ads.</p>
+        <div class="gtm-foot"><span>Free for people</span><span>Metric: 2-week check-in retention</span><small>BLS AI exposure data, 2025 employment (E68)</small></div>
+      </article>
+      <article class="gtm-card">
+        <span class="gtm-status plan"><i></i>Months 0 to 9 · plan</span>
+        <div class="gtm-num">704,300<small>creative and language freelancers, US and Canada: the first market</small></div>
+        <h3>Start with freelancers, grow job by job</h3>
+        <p>Freelancers pay for their own transition, so they feel the gap first. Each new job adds one skill map; the rules and the app stay the same.</p>
+        <div class="gtm-foot"><span>One skill map per job</span><span>Same brain</span><small>BLS 2025 and Canada Job Bank (E25)</small></div>
+      </article>
+      <article class="gtm-card">
+        <span class="gtm-status plan"><i></i>Months 9 to 24 · plan</span>
+        <div class="gtm-num">$600 to $2,600<small>what companies pay today per laid-off employee, 3-month program</small></div>
+        <h3>Employers and outplacement buy the brain</h3>
+        <p>120,136 US layoffs cited AI in 2026 so far. Companies can run the same brain for their people, paid per call. The MCP server it plugs into runs today.</p>
+        <div class="gtm-foot"><span>Brain API, paid per call</span><span>No subscription</span><small>Intoo, RiseSmart list prices (E70) · Challenger, Sep 2026 (E59)</small></div>
+      </article>
+    </div>
+    <p class="gtm-note">Plans, not revenue: no customers or contracts yet.</p>
+  </div>
+</section>
 
   <section class="arch" id="architecture">
     <div class="wrap">

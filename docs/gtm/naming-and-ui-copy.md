@@ -7,6 +7,11 @@
 1. **Dream Achieve Moments** — 제출용으로는 유지. 출시 브랜드로는 약함: 일반명사 3개 나열이라 식별력 낮고, 명사구 안의 동사 *Achieve*가 원어민에게 어색. 핵심 가치(경력 전이 · 같은 AI가 끊고 잇는 역설)를 담지 못함 → **제출 후 재검토 항목**.
 2. **Second Draft는 출시 브랜드 불가** — 동명 AI 글쓰기 제품 3개 존재: SecondDraft Media 웹 AI 편집기(2026-02 공식 출시), iOS "Second Draft - Rewrite Smarter", iOS "Reword Text: Second Draft". 같은 고객(글 쓰는 사람)·같은 카테고리라 혼동 가능성 높음. USPTO 등록 여부는 **미조회**.
 3. 대안 조회: *Second Wind*는 USPTO 041류(리더십 교육) 선등록 live · *Red Thread*는 RedThread Research(HR 애널리틱스)와 B2B 구매자 겹침. 세 이름 모두 .com/.app/.co/.io/.ai 등록됨(RDAP·DNS 확인 2026-10-24). → 새 이름은 제출 뒤 과제.
+4. **출시 브랜드 후보 (15:10 추가 조회 — 브랜드·앱·팟캐스트·SNS 핸들·상표 집계 DB 4단계, USPTO 공식 DB 직접 조회는 미실시 → 변호사 검토 전 가설)**
+   - **1순위 *Not From Zero*** — 확인된 충돌 0. 인접 마크 "FROM ZERO TO IPO"(Attio, 009/042류 등록) 존재 → 변호사 검토 필요. notfromzero.com은 2017년 타인 등록·빈 페이지(2026-12 만료), .app/.co/.io 레지스트리 기준 미등록. 제품 메시지("처음부터 다시가 아니다")와 직결.
+   - **2순위 *Draft Two*** — 충돌 없음, .com 등록·.app/.co/.io 미등록. 글쓰기 은유라 확장 직군(디자이너·CS)에 한계.
+   - 탈락: *Redraft*(판타지풋볼 용어·도메인 전부 등록) · *Keepwork*(Keep 계열 HR 제품 다수) · *Nextline*(도메인 전부 등록) · *Carryover*(회계 용어, 미조회).
+   - 제출명 **Dream Achieve Moments 유지** 의견 그대로. 전체 조회 기록: 로컬 `C:\Users\mrpar\kpk2-share\naming-ui-feedback.md`(레포 밖).
 
 ## B. 앱 UI 영어 문구 (→ Build · `web/src/screens`)
 

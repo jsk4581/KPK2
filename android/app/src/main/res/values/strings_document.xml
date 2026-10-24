@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy for the Documents source: the add card and the share target. -->
+<resources>
+    <string name="document_add_title">Add a document</string>
+    <string name="document_add_body">Your resume, portfolio or other work documents. PDF, Word (DOC or DOCX), text or Markdown, up to 20 MB. A private copy stays on this phone.</string>
+    <string name="document_add_button">Add document</string>
+    <string name="document_adding">Adding document…</string>
+    <string name="document_share_label">Add as document</string>
+    <string name="document_ok">OK</string>
+
+    <string name="document_added">Added %1$s.</string>
+    <string name="document_already_added">%1$s is already in your lifelog.</string>
+    <string name="document_deleted_earlier">You deleted %1$s earlier, so it was not added again.</string>
+    <string name="document_source_off">Documents are turned off. Turn on Documents in Sources to add files.</string>
+    <string name="document_unsupported">This file type is not supported. Add a PDF, Word (DOC or DOCX), text (TXT) or Markdown (MD) file.</string>
+    <string name="document_too_large">This file is larger than 20 MB. Add a smaller file.</string>
+    <string name="document_empty">This file is empty, so nothing was added.</string>
+    <string name="document_unreadable">Could not read this file. Try again or choose another copy.</string>
+    <string name="document_no_file">Nothing to add. Share a file, not text.</string>
+</resources>

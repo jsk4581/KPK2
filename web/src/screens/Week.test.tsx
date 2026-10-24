@@ -56,20 +56,22 @@ function click(id: string, name: 'Done' | 'Not today') {
 }
 
 describe('Week screen', () => {
-  it('shows three actions with days, minutes, the collapsed 12-week arc and progress starting at 1/4', () => {
+  it('shows three actions with days, minutes, the collapsed 12-week plan and progress starting at 0 of 3 done', () => {
     renderWeek();
     expect(screen.getByRole('heading', { name: 'This week' })).toBeInTheDocument();
+    expect(document.querySelector('.week-eyebrow')).toHaveAttribute('data-text', 'Week 1 of 12');
     for (const id of ['a1', 'a2', 'a3']) {
       expect(within(row(id)).getByRole('button', { name: 'Done' })).toBeInTheDocument();
       expect(within(row(id)).getByRole('button', { name: 'Not today' })).toBeInTheDocument();
     }
     expect(within(row('a1')).getByText(/Tue/)).toBeInTheDocument();
     expect(within(row('a1')).getByText(/30 min/)).toBeInTheDocument();
-    const arc = screen.getByText('12-week arc').closest('details')!;
+    const arc = screen.getByText('The 12-week plan').closest('details')!;
     expect(arc).not.toHaveAttribute('open');
     expect(arc).toHaveTextContent(draft.arc_12w);
-    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
-    expect(screen.getByText('Progress 1/4')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '3');
+    expect(screen.getByText('0 of 3 done')).toBeInTheDocument();
     expect(screen.getByText('0/3 done')).toBeInTheDocument();
   });
 
@@ -98,26 +100,26 @@ describe('Week screen', () => {
     expect(screen.getAllByTestId(/^action-/)).toHaveLength(3);
   });
 
-  it('first Done shows the share card once, with Copy text; done actions lose their buttons', () => {
+  it('first Done shows the share card once, with Copy; done actions lose their buttons', () => {
     renderWeek();
     click('a2', 'Done');
     const card = screen.getByRole('region', { name: 'Share card' });
     expect(card).toHaveTextContent(ROLE_TITLE);
     expect(card).toHaveTextContent(draft.week.actions[1].title);
     expect(card).toHaveTextContent('1/3 done');
-    expect(within(card).getByRole('button', { name: 'Copy text' })).toBeInTheDocument();
+    expect(within(card).getByRole('button', { name: 'Copy' })).toBeInTheDocument();
     expect(within(row('a2')).queryByRole('button')).toBeNull();
-    expect(screen.getByText('Progress 2/4')).toBeInTheDocument();
+    expect(screen.getByText('1 of 3 done')).toBeInTheDocument();
 
     click('a1', 'Done');
     expect(screen.queryByRole('region', { name: 'Share card' })).toBeNull();
     expect(screen.getByText('2/3 done')).toBeInTheDocument();
   });
 
-  it('Copy text never throws when the clipboard is unavailable', () => {
+  it('Copy never throws when the clipboard is unavailable', () => {
     renderWeek();
     click('a2', 'Done');
-    fireEvent.click(screen.getByRole('button', { name: 'Copy text' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Copy' }));
     expect(screen.getByRole('region', { name: 'Share card' })).toBeInTheDocument();
   });
 
@@ -130,19 +132,28 @@ describe('Week screen', () => {
     expect(screen.queryByText('Welcome back. Showing up again is the hard part.')).toBeNull();
   });
 
-  it('condition 1 or 2 shows the 10-minute versions; 3 to 5 shows the originals', () => {
+  it('energy 1 or 2 shows the 10-minute versions; 3 to 5 shows the originals', () => {
     renderWeek();
-    fireEvent.click(screen.getByRole('button', { name: 'Condition 2' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Energy 2' }));
     expect(within(row('a1')).getByText(draft.week.actions[0].short)).toBeInTheDocument();
     expect(within(row('a1')).getByText(/10 min/)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Condition 2' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Energy 2' })).toHaveAttribute('aria-pressed', 'true');
     // Check-ins still work on the reduced view.
     click('a1', 'Not today');
     expect(within(row('a1')).getByText(/Moved to Fri/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Condition 4' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Energy 4' }));
     expect(within(row('a1')).getByText(draft.week.actions[0].title)).toBeInTheDocument();
     expect(screen.getByTestId('probe')).toHaveTextContent('sizeForCondition');
+  });
+
+  it('asks about energy with Low and High end labels and says why', () => {
+    renderWeek();
+    expect(screen.getByText("How's your energy today?")).toBeInTheDocument();
+    expect(screen.getByText('Low days get the 10-minute version of each action.')).toBeInTheDocument();
+    expect(screen.getByText('Low')).toBeInTheDocument();
+    expect(screen.getByText('High')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /^Energy [1-5]$/ })).toHaveLength(5);
   });
 
   it('Change path returns to the Paths screen', () => {

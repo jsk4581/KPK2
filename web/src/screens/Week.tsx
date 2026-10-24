@@ -37,8 +37,6 @@ interface CheckinResult {
 // The demo "today" comes from the synthetic persona, never from the clock.
 const DEMO_TODAY = persona.today as Day;
 const CONDITIONS = [1, 2, 3, 4, 5];
-// Progress starts at 1/4: choosing the path is the first step, each Done adds one.
-const PROGRESS_STEPS = 4;
 
 const tracedCheckin = withTrace('applyCheckin', applyCheckin, {
   input: (_week: unknown, actionId: string, kind: string, today: string) =>
@@ -50,7 +48,7 @@ const tracedCheckin = withTrace('applyCheckin', applyCheckin, {
 });
 
 const tracedSize = withTrace('sizeForCondition', sizeForCondition, {
-  input: (_week: unknown, condition: number) => `condition ${condition}`,
+  input: (_week: unknown, condition: number) => `energy ${condition}`,
   output: (list: ShownAction[]) =>
     list.some((a) => a.reduced) ? `${list.length} actions, 10-minute versions` : `${list.length} actions, original size`,
 });
@@ -76,7 +74,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <>
       <button type="button" className="week-btn week-btn-quiet btn-on-ink btn-sm" onClick={() => void copy()}>
-        <span className="roll">Copy text</span>
+        <span className="roll">Copy</span>
       </button>
       {note && <span className="week-note week-share-note">{note}</span>}
     </>
@@ -149,8 +147,9 @@ export default function Week() {
   const draft = state.paths?.paths.find((p) => p.role_id === state.chosenPathId);
   const shown = sizeForCondition(week, state.condition) as ShownAction[];
   const checkable = new Set((checkableActions(week) as WeekAction[]).map((a) => a.id));
+  // Progress counts done actions out of this week's actions, matching the summary line.
   const doneCount = week.actions.filter((a) => a.status === 'done').length;
-  const progress = Math.min(PROGRESS_STEPS, 1 + doneCount);
+  const totalCount = week.actions.length;
   const lastRecord = state.checkins.length > 0 ? state.checkins[state.checkins.length - 1] : null;
   const reduced = state.condition === 1 || state.condition === 2;
 
@@ -192,14 +191,14 @@ export default function Week() {
   return (
     <section aria-label="Week" className="week">
       <header className="section-head">
-        <span className="eyebrow week-eyebrow" data-text="This week" aria-hidden="true" />
+        <span className="eyebrow week-eyebrow" data-text="Week 1 of 12" aria-hidden="true" />
         <h2>This week</h2>
         {pathTitle && <p className="week-path">{pathTitle}</p>}
       </header>
 
       {draft?.arc_12w && (
         <details className="week-arc accordion">
-          <summary>12-week arc</summary>
+          <summary>The 12-week plan</summary>
           <p>{draft.arc_12w}</p>
         </details>
       )}
@@ -210,16 +209,19 @@ export default function Week() {
           role="progressbar"
           aria-label="Progress"
           aria-valuemin={0}
-          aria-valuemax={PROGRESS_STEPS}
-          aria-valuenow={progress}
+          aria-valuemax={totalCount}
+          aria-valuenow={doneCount}
         >
-          <span style={{ width: `${(progress / PROGRESS_STEPS) * 100}%` }} />
+          <span style={{ width: `${totalCount > 0 ? (doneCount / totalCount) * 100 : 0}%` }} />
         </div>
-        <span className="week-progress-text tabular">Progress {progress}/{PROGRESS_STEPS}</span>
+        <span className="week-progress-text tabular">
+          {doneCount} of {totalCount} done
+        </span>
       </div>
 
       <fieldset className="week-condition">
-        <legend>How is your energy today? (1 low, 5 high)</legend>
+        <legend>How's your energy today?</legend>
+        <p className="week-note week-condition-why">Low days get the 10-minute version of each action.</p>
         <div
           className="week-condition-row segmented"
           style={{ '--n': CONDITIONS.length, '--i': Math.max(0, (state.condition ?? 1) - 1) } as CSSProperties}
@@ -230,13 +232,17 @@ export default function Week() {
               key={c}
               type="button"
               className="week-condition-btn segmented-item"
-              aria-label={`Condition ${c}`}
+              aria-label={`Energy ${c}`}
               aria-pressed={state.condition === c}
               onClick={() => chooseCondition(c)}
             >
               {c}
             </button>
           ))}
+        </div>
+        <div className="week-condition-ends" aria-hidden="true">
+          <span>Low</span>
+          <span>High</span>
         </div>
         {reduced && <p className="week-note week-reduced-note anim-rise-sm">Showing the 10-minute version of each action.</p>}
       </fieldset>

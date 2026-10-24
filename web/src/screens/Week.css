@@ -1,207 +1,354 @@
-/* This week screen. Calm palette only: no red-family warning colors anywhere. */
+/* This week screen. Tokens only; calm palette, no red-family colors anywhere.
+   Moving an action is normal, so "moved" uses the accent tint, never a warning. */
 .week {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--sp-6);
 }
 
-.week h2 {
-  margin: 0;
-  font-size: 20px;
+/* Eyebrow text comes from data-text so the H2 stays the only "This week" copy. */
+.week-eyebrow::after {
+  content: attr(data-text);
 }
 
 .week-path {
-  margin: 0;
-  font-weight: 600;
-  color: #2f6fdb;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+  color: var(--accent);
 }
 
-.week-arc summary {
-  cursor: pointer;
-  color: #5f6b7a;
-  font-size: 14px;
+/* 12-week arc: shared accordion row. */
+.week-arc > p {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--muted);
 }
 
-.week-arc p {
-  margin: 6px 0 0;
-  font-size: 14px;
-}
-
+/* ---------- Progress: four segments on a pill track ---------- */
 .week-progress {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--sp-3);
 }
 
 .week-progress-bar {
+  position: relative;
   flex: 1;
   height: 8px;
-  border-radius: 4px;
-  background: #e3e8ef;
+  border-radius: var(--r-pill);
+  background: var(--surface);
   overflow: hidden;
 }
 
-.week-progress-bar span {
+.week-progress-bar > span {
   display: block;
   height: 100%;
-  background: #2f9e6e;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width var(--dur-spring) var(--ease-spring);
+}
+
+/* Three 2px white separators at 25% steps, drawn over the fill. */
+.week-progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent calc(25% - 1px),
+    #ffffff calc(25% - 1px),
+    #ffffff calc(25% + 1px),
+    transparent calc(25% + 1px),
+    transparent calc(50% - 1px),
+    #ffffff calc(50% - 1px),
+    #ffffff calc(50% + 1px),
+    transparent calc(50% + 1px),
+    transparent calc(75% - 1px),
+    #ffffff calc(75% - 1px),
+    #ffffff calc(75% + 1px),
+    transparent calc(75% + 1px)
+  );
 }
 
 .week-progress-text {
-  font-size: 13px;
-  color: #5f6b7a;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
+/* ---------- Energy: segmented control ---------- */
 .week-condition {
-  border: 1px solid #d5dae1;
-  border-radius: 10px;
-  padding: 8px 12px 10px;
+  min-width: 0;
   margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .week-condition legend {
-  font-size: 13px;
-  color: #5f6b7a;
-  padding: 0 4px;
+  margin-bottom: var(--sp-3);
+  padding: 0;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-small);
+  color: var(--ink);
 }
 
-.week-condition-row {
-  display: flex;
-  gap: 8px;
-}
 
 .week-condition-btn {
-  flex: 1;
-  min-height: 36px;
-  border: 1px solid #d5dae1;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1f2933;
-  font: inherit;
-  cursor: pointer;
+  font-variant-numeric: tabular-nums;
 }
 
-.week-condition-btn[aria-pressed='true'] {
-  background: #2f6fdb;
-  border-color: #2f6fdb;
-  color: #ffffff;
+.week-note {
+  display: block;
+  margin-top: var(--sp-3);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--muted);
 }
 
+/* ---------- Action cards ---------- */
 .week-actions {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The list reveals as a block; its cards follow one after another. */
+.week-actions[data-reveal] {
+  transform: none;
+}
+
+.week-actions[data-reveal] > li {
+  opacity: 0;
+  transform: translateY(var(--rise-sm));
+  transition:
+    opacity var(--dur-enter) var(--ease-out),
+    transform var(--dur-enter) var(--ease-out),
+    background-color var(--dur-fast) ease-out;
+}
+
+.week-actions[data-reveal] > li:nth-child(2) {
+  transition-delay: 60ms, 60ms, 0ms;
+}
+
+.week-actions[data-reveal] > li:nth-child(n + 3) {
+  transition-delay: 120ms, 120ms, 0ms;
+}
+
+.week-actions[data-reveal].is-in > li {
+  opacity: 1;
+  transform: none;
 }
 
 .week-action {
-  border: 1px solid #d5dae1;
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #ffffff;
-}
-
-.week-action-done {
-  background: #eef8f2;
-  border-color: #b9e0c9;
-}
-
-.week-action-moved {
-  background: #f1f5fb;
-  border-color: #c8d6ee;
+  position: relative;
+  padding: var(--sp-4) 18px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  color: var(--ink);
+  transition: background-color var(--dur-fast) ease-out;
 }
 
 .week-action-title {
-  margin: 0 0 4px;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
 }
 
 .week-action-meta {
-  margin: 0;
-  font-size: 13px;
-  color: #5f6b7a;
+  margin-top: var(--sp-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
 .week-action-buttons {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
 }
 
-.week-btn {
-  border: 1px solid #2f6fdb;
-  background: #2f6fdb;
-  color: #ffffff;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font: inherit;
-  cursor: pointer;
+/* Tertiary pills sit on a tinted card, so they take the white fill. */
+.week-action .btn-tertiary {
+  background: var(--bg);
 }
 
-.week-btn-quiet {
-  background: #ffffff;
-  color: #2f6fdb;
+/* Done: green tint, check circle top right; title keeps full contrast. */
+.week-action-done {
+  background: var(--ok-tint);
+  padding-right: 48px;
+}
+
+.week-action-done .week-action-meta {
+  color: var(--ok);
+}
+
+.week-action-check {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  width: 20px;
+  height: 20px;
+}
+
+.week-action-check circle {
+  fill: var(--ok);
+}
+
+.week-action-check path {
+  fill: none;
+  stroke: var(--on-dark);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Moved: accent tint, the new day fades and rises in. */
+.week-action-moved {
+  background: var(--accent-tint);
+}
+
+.week-action-moved .week-action-meta {
+  color: var(--accent);
+}
+
+.week-action-moved-day {
+  display: inline-block;
+  --sd-rise: 6px;
+  animation: sd-rise var(--dur-enter) var(--ease-out) backwards;
 }
 
 .week-summary {
-  margin: 0;
-  font-size: 14px;
-  color: #5f6b7a;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: center;
 }
 
+/* ---------- Reply after a check-in ---------- */
 .week-reply {
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #f1f5fb;
-  border: 1px solid #c8d6ee;
+  padding: var(--sp-5);
 }
 
-.week-reply ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.week-reply > ul {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.week-reply-lead {
-  font-weight: 600;
+.week-reply > ul > li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
-.week-reply-moved {
-  color: #2f6fdb;
+.week-reply .week-reply-lead {
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-lead);
 }
 
+/* Comeback line closes the list in the markup but reads first. */
+.week-reply > ul > .week-reply-lead {
+  order: -1;
+}
+
+.week-reply .week-reply-moved {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+}
+
+/* ---------- Share card ---------- */
 .week-share {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1px dashed #2f9e6e;
-}
-
-.week-share p {
-  margin: 0 0 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
 }
 
 .week-share-path {
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+}
+
+.week-share-title {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+  color: var(--on-dark);
 }
 
 .week-share-progress {
-  color: #2f9e6e;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  color: var(--accent-soft);
 }
 
-.week-note {
-  margin: 6px 0 0;
-  font-size: 12px;
-  color: #5f6b7a;
-  display: block;
+.week-share .week-btn {
+  margin-top: var(--sp-2);
 }
 
+.week-share-note {
+  margin-top: 0;
+  color: var(--on-dark-muted);
+}
+
+/* ---------- Footer ---------- */
 .week-footer {
   display: flex;
-  gap: 8px;
+  gap: var(--sp-2);
+}
+
+.week-footer > .week-btn {
+  flex: 1;
+}
+
+/* The 36px and 48px pills need a longer roll than 1.6em, or the rolled copy
+   peeks in under the label at rest. */
+.week :is(.btn-primary, .btn-secondary, .btn-tertiary, .btn-on-ink) .roll {
+  text-shadow: 0 2.2em currentColor;
+}
+
+@media (hover: hover) {
+  .week :is(.btn-primary, .btn-secondary, .btn-tertiary, .btn-on-ink):not(:disabled):hover .roll {
+    transform: translateY(-2.2em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .week-actions[data-reveal] > li {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

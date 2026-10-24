@@ -1,0 +1,204 @@
+/* Paths screen: three path cards as a close set. The closest match is the ink
+   card; the other two are flat surface cards. Tokens only, no red. */
+.paths {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* Eyebrow text comes from data-text so the visible heading stays the only copy. */
+.path-eyebrow::after {
+  content: attr(data-text);
+}
+
+.path-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.paths .path-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+}
+
+/* Rank label left, overlap figure right. */
+.path-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.path-rank::after {
+  content: attr(data-text);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-label);
+  line-height: 1;
+  color: var(--muted);
+}
+
+.path-figure::after {
+  content: attr(data-text) '%';
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--ls-h2);
+  font-variant-numeric: tabular-nums;
+}
+
+.path-title {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+}
+
+.path-line {
+  margin-top: var(--sp-2);
+  color: var(--muted);
+}
+
+.path-overlap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.path-overlap-text {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* Meter fill grows in: the top card on entry, the others when revealed. */
+.path-card:not([data-reveal]) .meter > span {
+  animation: path-fill 900ms var(--ease-out) 240ms backwards;
+}
+
+.path-card[data-reveal] .meter > span {
+  transition: width 900ms var(--ease-out) 200ms;
+}
+
+.path-card[data-reveal]:not(.is-in) .meter > span {
+  width: 0;
+}
+
+@keyframes path-fill {
+  from {
+    width: 0;
+  }
+}
+
+/* Subheads become small mono eyebrows. */
+.paths .path-sub {
+  margin: var(--sp-5) 0 var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.path-empty {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--muted);
+}
+
+/* On light cards the "have" chip sits on white. */
+.path-chips {
+  gap: 6px;
+}
+
+/* First 2 weeks: numbered rows with a mono counter in a ringed circle. */
+.path-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: path-step;
+}
+
+.path-steps > li {
+  position: relative;
+  min-height: 20px;
+  padding-left: 32px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  counter-increment: path-step;
+}
+
+.path-steps > li::before {
+  content: counter(path-step);
+  position: absolute;
+  top: -1px;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(17, 18, 20, 0.16);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  color: var(--muted);
+}
+
+.card-ink .path-steps > li::before {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.paths .path-choose {
+  margin-top: var(--sp-5);
+}
+
+/* Source line: centered mono tag, always visible. */
+.paths .p0-source {
+  align-self: center;
+  text-align: center;
+}
+
+/* Offline sample gets a small info glyph (decorative). */
+.paths .p0-source[data-source='fallback']::before {
+  content: 'i';
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.paths-back {
+  align-self: stretch;
+}
+
+/* The 36px and 48px pills need a longer roll than 1.6em, or the rolled copy
+   peeks in under the label at rest. */
+.paths :is(.btn-primary, .btn-secondary, .btn-tertiary, .btn-on-ink) .roll {
+  text-shadow: 0 2.2em currentColor;
+}
+
+@media (hover: hover) {
+  .paths :is(.btn-primary, .btn-secondary, .btn-tertiary, .btn-on-ink):not(:disabled):hover .roll {
+    transform: translateY(-2.2em);
+  }
+}

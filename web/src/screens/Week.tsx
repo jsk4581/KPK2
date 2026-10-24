@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { applyCheckin, checkableActions, sizeForCondition, withTrace } from '@app/logic.js';
 import persona from '@app/data/persona-dana.json';
+import { flip } from '../motion';
 import { useStore } from '../state/store';
 import type { CheckinRecord, Day, Week as WeekState, WeekAction } from '../state/types';
 import './Week.css';
@@ -74,10 +75,10 @@ function CopyButton({ text }: { text: string }) {
   };
   return (
     <>
-      <button type="button" className="week-btn week-btn-quiet" onClick={() => void copy()}>
-        Copy text
+      <button type="button" className="week-btn week-btn-quiet btn-on-ink btn-sm" onClick={() => void copy()}>
+        <span className="roll">Copy text</span>
       </button>
-      {note && <span className="week-note">{note}</span>}
+      {note && <span className="week-note week-share-note">{note}</span>}
     </>
   );
 }
@@ -87,19 +88,19 @@ function Reply({ record }: { record: CheckinRecord }) {
   const shareCard = record.shareCard as ShareCard | null;
   if (record.kind === 'not_today' && adjustment) {
     return (
-      <div className="week-reply" role="status">
+      <div className="week-reply card-raised card-accent-bar anim-rise-sm" role="status">
         <ul>
           <li className="week-reply-lead">{adjustment.restLine}</li>
           <li>{adjustment.reframe}</li>
           <li>{adjustment.tenMinute}</li>
-          <li className="week-reply-moved">{adjustment.movedLine}</li>
+          <li className="week-reply-moved tag tag-accent">{adjustment.movedLine}</li>
         </ul>
       </div>
     );
   }
   const lines = record.message.split('\n').filter((line) => line && line !== record.comeback);
   return (
-    <div className="week-reply" role="status">
+    <div className="week-reply card-raised card-accent-bar anim-rise-sm" role="status">
       <ul>
         {lines.map((line) => (
           <li key={line}>{line}</li>
@@ -107,9 +108,9 @@ function Reply({ record }: { record: CheckinRecord }) {
         {record.comeback && <li className="week-reply-lead">{record.comeback}</li>}
       </ul>
       {shareCard && (
-        <section className="week-share" aria-label="Share card">
+        <section className="week-share card-ink" aria-label="Share card">
           <p className="week-share-path">{shareCard.pathTitle}</p>
-          <p>Just did: {shareCard.actionTitle}</p>
+          <p className="week-share-title">Just did: {shareCard.actionTitle}</p>
           <p className="week-share-progress">{shareCard.progress}</p>
           <CopyButton text={shareCard.text} />
         </section>
@@ -121,14 +122,23 @@ function Reply({ record }: { record: CheckinRecord }) {
 export default function Week() {
   const { state, dispatch } = useStore();
   const week = state.week as LogicWeek | null;
+  const listRef = useRef<HTMLOListElement>(null);
+  const pendingFlip = useRef<(() => void) | null>(null);
+
+  useLayoutEffect(() => {
+    pendingFlip.current?.();
+    pendingFlip.current = null;
+  }, [week]);
 
   if (!week) {
     return (
       <section aria-label="Week" className="week">
-        <h2>This week</h2>
-        <p>No path chosen yet.</p>
-        <button type="button" className="week-btn" onClick={() => dispatch({ type: 'go', screen: 'paths' })}>
-          Choose a path
+        <header className="section-head">
+          <h2>This week</h2>
+          <p className="lead">No path chosen yet.</p>
+        </header>
+        <button type="button" className="week-btn btn-primary btn-block" onClick={() => dispatch({ type: 'go', screen: 'paths' })}>
+          <span className="roll">Choose a path</span>
         </button>
       </section>
     );
@@ -145,6 +155,9 @@ export default function Week() {
   const reduced = state.condition === 1 || state.condition === 2;
 
   const checkin = (actionId: string, kind: 'done' | 'not_today') => {
+    // Record card positions so a reordered list slides into place after the update.
+    const items = listRef.current?.children;
+    if (items) pendingFlip.current = flip(items);
     // The share card names the path even when the week was built without a title.
     const input: LogicWeek = { ...week, pathTitle };
     const { result, trace } = tracedCheckin(input, actionId, kind, DEMO_TODAY) as {
@@ -178,11 +191,14 @@ export default function Week() {
 
   return (
     <section aria-label="Week" className="week">
-      <h2>This week</h2>
-      {pathTitle && <p className="week-path">{pathTitle}</p>}
+      <header className="section-head">
+        <span className="eyebrow week-eyebrow" data-text="This week" aria-hidden="true" />
+        <h2>This week</h2>
+        {pathTitle && <p className="week-path">{pathTitle}</p>}
+      </header>
 
       {draft?.arc_12w && (
-        <details className="week-arc">
+        <details className="week-arc accordion">
           <summary>12-week arc</summary>
           <p>{draft.arc_12w}</p>
         </details>
@@ -199,17 +215,21 @@ export default function Week() {
         >
           <span style={{ width: `${(progress / PROGRESS_STEPS) * 100}%` }} />
         </div>
-        <span className="week-progress-text">Progress {progress}/{PROGRESS_STEPS}</span>
+        <span className="week-progress-text tabular">Progress {progress}/{PROGRESS_STEPS}</span>
       </div>
 
       <fieldset className="week-condition">
         <legend>How is your energy today? (1 low, 5 high)</legend>
-        <div className="week-condition-row">
+        <div
+          className="week-condition-row segmented"
+          style={{ '--n': CONDITIONS.length, '--i': Math.max(0, (state.condition ?? 1) - 1) } as CSSProperties}
+        >
+          {state.condition != null && <span className="segmented-indicator" aria-hidden="true" />}
           {CONDITIONS.map((c) => (
             <button
               key={c}
               type="button"
-              className="week-condition-btn"
+              className="week-condition-btn segmented-item"
               aria-label={`Condition ${c}`}
               aria-pressed={state.condition === c}
               onClick={() => chooseCondition(c)}
@@ -218,23 +238,41 @@ export default function Week() {
             </button>
           ))}
         </div>
-        {reduced && <p className="week-note">Showing the 10-minute version of each action.</p>}
+        {reduced && <p className="week-note week-reduced-note anim-rise-sm">Showing the 10-minute version of each action.</p>}
       </fieldset>
 
-      <ol className="week-actions">
+      {/* Reveal sits on the list: React rewrites each item's className on status change. */}
+      <ol className="week-actions" ref={listRef} data-reveal="sm">
         {shown.map((action) => (
-          <li key={action.id} className={`week-action week-action-${action.status}`} data-testid={`action-${action.id}`}>
+          <li
+            key={action.id}
+            className={`week-action week-action-${action.status}`}
+            data-testid={`action-${action.id}`}
+          >
+            {action.status === 'done' && (
+              <svg className="week-action-check anim-pop" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                <circle cx="10" cy="10" r="10" />
+                <path d="M6 10.4l2.6 2.6L14 7.6" />
+              </svg>
+            )}
             <p className="week-action-title">{action.title}</p>
             <p className="week-action-meta">
-              <span>{dayLabel(action)}</span> · <span>{action.minutes} min</span>
+              <span key={`${action.status}-${action.day}`} className={action.status === 'moved' ? 'week-action-moved-day' : undefined}>
+                {dayLabel(action)}
+              </span>{' '}
+              · <span>{action.minutes} min</span>
             </p>
             {checkable.has(action.id) && (
               <div className="week-action-buttons">
-                <button type="button" className="week-btn" onClick={() => checkin(action.id, 'done')}>
-                  Done
+                <button type="button" className="week-btn btn-primary btn-sm" onClick={() => checkin(action.id, 'done')}>
+                  <span className="roll">Done</span>
                 </button>
-                <button type="button" className="week-btn week-btn-quiet" onClick={() => checkin(action.id, 'not_today')}>
-                  Not today
+                <button
+                  type="button"
+                  className="week-btn week-btn-quiet btn-tertiary btn-sm"
+                  onClick={() => checkin(action.id, 'not_today')}
+                >
+                  <span className="roll">Not today</span>
                 </button>
               </div>
             )}
@@ -247,11 +285,19 @@ export default function Week() {
       {lastRecord && <Reply key={state.checkins.length} record={lastRecord} />}
 
       <div className="week-footer">
-        <button type="button" className="week-btn week-btn-quiet" onClick={() => dispatch({ type: 'go', screen: 'paths' })}>
-          Change path
+        <button
+          type="button"
+          className="week-btn week-btn-quiet btn-tertiary btn-sm"
+          onClick={() => dispatch({ type: 'go', screen: 'paths' })}
+        >
+          <span className="roll">Change path</span>
         </button>
-        <button type="button" className="week-btn week-btn-quiet" onClick={() => dispatch({ type: 'go', screen: 'progress' })}>
-          See progress
+        <button
+          type="button"
+          className="week-btn week-btn-quiet btn-tertiary btn-sm"
+          onClick={() => dispatch({ type: 'go', screen: 'progress' })}
+        >
+          <span className="roll">See progress</span>
         </button>
       </div>
     </section>

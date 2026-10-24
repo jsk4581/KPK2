@@ -1,28 +1,49 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Second Draft · Pitch (2 slides) · draft v0 Sales 14:30</title>
+<html lang="en"><head><meta charset="utf-8"><title>Second Draft · Pitch (2 slides) · draft v1 Sales 15:00</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
  @page{size:1920px 1080px;margin:0}
  *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
  body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#555}
  .s{width:1920px;height:1080px;position:relative;overflow:hidden;background:#140C09;color:#FFF4E8;page-break-after:always;margin:0 auto 40px}
+ .s::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 15% 10%,rgba(255,106,43,.16),transparent 60%),radial-gradient(700px 400px at 90% 90%,rgba(232,196,154,.10),transparent 60%)}
  @media print{body{background:none}.s{margin:0}}
  .team{position:absolute;top:56px;left:96px;font-size:26px;font-weight:700;color:rgba(255,244,232,.6)}
  .topic{position:absolute;top:56px;right:96px;font-size:22px;font-weight:700;color:#FF6A2B;letter-spacing:.06em}
- .body{position:absolute;left:96px;right:96px;top:140px;bottom:190px;display:flex;flex-direction:column;justify-content:center;gap:24px}
- h1{font-size:104px;font-weight:900;line-height:1.02;letter-spacing:-.02em}
- .one{font-size:40px;font-weight:600;color:#E8C49A;line-height:1.25}
- .row{display:flex;gap:32px;margin-top:12px}
- .box{flex:1;border:1px solid rgba(255,244,232,.18);border-radius:24px;padding:24px 28px}
- .box b{display:block;font-size:22px;color:#FF6A2B;letter-spacing:.08em;margin-bottom:8px}
- .box p{font-size:28px;line-height:1.35}
- .lbl{color:rgba(255,244,232,.55);font-size:28px}
- .shots{display:flex;gap:32px;flex:0 0 330px;min-height:0}
- .shot{flex:1;border-radius:20px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px;padding:22px 28px;font-size:28px;color:rgba(255,244,232,.85);overflow:hidden}
- .shot img{width:100%;height:100%;object-fit:cover}
- .shot .t{font-size:22px;color:#FF6A2B;letter-spacing:.08em;font-weight:700}
- .shot .ph{font-size:28px;color:rgba(255,244,232,.4)}
- .card{border:1px solid rgba(255,244,232,.25);border-radius:14px;padding:12px 18px;font-size:28px;line-height:1.3}
+ .body{position:absolute;left:96px;right:96px;top:130px;bottom:180px;display:flex;flex-direction:column;gap:28px}
+ .o{color:#FF6A2B}.g{color:#E8C49A}.dim{color:rgba(255,244,232,.55)}
+ .lab{font-size:22px;font-weight:700;color:#FF6A2B;letter-spacing:.1em}
+ .src{font-size:22px;color:rgba(255,244,232,.5);font-weight:500}
+ /* slide 1 */
+ .hero{display:flex;gap:48px;align-items:flex-end}
+ .hero .l{flex:1.15}
+ h1{font-size:132px;font-weight:900;line-height:1;letter-spacing:-.03em}
+ .tag{font-size:44px;font-weight:800;color:#E8C49A;margin-top:14px;line-height:1.15}
+ .sub{font-size:30px;line-height:1.35;margin-top:14px;color:rgba(255,244,232,.85)}
+ .stats{flex:1;display:flex;flex-direction:column;gap:16px}
+ .stat{display:flex;align-items:baseline;gap:22px;border-left:6px solid #FF6A2B;padding:6px 0 6px 24px}
+ .stat .n{font-size:72px;font-weight:900;letter-spacing:-.03em;color:#FF6A2B;min-width:330px}
+ .stat .c{font-size:28px;line-height:1.3}
+ .row{display:flex;gap:28px}
+ .box{flex:1;border:1px solid rgba(255,244,232,.18);border-radius:24px;padding:24px 30px;background:rgba(255,244,232,.03)}
+ .box .lab{display:block;margin-bottom:10px}
+ .box p,.box li{font-size:28px;line-height:1.35}
+ .box ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+ .box li::before{content:"—";color:#FF6A2B;margin-right:12px;font-weight:800}
+ .big{font-size:36px;font-weight:800;line-height:1.2}
+ /* slide 2 */
+ .flow{display:flex;gap:24px;align-items:stretch;flex:0 0 275px}
+ .row.fill{flex:1;min-height:0}.row.fill .box{overflow:hidden}
+ .step{flex:1;border-radius:22px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);padding:22px 26px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+ .step .num{position:absolute;top:14px;right:22px;font-size:88px;font-weight:900;color:rgba(255,106,43,.18);line-height:1}
+ .step h3{font-size:30px;font-weight:800}
+ .chip{display:inline-block;border:1px solid rgba(255,244,232,.3);border-radius:999px;padding:6px 16px;font-size:28px;line-height:1.2;margin:2px 6px 2px 0}
+ .chip.hi{background:#FF6A2B;border-color:#FF6A2B;color:#140C09;font-weight:800}
+ .quote{font-size:30px;font-weight:800;color:#E8C49A;line-height:1.25}
+ .ladder{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+ .rung{border-radius:14px;padding:8px 16px;background:rgba(255,106,43,.14);font-size:28px;font-weight:800}
+ .rung b{color:#FF6A2B;font-size:34px}
+ .arrow{font-size:30px;color:rgba(255,244,232,.5)}
  .foot{position:absolute;left:5%;right:5%;bottom:36px;height:auto}
  .foot img{width:100%;display:block}
 </style></head>
@@ -30,32 +51,52 @@
 <section class="s">
   <div class="team">팀 김박구이</div><div class="topic">TOPIC · SAVE 10M JOBS FROM AI (SCHMIDT)</div>
   <div class="body">
-    <h1>Second Draft</h1>
-    <div class="one">Your expertise, redrafted for the AI era. An AI career agent that turns what you already know into your next career — and walks it with you, week by week.</div>
+    <div class="hero">
+      <div class="l">
+        <h1>Second Draft</h1>
+        <div class="tag">Your expertise, redrafted for the AI era.</div>
+        <div class="sub">An AI career agent that turns what you already know into your next career — and walks it with you, <b class="g">week by week</b>.</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">−5.2%</div><div class="c">freelance writers' income after ChatGPT launched <span class="src">· Hui, Reshef &amp; Zhou 2023</span></div></div>
+        <div class="stat"><div class="n">120,136</div><div class="c">US layoffs that named AI as the reason, Jan–Sep 2026 <span class="src">· Challenger</span></div></div>
+        <div class="stat"><div class="n">65%</div><div class="c">of 140,300 US writers are self-employed — nobody pays for their transition but them <span class="src">· BLS 2025</span></div></div>
+      </div>
+    </div>
     <div class="row">
-      <div class="box"><b>TARGET MARKET</b><p>US · freelance copywriters &amp; writers, 3–10 years in. 140,300 writers, 65% self-employed — they pay for their own transition <span class="lbl">(E1 · single-source)</span></p></div>
-      <div class="box"><b>PROBLEM</b><p>Clients now draft with ChatGPT. Freelance writing income fell 5.2% after ChatGPT launched <span class="lbl">(E11 · verified)</span>. No employer, no outplacement — they prepare alone and quit halfway.</p></div>
-      <div class="box"><b>WHY NOW</b><p>120,136 US layoffs cited AI as the reason, Jan–Sep 2026 <span class="lbl">(E59 · single-source)</span>. BLS now names AI as dampening demand for writers <span class="lbl">(E40 · single-source)</span>.</p></div>
+      <div class="box"><span class="lab">TARGET MARKET</span><p class="big">US · freelance copywriters &amp; writers, <span class="o">3–10 years in</span></p><p class="dim">Next: translators · illustrators · designers → office roles AI is rewriting</p></div>
+      <div class="box"><span class="lab">PROBLEM</span><p class="big">“My clients draft with ChatGPT now.”</p><p>No employer, no outplacement. They prepare alone, start from zero — and <span class="o">quit halfway</span>.</p></div>
     </div>
   </div>
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>
 </section>
 <section class="s">
-  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY</div>
+  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO: URL PENDING</div>
   <div class="body">
-    <div class="shots">
-      <div class="shot"><div class="t">SCREEN 2 · PATHS — [SIMULATION] PERSONA "DANA" · SCREENSHOT PENDING DEPLOY</div>
-        <div class="card">A · Messaging &amp; Positioning Consultant — <span class="lbl">what transfers: discovery calls → positioning</span></div>
-        <div class="card">B · Brand Voice &amp; Prompt Systems Designer</div>
-        <div class="card">C · Copy Educator / Workshop Lead</div></div>
-      <div class="shot"><div class="t">SCREEN 3 · THIS WEEK — LIVE DEMO URL PENDING (BUILD)</div>
-        <div class="card">Tue · Rewrite one past project as a before/after page (25 min)</div>
-        <div class="card">Thu · Draft a 90-min messaging-session offer to one client</div>
-        <div class="card">Not today → “A rest day, not a missed day.” · 1/3 done · 1 moved</div></div>
+    <div class="flow">
+      <div class="step"><div class="num">1</div><h3>Tell your story</h3><p class="dim" style="font-size:28px">Three fields, five minutes. Not a résumé.</p>
+        <div><span class="chip">your career</span><span class="chip">what hurts</span><span class="chip">what pulls you</span></div>
+        <div class="src">[SIMULATION] sample persona “Dana” · screenshot pending</div></div>
+      <div class="step"><div class="num">2</div><h3>Three paths that <span class="o">transfer</span></h3>
+        <div><span class="chip hi">Messaging &amp; Positioning Consultant</span><span class="chip">Brand Voice &amp; Prompt Systems</span><span class="chip">Copy Educator</span></div>
+        <div class="src">each card: what transfers · what's missing · first 2 weeks</div></div>
+      <div class="step"><div class="num">3</div><h3>This week — and <span class="o">Not today</span></h3>
+        <div><span class="chip">Tue · before/after page · 25 min</span><span class="chip">Thu · pitch one client</span></div>
+        <div class="quote">“A rest day, not a missed day.” <span class="dim" style="font-weight:500">— a missed action moves. Never deleted.</span></div></div>
     </div>
-    <div class="row" style="margin-top:0">
-      <div class="box"><b>HOW IT WORKS</b><p>Type three things — your career, what hurts, what pulls you. One Claude call returns 3 paths that transfer your expertise and this week's 3 actions (≤30 min). A missed action moves; it is never deleted. One brain (app/logic.js) runs the web demo and an MCP server any app can plug into <span class="lbl">(제품 사양)</span>.</p></div>
-      <div class="box"><b>WHY US · NEXT 7 DAYS</b><p>Career Dreamer and Coursera Coach stop at a map; outplacement vendors ($600–2,600/employee <span class="lbl">E70 · single-source</span>) resell résumés. Nobody pairs expertise transfer for AI-displaced roles with a weekly habit loop. 10M path: 700K creative pros <span class="lbl">(E25 · hypothesis)</span> → 3M who can pay <span class="lbl">(E67 · hypothesis)</span> → 11.8M in BLS-declining jobs <span class="lbl">(E66 · hypothesis)</span>. Next 7 days: 10 consented beta writers · 2-week check-in retention · MCP server public · first outplacement call. Ask: intros to an outplacement buyer, Upwork, a career-tech investor.</p></div>
+    <div class="row fill">
+      <div class="box"><span class="lab">HOW IT WORKS</span><ul>
+        <li><b>One Claude call</b> → 3 paths + this week's 3 actions (≤30 min)</li>
+        <li>Check-ins never shame — <b>move, don't delete</b></li>
+        <li><b class="o">One brain, two doors:</b> the same logic runs the web demo <b>and an MCP server</b> any app can plug into</li></ul></div>
+      <div class="box"><span class="lab">WHY US</span><ul>
+        <li>Career Dreamer &amp; Coursera Coach <b>stop at a map</b></li>
+        <li>Outplacement sells résumés at <b class="o">$600–2,600</b>/employee <span class="src">· Intoo, RiseSmart</span></li>
+        <li><b>Nobody</b> pairs expertise transfer with a <b class="g">weekly habit loop</b></li></ul></div>
+      <div class="box"><span class="lab">MARKET · NEXT 7 DAYS</span>
+        <div class="ladder"><span class="rung"><b>700K</b> creative</span><span class="arrow">→</span><span class="rung"><b>3M</b> payable</span><span class="arrow">→</span><span class="rung"><b>11.8M</b> declining</span></div>
+        <p class="src" style="margin:2px 0 6px">BLS 2025–35 · estimates</p>
+        <ul><li>10 beta writers · <b>2-week check-in retention</b> · MCP server public</li><li><b class="o">Ask:</b> intros — outplacement buyer · Upwork · career-tech VC</li></ul></div>
     </div>
   </div>
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>

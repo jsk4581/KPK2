@@ -1,8 +1,9 @@
-# 발표자료 초안 v0 (Sales, 2026-10-24 14:35) — GTM 인수용
+# 발표자료 초안 v1 (Sales, 2026-10-24 15:05) — GTM 인수용
 
-- `slides.html` — 주최 키트 `templates/slide-kit/template.html` 기반, 2장. `pitch/slides.html`로 복사해 쓰면 된다 (소유: GTM).
-- `slides.pdf` — Chrome headless 내보내기 2쪽 · 215,574바이트 · sha256 `d21ba98122f03721f702e9d26b4ad9512e35f386be2100c58589a0faa2eee6a96`. 제출본 아님(스크린샷·URL 빈 상태).
-- `preview.png` — 두 장 렌더 확인(로고 띠·팀명·글꼴 정상).
+- `slides.html` — 주최 키트 규칙(16:9 · 2장 · 로고 띠 · 팀명 좌상단 · 본문 28px↑)을 지키되 레이아웃은 재설계: 1장 히어로 + 큰 숫자 3개(출처명 표기) + 타깃·문제 2박스 / 2장 3단계 플로우 카드 + How·Why·Market 3박스. `pitch/slides.html`로 복사해 쓰면 된다 (소유: GTM).
+- 라벨 표기: PDF에는 **출처명**(`Hui, Reshef & Zhou 2023` · `Challenger` · `BLS 2025` · `Intoo, RiseSmart` · 가설은 `estimates`)만. E번호·라벨은 `mission/PITCH.md`에만 적는다(검증기는 PITCH.md를 본다).
+- `slides.pdf` — Chrome headless 2쪽 · 373,673바이트 · sha256 `3da2c58887cfce5040d62d4eb322905995fe05b4efd568b2c72533b34cf0e4ac`. 제출본 아님(스크린샷·URL 빈 상태).
+- `preview.png` — 두 장 렌더 확인(로고 띠·팀명·글꼴 정상, 넘침 없음).
 
 ## 채운 것 / 판단해서 넣은 것
 

@@ -1,0 +1,101 @@
+/* Progress tab: neutral palette only, no warning colors. */
+.progress h2 {
+  margin: 0 0 12px;
+}
+
+.progress h3 {
+  margin: 16px 0 8px;
+  font-size: 15px;
+}
+
+.progress-signals {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.progress-signal {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.progress-signal dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.progress-signal dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+}
+
+.progress-muted {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.progress-sim {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.progress-tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.progress-evidence,
+.progress-rules {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.progress-evidence li,
+.progress-rules li {
+  margin-bottom: 4px;
+}
+
+.progress-rules {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.progress-button {
+  display: block;
+  margin-top: 12px;
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.progress-why {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.progress-steps {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+.progress-step {
+  margin-bottom: 8px;
+}
+
+.progress-io {
+  overflow-wrap: anywhere;
+}

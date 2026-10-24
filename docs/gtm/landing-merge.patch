@@ -1,0 +1,50 @@
+diff --git a/web/index.html b/web/index.html
+index 0fd6fab..80f6361 100644
+--- a/web/index.html
++++ b/web/index.html
+@@ -111,7 +111,8 @@
+     .reveal span { color: #d0d0d0; transition: color .2s; }
+     .reveal span.on { color: var(--ink); }
+ 
+-    .merge { position: relative; height: 300vh; margin-top: -10vh; }
++    .merge { position: relative; height: 220vh; margin-top: -10vh; }
++    .merge-lead { position: absolute; left: 50%; top: calc(50% - 150px); transform: translateX(-50%); width: min(640px, 100% - 32px); margin: 0; text-align: center; font-size: clamp(17px, 2vw, 22px); line-height: 1.35; color: var(--muted); }
+     .merge-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; display: grid; place-items: center; }
+     .chip { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 9px; border-radius: 12px; background: var(--surface); text-align: left; white-space: nowrap; will-change: transform, opacity; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+     .chip-ico { width: 30px; height: 36px; border-radius: 5px; display: grid; place-items: end center; padding-bottom: 5px; font: 700 7px/1 var(--sans); color: #fff; letter-spacing: .02em; position: relative; }
+@@ -326,13 +327,14 @@
+ 
+     <div class="merge" id="merge">
+       <div class="merge-pin">
+-        <div class="chip" data-x="-1" data-y="-1"><span class="chip-ico" style="background:#f0a020">NOTE</span><div><b>Polish-job rate note</b><small>NOTE · OCT 9</small></div></div>
+-        <div class="chip" data-x="1" data-y="-1"><span class="chip-ico" style="background:#3d7bf5">CAL</span><div><b>Discovery call, skincare</b><small>CALENDAR · 45 MIN</small></div></div>
+-        <div class="chip" data-x="-1" data-y="1"><span class="chip-ico" style="background:#1f8a4c">LINK</span><div><b>AI drafts sound the same</b><small>SAVED LINK · OCT 10</small></div></div>
+-        <div class="chip" data-x="1" data-y="1"><span class="chip-ico" style="background:var(--accent)">TXT</span><div><b>Career: 7 yrs of copy</b><small>YOUR STORY · 3 BOXES</small></div></div>
++        <div class="chip" data-x="-1" data-y="-1"><span class="chip-ico" style="background:#f0a020">NOTE</span><div><b>Rate cut to 1/3 for “polish” jobs</b><small>NOTE · OCT 9</small></div></div>
++        <div class="chip" data-x="1" data-y="-1"><span class="chip-ico" style="background:#3d7bf5">CAL</span><div><b>Discovery call that went great</b><small>CALENDAR · 45 MIN</small></div></div>
++        <div class="chip" data-x="-1" data-y="1"><span class="chip-ico" style="background:#1f8a4c">LINK</span><div><b>Why AI drafts all sound the same</b><small>SAVED LINK · OCT 10</small></div></div>
++        <div class="chip" data-x="1" data-y="1"><span class="chip-ico" style="background:var(--accent)">TXT</span><div><b>7 years of copy, in my own words</b><small>YOUR STORY · 3 SHORT ANSWERS</small></div></div>
+         <p class="merge-tag">[SIMULATION] Sample inputs from Dana, a synthetic persona</p>
++        <p class="merge-lead" id="merge-lead">The agent reads what you already have: your notes, calls, saved links and your story.</p>
+         <div class="core" id="core"><img src="/logo.svg" alt="" width="76" height="76"></div>
+-        <p class="result" id="result">Your notes and story go in. Out come three paths that keep your skills and three actions for this week.</p>
++        <p class="result" id="result">Out come three paths that keep your skills, and three actions for this week.</p>
+       </div>
+     </div>
+ 
+@@ -602,6 +604,7 @@
+     const chips = [...merge.querySelectorAll('.chip')];
+     const core = document.getElementById('core');
+     const result = document.getElementById('result');
++    const lead = document.getElementById('merge-lead');
+     const reel = document.getElementById('reel');
+ 
+     function spread() {
+@@ -638,6 +641,7 @@
+       core.style.setProperty('--glow', absorb * (1 - leave));
+       core.style.transform = `scale(${(1 + 0.18 * Math.sin(absorb * Math.PI)) * lerp(1, 0.6, leave)})`;
+       core.style.opacity = (1 - leave) * ease(enter);
++      lead.style.opacity = (1 - absorb) * ease(enter);
+       const show = ease(seg(p, 0.66, 0.9));
+       result.style.opacity = show;
+       result.style.filter = `blur(${(1 - show) * 14}px)`;

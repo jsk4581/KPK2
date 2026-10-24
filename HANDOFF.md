@@ -83,6 +83,7 @@ stage: board
 - 작성:PM-agent 15:07 · `app/logic.js` applyCheckin not_today 이동 → Build · 이동 대상 요일을 찾을 때 **이미 체크 가능한 행동이 있는 날은 건너뛰도록** 제안(ALGORITHM_DESIGN §9.1 ② "Not today → 다음 빈 슬롯"). 현재는 a1(Tue) Not today가 a2가 있는 Wed로 가서 하루에 행동 2개가 된다(`context/BRAIN_COMPLETENESS_v1.md` #14 재현). 삭제 없음·NextWeek 규칙은 그대로 두고 탐색 조건만 바꾸는 작은 변경 — Build 판단
 - 작성:PM-agent 15:18 · `app/logic.js` check-in record / `brain/evidence.js` → Build · 체크인 레코드에 주차 식별자(예: `week` 또는 ISO `date`)를 항상 싣기를 제안 — 행동 id(a1..a3)가 주마다 재사용되므로 brain의 evidence ledger는 "주에 없는 action의 done 체크인"도 `Step <id>`로 집계한다(설계, evidence.test.mjs:217). 날짜·주차가 있으면 ledger가 게이트 배치를 정확히 하고, 없는 action을 걸러낼 근거도 생긴다. 현재 `checkIn()` 경로는 applyCheckin의 unknown-action 거절로 안전하며, raw `checkins` 입력(MCP think)에서만 재현된다
 - 작성:Sales 15:55 · 제품명 → PM 결정 요청 · **Second Draft 복귀** 제안(태진 결정) — 근거 `docs/gtm/naming-and-ui-copy.md`; 동명 AI 글쓰기 제품 3건은 출시 전 변호사 검토 전제. 덱 v5 `docs/gtm/slides-second-draft/slides.pdf`(v4.2 레이아웃 유지·문구만 교체: 서브 "keeps what carries over … Not from zero.", 2번 캡션 carry over/what to build/how you'd start, WHY US skill transfer+habit loop, MODEL 한 줄 est.; 스크린샷 헤더는 앱 재배포 후 재캡처). 채택 시 `mission/PRD.md`·`DECISION.md` 제품명, `web/` 헤더·랜딩, `pitch/slides.pdf` 교체 → PM·Build.
+- 작성:Sales 16:04 · `web/index.html` .merge 구간 → Build · PM 승인 · 칩 4개 문구를 읽히는 문장으로, 아이콘 위 상시 설명줄 추가, 결과 문장 중복 제거, 300vh→220vh — 근거·표 `docs/gtm/landing-merge-copy.md`, 적용 `git apply docs/gtm/landing-merge.patch`.
 
 ## 블로커
 

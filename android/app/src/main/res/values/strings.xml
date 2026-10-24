@@ -6,7 +6,20 @@
     <string name="tab_sources">Sources</string>
     <string name="tab_export">Export</string>
 
+    <string name="cancel">Cancel</string>
+
     <string name="timeline_empty">Nothing recorded yet. Turn on a source to start your lifelog.</string>
+    <string name="timeline_count">%1$d items on this phone</string>
+    <string name="timeline_delete_one">Delete item</string>
+    <string name="timeline_delete_all">Delete all</string>
+    <string name="timeline_delete_all_title">Delete all items?</string>
+    <string name="timeline_delete_all_body">This removes every lifelog item from this phone. Sources will not record them again.</string>
+    <string name="timeline_delete_all_confirm">Delete all</string>
     <string name="sources_intro">Choose what Second Draft may record on this phone. Everything stays on the device.</string>
     <string name="export_intro">Save your lifelog as a JSON file and choose where to send it.</string>
+    <string name="export_privacy">Nothing leaves this phone unless you share the file yourself. Backups never include your lifelog.</string>
+    <string name="export_count">%1$d items ready to export</string>
+    <string name="export_button">Export JSON</string>
+    <string name="export_chooser_title">Share lifelog export</string>
+    <string name="export_failed">Could not create the export file. Try again.</string>
 </resources>

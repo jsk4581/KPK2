@@ -17,7 +17,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import app.KPK2.lifelog.appGraph
 import app.KPK2.lifelog.ui.export.ExportScreen
 import app.KPK2.lifelog.ui.sources.SourcesScreen
 import app.KPK2.lifelog.ui.timeline.TimelineScreen
@@ -25,6 +27,7 @@ import app.KPK2.lifelog.ui.timeline.TimelineScreen
 @Composable
 fun AppShell() {
     var current by rememberSaveable { mutableStateOf(Destination.TIMELINE) }
+    val graph = LocalContext.current.appGraph
 
     Scaffold(
         bottomBar = {
@@ -43,9 +46,9 @@ fun AppShell() {
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
         when (current) {
-            Destination.TIMELINE -> TimelineScreen(modifier)
+            Destination.TIMELINE -> TimelineScreen(graph.repository, modifier)
             Destination.SOURCES -> SourcesScreen(modifier)
-            Destination.EXPORT -> ExportScreen(modifier)
+            Destination.EXPORT -> ExportScreen(graph.repository, modifier)
         }
     }
 }

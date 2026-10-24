@@ -5,8 +5,11 @@ import type { AppState, Day } from '../state/types';
 //
 // 1. Who counts as a sample persona user: the lifelog card was opened (state.lifelogConnected).
 //    Everyone else is a Start user (own text, no lifelog).
-// 2. Start users send fields, rankedRoles and the week only. No lifelog, no check-in history,
-//    no sources, no today.
+// 2. Start users send fields, rankedRoles, the week, this session's check-ins (dated as in
+//    3c), the picked condition (3e) and the demo today (3d): what they did on screen reaches the
+//    brain, so the panel never contradicts it. No lifelog, no scenario check-in history, no
+//    sources. The demo today comes from the persona JSON for everyone, the same clock the Week
+//    screen uses; it carries no persona data.
 // 3. Sample persona users send one Dana timeline, the app's own (the persona lifelog the
 //    screens show), in the server's synthetic history shape:
 //    a. lifelog = our persona lifelog items dated on or before the demo today (see d), filtered
@@ -87,9 +90,20 @@ function baseInput(state: AppState): ThinkInput {
 
 export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: BrainScenario | null): ThinkInput {
   const input = baseInput(state);
-  if (!isSampleUser(state)) return input;
-
   const today = demoTodayIso(persona);
+  const sessionCheckins: BrainCheckin[] = state.checkins.map((c) => {
+    const record: BrainCheckin = { actionId: c.actionId, kind: c.kind, day: c.day };
+    const date = today ? isoForWeekday(c.day, today) : null;
+    if (date) record.date = date;
+    return record;
+  });
+  const shared: ThinkInput = {
+    ...input,
+    ...(today ? { today } : {}),
+    ...(state.condition !== null && state.condition >= 1 && state.condition <= 5 ? { condition: state.condition } : {}),
+  };
+  if (!isSampleUser(state)) return { ...shared, checkins: sessionCheckins };
+
   const enabled = new Set<string>(state.enabledSources);
   const ours: BrainLifelogItem[] = persona.lifelog
     .filter((item) => enabled.has(item.source) && (today === null || item.date <= today))
@@ -100,21 +114,13 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
   const pastCheckins: BrainCheckin[] = (weekStart ? (scenario?.checkins ?? []) : [])
     .filter((c) => typeof c.date === 'string' && parseIso(c.date) !== null && c.date < weekStart!)
     .map((c) => ({ ...c, actionId: `${SCENARIO_ID_PREFIX}${c.actionId}` }));
-  const sessionCheckins: BrainCheckin[] = state.checkins.map((c) => {
-    const record: BrainCheckin = { actionId: c.actionId, kind: c.kind, day: c.day };
-    const date = today ? isoForWeekday(c.day, today) : null;
-    if (date) record.date = date;
-    return record;
-  });
 
   const path = chosenPath(state);
   return {
-    ...input,
+    ...shared,
     lifelog: ours,
     enabledSources: [...state.enabledSources],
     checkins: [...pastCheckins, ...sessionCheckins],
     ...(path ? { path } : {}),
-    ...(today ? { today } : {}),
-    ...(state.condition !== null && state.condition >= 1 && state.condition <= 5 ? { condition: state.condition } : {}),
   };
 }

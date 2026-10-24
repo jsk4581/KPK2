@@ -78,3 +78,28 @@ describe('brain and Week screen agree on today', () => {
     expect(out.context?.lifelogCount).toBe(input.lifelog!.length);
   });
 });
+
+describe('Start users: the brain sees what they did on screen', () => {
+  it('counts their Not today taps and the condition they picked', () => {
+    let state = freshState(false);
+    state = reducer(state, { type: 'setCondition', condition: 2 });
+    state = tap(state, 'a1', 'not_today');
+    state = tap(state, 'a2', 'not_today');
+    const input = toThinkInput(state, persona, scenario);
+    expect(input.lifelog).toBeUndefined();
+    const out = brain.think(input);
+    expect(out.context?.checkinCount).toBe(2);
+    expect(out.state.energy).toBe(2);
+    expect(out.state.risk.reasons).toContain('consec_rest');
+    expect(out.monitor.drift.map((d) => d.note)).not.toContain('No log entry and no check-in yet');
+  });
+
+  it('does not report "no check-in yet" after a Done and a Not today', () => {
+    let state = freshState(false);
+    state = tap(state, 'a1', 'done');
+    state = tap(state, 'a2', 'not_today');
+    const out = brain.think(toThinkInput(state, persona, scenario));
+    expect(out.context?.checkinCount).toBe(2);
+    expect(out.monitor.drift.map((d) => d.note)).not.toContain('No log entry and no check-in yet');
+  });
+});

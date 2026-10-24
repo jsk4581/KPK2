@@ -63,12 +63,19 @@ describe('demoTodayIso', () => {
 });
 
 describe('toThinkInput', () => {
-  it('Start users send fields, ranked roles and the week only', () => {
+  it('Start users send their screen state and check-ins, but no lifelog or history', () => {
     const state = flowState({ sample: false, condition: 2 });
     const input = toThinkInput(state, persona, scenario);
-    expect(Object.keys(input).sort()).toEqual(['fields', 'rankedRoles', 'week']);
+    expect(Object.keys(input).sort()).toEqual(['checkins', 'condition', 'fields', 'rankedRoles', 'today', 'week']);
     expect(input.rankedRoles).toEqual([ROLE]);
     expect(input.week).toEqual(state.week);
+    expect(input.condition).toBe(2);
+    expect(input.today).toBe('2026-10-22');
+    // This session's taps only: nothing from the scenario history.
+    expect(input.checkins).toEqual([
+      { actionId: 'a1', kind: 'done', day: 'Thu', date: '2026-10-22' },
+      { actionId: 'a2', kind: 'not_today', day: 'Thu', date: '2026-10-22' },
+    ]);
   });
 
   it('passes fields exactly as edited on screen, never recomputed', () => {

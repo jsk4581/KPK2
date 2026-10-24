@@ -1,101 +1,390 @@
-/* Progress tab: neutral palette only, no warning colors. */
-.progress h2 {
-  margin: 0 0 12px;
+/* Progress tab: signals as a bento, evidence as rows, Why? as a step rail.
+   Tokens only; no red, risk uses the app's own word plus a tint. */
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-.progress h3 {
-  margin: 16px 0 8px;
-  font-size: 15px;
+.progress .section-head {
+  margin-bottom: var(--sp-6);
 }
 
+/* The bento tiles and evidence rows reveal one by one, so their blocks
+   skip the shell's block entrance (no double motion). */
+.screen.is-entering > .progress > .progress-signals,
+.screen.is-entering > .progress > .progress-evidence {
+  animation: none;
+}
+
+/* ---------- Signals bento ---------- */
 .progress-signals {
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
   margin: 0;
 }
 
 .progress-signal {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-width: 0;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.progress-signal-wide {
+  grid-column: 1 / -1;
+  padding: var(--sp-5);
 }
 
 .progress-signal dt {
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
   color: var(--muted);
 }
 
 .progress-signal dd {
-  margin: 2px 0 0;
-  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-1) var(--sp-2);
+  margin: 0;
+}
+
+.progress-value {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--ls-h2);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-score {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+}
+
+.progress-note {
+  flex-basis: 100%;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+/* Momentum level: three short bars, decoration beside the word. */
+.progress-level {
+  position: absolute;
+  top: var(--sp-5);
+  right: var(--sp-5);
+  display: inline-flex;
+  gap: 4px;
+}
+
+.progress-level > i {
+  width: 18px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  transform-origin: left center;
+}
+
+.progress-level > i.is-on {
+  background: var(--accent);
+  animation: progress-grow var(--dur-spring) var(--ease-spring) backwards;
+}
+
+.progress-level > i:nth-child(2).is-on {
+  animation-delay: 220ms;
+}
+
+.progress-level > i:nth-child(3).is-on {
+  animation-delay: 280ms;
+}
+
+.progress-level > i:nth-child(1).is-on {
+  animation-delay: 160ms;
+}
+
+@keyframes progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Risk: low reads calm green, high reads warm ochre. Never red. */
+.progress-signal[data-risk='low'] {
+  background: var(--ok-tint);
+  color: var(--ok);
+}
+
+.progress-signal[data-risk='high'] {
+  background: var(--attention-tint);
+  color: var(--attention);
+}
+
+.progress-signal[data-risk='low'] dt {
+  color: var(--ok);
+}
+
+.progress-signal[data-risk='high'] dt {
+  color: var(--attention);
+}
+
+/* ---------- Evidence ---------- */
+.progress-subhead {
+  margin: var(--sp-8) 0 var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .progress-muted {
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 400;
+  font-weight: var(--fw-regular);
+}
+
+.progress-empty {
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
 }
 
 .progress-sim {
-  margin: 0 0 6px;
-  font-size: 12px;
-  color: var(--muted);
+  align-self: flex-start;
+  margin: 0 0 var(--sp-2);
 }
 
 .progress-tag {
-  display: inline-block;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0 6px;
-  font-size: 12px;
-  color: var(--accent);
+  flex: none;
 }
 
-.progress-evidence,
-.progress-rules {
+.progress-evidence {
   margin: 0;
-  padding-left: 18px;
-  font-size: 14px;
+  padding: 0;
+  list-style: none;
 }
 
-.progress-evidence li,
-.progress-rules li {
-  margin-bottom: 4px;
+.progress-evidence > li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 2px var(--sp-3);
+  min-height: 48px;
+  padding: var(--sp-3) 0;
+  box-shadow: inset 0 -1px 0 var(--hairline);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
-.progress-rules {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 12px;
+.progress-evidence > li:last-child {
+  box-shadow: none;
+}
+
+.progress-evidence > li > .progress-tag {
+  grid-row: span 2;
+  align-self: start;
+}
+
+.progress-evidence-title {
+  grid-column: 2;
+  min-width: 0;
+  color: var(--ink);
+}
+
+.progress-when,
+.progress-weight {
+  grid-column: 2;
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+/* The label's rolled copy sits a full pill height below, so it never peeks
+   out of a 48px pill at rest. */
+.progress button .roll {
+  text-shadow: 0 2.4em currentColor;
+}
+
+@media (hover: hover) {
+  .progress button:not(:disabled):hover .roll {
+    transform: translateY(-2.4em);
+  }
 }
 
 .progress-button {
-  display: block;
-  margin-top: 12px;
-  border: 1px solid var(--accent);
-  background: var(--surface);
-  color: var(--accent);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font: inherit;
-  cursor: pointer;
+  align-self: flex-start;
+  margin-top: var(--sp-5);
 }
 
+.progress-back {
+  margin-top: var(--sp-8);
+}
+
+/* ---------- Why? panel ---------- */
 .progress-why {
-  margin-top: 12px;
-  border-top: 1px solid var(--border);
+  margin-top: var(--sp-2);
 }
 
+.progress-why .progress-subhead {
+  margin-top: var(--sp-7);
+}
+
+.progress-rules {
+  margin: var(--sp-4) 0 0;
+  padding: var(--sp-4);
+  list-style: none;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--muted);
+}
+
+.progress-rules > li {
+  position: relative;
+  padding-left: var(--sp-4);
+}
+
+.progress-rules > li + li {
+  margin-top: var(--sp-2);
+}
+
+.progress-rules > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--subtle);
+}
+
+.progress-footnote {
+  margin: calc(-1 * var(--sp-1)) 0 var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+}
+
+/* Step rail: a hairline drawn from the top, one node per step. */
 .progress-steps {
+  position: relative;
   margin: 0;
-  padding-left: 20px;
-  font-size: 13px;
+  padding: 0 0 0 28px;
+  list-style: none;
+}
+
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 4.5px;
+  width: 1px;
+  background: var(--hairline);
+  box-shadow: 0 0 0 0.5px var(--hairline);
+  transform-origin: top center;
+  animation: progress-rail 700ms var(--ease-inout) 120ms backwards;
+}
+
+@keyframes progress-rail {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
 }
 
 .progress-step {
-  margin-bottom: 8px;
+  position: relative;
+  padding-bottom: var(--sp-5);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.progress-step:last-child {
+  padding-bottom: 0;
+}
+
+/* Node: filled for rules, outlined for AI and the offline sample. */
+.progress-step::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+
+.progress-step[data-via='llm']::before {
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 1.5px var(--accent),
+    0 0 0 3px var(--bg);
+}
+
+.progress-step[data-via='fallback']::before {
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 1.5px var(--attention),
+    0 0 0 3px var(--bg);
+}
+
+.progress-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.progress-step code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0;
+  color: var(--ink);
 }
 
 .progress-io {
   overflow-wrap: anywhere;
+  color: var(--ink);
+}
+
+.progress-io + .progress-io {
+  margin-top: 2px;
+}
+
+.progress-io > .progress-muted:first-child {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+  margin-right: 2px;
 }

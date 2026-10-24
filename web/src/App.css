@@ -107,29 +107,52 @@
 }
 
 /* ---------- Screen enter: each top-level block rises in, staggered ----------
-   .is-entering is set by the shell for one second after each screen change. */
+   .is-entering is set by the shell for a short while after each screen change.
+   --sd-i is the block's position; --sd-swap is a short wait the shell sets when
+   the old screen is still sliding out (motion/ScreenSwap.tsx). */
 .screen.is-entering > section > :not([data-reveal]) {
   animation: sd-rise var(--dur-enter) var(--ease-out) backwards;
+  animation-delay: calc(var(--sd-swap, 0ms) + var(--sd-i, 0) * var(--stagger));
 }
 
-.screen.is-entering > section > :nth-child(2) { animation-delay: calc(1 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(3) { animation-delay: calc(2 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(4) { animation-delay: calc(3 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(5) { animation-delay: calc(4 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(6) { animation-delay: calc(5 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(7) { animation-delay: calc(6 * var(--stagger)); }
-.screen.is-entering > section > :nth-child(n + 8) { animation-delay: calc(7 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(2) { --sd-i: 1; }
+.screen.is-entering > section > :nth-child(3) { --sd-i: 2; }
+.screen.is-entering > section > :nth-child(4) { --sd-i: 3; }
+.screen.is-entering > section > :nth-child(5) { --sd-i: 4; }
+.screen.is-entering > section > :nth-child(6) { --sd-i: 5; }
+.screen.is-entering > section > :nth-child(7) { --sd-i: 6; }
+.screen.is-entering > section > :nth-child(n + 8) { --sd-i: 7; }
+
+/* Cards and list items cascade in after their block: items of a list that is a
+   top-level block, and children of any block marked [data-stagger]. Items that
+   reveal on scroll or carry their own .anim-* class keep their own motion. */
+.screen.is-entering > section > :is(ul, ol, dl, [data-stagger]) > :not([data-reveal]):not([class*='anim-']) {
+  --sd-rise: var(--rise-sm);
+  animation: sd-rise var(--dur-enter) var(--ease-out) backwards;
+  animation-delay: calc(var(--sd-swap, 0ms) + var(--sd-i, 0) * var(--stagger) + 60ms + var(--sd-j, 0) * 35ms);
+}
+
+.screen.is-entering > section > * > :nth-child(2) { --sd-j: 1; }
+.screen.is-entering > section > * > :nth-child(3) { --sd-j: 2; }
+.screen.is-entering > section > * > :nth-child(4) { --sd-j: 3; }
+.screen.is-entering > section > * > :nth-child(5) { --sd-j: 4; }
+.screen.is-entering > section > * > :nth-child(6) { --sd-j: 5; }
+.screen.is-entering > section > * > :nth-child(n + 7) { --sd-j: 6; }
+
+/* Scroll reveals already in view also wait for the old screen to clear. */
+.screen.is-entering [data-reveal] {
+  transition-delay: calc(var(--sd-swap, 0ms) + var(--sd-delay, 0ms));
+}
 
 /* First load (Landing): the first four blocks rise further and a little slower. */
+.screen[data-first] {
+  --sd-swap: 60ms;
+}
+
 .screen[data-first] > section > :nth-child(-n + 4):not([data-reveal]) {
   --sd-rise: var(--rise-lg);
   animation-duration: var(--dur-screen);
 }
-
-.screen[data-first] > section > :nth-child(1) { animation-delay: 60ms; }
-.screen[data-first] > section > :nth-child(2) { animation-delay: calc(60ms + 1 * var(--stagger)); }
-.screen[data-first] > section > :nth-child(3) { animation-delay: calc(60ms + 2 * var(--stagger)); }
-.screen[data-first] > section > :nth-child(4) { animation-delay: calc(60ms + 3 * var(--stagger)); }
 
 /* ---------- Laptop (>= 900px): the stage around a framed phone ---------- */
 @media (min-width: 900px) {

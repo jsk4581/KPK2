@@ -4,6 +4,7 @@ import './styles/base.css';
 import './styles/components.css';
 import './App.css';
 import { useReveal } from './motion';
+import { ScreenSwap } from './motion/ScreenSwap';
 import Inputs from './screens/Inputs';
 import Landing from './screens/Landing';
 import LifelogCard from './screens/LifelogCard';
@@ -12,6 +13,9 @@ import Progress from './screens/Progress';
 import Week from './screens/Week';
 import { StoreProvider, useStore } from './state/store';
 import type { Screen } from './state/types';
+
+// Flow order, used to tell a forward step from a step back (Reset, Edit my story).
+const ORDER: readonly Screen[] = ['landing', 'lifelog', 'inputs', 'paths', 'week', 'progress'];
 
 const SCREENS: Record<Screen, ComponentType> = {
   landing: Landing,
@@ -22,8 +26,9 @@ const SCREENS: Record<Screen, ComponentType> = {
   progress: Progress,
 };
 
-// Longest entrance: 7 stagger steps (315ms) plus the first-load duration (640ms).
-const ENTER_MS = 1000;
+// Longest entrance: the swap wait (140ms), 7 block steps (315ms), the list cascade
+// (60ms + up to 6 x 35ms) and the item duration (560ms), rounded up.
+const ENTER_MS = 1300;
 
 function Shell() {
   const { state, dispatch } = useStore();
@@ -56,14 +61,16 @@ function Shell() {
             </button>
           </header>
           <p className="notice">Nothing you type is stored.</p>
-          <main
-            className={entering ? 'screen is-entering' : 'screen'}
-            key={state.screen}
-            ref={screenRef}
-            data-first={navigated.current ? undefined : ''}
-          >
-            <Current />
-          </main>
+          <ScreenSwap screenKey={state.screen} screenRef={screenRef} order={ORDER}>
+            <main
+              className={entering ? 'screen is-entering' : 'screen'}
+              key={state.screen}
+              ref={screenRef}
+              data-first={navigated.current ? undefined : ''}
+            >
+              <Current />
+            </main>
+          </ScreenSwap>
         </div>
       </div>
     </div>

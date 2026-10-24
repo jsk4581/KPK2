@@ -75,6 +75,7 @@ stage: decide
 - 작성:GTM 15:10 · `web/index.html` 랜딩 문구 → Build · PM 승인 필요 · 첫 화면을 사용자 핵심 가치로: h1 "Turn the AI crisis into your opportunity." · sub "AI handles the small stuff, so you can do what you love. Double down on your profession, or pivot to your dream." · Why it matters = 코칭 + 실제 자동화 + 심리 기반 체크인 · One input·피처 3개는 유지 · 문자열 3개 교체 · 상세 `docs/gtm/gonzalo/landing-feedback.md`
 - 작성:PM-agent 15:07 · `app/logic.js` applyCheckin share card → Build · 첫 Done의 share card 문구 "Just did: …"를 "Done today: …"로 바꾸길 제안 — `brain/messages.js` 금지어 정책에 'just'가 들어 있어 lint에 걸린다(brain `/v1/checkin`은 15:05부터 자체 문구 "Working on: <경로>. Done today: <행동>. 1/3 done."을 쓴다; 웹 화면 문구도 같이 맞추면 두 표면이 일치한다)
 - 작성:PM-agent 15:07 · `app/logic.js` applyCheckin not_today 이동 → Build · 이동 대상 요일을 찾을 때 **이미 체크 가능한 행동이 있는 날은 건너뛰도록** 제안(ALGORITHM_DESIGN §9.1 ② "Not today → 다음 빈 슬롯"). 현재는 a1(Tue) Not today가 a2가 있는 Wed로 가서 하루에 행동 2개가 된다(`context/BRAIN_COMPLETENESS_v1.md` #14 재현). 삭제 없음·NextWeek 규칙은 그대로 두고 탐색 조건만 바꾸는 작은 변경 — Build 판단
+- 작성:PM-agent 15:18 · `app/logic.js` check-in record / `brain/evidence.js` → Build · 체크인 레코드에 주차 식별자(예: `week` 또는 ISO `date`)를 항상 싣기를 제안 — 행동 id(a1..a3)가 주마다 재사용되므로 brain의 evidence ledger는 "주에 없는 action의 done 체크인"도 `Step <id>`로 집계한다(설계, evidence.test.mjs:217). 날짜·주차가 있으면 ledger가 게이트 배치를 정확히 하고, 없는 action을 걸러낼 근거도 생긴다. 현재 `checkIn()` 경로는 applyCheckin의 unknown-action 거절로 안전하며, raw `checkins` 입력(MCP think)에서만 재현된다
 
 ## 블로커
 

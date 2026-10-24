@@ -1386,10 +1386,10 @@
         "date": "2026-10-08",
         "day": "Thu",
         "week": 2,
-        "energy": 2,
+        "energy": null,
         "momentum": 0.276,
         "selfEfficacy": 0.406,
-        "capacityMin": 12,
+        "capacityMin": 30,
         "gapDays": 2,
         "dataGapDays": 2,
         "risk": {
@@ -1404,7 +1404,7 @@
         },
         "constraint": "motivation-automatic",
         "morning": {
-          "energy": 2,
+          "energy": null,
           "risk": "red",
           "riskReasons": [
             "gap_days",
@@ -1415,8 +1415,8 @@
           "dataGapDays": 2
         },
         "intervention": {
-          "kind": "rest",
-          "messageKey": "LOW_ENERGY",
+          "kind": "shrink",
+          "messageKey": "SHRINK",
           "actionId": "a2",
           "minutes": 10,
           "choices": [
@@ -1425,21 +1425,20 @@
           ],
           "reasons": [
             "assigned_today",
-            "energy<=2",
             "risk_red"
           ]
         },
-        "message": "Energy 2/5 today.\nRest is part of the plan, not a detour from it.\nTwo options: rest and move Watch one animatic breakdown and note 3 cuts to Fri, or the 10-minute version — Watch 3 minutes.",
+        "message": "Today has about 30 minutes in it.\nA smaller step still moves the plan; size follows energy.\nWatch 3 minutes (≤10 min), or the full version (20 min) — your call.",
         "message_lint": []
       },
       {
         "date": "2026-10-09",
         "day": "Fri",
         "week": 2,
-        "energy": 2,
+        "energy": null,
         "momentum": 0.193,
         "selfEfficacy": 0.406,
-        "capacityMin": 12,
+        "capacityMin": 30,
         "gapDays": 3,
         "dataGapDays": 3,
         "risk": {
@@ -1453,7 +1452,7 @@
         },
         "constraint": "motivation-automatic",
         "morning": {
-          "energy": 2,
+          "energy": null,
           "risk": "red",
           "riskReasons": [
             "gap_days",
@@ -1463,8 +1462,8 @@
           "dataGapDays": 3
         },
         "intervention": {
-          "kind": "rest",
-          "messageKey": "LOW_ENERGY",
+          "kind": "shrink",
+          "messageKey": "SHRINK",
           "actionId": "a1",
           "minutes": 10,
           "choices": [
@@ -1473,21 +1472,20 @@
           ],
           "reasons": [
             "moved_overdue",
-            "energy<=2",
             "risk_red"
           ]
         },
-        "message": "Energy 2/5 today.\nRest is part of the plan, not a detour from it.\nTwo options: rest and move Draw 3 thumbnail panels for one scene to Sat, or the 10-minute version — Draw one panel.",
+        "message": "Today has about 30 minutes in it.\nA smaller step still moves the plan; size follows energy.\nDraw one panel (≤10 min), or the full version (15 min) — your call.",
         "message_lint": []
       },
       {
         "date": "2026-10-10",
         "day": "Sat",
         "week": 2,
-        "energy": 2,
+        "energy": null,
         "momentum": 0.135,
         "selfEfficacy": 0.406,
-        "capacityMin": 12,
+        "capacityMin": 30,
         "gapDays": 4,
         "dataGapDays": 4,
         "risk": {
@@ -1501,7 +1499,7 @@
         },
         "constraint": "motivation-automatic",
         "morning": {
-          "energy": 2,
+          "energy": null,
           "risk": "red",
           "riskReasons": [
             "gap_days",

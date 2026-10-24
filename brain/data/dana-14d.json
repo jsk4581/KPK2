@@ -1,0 +1,960 @@
+{
+  "_label": "synthetic",
+  "_note": "Sample persona — synthetic. 14-day lifelog for the Decision Brain demo.",
+  "id": "dana-copywriter",
+  "arc_start": "2026-10-05",
+  "today": "2026-10-18",
+  "persona": {
+    "name": "Dana",
+    "role": "Freelance copywriter",
+    "years": 7,
+    "location": "US Midwest",
+    "headline": "My clients use ChatGPT now.",
+    "photo": "persona/dana.svg"
+  },
+  "fields": {
+    "career": "Seven years as a freelance copywriter for DTC and SaaS brands: email flows, landing pages, product launches. My clients kept me because I could turn a messy founder interview into a message their customers actually repeated back. I know how to run a 45-minute discovery call and come out with a positioning line.",
+    "now": "Since last year three of my five retainer clients started drafting with ChatGPT and only send me \"polish\" jobs at a third of the rate. I've started two online courses on \"AI consulting\" and quit both halfway. I don't want to start from zero at 38, and I'm scared the answer is \"learn to code.\"",
+    "pull": "I actually enjoy the discovery calls more than the writing itself. I've been reading about how companies write their AI prompts and most of them are terrible. I also like teaching: I ran a small email-copy workshop once and people kept asking for more."
+  },
+  "skills": [
+    {
+      "id": "discovery-call",
+      "name": "Discovery interviews",
+      "keywords": [
+        "discovery call",
+        "founder interview",
+        "customer interview"
+      ]
+    },
+    {
+      "id": "positioning",
+      "name": "Positioning and messaging",
+      "keywords": [
+        "positioning",
+        "value proposition"
+      ]
+    },
+    {
+      "id": "brand-voice",
+      "name": "Brand voice",
+      "keywords": [
+        "brand voice",
+        "voice guide",
+        "tone of voice"
+      ]
+    },
+    {
+      "id": "email-copy",
+      "name": "Email copy",
+      "keywords": [
+        "email flow",
+        "email copy",
+        "newsletter"
+      ]
+    },
+    {
+      "id": "landing-pages",
+      "name": "Landing page copy",
+      "keywords": [
+        "landing page",
+        "product page",
+        "pricing page"
+      ]
+    },
+    {
+      "id": "copy-editing",
+      "name": "Editing and critique",
+      "keywords": [
+        "polish",
+        "editing",
+        "critique"
+      ]
+    },
+    {
+      "id": "audience-insight",
+      "name": "Customer language",
+      "keywords": [
+        "customer language",
+        "repeated back",
+        "customer segment"
+      ]
+    },
+    {
+      "id": "workshop-facilitation",
+      "name": "Teaching and workshops",
+      "keywords": [
+        "workshop",
+        "teaching",
+        "facilitation"
+      ]
+    },
+    {
+      "id": "case-studies",
+      "name": "Case studies",
+      "keywords": [
+        "case study",
+        "before/after",
+        "before and after"
+      ]
+    },
+    {
+      "id": "evaluation-rubric",
+      "name": "Evaluation rubrics",
+      "keywords": [
+        "rubric",
+        "scorecard"
+      ]
+    },
+    {
+      "id": "project-pricing",
+      "name": "Project pricing",
+      "keywords": [
+        "project pricing",
+        "package price",
+        "flat fee"
+      ]
+    },
+    {
+      "id": "prompt-systems",
+      "name": "Prompt and style systems",
+      "keywords": [
+        "prompt library",
+        "style system",
+        "prompt set"
+      ]
+    },
+    {
+      "id": "curriculum-design",
+      "name": "Curriculum design",
+      "keywords": [
+        "curriculum",
+        "lesson plan",
+        "session outline"
+      ]
+    },
+    {
+      "id": "ux-writing",
+      "name": "UX writing",
+      "keywords": [
+        "microcopy",
+        "ux writing",
+        "interface copy"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "messaging-consultant",
+      "title": "Messaging & Positioning Consultant",
+      "requires": [
+        "discovery-call",
+        "positioning",
+        "audience-insight",
+        "workshop-facilitation",
+        "case-studies",
+        "project-pricing"
+      ]
+    },
+    {
+      "id": "brand-voice-systems",
+      "title": "Brand Voice & Prompt Systems Designer",
+      "requires": [
+        "brand-voice",
+        "copy-editing",
+        "audience-insight",
+        "evaluation-rubric",
+        "prompt-systems"
+      ]
+    },
+    {
+      "id": "copy-educator",
+      "title": "Copy Educator / Workshop Lead",
+      "requires": [
+        "workshop-facilitation",
+        "copy-editing",
+        "email-copy",
+        "curriculum-design",
+        "project-pricing"
+      ]
+    },
+    {
+      "id": "lifecycle-marketer",
+      "title": "Lifecycle Email Marketer",
+      "requires": [
+        "email-copy",
+        "landing-pages",
+        "audience-insight",
+        "ux-writing",
+        "project-pricing"
+      ]
+    },
+    {
+      "id": "content-strategist",
+      "title": "In-house Content Strategist",
+      "requires": [
+        "positioning",
+        "email-copy",
+        "evaluation-rubric",
+        "ux-writing",
+        "prompt-systems"
+      ]
+    },
+    {
+      "id": "ux-writer",
+      "title": "UX Writer",
+      "requires": [
+        "ux-writing",
+        "copy-editing",
+        "landing-pages",
+        "evaluation-rubric",
+        "prompt-systems"
+      ]
+    }
+  ],
+  "fallback": {
+    "paths": [
+      {
+        "role_id": "messaging-consultant",
+        "one_liner": "Sell what to say, not hours of writing: run paid messaging sessions that turn founder talk into a line customers repeat.",
+        "first_two_weeks": [
+          "Offer one current client a 90-minute messaging session as a paid pilot.",
+          "Repackage two past projects as one-page before/after message stories."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Turn one past project into a one-page before/after message story",
+              "minutes": 30,
+              "day": "Tue",
+              "short": "Write the before line and the after line for one project. Nothing else."
+            },
+            {
+              "title": "Draft a pilot offer email for a 90-minute messaging session (no need to send it)",
+              "minutes": 25,
+              "day": "Thu",
+              "short": "Write only the subject line of the pilot offer email."
+            },
+            {
+              "title": "With a 20-minute timer, list the 7 questions you really ask in a discovery call",
+              "minutes": 20,
+              "day": "Sat",
+              "short": "Write the first 3 questions you always ask."
+            }
+          ]
+        },
+        "arc_12w": "From hourly writing to messaging sessions that bring in half of your income."
+      },
+      {
+        "role_id": "brand-voice-systems",
+        "one_liner": "Keep a brand sounding like itself when the team drafts with AI: voice guides, prompt sets and a simple way to grade drafts.",
+        "first_two_weeks": [
+          "Collect ten real AI drafts from one client and note why each one sounds off.",
+          "Turn the notes into a first voice guide plus a starter prompt set."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Gather five AI drafts from one client and mark where the voice drifts",
+              "minutes": 30,
+              "day": "Wed",
+              "short": "Mark the voice drift in one AI draft."
+            },
+            {
+              "title": "Write a five-line grading checklist for AI drafts",
+              "minutes": 20,
+              "day": "Fri",
+              "short": "Write the first two checks of the list."
+            },
+            {
+              "title": "Rewrite one AI draft in the brand's voice and save it as an example",
+              "minutes": 25,
+              "day": "Sat",
+              "short": "Rewrite only the opening sentence of one draft."
+            }
+          ]
+        },
+        "arc_12w": "From fixing AI drafts one by one to owning a client's voice and prompt system."
+      },
+      {
+        "role_id": "copy-educator",
+        "one_liner": "Teach small teams and founders how to think about copy, starting with the people who already asked for a second workshop.",
+        "first_two_weeks": [
+          "Message five past workshop attendees to ask if they want a next round.",
+          "Outline a 60-minute session on fixing AI drafts on one page."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Send a short 'want a round two?' note to two past workshop attendees",
+              "minutes": 15,
+              "day": "Tue",
+              "short": "Write the first sentence of the note."
+            },
+            {
+              "title": "Sketch a one-page outline for a 60-minute 'fix the AI draft' session",
+              "minutes": 30,
+              "day": "Fri",
+              "short": "Write the session title and its one takeaway."
+            },
+            {
+              "title": "Pick one exercise from your old workshop and update it for AI drafts",
+              "minutes": 20,
+              "day": "Sun",
+              "short": "Name the exercise and the one thing it should change."
+            }
+          ]
+        },
+        "arc_12w": "From one workshop someday to a small paid session that runs every month."
+      },
+      {
+        "role_id": "lifecycle-marketer",
+        "one_liner": "Bring your email and landing page work in-house: own a product's lifecycle messages end to end.",
+        "first_two_weeks": [
+          "Read three lifecycle marketing job posts and mark what you already do.",
+          "Map one past client's onboarding emails as a lifecycle diagram."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Read three lifecycle marketing job posts and highlight what you already do",
+              "minutes": 25,
+              "day": "Mon",
+              "short": "Read one job post and highlight one match."
+            },
+            {
+              "title": "Sketch one past onboarding email flow as boxes and arrows",
+              "minutes": 30,
+              "day": "Thu",
+              "short": "Draw the first two boxes of the flow."
+            },
+            {
+              "title": "Write two lines on what each email in that flow was meant to change",
+              "minutes": 20,
+              "day": "Sat",
+              "short": "Write the line for the first email only."
+            }
+          ]
+        },
+        "arc_12w": "From freelance email projects to a lifecycle role you can describe with your own examples."
+      },
+      {
+        "role_id": "content-strategist",
+        "one_liner": "Decide what a company should say and where, and set the standards its AI-assisted writers follow.",
+        "first_two_weeks": [
+          "Audit one client's last ten pieces of content against a single positioning line.",
+          "Write a one-page content standard a team could hand to its AI tools."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "List the last ten pieces one client published and tag each by goal",
+              "minutes": 30,
+              "day": "Mon",
+              "short": "Tag three pieces by goal."
+            },
+            {
+              "title": "Write the one positioning line those pieces should all support",
+              "minutes": 15,
+              "day": "Wed",
+              "short": "Write a rough first version of the line."
+            },
+            {
+              "title": "Draft three rules a writer or an AI tool must follow for that client",
+              "minutes": 20,
+              "day": "Sat",
+              "short": "Write the first rule."
+            }
+          ]
+        },
+        "arc_12w": "From writing pieces to owning the plan that decides which pieces get written."
+      },
+      {
+        "role_id": "ux-writer",
+        "one_liner": "Use your ear for clear, short copy inside products: buttons, onboarding screens and error-free help text.",
+        "first_two_weeks": [
+          "Rewrite the onboarding screens of one app you use as a portfolio exercise.",
+          "Read two UX writing guides and note what carries over from landing pages."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Screenshot one app's onboarding and rewrite every line on it",
+              "minutes": 30,
+              "day": "Wed",
+              "short": "Rewrite the first screen only."
+            },
+            {
+              "title": "Read one UX writing guide and note three rules you already follow",
+              "minutes": 20,
+              "day": "Thu",
+              "short": "Note one rule you already follow."
+            },
+            {
+              "title": "Write a before/after pair for one confusing button label",
+              "minutes": 15,
+              "day": "Sun",
+              "short": "Write the after version of one label."
+            }
+          ]
+        },
+        "arc_12w": "From long-form persuasion to short product copy, with a small portfolio to show it."
+      }
+    ]
+  },
+  "path": {
+    "role_id": "messaging-consultant",
+    "title": "Messaging & Positioning Consultant",
+    "one_liner": "Sell what to say, not hours of writing: run paid messaging sessions that turn founder talk into a line customers repeat.",
+    "arc_12w": "From hourly writing to messaging sessions that bring in half of your income."
+  },
+  "week": {
+    "actions": [
+      {
+        "id": "a1",
+        "title": "Write a before/after page",
+        "minutes": 25,
+        "day": "Tue",
+        "status": "todo",
+        "moves": 0,
+        "short": "Write only the headline"
+      },
+      {
+        "id": "a2",
+        "title": "Draft a pilot offer email",
+        "minutes": 30,
+        "day": "Thu",
+        "status": "todo",
+        "moves": 0,
+        "short": "Write only the subject line"
+      },
+      {
+        "id": "a3",
+        "title": "List seven discovery questions",
+        "minutes": 20,
+        "day": "Sat",
+        "status": "todo",
+        "moves": 0,
+        "short": "Write two questions"
+      }
+    ],
+    "summary": "0/3 done",
+    "pathId": "messaging-consultant",
+    "pathTitle": "Messaging & Positioning Consultant",
+    "today": "Sun",
+    "pendingComeback": false
+  },
+  "lifelog": [
+    {
+      "id": "l01",
+      "date": "2026-10-05",
+      "source": "note",
+      "title": "Starting the two-week arc",
+      "summary": "Picked the messaging consultant path. Wrote down why: discovery calls give me energy, polishing AI drafts does not.",
+      "tags": [
+        "positioning",
+        "discovery-call"
+      ],
+      "url": null,
+      "field": "pull",
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "l02",
+      "date": "2026-10-05",
+      "source": "calendar",
+      "title": "Discovery call: meal-kit launch",
+      "summary": "45-minute discovery call with the founder of a small meal-kit brand. Left with two phrases customers actually use.",
+      "tags": [
+        "discovery-call",
+        "audience-insight"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l03",
+      "date": "2026-10-05",
+      "source": "saved_link",
+      "title": "How consultants price a messaging session",
+      "summary": "Guide on selling a fixed-fee messaging session instead of hourly writing.",
+      "tags": [
+        "project-pricing",
+        "positioning"
+      ],
+      "url": "https://example.com/guides/pricing-a-messaging-session",
+      "signal": "career"
+    },
+    {
+      "id": "l04",
+      "date": "2026-10-06",
+      "source": "note",
+      "title": "Before/after page: first project done",
+      "summary": "Turned the skincare launch into a one-page before/after message story. Took 25 minutes.",
+      "tags": [
+        "case-studies",
+        "positioning"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "l05",
+      "date": "2026-10-06",
+      "source": "calendar",
+      "title": "Client edit round: onboarding emails",
+      "summary": "Second edit round on a SaaS onboarding flow. Routine work.",
+      "tags": [
+        "email-copy"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l06",
+      "date": "2026-10-06",
+      "source": "photo",
+      "title": "Accidental photo of the kitchen floor",
+      "summary": "Blurry photo taken by mistake while putting the phone away.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "l07",
+      "date": "2026-10-07",
+      "source": "note",
+      "title": "Client sent another polish-only job",
+      "summary": "A retainer client sent a polish-only job on an AI draft at a third of the usual fee. Finished in forty minutes, felt flat.",
+      "tags": [
+        "copy-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l08",
+      "date": "2026-10-07",
+      "source": "saved_link",
+      "title": "Why company AI drafts all sound the same",
+      "summary": "Article on brand voice drifting once a whole team drafts with AI tools.",
+      "tags": [
+        "brand-voice"
+      ],
+      "url": "https://example.com/articles/ai-drafts-sound-the-same",
+      "signal": "career"
+    },
+    {
+      "id": "l09",
+      "date": "2026-10-08",
+      "source": "note",
+      "title": "Pilot offer email drafted",
+      "summary": "Drafted the pilot offer email for a 90-minute messaging session. Not sent yet; the subject line reads fine.",
+      "tags": [
+        "positioning",
+        "project-pricing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l10",
+      "date": "2026-10-08",
+      "source": "calendar",
+      "title": "Focus block: pilot offer",
+      "summary": "Thirty minutes blocked for the pilot offer draft.",
+      "tags": [],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l11",
+      "date": "2026-10-09",
+      "source": "calendar",
+      "title": "Discovery call: SaaS onboarding rewrite",
+      "summary": "Discovery call for an onboarding rewrite. Spent most of it on who the buyer is, little on the words.",
+      "tags": [
+        "discovery-call",
+        "landing-pages",
+        "audience-insight"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "l12",
+      "date": "2026-10-09",
+      "source": "messenger",
+      "title": "Peer thread: who else sells sessions",
+      "summary": "A peer copywriter said she moved one client from hourly to a fixed messaging session last spring.",
+      "tags": [
+        "project-pricing",
+        "positioning"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l13",
+      "date": "2026-10-09",
+      "source": "note",
+      "title": "Discovery energy note",
+      "summary": "Came out of the call energized, the opposite of edit days. Worth remembering.",
+      "tags": [
+        "discovery-call"
+      ],
+      "url": null,
+      "field": "pull",
+      "signal": "career"
+    },
+    {
+      "id": "l14",
+      "date": "2026-10-10",
+      "source": "note",
+      "title": "Seven discovery questions listed",
+      "summary": "Listed the seven questions I really ask in a discovery call. 20-minute timer, done.",
+      "tags": [
+        "discovery-call",
+        "audience-insight"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l15",
+      "date": "2026-10-10",
+      "source": "saved_link",
+      "title": "Running a 60-minute workshop for small teams",
+      "summary": "Guide to short teaching sessions: one exercise, one takeaway, no slides.",
+      "tags": [
+        "workshop-facilitation"
+      ],
+      "url": "https://example.com/guides/60-minute-workshop",
+      "signal": "career"
+    },
+    {
+      "id": "l16",
+      "date": "2026-10-11",
+      "source": "note",
+      "title": "Week one review",
+      "summary": "Three of three done. Keeping next week the same size, same days.",
+      "tags": [],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l17",
+      "date": "2026-10-11",
+      "source": "calendar",
+      "title": "Long walk, no laptop",
+      "summary": "Afternoon walk. No work.",
+      "tags": [],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "l18",
+      "date": "2026-10-12",
+      "source": "calendar",
+      "title": "Client kickoff: product page rush",
+      "summary": "A retainer client moved a product page deadline up to Thursday. The week is suddenly full.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l19",
+      "date": "2026-10-12",
+      "source": "saved_link",
+      "title": "Selling messaging work as a session",
+      "summary": "Consultants who sell a fixed messaging session instead of hourly writing.",
+      "tags": [
+        "positioning"
+      ],
+      "url": "https://example.com/guides/messaging-sessions",
+      "signal": "career"
+    },
+    {
+      "id": "l20",
+      "date": "2026-10-12",
+      "source": "sms",
+      "title": "Ad: limited-time offer on a writing tool",
+      "summary": "Promotional text from a software vendor. Not from anyone I know.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "l21",
+      "date": "2026-10-13",
+      "source": "note",
+      "title": "Slept badly, rush job all day",
+      "summary": "Up at 3 a.m., then eight hours on the rushed product page. Skipped the before/after story; no energy left.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "energy"
+    },
+    {
+      "id": "l22",
+      "date": "2026-10-13",
+      "source": "calendar",
+      "title": "Product page draft due to client",
+      "summary": "First draft of the rushed product page delivered.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l23",
+      "date": "2026-10-14",
+      "source": "note",
+      "title": "Revision round ate the evening",
+      "summary": "Two revision rounds on the product page. The before/after story moved again; there was no slot for it.",
+      "tags": [
+        "landing-pages",
+        "copy-editing"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "l24",
+      "date": "2026-10-14",
+      "source": "sms",
+      "title": "Client: can you turn the revisions tonight?",
+      "summary": "A retainer client asked for the second revision round by tonight.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l25",
+      "date": "2026-10-15",
+      "source": "note",
+      "title": "Deadline day",
+      "summary": "Product page shipped at 6 p.m. Nothing left for my own work tonight; the story is still on the list.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "l26",
+      "date": "2026-10-15",
+      "source": "calendar",
+      "title": "Product page final delivery",
+      "summary": "Final product page sent to the client.",
+      "tags": [
+        "landing-pages"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l27",
+      "date": "2026-10-15",
+      "source": "note",
+      "title": "Not quitting",
+      "summary": "Two off days in a row. Still want the messaging path; this week was about the client, not about me.",
+      "tags": [],
+      "url": null,
+      "field": "now",
+      "signal": "career"
+    },
+    {
+      "id": "l28",
+      "date": "2026-10-16",
+      "source": "note",
+      "title": "Ten minutes: the before line and the after line",
+      "summary": "Only wrote the before line and the after line for the skincare project. Ten minutes, timer on. Felt like a restart.",
+      "tags": [
+        "case-studies",
+        "positioning"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l29",
+      "date": "2026-10-16",
+      "source": "saved_link",
+      "title": "One-page case study template",
+      "summary": "Simple before/after layout for a one-page message story.",
+      "tags": [
+        "case-studies"
+      ],
+      "url": "https://example.com/templates/one-page-case-study",
+      "signal": "career"
+    },
+    {
+      "id": "l30",
+      "date": "2026-10-16",
+      "source": "calendar",
+      "title": "Light day: admin and invoices",
+      "summary": "Invoices and inbox only. No client drafts.",
+      "tags": [],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "l31",
+      "date": "2026-10-17",
+      "source": "note",
+      "title": "Pilot offer email: sent this time",
+      "summary": "Reread the pilot offer email, tightened the subject line and sent it to one current client.",
+      "tags": [
+        "positioning",
+        "project-pricing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "l32",
+      "date": "2026-10-17",
+      "source": "calendar",
+      "title": "Coffee chat with a former agency strategist",
+      "summary": "Talked about positioning workshops for small teams as a paid deliverable.",
+      "tags": [
+        "positioning",
+        "workshop-facilitation"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l33",
+      "date": "2026-10-18",
+      "source": "note",
+      "title": "Client said yes to the pilot session",
+      "summary": "The client replied: yes to a 90-minute messaging session next month, at the proposed flat fee.",
+      "tags": [
+        "positioning",
+        "project-pricing",
+        "discovery-call"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "l34",
+      "date": "2026-10-18",
+      "source": "note",
+      "title": "Discovery questions, version two",
+      "summary": "Rewrote the seven discovery questions using the two calls from this arc. Twenty minutes.",
+      "tags": [
+        "discovery-call",
+        "audience-insight"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "l35",
+      "date": "2026-10-18",
+      "source": "saved_link",
+      "title": "Running your first paid messaging session",
+      "summary": "Checklist for a 90-minute session: prep questions, live rewrite, one-page summary.",
+      "tags": [
+        "positioning",
+        "discovery-call"
+      ],
+      "url": "https://example.com/guides/first-paid-messaging-session",
+      "signal": "career"
+    }
+  ],
+  "checkins": [
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-06"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Thu",
+      "date": "2026-10-08"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-10"
+    },
+    {
+      "actionId": "a1",
+      "kind": "not_today",
+      "day": "Tue",
+      "date": "2026-10-13",
+      "blocker_reason": "energy"
+    },
+    {
+      "actionId": "a1",
+      "kind": "not_today",
+      "day": "Wed",
+      "date": "2026-10-14",
+      "blocker_reason": "time"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Fri",
+      "date": "2026-10-16",
+      "variant": "micro"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-17"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sun",
+      "date": "2026-10-18"
+    }
+  ],
+  "expected": {
+    "day11": {
+      "date": "2026-10-15",
+      "riskLevel": "amber",
+      "reasons": [
+        "consec_rest",
+        "low_condition"
+      ]
+    },
+    "day14": {
+      "date": "2026-10-18",
+      "riskLevel": "green"
+    },
+    "rootConstraint": "opportunity-time"
+  }
+}

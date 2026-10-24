@@ -3,6 +3,7 @@ import persona from '@app/data/persona-dana.json';
 import { getScenario, think, type BrainFailure, type ThinkOutput } from '../api/brain';
 import type { AppState, TraceEntry } from '../state/types';
 import { isSampleUser, sendsSyntheticHistory, toThinkInput } from './adapter';
+import { groupLayers, type LayerGroup } from './layers';
 
 export type BrainView =
   | { status: 'loading' }
@@ -66,4 +67,12 @@ export function brainSteps(view: BrainView): TraceEntry[] {
     via,
   });
   return steps;
+}
+
+// The brain's four-layer story for the Why panel, only from a successful call that carried a
+// well-formed trace_layers. Null otherwise, and the panel shows brainSteps() as before.
+export function brainLayers(view: BrainView): { groups: LayerGroup[]; backup: boolean } | null {
+  if (view.status !== 'ok' || !view.data.trace_layers) return null;
+  const groups = groupLayers(view.data.trace_layers, view.data.labels);
+  return groups.length > 0 ? { groups, backup: view.backup === true } : null;
 }

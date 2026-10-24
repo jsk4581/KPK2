@@ -77,6 +77,28 @@ export interface BrainEvidence {
   [key: string]: unknown;
 }
 
+// One step of the brain's four-layer story (trace_layers). 'designed' steps are part of the
+// design but do not run today (ms is null for them).
+export type BrainLayer = 'L1' | 'L2' | 'L3' | 'L4';
+
+export interface BrainLayerStep {
+  layer: BrainLayer;
+  stage: string;
+  label: string;
+  status: 'ran' | 'designed';
+  input_summary: string;
+  output_summary: string;
+  ms: number | null;
+}
+
+// Internal names -> short user-facing labels (brain/labels.js). `layers` is optional and lets
+// the server name the four layers itself.
+export interface BrainLabels {
+  fields: Record<string, string>;
+  values: Record<string, Record<string, string>>;
+  layers?: Partial<Record<BrainLayer, string>>;
+}
+
 // Only the parts the screen reads are typed; the rest is passed through untouched.
 export interface ThinkOutput {
   person: Record<string, unknown>;
@@ -108,6 +130,9 @@ export interface ThinkOutput {
   };
   explain: { rules: string[]; evidence: BrainEvidence[]; trace?: BrainTraceEntry[]; [key: string]: unknown };
   trace: BrainTraceEntry[];
+  // Optional: older servers do not send them. think() keeps them only when well formed.
+  trace_layers?: BrainLayerStep[];
+  labels?: BrainLabels;
   context?: Record<string, unknown>;
 }
 
@@ -163,6 +188,7 @@ export function resetBrainPreference(): void {
 }
 
 // Minimal shape check of a /v1/think answer: every part the screen reads is there.
+// trace_layers and labels are optional and never decide it (see withOptionalParts).
 export function isThinkOutput(value: unknown): value is ThinkOutput {
   if (!isObject(value)) return false;
   const { person, state, goal, constraint, monitor, intervention, explain, trace } = value;
@@ -178,6 +204,64 @@ export function isThinkOutput(value: unknown): value is ThinkOutput {
   const ex = explain as Record<string, unknown>;
   if (!Array.isArray(ex.rules) || !Array.isArray(ex.evidence)) return false;
   return Array.isArray(trace) && trace.every(isTraceEntry);
+}
+
+const LAYERS: readonly BrainLayer[] = ['L1', 'L2', 'L3', 'L4'];
+
+const optionalText = (value: unknown): string | null =>
+  value === undefined || value === null ? '' : typeof value === 'string' ? value : null;
+
+function readLayerStep(value: unknown): BrainLayerStep | null {
+  if (!isObject(value)) return null;
+  const { layer, stage, label, status, input_summary, output_summary, ms } = value;
+  if (typeof layer !== 'string' || !LAYERS.includes(layer as BrainLayer)) return null;
+  if (typeof label !== 'string' || label.trim() === '') return null;
+  if (status !== 'ran' && status !== 'designed') return null;
+  const stageText = optionalText(stage);
+  const input = optionalText(input_summary);
+  const output = optionalText(output_summary);
+  if (stageText === null || input === null || output === null) return null;
+  const time = typeof ms === 'number' && Number.isFinite(ms) && ms >= 0 ? ms : null;
+  if (ms !== undefined && ms !== null && time === null) return null;
+  return { layer: layer as BrainLayer, stage: stageText, label, status, input_summary: input, output_summary: output, ms: time };
+}
+
+// trace_layers as sent, or null when it is missing, empty or any step is malformed (the
+// panel then shows the fn-level trace instead; the call itself never fails over it).
+export function readTraceLayers(value: unknown): BrainLayerStep[] | null {
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const steps = value.map(readLayerStep);
+  return steps.every((s): s is BrainLayerStep => s !== null) ? steps : null;
+}
+
+function stringMap(value: unknown): Record<string, string> {
+  if (!isObject(value)) return {};
+  return Object.fromEntries(Object.entries(value).filter((e): e is [string, string] => typeof e[1] === 'string'));
+}
+
+// labels with only its string entries kept, or null when it is not an object at all.
+export function readLabels(value: unknown): BrainLabels | null {
+  if (!isObject(value)) return null;
+  const values = isObject(value.values)
+    ? Object.fromEntries(Object.entries(value.values).filter(([, v]) => isObject(v)).map(([k, v]) => [k, stringMap(v)]))
+    : {};
+  const labels: BrainLabels = { fields: stringMap(value.fields), values };
+  if (isObject(value.layers)) {
+    const layers = stringMap(value.layers);
+    labels.layers = Object.fromEntries(Object.entries(layers).filter(([k]) => LAYERS.includes(k as BrainLayer)));
+  }
+  return labels;
+}
+
+// The answer with trace_layers and labels kept only when they are well formed.
+function withOptionalParts(data: ThinkOutput): ThinkOutput {
+  const { trace_layers: rawLayers, labels: rawLabels, ...rest } = data;
+  const out: ThinkOutput = { ...rest };
+  const layers = readTraceLayers(rawLayers);
+  const labels = readLabels(rawLabels);
+  if (layers) out.trace_layers = layers;
+  if (labels) out.labels = labels;
+  return out;
 }
 
 export function isScenario(value: unknown): value is BrainScenario {
@@ -252,14 +336,15 @@ async function request<T>(
   return { ok: false, reason };
 }
 
-// One brain pass. Never throws.
-export function think(input: ThinkInput, options: BrainOptions = {}): Promise<BrainResult<ThinkOutput>> {
-  return request(
+// One brain pass. Never throws. Malformed trace_layers or labels are dropped, not a failure.
+export async function think(input: ThinkInput, options: BrainOptions = {}): Promise<BrainResult<ThinkOutput>> {
+  const result = await request(
     '/v1/think',
     { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) },
     isThinkOutput,
     options,
   );
+  return result.ok ? { ...result, data: withOptionalParts(result.data) } : result;
 }
 
 // The synthetic history, fetched once per page and cached. A failed fetch is not cached,

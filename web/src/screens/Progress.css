@@ -395,3 +395,59 @@
   letter-spacing: 0.02em;
   margin-right: 2px;
 }
+
+/* ---------- Why? panel: the brain's four layers ---------- */
+.progress-layers {
+  margin-top: var(--sp-7);
+}
+
+.progress-layers-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.progress-layers-intro .progress-footnote {
+  margin: 0;
+}
+
+.progress-layer + .progress-layer {
+  margin-top: var(--sp-6);
+}
+
+.progress-layer-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+}
+
+.progress-layer-label {
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+}
+
+/* Designed, not running today: outlined node, muted text and a quiet outlined badge. */
+.progress-tag-designed {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--surface-2);
+}
+
+.progress-layer-step[data-status='designed']::before {
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 1.5px var(--subtle),
+    0 0 0 3px var(--bg);
+}
+
+.progress-layer-step[data-status='designed'] .progress-layer-label,
+.progress-layer-step[data-status='designed'] .progress-io {
+  color: var(--muted);
+}

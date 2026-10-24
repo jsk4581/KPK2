@@ -4,7 +4,8 @@ import persona from '@app/data/persona-dana.json';
 import { staggerStyle } from '../motion';
 import { useStore } from '../state/store';
 import type { AppState, TraceEntry } from '../state/types';
-import { brainSteps, useBrain } from '../brain/useBrain';
+import { brainLayers, brainSteps, useBrain } from '../brain/useBrain';
+import { DESIGNED_BADGE, ranBadge, type LayerGroup } from '../brain/layers';
 import BrainPanel from './BrainPanel';
 import './Progress.css';
 
@@ -102,6 +103,73 @@ function EvidenceText({ item, titles }: { item: Evidence; titles: Map<string, st
   );
 }
 
+// The brain's pass as its four-layer story (trace_layers): one group per layer, each step with
+// what it used and what came out. Steps that are designed but not running today say so.
+function LayerStory({ groups, backup }: { groups: LayerGroup[]; backup: boolean }) {
+  const via = backup ? 'brain_backup' : 'brain';
+  let index = 0;
+  return (
+    <div className="progress-layers" data-testid="why-layers">
+      <div className="progress-layers-intro">
+        <p className="progress-muted progress-footnote">Inside the brain, in four layers. Fixed rules, not AI.</p>
+        <span className={`progress-tag ${VIA_TAG[via]}`} data-testid="layers-via">
+          {VIA_LABEL[via]}
+        </span>
+      </div>
+      {groups.map((group) => (
+        <section
+          key={group.layer}
+          className="progress-layer"
+          aria-label={`${group.layer} ${group.name}`}
+          data-testid="why-layer"
+          data-layer={group.layer}
+        >
+          <h4 className="progress-layer-head" data-testid="layer-head">
+            <span className="progress-tag tag tag-accent">{group.layer}</span> {group.name}
+          </h4>
+          <ol className="progress-steps">
+            {group.steps.map((step) => {
+              const designed = step.status === 'designed';
+              const i = index++;
+              return (
+                <li
+                  key={`${group.layer}-${step.stage}-${i}`}
+                  className="progress-step progress-layer-step anim-rise-sm"
+                  data-status={step.status}
+                  data-testid="layer-step"
+                  style={staggerStyle(i, 40, 200)}
+                >
+                  <div className="progress-step-head">
+                    <span className="progress-layer-label" data-testid="layer-label">
+                      {step.label}
+                    </span>
+                    <span
+                      className={`progress-tag tag ${designed ? 'progress-tag-designed' : 'tag-ok'}`}
+                      data-testid="layer-status"
+                    >
+                      {designed ? DESIGNED_BADGE : ranBadge(step.ms)}
+                    </span>
+                  </div>
+                  {step.input !== '' && (
+                    <div className="progress-io">
+                      <span className="progress-muted">{designed ? 'Would use:' : 'Used:'}</span> {step.input}
+                    </div>
+                  )}
+                  {step.output !== '' && (
+                    <div className="progress-io">
+                      <span className="progress-muted">{designed ? 'Today:' : 'Result:'}</span> {step.output}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      ))}
+    </div>
+  );
+}
+
 export default function Progress() {
   const { state, dispatch } = useStore();
   const [showWhy, setShowWhy] = useState(false);
@@ -119,7 +187,10 @@ export default function Progress() {
     [state.week],
   );
   const brain = useBrain(state);
-  const steps: TraceEntry[] = [...state.trace, signalsTrace, ...brainSteps(brain)];
+  // With the four-layer story the brain's part is shown as layers below the app's own steps;
+  // without it (older server, malformed field) the fn-level brain steps follow as before.
+  const layers = brainLayers(brain);
+  const steps: TraceEntry[] = [...state.trace, signalsTrace, ...(layers ? [] : brainSteps(brain))];
   const hasLifelogEvidence = signals.evidence.some((e) => e.type === 'lifelog');
 
   const level = Math.max(0, MOMENTUM_LEVELS.indexOf(signals.momentum));
@@ -236,6 +307,7 @@ export default function Progress() {
               );
             })}
           </ol>
+          {layers && <LayerStory groups={layers.groups} backup={layers.backup} />}
         </div>
       )}
 

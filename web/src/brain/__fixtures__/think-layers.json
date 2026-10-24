@@ -1,0 +1,1421 @@
+{
+  "person": {
+    "traits": {
+      "careerCapital": {
+        "knowHow": [
+          "audience-insight",
+          "brand-voice",
+          "copy-editing",
+          "discovery-call",
+          "email-copy",
+          "landing-pages",
+          "positioning",
+          "workshop-facilitation"
+        ],
+        "knowWhom": [
+          "client",
+          "founder",
+          "industry-contact"
+        ],
+        "knowWhy": [
+          "brand-voice",
+          "workshop-facilitation"
+        ],
+        "transfers": [
+          "audience-insight",
+          "brand-voice",
+          "copy-editing",
+          "discovery-call",
+          "email-copy",
+          "positioning",
+          "workshop-facilitation"
+        ],
+        "quotes": {
+          "audience-insight": [
+            {
+              "field": "now",
+              "quote": "Customer language matters more than my adjectives."
+            }
+          ],
+          "brand-voice": [
+            {
+              "field": "now",
+              "quote": "emails a client drafted with AI: brand voice drifts, claims are vague, the call"
+            },
+            {
+              "field": "pull",
+              "quote": "Article on brand voice drifting once a whole team drafts with AI tools."
+            }
+          ],
+          "copy-editing": [
+            {
+              "field": "now",
+              "quote": "Critique of three emails a client drafted"
+            }
+          ],
+          "discovery-call": [
+            {
+              "field": "career",
+              "quote": "45-minute discovery call with a founder of a small skincare brand."
+            },
+            {
+              "field": "now",
+              "quote": "Discovery calls and the workshop questions gave"
+            }
+          ],
+          "email-copy": [
+            {
+              "field": "career",
+              "quote": "an hour to reread the onboarding email flow I wrote for a SaaS client last"
+            }
+          ],
+          "landing-pages": [
+            {
+              "field": "career",
+              "quote": "Discovery call for a landing page rewrite."
+            }
+          ],
+          "positioning": [
+            {
+              "field": "career",
+              "quote": "Left with a one-line positioning statement."
+            }
+          ],
+          "workshop-facilitation": [
+            {
+              "field": "career",
+              "quote": "Talked about running positioning workshops for small teams as a paid"
+            },
+            {
+              "field": "now",
+              "quote": "Discovery calls and the workshop questions gave me more energy than"
+            },
+            {
+              "field": "pull",
+              "quote": "Guide to short teaching sessions: one exercise, one takeaway, no slides."
+            }
+          ]
+        }
+      },
+      "constraints": {
+        "hoursPerWeek": null,
+        "runwayMonths": null,
+        "careDuties": null
+      },
+      "adaptability4c": {
+        "concern": null,
+        "control": null,
+        "curiosity": null,
+        "confidence": null,
+        "label": "self-report"
+      },
+      "archetype": "tool-curious",
+      "archetypeMatches": {
+        "tool-curious": [
+          "ai tools"
+        ]
+      },
+      "stageOfChange": "action"
+    },
+    "evidence": [
+      "l01",
+      "l02",
+      "l03",
+      "l05",
+      "l07",
+      "l08",
+      "l09",
+      "l11",
+      "l12",
+      "l15",
+      "l16",
+      "l18"
+    ]
+  },
+  "state": {
+    "energy": null,
+    "energySource": null,
+    "momentum": 0.527,
+    "selfEfficacy": 0.764,
+    "capacityMin": 30,
+    "capacityBase": 30,
+    "capacityFactor": 1,
+    "capacityReasons": [],
+    "capacityRules": {
+      "cond_trend_down": "condition trend (mean of last 3 days - mean of the 3 before) <= -1 -> capacity x 0.8"
+    },
+    "showedUp": 14,
+    "consistency7": 0.86,
+    "dataGapDays": 0,
+    "gapDays": 0,
+    "consecRest": 0,
+    "condMean3": null,
+    "condTrend": null,
+    "firstWeek": false,
+    "arcStart": "2026-10-06",
+    "today": "2026-10-22",
+    "lastLogId": "l18",
+    "lastLogDate": "2026-10-22",
+    "risk": {
+      "points": 0,
+      "level": "green",
+      "reasons": [],
+      "checks": [
+        {
+          "rule": "gap_days",
+          "value": 0,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        },
+        {
+          "rule": "consec_rest",
+          "value": 0,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        },
+        {
+          "rule": "low_momentum",
+          "value": 0.527,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        },
+        {
+          "rule": "low_condition",
+          "value": null,
+          "points": 0,
+          "skipped": true,
+          "status": "skipped"
+        },
+        {
+          "rule": "low_self_efficacy",
+          "value": 0.764,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        },
+        {
+          "rule": "first_week",
+          "value": false,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        },
+        {
+          "rule": "data_gap",
+          "value": 0,
+          "points": 0,
+          "skipped": false,
+          "status": "clear"
+        }
+      ],
+      "rules": {
+        "gap_days": "days since the last logged day (lifelog or check-in): >= 2 -> +2, >= 4 -> +3",
+        "consec_rest": "trailing Not today check-ins >= 2 -> +2",
+        "low_momentum": "momentum (EWMA a=0.3 of daily scores) < 0.35 -> +1",
+        "low_condition": "mean self-reported condition over the last 3 days <= 2 -> +1",
+        "low_self_efficacy": "self-efficacy (EWMA a=0.2 of successes/attempts) < 0.4 -> +1",
+        "first_week": "first 7 days of the arc -> +1",
+        "data_gap": "days since the last lifelog item >= 2 -> +1"
+      }
+    },
+    "features": [
+      {
+        "date": "2026-10-06",
+        "day": "Tue",
+        "logged": true,
+        "lifelogIds": [],
+        "checkins": [
+          {
+            "id": "scenario-a1@2026-10-06",
+            "actionId": "scenario-a1",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.65,
+        "selfEfficacy": 0.6,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-07",
+        "day": "Wed",
+        "logged": false,
+        "lifelogIds": [],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0,
+        "momentum": 0.455,
+        "selfEfficacy": 0.6,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-08",
+        "day": "Thu",
+        "logged": true,
+        "lifelogIds": [],
+        "checkins": [
+          {
+            "id": "scenario-a2@2026-10-08",
+            "actionId": "scenario-a2",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.619,
+        "selfEfficacy": 0.68,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-09",
+        "day": "Fri",
+        "logged": true,
+        "lifelogIds": [
+          "l01",
+          "l02"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.583,
+        "selfEfficacy": 0.68,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-10",
+        "day": "Sat",
+        "logged": true,
+        "lifelogIds": [
+          "l03"
+        ],
+        "checkins": [
+          {
+            "id": "scenario-a3@2026-10-10",
+            "actionId": "scenario-a3",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.708,
+        "selfEfficacy": 0.744,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-11",
+        "day": "Sun",
+        "logged": false,
+        "lifelogIds": [],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0,
+        "momentum": 0.496,
+        "selfEfficacy": 0.744,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-12",
+        "day": "Mon",
+        "logged": true,
+        "lifelogIds": [
+          "l05"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.497,
+        "selfEfficacy": 0.744,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-13",
+        "day": "Tue",
+        "logged": true,
+        "lifelogIds": [],
+        "checkins": [
+          {
+            "id": "scenario-a1@2026-10-13",
+            "actionId": "scenario-a1",
+            "kind": "not_today"
+          }
+        ],
+        "done": 0,
+        "notToday": 1,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.498,
+        "selfEfficacy": 0.595,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-14",
+        "day": "Wed",
+        "logged": true,
+        "lifelogIds": [
+          "l07"
+        ],
+        "checkins": [
+          {
+            "id": "scenario-a1@2026-10-14",
+            "actionId": "scenario-a1",
+            "kind": "not_today"
+          }
+        ],
+        "done": 0,
+        "notToday": 1,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.499,
+        "selfEfficacy": 0.476,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-15",
+        "day": "Thu",
+        "logged": true,
+        "lifelogIds": [
+          "l08",
+          "l09"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.499,
+        "selfEfficacy": 0.476,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-16",
+        "day": "Fri",
+        "logged": true,
+        "lifelogIds": [],
+        "checkins": [
+          {
+            "id": "scenario-a1@2026-10-16",
+            "actionId": "scenario-a1",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.649,
+        "selfEfficacy": 0.631,
+        "efficacyBonus": 0.05
+      },
+      {
+        "date": "2026-10-17",
+        "day": "Sat",
+        "logged": true,
+        "lifelogIds": [
+          "l11"
+        ],
+        "checkins": [
+          {
+            "id": "scenario-a2@2026-10-17",
+            "actionId": "scenario-a2",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.754,
+        "selfEfficacy": 0.705,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-18",
+        "day": "Sun",
+        "logged": true,
+        "lifelogIds": [
+          "l12"
+        ],
+        "checkins": [
+          {
+            "id": "scenario-a3@2026-10-18",
+            "actionId": "scenario-a3",
+            "kind": "done"
+          }
+        ],
+        "done": 1,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 1,
+        "momentum": 0.828,
+        "selfEfficacy": 0.764,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-19",
+        "day": "Mon",
+        "logged": false,
+        "lifelogIds": [],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0,
+        "momentum": 0.58,
+        "selfEfficacy": 0.764,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-20",
+        "day": "Tue",
+        "logged": true,
+        "lifelogIds": [
+          "l15"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.556,
+        "selfEfficacy": 0.764,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-21",
+        "day": "Wed",
+        "logged": true,
+        "lifelogIds": [
+          "l16"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.539,
+        "selfEfficacy": 0.764,
+        "efficacyBonus": 0
+      },
+      {
+        "date": "2026-10-22",
+        "day": "Thu",
+        "logged": true,
+        "lifelogIds": [
+          "l18"
+        ],
+        "checkins": [],
+        "done": 0,
+        "notToday": 0,
+        "condition": null,
+        "conditionSource": null,
+        "score": 0.5,
+        "momentum": 0.527,
+        "selfEfficacy": 0.764,
+        "efficacyBonus": 0
+      }
+    ]
+  },
+  "goal": {
+    "state": "provisional",
+    "chosenPathId": "messaging-consultant",
+    "pathTitle": null,
+    "arcStart": "2026-10-06",
+    "milestones": [
+      {
+        "id": "M1",
+        "name": "Fit",
+        "week": 2,
+        "date": "2026-10-20",
+        "outcome": "First evidence that this path fits you",
+        "problemGate": "What is this work actually like?",
+        "evidence": "One conversation with someone doing it, or one sample in the target format",
+        "decision": [
+          "continue",
+          "change-path"
+        ],
+        "minDone": 2,
+        "pathId": "messaging-consultant",
+        "pathTitle": "",
+        "passed": false,
+        "evaluation": {
+          "passed": false,
+          "gateId": "M1",
+          "done": 6,
+          "required": 2,
+          "confirmed": false,
+          "reasons": [
+            "not_confirmed"
+          ]
+        }
+      },
+      {
+        "id": "M2",
+        "name": "Proof",
+        "week": 6,
+        "date": "2026-11-17",
+        "outcome": "Proof that your past work transfers",
+        "problemGate": "Does my past work translate into the target format?",
+        "evidence": "Two or three reworked portfolio pieces and one piece of outside feedback",
+        "decision": [
+          "continue",
+          "reframe-scope"
+        ],
+        "minDone": 6,
+        "pathId": "messaging-consultant",
+        "pathTitle": "",
+        "passed": false,
+        "evaluation": {
+          "passed": false,
+          "gateId": "M2",
+          "done": 6,
+          "required": 6,
+          "confirmed": false,
+          "reasons": [
+            "not_confirmed"
+          ]
+        }
+      },
+      {
+        "id": "M3",
+        "name": "Market",
+        "week": 9,
+        "date": "2026-12-08",
+        "outcome": "Contact with the market",
+        "problemGate": "Who spends money or time on this?",
+        "evidence": "Ten targeted outreaches, three conversations, one pilot or application",
+        "decision": [
+          "continue",
+          "change-route"
+        ],
+        "minDone": 9,
+        "pathId": "messaging-consultant",
+        "pathTitle": "",
+        "passed": false,
+        "evaluation": {
+          "passed": false,
+          "gateId": "M3",
+          "done": 6,
+          "required": 9,
+          "confirmed": false,
+          "reasons": [
+            "done_below_minimum",
+            "not_confirmed"
+          ]
+        }
+      },
+      {
+        "id": "M4",
+        "name": "Ready",
+        "week": 12,
+        "date": "2026-12-29",
+        "outcome": "Ready to apply or pitch",
+        "problemGate": "Does my story land in one telling?",
+        "evidence": "Narrative, portfolio and five applications or pitches",
+        "decision": [
+          "apply",
+          "extend"
+        ],
+        "minDone": 12,
+        "pathId": "messaging-consultant",
+        "pathTitle": "",
+        "passed": false,
+        "evaluation": {
+          "passed": false,
+          "gateId": "M4",
+          "done": 6,
+          "required": 12,
+          "confirmed": false,
+          "reasons": [
+            "done_below_minimum",
+            "not_confirmed"
+          ]
+        }
+      }
+    ],
+    "nextQuestion": {
+      "key": "fit-conversation",
+      "question": "Who is one person already doing this work that you could talk to for twenty minutes?",
+      "why": "The path is chosen and the bottleneck is known: the next unknown is whether the path fits, and one conversation is the M1 evidence."
+    },
+    "version": 1,
+    "history": [
+      {
+        "at": "2026-10-22",
+        "from": null,
+        "to": "provisional",
+        "reason": "path chosen, no gate passed yet"
+      }
+    ],
+    "notNow": []
+  },
+  "constraint": {
+    "constraint": "opportunity-time",
+    "score": 0.1111,
+    "evidence": [
+      "scenario-a1@2026-10-14"
+    ],
+    "scores": {
+      "motivation-automatic": 0.1,
+      "opportunity-time": 0.1111
+    },
+    "signals": [
+      {
+        "id": "scenario-a1@2026-10-13",
+        "type": "checkin",
+        "reason": "energy",
+        "constraint": "motivation-automatic",
+        "date": "2026-10-13",
+        "ageDays": 9,
+        "weight": 0.1
+      },
+      {
+        "id": "scenario-a1@2026-10-14",
+        "type": "checkin",
+        "reason": "time",
+        "constraint": "opportunity-time",
+        "date": "2026-10-14",
+        "ageDays": 8,
+        "weight": 0.1111111111111111
+      }
+    ],
+    "reason": "argmax"
+  },
+  "monitor": {
+    "onTrack": false,
+    "done": 0,
+    "moved": 0,
+    "planned": 3,
+    "stale": [],
+    "drift": [
+      {
+        "type": "repeated_move",
+        "actionId": "scenario-a1",
+        "note": "scenario-a1 moved 2 times this week"
+      }
+    ],
+    "plateau": false,
+    "review": {
+      "resize": {
+        "direction": "down",
+        "pct": 0,
+        "count": 1,
+        "minutes": 10,
+        "micro": true,
+        "why": "escalation: low_condition_10_of_14"
+      },
+      "replanQuestion": "Is this the wrong step, or the wrong size?",
+      "replanActionId": "scenario-a1",
+      "escalate": {
+        "reason": "low_condition_10_of_14",
+        "message": "Energy has been at 2 or lower on most days for two weeks. That may be beyond what a coaching app can help with - would you like to talk with a doctor or a counselor? The plan is reduced to one small step for now."
+      },
+      "nextWeekSeed": {
+        "actions": [
+          {
+            "id": "a1",
+            "title": "Write the before line and the after line for one project. Nothing else.",
+            "minutes": 10,
+            "variant": "micro",
+            "carriedFrom": "Tue",
+            "moves": 0
+          }
+        ]
+      },
+      "compare": {
+        "onTrack": false,
+        "done": 0,
+        "moved": 0,
+        "planned": 3,
+        "stale": [],
+        "drift": [
+          {
+            "type": "repeated_move",
+            "actionId": "scenario-a1",
+            "note": "scenario-a1 moved 2 times this week"
+          }
+        ],
+        "plateau": false
+      }
+    }
+  },
+  "ledger": {
+    "entries": [
+      {
+        "id": "ev:scenario-a1@2026-10-06",
+        "date": "2026-10-06",
+        "actionId": "scenario-a1",
+        "title": "Step scenario-a1",
+        "kind": "done",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": null,
+        "bullet": "Completed the step \"Step scenario-a1\".",
+        "evidence": [
+          "scenario-a1@2026-10-06"
+        ],
+        "scrubbed": false
+      },
+      {
+        "id": "ev:scenario-a2@2026-10-08",
+        "date": "2026-10-08",
+        "actionId": "scenario-a2",
+        "title": "Step scenario-a2",
+        "kind": "done",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": null,
+        "bullet": "Completed the step \"Step scenario-a2\".",
+        "evidence": [
+          "scenario-a2@2026-10-08"
+        ],
+        "scrubbed": false
+      },
+      {
+        "id": "ev:scenario-a3@2026-10-10",
+        "date": "2026-10-10",
+        "actionId": "scenario-a3",
+        "title": "Step scenario-a3",
+        "kind": "done",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": "brand-voice",
+        "bullet": "Completed the step \"Step scenario-a3\", demonstrating brand voice.",
+        "evidence": [
+          "scenario-a3@2026-10-10",
+          "l03"
+        ],
+        "scrubbed": false
+      },
+      {
+        "id": "ev:scenario-a1@2026-10-16",
+        "date": "2026-10-16",
+        "actionId": "scenario-a1",
+        "title": "Step scenario-a1",
+        "kind": "micro",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": null,
+        "bullet": "Started \"Step scenario-a1\" with a short step.",
+        "evidence": [
+          "scenario-a1@2026-10-16"
+        ],
+        "scrubbed": false
+      },
+      {
+        "id": "ev:scenario-a2@2026-10-17",
+        "date": "2026-10-17",
+        "actionId": "scenario-a2",
+        "title": "Step scenario-a2",
+        "kind": "done",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": "positioning",
+        "bullet": "Completed the step \"Step scenario-a2\", demonstrating positioning and messaging.",
+        "evidence": [
+          "scenario-a2@2026-10-17",
+          "l11"
+        ],
+        "scrubbed": false
+      },
+      {
+        "id": "ev:scenario-a3@2026-10-18",
+        "date": "2026-10-18",
+        "actionId": "scenario-a3",
+        "title": "Step scenario-a3",
+        "kind": "done",
+        "artifactType": "step",
+        "gate": "M1",
+        "skill": "brand-voice",
+        "bullet": "Completed the step \"Step scenario-a3\", demonstrating brand voice.",
+        "evidence": [
+          "scenario-a3@2026-10-18",
+          "l12"
+        ],
+        "scrubbed": false
+      }
+    ],
+    "count": 6,
+    "byGate": {
+      "M1": 6,
+      "M2": 0,
+      "M3": 0,
+      "M4": 0
+    },
+    "byType": {
+      "portfolio_piece": 0,
+      "conversation": 0,
+      "outreach": 0,
+      "feedback": 0,
+      "application": 0,
+      "pitch": 0,
+      "step": 6
+    },
+    "byKind": {
+      "done": 5,
+      "micro": 1
+    },
+    "arcStart": "2026-10-06"
+  },
+  "readiness": {
+    "score": 65,
+    "level": "build-proof",
+    "components": {
+      "proof": 18,
+      "skills": 13,
+      "consistency": 19,
+      "market": 0,
+      "confidence": 15
+    },
+    "weights": {
+      "proof": 20,
+      "skills": 20,
+      "consistency": 20,
+      "market": 20,
+      "confidence": 20,
+      "note": "design priors (확인 필요): equal 20-point components, summed to 100"
+    },
+    "next_gate": {
+      "name": "M1 Fit",
+      "id": "M1",
+      "week": 2,
+      "date": "2026-10-20",
+      "criteria": "One conversation with someone doing it, or one sample in the target format",
+      "missing": [
+        "your own confirm that this gate is passed"
+      ]
+    },
+    "next_level": {
+      "level": "reach-out",
+      "missing": [
+        "the M2 Proof gate passed, with your confirm"
+      ]
+    },
+    "explain": [
+      "proof:5.5/6",
+      "skills:ratio=0.67",
+      "consistency:14d/3w",
+      "market:none",
+      "confidence:se=0.764",
+      "level:build-proof:M2_not_passed"
+    ],
+    "counts": {
+      "entries": 6,
+      "full": 5,
+      "micro": 1,
+      "reachOuts": 0,
+      "applications": 0,
+      "showedUpDays": 14,
+      "weeks": 3,
+      "gatesPassed": []
+    },
+    "stage_rules": {
+      "explore": "no path chosen",
+      "build-proof": "path chosen and fewer than 3 ledger entries, or the M2 Proof gate not yet passed",
+      "reach-out": "3 or more ledger entries and the M2 Proof gate passed",
+      "apply": "the M3 Market gate passed, or 6 or more ledger entries and at least one reach-out or application logged"
+    }
+  },
+  "intervention": {
+    "kind": "full",
+    "actionId": "a2",
+    "minutes": 25,
+    "choices": [
+      "Done",
+      "Not today"
+    ],
+    "messageKey": "FULL",
+    "reasons": [
+      "assigned_today",
+      "capacity_ok"
+    ],
+    "variant": "full",
+    "lead": "do",
+    "day": "Thu",
+    "nextDay": "Fri",
+    "constraint": "opportunity-time",
+    "action": {
+      "id": "a2",
+      "title": "Draft a pilot offer email for a 90-minute messaging session (no need to send it)",
+      "short": "Write only the subject line of the pilot offer email.",
+      "minutes": 25,
+      "day": "Thu",
+      "status": "todo",
+      "moves": 0
+    },
+    "slots": {
+      "done": 0,
+      "planned": 3,
+      "showed_up": 14,
+      "cond": null,
+      "capacity": 30,
+      "micro_min": 10,
+      "action": "Draft a pilot offer email for a 90-minute messaging session (no need to send it)",
+      "minutes": 25,
+      "micro_title": "Write only the subject line of the pilot offer email.",
+      "next_day": "Fri",
+      "moved_day": "Thu"
+    },
+    "message": {
+      "key": "FULL",
+      "requestedKey": "FULL",
+      "ack": "Today: Draft a pilot offer email for a 90-minute messaging session (no need to send it) (25 min).",
+      "reframe": "0/3 done this week · 14 days showed up.",
+      "next": "Done, or not today - both keep the plan moving.",
+      "text": "Today: Draft a pilot offer email for a 90-minute messaging session (no need to send it) (25 min).\n0/3 done this week · 14 days showed up.\nDone, or not today - both keep the plan moving.\nEnergy has been at 2 or lower on most days for two weeks. That may be beyond what a coaching app can help with - would you like to talk with a doctor or a counselor? The plan is reduced to one small step for now.",
+      "lint": {
+        "ok": true,
+        "hits": [],
+        "scrubbed": []
+      },
+      "escalation": {
+        "reason": "low_condition_10_of_14",
+        "message": "Energy has been at 2 or lower on most days for two weeks. That may be beyond what a coaching app can help with - would you like to talk with a doctor or a counselor? The plan is reduced to one small step for now."
+      }
+    }
+  },
+  "explain": {
+    "rules": [
+      "policy:assigned_today",
+      "policy:capacity_ok",
+      "constraint:opportunity-time",
+      "risk:low_condition:skipped"
+    ],
+    "evidence": [
+      {
+        "type": "lifelog",
+        "id": "l18",
+        "date": "2026-10-22",
+        "note": "last lifelog item; 0 day(s) before today"
+      },
+      {
+        "type": "checkin",
+        "id": "scenario-a1@2026-10-14",
+        "actionId": "scenario-a1",
+        "date": "2026-10-14",
+        "day": "Wed",
+        "kind": "not_today",
+        "note": "Not today reason -> opportunity-time"
+      },
+      {
+        "type": "feature",
+        "date": "2026-10-22",
+        "note": "today's row: score 0.5, momentum 0.527"
+      }
+    ],
+    "trace": [
+      {
+        "fn": "estimateState",
+        "input": "{lifelog: 12, checkins: 8, today: \"2026-10-22\"}",
+        "output": "{energy: , momentum: 0.527, selfEfficacy: 0.764, capacityMin: 30, dataGapDays: 0, risk: \"green\"}",
+        "via": "brain"
+      },
+      {
+        "fn": "rootConstraint",
+        "input": "{checkins: 8, lifelog: 12}",
+        "output": "{constraint: \"opportunity-time\", score: 0.1111, evidence: [1]}",
+        "via": "brain"
+      },
+      {
+        "fn": "decideIntervention",
+        "input": "{energy: , risk: \"green\", capacityMin: 30, dataGapDays: 0, constraint: \"opportunity-time\", today: \"Thu\"}",
+        "output": "{kind: \"full\", actionId: \"a2\", minutes: 25, messageKey: \"FULL\", choices: [2]}",
+        "via": "brain"
+      }
+    ],
+    "text": "full a2 (25 min) -> FULL\nrules: policy:assigned_today, policy:capacity_ok, constraint:opportunity-time, risk:low_condition:skipped\nevidence: lifelog l18 - last lifelog item; 0 day(s) before today · checkin scenario-a1@2026-10-14 - Not today reason -> opportunity-time · feature 2026-10-22 - today's row: score 0.5, momentum 0.527\nestimateState({lifelog: 12, checkins: 8, today: \"2026-10-22\"}) -> {energy: , momentum: 0.527, selfEfficacy: 0.764, capacityMin: 30, dataGapDays: 0, risk: \"green\"}\nrootConstraint({checkins: 8, lifelog: 12}) -> {constraint: \"opportunity-time\", score: 0.1111, evidence: [1]}\ndecideIntervention({energy: , risk: \"green\", capacityMin: 30, dataGapDays: 0, constraint: \"opportunity-time\", today: \"Thu\"}) -> {kind: \"full\", actionId: \"a2\", minutes: 25, messageKey: \"FULL\", choices: [2]}"
+  },
+  "trace": [
+    {
+      "fn": "summarizeLifelog",
+      "input": "[12: l01, l02, l03, l05, l07, ...], [3: note, saved_link, calendar]",
+      "output": "{career: \"45-minute discovery call with a found...\", now: \"Stopped the second AI consulting cour...\", pull: \"Article on brand voice drifting once ...\"}",
+      "via": "logic"
+    },
+    {
+      "fn": "extractSkills",
+      "input": "{career: \"45-minute discovery call with a found...\", now: \"Stopped the second AI consulting cour...\", pull: \"Article on brand voice drifting once ...\"}, [12: l01, l02, l03, l05, l07, ...], [14: discovery-call, positioning, brand-voice, e...",
+      "output": "[8: audience-insight, brand-voice, copy-editing, discovery-call, email-copy, ...]",
+      "via": "logic"
+    },
+    {
+      "fn": "rankRoles",
+      "input": "[8: audience-insight, brand-voice, copy-editing, discovery-call, email-copy, ...], [6: messaging-consultant, brand-voice-systems, copy-educator, lifecycle-marketer, content-strategist, ...]",
+      "output": "[3: messaging-consultant, brand-voice-systems, copy-educator]",
+      "via": "logic"
+    },
+    {
+      "fn": "buildPersonModel",
+      "input": "{fields: {...}, lifelog: [12], skills: [14], rankedRoles: [3], chosenPathId: \"messaging-consultant\", checkins: [8], constraints: , adaptability4c: }",
+      "output": "{traits: {...}, evidence: [12]}",
+      "via": "brain"
+    },
+    {
+      "fn": "estimateState",
+      "input": "{lifelog: [12], checkins: [8], today: \"2026-10-22\", condition: , arcStart: }",
+      "output": "{energy: , energySource: , momentum: 0.527, selfEfficacy: 0.764, capacityMin: 30, capacityBase: 30, capacityFactor: 1, capacityReasons: [0]}",
+      "via": "brain"
+    },
+    {
+      "fn": "rootConstraint",
+      "input": "{checkins: [8], lifelog: [12], today: \"2026-10-22\"}",
+      "output": "{constraint: \"opportunity-time\", score: 0.1111, evidence: [1], scores: {...}, signals: [2], reason: \"argmax\"}",
+      "via": "brain"
+    },
+    {
+      "fn": "goalState",
+      "input": "{chosenPathId: \"messaging-consultant\", gates: [4], today: \"2026-10-22\"}",
+      "output": "\"provisional\"",
+      "via": "brain"
+    },
+    {
+      "fn": "compareWeek",
+      "input": "{week: {...}, checkins: [8], lifelog: [12], today: \"2026-10-22\"}",
+      "output": "{onTrack: false, done: 0, moved: 0, planned: 3, stale: [0], drift: [1], plateau: false}",
+      "via": "brain"
+    },
+    {
+      "fn": "buildLedger",
+      "input": "{week: {...}, checkins: [8], lifelog: [12], path: {...}, today: \"2026-10-22\", arcStart: \"2026-10-06\", skills: [14]}",
+      "output": "{entries: [6], count: 6, byGate: {...}, byType: {...}, byKind: {...}, arcStart: \"2026-10-06\"}",
+      "via": "brain"
+    },
+    {
+      "fn": "readinessScore",
+      "input": "{ledger: {...}, person: {...}, state: {...}, goal: {...}, milestones: [4], rankedRoles: [3], path: {...}, market: }",
+      "output": "{score: 65, level: \"build-proof\", components: {...}, weights: {...}, next_gate: {...}, next_level: {...}, explain: [6], counts: {...}}",
+      "via": "brain"
+    },
+    {
+      "fn": "decideIntervention",
+      "input": "{state: {...}, constraint: {...}, week: {...}, today: \"2026-10-22\", checkins: [8], gate: , escalate: {...}}",
+      "output": "{kind: \"full\", actionId: \"a2\", minutes: 25, choices: [2], messageKey: \"FULL\", reasons: [2], variant: \"full\", lead: \"do\"}",
+      "via": "brain"
+    },
+    {
+      "fn": "render",
+      "input": "\"FULL\", {done: 0, planned: 3, showed_up: 14, cond: , capacity: 30, micro_min: 10, action: \"Draft a pilot offer email for a 90-mi...\", minutes: 25}",
+      "output": "{key: \"FULL\", requestedKey: \"FULL\", ack: \"Today: Draft a pilot offer email for ...\", reframe: \"0/3 done this week · 14 days showed up.\", next: \"Done, or not today - both keep the pl...\", text: \"Today: Draft a pilot offer email for ...\", ...",
+      "via": "brain"
+    }
+  ],
+  "context": {
+    "today": "2026-10-22",
+    "todayWeekday": "Thu",
+    "enabledSources": [
+      "note",
+      "saved_link",
+      "calendar"
+    ],
+    "lifelogCount": 12,
+    "checkinCount": 8,
+    "fields": {
+      "career": "45-minute discovery call with a founder of a small skincare brand. Left with a one-line positioning statement. Blocked an hour to reread the onboarding email flow I wrote for a SaaS client last year. Talked about running positioning workshops for small teams as a paid deliverable. Discovery call for a landing page rewrite. Spent most of it on who the buyer is, little on the words.",
+      "now": "Stopped the second AI consulting course halfway. Notes say the lessons felt generic and not about my clients. Started a list: who buys, what they say in their own words, what they distrust. Customer language matters more than my adjectives. Critique of three emails a client drafted with AI: brand voice drifts, claims are vague, the call to action is buried. Discovery calls and the workshop questions gave me more energy than writing the drafts.",
+      "pull": "Article on brand voice drifting once a whole team drafts with AI tools. Bookmarked for later: consultants who sell a fixed messaging session instead of hourly writing. Guide to short teaching sessions: one exercise, one takeaway, no slides."
+    },
+    "skillIds": [
+      "audience-insight",
+      "brand-voice",
+      "copy-editing",
+      "discovery-call",
+      "email-copy",
+      "landing-pages",
+      "positioning",
+      "workshop-facilitation"
+    ],
+    "rankedRoles": [
+      {
+        "id": "messaging-consultant",
+        "title": "Messaging & Positioning Consultant",
+        "ratio": 0.67,
+        "transfers": [
+          "discovery-call",
+          "positioning",
+          "audience-insight",
+          "workshop-facilitation"
+        ],
+        "missing": [
+          "case-studies",
+          "project-pricing"
+        ]
+      },
+      {
+        "id": "brand-voice-systems",
+        "title": "Brand Voice & Prompt Systems Designer",
+        "ratio": 0.6,
+        "transfers": [
+          "brand-voice",
+          "copy-editing",
+          "audience-insight"
+        ],
+        "missing": [
+          "evaluation-rubric",
+          "prompt-systems"
+        ]
+      },
+      {
+        "id": "copy-educator",
+        "title": "Copy Educator / Workshop Lead",
+        "ratio": 0.6,
+        "transfers": [
+          "workshop-facilitation",
+          "copy-editing",
+          "email-copy"
+        ],
+        "missing": [
+          "curriculum-design",
+          "project-pricing"
+        ]
+      }
+    ],
+    "week": {
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Turn one past project into a one-page before/after message story",
+          "minutes": 30,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the before line and the after line for one project. Nothing else."
+        },
+        {
+          "id": "a2",
+          "title": "Draft a pilot offer email for a 90-minute messaging session (no need to send it)",
+          "minutes": 25,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write only the subject line of the pilot offer email."
+        },
+        {
+          "id": "a3",
+          "title": "With a 20-minute timer, list the 7 questions you really ask in a discovery call",
+          "minutes": 20,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the first 3 questions you always ask."
+        }
+      ],
+      "summary": "0/3 done",
+      "pathId": "messaging-consultant",
+      "pathTitle": "",
+      "today": "Thu",
+      "pendingComeback": false
+    }
+  },
+  "trace_layers": [
+    {
+      "layer": "L1",
+      "stage": "ingest",
+      "label": "Parse lifelog items",
+      "status": "ran",
+      "input_summary": "12 lifelog items and 8 check-ins received; enabled sources: note, saved_link, calendar",
+      "output_summary": "12 items from enabled sources (note, calendar, saved_link) and 8 check-ins reach the brain",
+      "ms": 0.03
+    },
+    {
+      "layer": "L2",
+      "stage": "scrub",
+      "label": "Scrub live ingest (PII filter)",
+      "status": "designed",
+      "input_summary": "live lifelog stream",
+      "output_summary": "Design, not running today: the demo lifelog is synthetic and arrives pre-scrubbed.",
+      "ms": null
+    },
+    {
+      "layer": "L2",
+      "stage": "graph",
+      "label": "Ontology graph (skills ↔ roles ↔ evidence)",
+      "status": "designed",
+      "input_summary": "lifelog + skill catalog",
+      "output_summary": "Design, not running today: overlap is computed on the flat skill catalog instead.",
+      "ms": null
+    },
+    {
+      "layer": "L3",
+      "stage": "paths",
+      "label": "Rank roles by skill overlap (brain rankRoles)",
+      "status": "ran",
+      "input_summary": "fields career, now, pull + 12 lifelog items; 6 catalog roles",
+      "output_summary": "skills [audience-insight, brand-voice, copy-editing, discovery-call, email-copy, landing-pages, positioning, workshop-facilitation] → messaging-consultant 0.67 · brand-voice-systems 0.6 · copy-educator 0.6",
+      "ms": 2.58
+    },
+    {
+      "layer": "L3",
+      "stage": "person",
+      "label": "Person model (brain buildPersonModel)",
+      "status": "ran",
+      "input_summary": "fields + 12 lifelog items + 8 check-ins; self-declared constraints and 4C as given",
+      "output_summary": "archetype tool-curious · stage action · 12 evidence ids",
+      "ms": 29.59
+    },
+    {
+      "layer": "L3",
+      "stage": "goal",
+      "label": "Goal state and gates (brain goalState + evaluateGate)",
+      "status": "ran",
+      "input_summary": "path messaging-consultant · 4 gates · today 2026-10-22",
+      "output_summary": "provisional · gates passed: none · version 1",
+      "ms": 0.32
+    },
+    {
+      "layer": "L4",
+      "stage": "state",
+      "label": "Estimate state (brain estimateState)",
+      "status": "ran",
+      "input_summary": "12 lifelog items + 8 check-ins · today 2026-10-22 · condition unknown",
+      "output_summary": "energy unknown · momentum 0.527 · confidence 0.764 · capacity 30 min · risk green (no reasons)",
+      "ms": 0.7
+    },
+    {
+      "layer": "L4",
+      "stage": "constraint",
+      "label": "Root constraint (brain rootConstraint, COM-B)",
+      "status": "ran",
+      "input_summary": "blocker reasons tapped in 8 check-ins · today 2026-10-22",
+      "output_summary": "opportunity-time · 1 evidence ids · rule argmax",
+      "ms": 0.31
+    },
+    {
+      "layer": "L4",
+      "stage": "monitor",
+      "label": "Plan versus reality (brain compareWeek + weeklyReview)",
+      "status": "ran",
+      "input_summary": "3 planned actions · 8 check-ins",
+      "output_summary": "drift: repeated_move · plateau false · replan question yes · escalation low_condition_10_of_14",
+      "ms": 0.67
+    },
+    {
+      "layer": "L4",
+      "stage": "readiness",
+      "label": "Evidence ledger and job readiness (brain buildLedger + readinessScore)",
+      "status": "ran",
+      "input_summary": "done check-ins + 12 lifelog items · 4 gates · market none",
+      "output_summary": "6 ledger entries → 65/100 · stage build-proof · next gate M1",
+      "ms": 1.43
+    },
+    {
+      "layer": "L4",
+      "stage": "policy",
+      "label": "Decide today's step (brain decideIntervention)",
+      "status": "ran",
+      "input_summary": "risk green · constraint opportunity-time · gate none · escalation low_condition_10_of_14",
+      "output_summary": "full a2 (25 min) → FULL · 2 choices · assigned_today, capacity_ok",
+      "ms": 0.41
+    },
+    {
+      "layer": "L4",
+      "stage": "messages",
+      "label": "Write the message (messages.render + lint)",
+      "status": "ran",
+      "input_summary": "FULL · slots 11",
+      "output_summary": "4 lines · lint ok · scrubbed slots none · resource line added",
+      "ms": 0.23
+    },
+    {
+      "layer": "L4",
+      "stage": "explain",
+      "label": "Explain (rule names + evidence ids)",
+      "status": "ran",
+      "input_summary": "decision full · 12 lifelog items · 8 check-ins",
+      "output_summary": "4 rules · 3 evidence ids",
+      "ms": 0.3
+    }
+  ],
+  "labels": {
+    "fields": {
+      "state.energy": "Energy today",
+      "state.momentum": "Momentum",
+      "state.selfEfficacy": "Confidence",
+      "state.capacityMin": "Today's capacity (min)",
+      "state.dataGapDays": "Days without a signal",
+      "state.risk.level": "Risk of drifting",
+      "constraint.constraint": "What is in the way",
+      "intervention.kind": "Today's step",
+      "intervention.minutes": "Minutes",
+      "goal.state": "Goal",
+      "goal.milestones": "Gates",
+      "readiness.score": "Job readiness (0-100)",
+      "readiness.level": "Job readiness stage",
+      "monitor.drift": "Plan versus reality"
+    },
+    "values": {
+      "state.risk.level": {
+        "green": "Low",
+        "amber": "Medium",
+        "red": "High"
+      },
+      "constraint.constraint": {
+        "opportunity-time": "Time",
+        "motivation-automatic": "Energy & mood",
+        "capability": "Skills",
+        "opportunity-social": "People",
+        "motivation-reflective": "Doubts",
+        "unknown": "Not enough signal yet"
+      },
+      "intervention.kind": {
+        "full": "Full step",
+        "shrink": "Smaller step",
+        "rest": "Rest day",
+        "reconnect": "Reconnect",
+        "comeback": "Welcome back",
+        "gate": "Gate passed",
+        "pause": "Pause",
+        "none": "No step today"
+      },
+      "goal.state": {
+        "ambiguous": "Still exploring",
+        "provisional": "Path chosen",
+        "validated": "On track"
+      },
+      "readiness.level": {
+        "explore": "Explore",
+        "build-proof": "Build proof",
+        "reach-out": "Reach out",
+        "apply": "Apply"
+      },
+      "goal.milestones.id": {
+        "M1": "Fit check",
+        "M2": "First proof",
+        "M3": "Market contact",
+        "M4": "Ready to apply"
+      }
+    }
+  }
+}

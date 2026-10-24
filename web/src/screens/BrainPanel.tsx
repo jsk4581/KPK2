@@ -2,6 +2,7 @@ import type { ThinkOutput } from '../api/brain';
 import { SCENARIO_ID_PREFIX } from '../brain/adapter';
 import { MIN_DATA_DAYS, dataDays, riskMeasured } from '../brain/dataDays';
 import type { BrainView } from '../brain/useBrain';
+import { valueLabel } from '../brain/layers';
 import './BrainPanel.css';
 
 // Decision brain section of the Progress tab ("Where you stand", labelled rules-based). Shows what the rules-only brain server
@@ -130,13 +131,14 @@ function suggestion(intervention: ThinkOutput['intervention']): { title: string;
 }
 
 function BrainData({ data }: { data: ThinkOutput }) {
-  const { state, goal, constraint, monitor, intervention } = data;
+  const { state, goal, constraint, monitor, intervention, labels } = data;
   const days = dataDays(state);
   const measured = riskMeasured(state, days);
   const level = measured ? state.risk.level : 'unknown';
   const attention = level === 'amber' || level === 'red';
   const next = goal.milestones.find((m) => m.passed !== true) ?? null;
-  const nextName = next ? MILESTONE_NAME[next.id] : undefined;
+  // The app's own words first; the server's labels only where the app has none for an id.
+  const nextName = next ? (MILESTONE_NAME[next.id] ?? valueLabel(labels, 'goal.milestones.id', next.id) ?? undefined) : undefined;
   const todo = suggestion(intervention);
   // Drift about this week's plan only: notes tied to an action of the server's synthetic
   // history (ids prefixed by the adapter) are not about the user's week.
@@ -168,7 +170,7 @@ function BrainData({ data }: { data: ThinkOutput }) {
         </div>
         <div className={`brain-cell${attention ? ' brain-attention' : ''}`} data-testid="brain-risk" data-level={level}>
           <dt>Risk of stalling</dt>
-          <dd>{measured ? (RISK_WORD[level] ?? level) : NOT_ENOUGH}</dd>
+          <dd>{measured ? (RISK_WORD[level] ?? valueLabel(labels, 'state.risk.level', level) ?? level) : NOT_ENOUGH}</dd>
         </div>
       </dl>
       {state.risk.reasons.length > 0 && (
@@ -194,7 +196,11 @@ function BrainData({ data }: { data: ThinkOutput }) {
       <div className="brain-block" data-testid="brain-constraint">
         <h4>What is in the way</h4>
         <p>
-          <strong>{CONSTRAINT_NAME[constraint.constraint] ?? constraint.constraint}</strong>
+          <strong>
+            {CONSTRAINT_NAME[constraint.constraint] ??
+              valueLabel(labels, 'constraint.constraint', constraint.constraint) ??
+              constraint.constraint}
+          </strong>
         </p>
         <p className="brain-muted">{constraintWhy(constraint)}</p>
       </div>

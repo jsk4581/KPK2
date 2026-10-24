@@ -24,6 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import app.KPK2.lifelog.R
 import app.KPK2.lifelog.appGraph
+import app.KPK2.lifelog.collect.ShareRouting
+import app.KPK2.lifelog.collect.document.DocumentShareActivity
 import app.KPK2.lifelog.sources.CollectorRegistry
 import app.KPK2.lifelog.sources.SourceId
 import app.KPK2.lifelog.sources.SourcePolicy
@@ -47,10 +49,17 @@ class ShareLinkActivity : ComponentActivity() {
             finish()
             return
         }
+        val text = ShareRouting.sharedText(share)
+        // A shared text file arrives as text/plain too: it belongs to "Add as document".
+        if (savedInstanceState == null &&
+            ShareRouting.linkTargetForwards(text, ShareRouting.sharedFile(share) != null) &&
+            ShareRouting.forward(this, share, DocumentShareActivity::class.java)
+        ) {
+            return
+        }
         model.handleOnce(
             context = applicationContext,
-            text = share.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()
-                ?: share.clipData?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.text?.toString(),
+            text = text,
             subject = share.getStringExtra(Intent.EXTRA_SUBJECT),
             title = share.getCharSequenceExtra(Intent.EXTRA_TITLE)?.toString(),
             sender = SenderApp.pick(senderCandidates(), packageName),

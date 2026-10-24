@@ -2,7 +2,6 @@ package app.KPK2.lifelog.collect.document
 
 import android.app.Application
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,11 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.IntentCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import app.KPK2.lifelog.R
+import app.KPK2.lifelog.collect.ShareRouting
+import app.KPK2.lifelog.collect.savedlink.ShareLinkActivity
 import app.KPK2.lifelog.ui.theme.SecondDraftTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +31,15 @@ class DocumentShareActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        model.addOnce(intent)
+        val share = intent
+        // Shared text with a link arrives as text/plain too: it belongs to "Save link".
+        if (savedInstanceState == null &&
+            ShareRouting.documentTargetForwards(ShareRouting.sharedText(share), ShareRouting.sharedFile(share) != null) &&
+            ShareRouting.forward(this, share, ShareLinkActivity::class.java)
+        ) {
+            return
+        }
+        model.addOnce(share)
         setContent {
             SecondDraftTheme {
                 val result by model.result.collectAsStateWithLifecycle()
@@ -61,11 +69,7 @@ class ShareAddModel(application: Application) : AndroidViewModel(application) {
         if (started) return
         started = true
         val app = getApplication<Application>()
-        val stream = if (intent.action == Intent.ACTION_SEND) {
-            IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
-        } else {
-            null
-        }
+        val stream = ShareRouting.sharedFile(intent)
         if (stream == null) {
             _result.value = AddResult.NoFile
             return

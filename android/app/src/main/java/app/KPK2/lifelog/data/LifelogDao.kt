@@ -28,6 +28,9 @@ abstract class LifelogDao {
     @Query("SELECT id FROM deleted_item WHERE id IN (:ids)")
     protected abstract suspend fun deletedAmong(ids: List<String>): List<String>
 
+    @Query("SELECT * FROM lifelog_item WHERE id IN (:ids)")
+    protected abstract suspend fun storedAmong(ids: List<String>): List<LifelogItem>
+
     @Upsert
     protected abstract suspend fun upsert(items: List<LifelogItem>)
 
@@ -43,13 +46,23 @@ abstract class LifelogDao {
     @Query("SELECT id FROM lifelog_item")
     protected abstract suspend fun allIds(): List<String>
 
-    /** Inserts or updates [items], skipping ids the person deleted. Returns how many were written. */
+    /**
+     * Inserts or updates [items], skipping ids the person deleted. An item already stored with the same
+     * content is left as it is, so pulling it again does not move its recorded time. Returns how many
+     * items are stored after the call (written now or already there unchanged).
+     */
     @Transaction
     open suspend fun record(items: List<LifelogItem>): Int {
         if (items.isEmpty()) return 0
-        val deleted = items.map { it.id }.chunked(MAX_SQL_ARGS).flatMap { deletedAmong(it) }.toSet()
+        val ids = items.map { it.id }.chunked(MAX_SQL_ARGS)
+        val deleted = ids.flatMap { deletedAmong(it) }.toSet()
         val kept = items.filterNot { it.id in deleted }
-        upsert(kept)
+        val stored = ids.flatMap { storedAmong(it) }.associateBy { it.id }
+        val changed = kept.filter { item ->
+            val old = stored[item.id]
+            old == null || item.copy(recordedAt = old.recordedAt) != old
+        }
+        upsert(changed)
         return kept.size
     }
 

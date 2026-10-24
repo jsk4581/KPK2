@@ -53,6 +53,28 @@ class LifelogRepositoryTest {
     }
 
     @Test
+    fun recordingAnUnchangedItemAgainKeepsItsRecordedTime() = runTest {
+        repo.record(listOf(item("cal", "2026-10-24", recordedAt = 100), item("other", "2026-10-24", recordedAt = 200)))
+        val written = repo.record(item("cal", "2026-10-24", recordedAt = 900))
+
+        assertEquals(1, written)
+        assertEquals(100L, repo.snapshot().single { it.id == "cal" }.recordedAt)
+        // The newer item stays above the re-pulled one within the day.
+        assertEquals(listOf("other", "cal"), repo.items.first().map { it.id })
+        assertEquals(200L, repo.sourceStats.first().getValue("note").lastRecordedAt)
+    }
+
+    @Test
+    fun recordingAChangedItemUpdatesItsRecordedTime() = runTest {
+        repo.record(item("cal", "2026-10-24", recordedAt = 100, title = "Fictional standup"))
+        repo.record(item("cal", "2026-10-24", recordedAt = 900, title = "Fictional standup, moved"))
+
+        val stored = repo.snapshot().single()
+        assertEquals("Fictional standup, moved", stored.title)
+        assertEquals(900L, stored.recordedAt)
+    }
+
+    @Test
     fun tagsAndNullUrlSurviveTheRoundTrip() = runTest {
         repo.record(item("a", "2026-10-09").copy(tags = listOf("pricing", "with \"quotes\""), url = null))
         val stored = repo.snapshot().single()

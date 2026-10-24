@@ -1,5 +1,4 @@
 import persona from '@app/data/persona-dana.json';
-import photoUrl from '@app/data/persona/dana.svg?url';
 import { requestDemoFocus } from '../embed/focusDemo';
 import { useStore } from '../state/store';
 import type { Screen } from '../state/types';
@@ -8,6 +7,8 @@ import './LandingScreen.css';
 // Load sample persona goes to the lifelog card (step 2), which leads on to the inputs.
 export const SAMPLE_NEXT_SCREEN: Screen = 'lifelog';
 export const SIMULATION_LABEL = '[SIMULATION] Sample persona: synthetic';
+// Illustrated sample persona: Open Peeps by Pablo Stanley (openpeeps.com), CC0 1.0. Not a real person.
+const photoUrl = `${import.meta.env.BASE_URL}avatars/dana.svg`;
 
 export default function Landing() {
   const { dispatch } = useStore();
@@ -41,7 +42,7 @@ export default function Landing() {
         <img
           className="landing-avatar"
           src={photoUrl}
-          alt="Sample persona placeholder (SIMULATION)"
+          alt="Illustrated sample persona Dana, synthetic (SIMULATION)"
           width={56}
           height={56}
         />

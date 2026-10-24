@@ -73,8 +73,8 @@
     .cta { display: flex; justify-content: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
     .trust { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 26px; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
     .avatars { display: flex; }
-    .avatars span { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-left: -8px; }
-    .avatars span:first-child { margin-left: 0; }
+    .avatars img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-left: -8px; display: block; object-fit: cover; }
+    .avatars img:first-child { margin-left: 0; }
 
     .stage { height: 640px; margin-top: 18px; }
     .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -256,10 +256,11 @@
         <a class="btn btn-light" href="#how">See how it works</a>
       </div>
       <div class="trust">
+        <!-- Illustrated sample personas: Open Peeps by Pablo Stanley (openpeeps.com), CC0 1.0. Not real people. -->
         <span class="avatars" aria-hidden="true">
-          <span style="background:linear-gradient(135deg,#e9c9a8,#b57b52)"></span>
-          <span style="background:linear-gradient(135deg,#cdb4e6,#8e48b1)"></span>
-          <span style="background:linear-gradient(135deg,#f3dca2,#c9963a)"></span>
+          <img src="/avatars/dana.svg" alt="" width="30" height="30">
+          <img src="/avatars/sample-2.svg" alt="" width="30" height="30">
+          <img src="/avatars/sample-3.svg" alt="" width="30" height="30">
         </span>
         Simulation · synthetic data
       </div>

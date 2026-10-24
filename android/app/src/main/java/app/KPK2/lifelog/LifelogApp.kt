@@ -2,6 +2,7 @@ package app.KPK2.lifelog
 
 import android.app.Application
 import android.content.Context
+import app.KPK2.lifelog.collect.document.DocumentStore
 import app.KPK2.lifelog.data.LifelogDatabase
 import app.KPK2.lifelog.data.LifelogRepository
 import app.KPK2.lifelog.sources.CollectorRunner
@@ -29,6 +30,7 @@ class AppGraph(context: Context) {
     val repository = LifelogRepository(database.lifelogDao())
     val sourceSettings = SourceSettings(context)
     val runner = CollectorRunner(context.applicationContext, repository, sourceSettings)
+    val deleter = ItemDeleter(repository, DocumentStore.forApp(context.applicationContext))
 }
 
 val Context.appGraph: AppGraph

@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.KPK2.lifelog.ItemDeleter
 import app.KPK2.lifelog.R
 import app.KPK2.lifelog.collect.note.NewNoteButton
 import app.KPK2.lifelog.data.LifelogItem
@@ -38,7 +39,7 @@ import app.KPK2.lifelog.data.LifelogRepository
 import kotlinx.coroutines.launch
 
 @Composable
-fun TimelineScreen(repository: LifelogRepository, modifier: Modifier = Modifier) {
+fun TimelineScreen(repository: LifelogRepository, deleter: ItemDeleter, modifier: Modifier = Modifier) {
     val items by repository.items.collectAsStateWithLifecycle(initialValue = emptyList())
     val scope = rememberCoroutineScope()
     var confirmDeleteAll by remember { mutableStateOf(false) }
@@ -72,7 +73,7 @@ fun TimelineScreen(repository: LifelogRepository, modifier: Modifier = Modifier)
                 contentPadding = PaddingValues(16.dp),
             ) {
                 items(items, key = { it.id }) { item ->
-                    ItemCard(item, onDelete = { scope.launch { repository.delete(item.id) } })
+                    ItemCard(item, onDelete = { scope.launch { deleter.delete(item.id) } })
                 }
             }
         }
@@ -86,7 +87,7 @@ fun TimelineScreen(repository: LifelogRepository, modifier: Modifier = Modifier)
             confirmButton = {
                 TextButton(onClick = {
                     confirmDeleteAll = false
-                    scope.launch { repository.deleteAll() }
+                    scope.launch { deleter.deleteAll() }
                 }) { Text(stringResource(R.string.timeline_delete_all_confirm)) }
             },
             dismissButton = {

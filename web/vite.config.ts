@@ -33,6 +33,9 @@ export default defineConfig({
     environment: 'jsdom',
     globals: false,
     setupFiles: ['./src/test/setup.ts'],
+    // Keep unit tests off the network even when .env.local sets a brain URL; tests that
+    // need one stub it with vi.stubEnv.
+    env: { VITE_BRAIN_URL: '' },
     include: ['src/**/*.test.{ts,tsx}', 'api/**/*.test.{js,ts}'],
   },
 });

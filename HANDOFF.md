@@ -32,6 +32,9 @@ stage: decide
 > 작업 행 상태는 담당이 여기에 한 줄로 알린다 — `T<n> <todo|doing|done|blocked> · 커밋 <hash> · <역할>`. PM이 BOARD 「작업」 상태 칸으로 옮긴다 (BOARD의 쓰기 주체는 PM 하나).
 - 2026-10-24 09:25 · Claude(행사 전 정비, Roy 세션) · 주최 공식 공지(10/23 밤)·제출 페이지·발표자료 키트를 하네스에 반영: `docs/event-day-official.md`(정본) · CONTRACT 시간표 1·2·3·3'·9 + §E · templates MISSION/SUBMISSION/DEMODAY · submit-gate·pitch-compile 부록 · `scripts/bootstrap_public_repo.sh`(10:00 새 공개 레포) · `templates/slide-kit/`. 핵심: 미션 09:40쯤 · 10:00 새 공개 레포 · 10:30 주제·레포 선언 · 제출 양식 9칸 · PDF 로고 띠 · 결선 3분 영어+7분 한국어 · 앱 21:00까지. PM 결정 4건은 문서 §5. 이 뒤로 행사 작업은 Console 로그인 Claude Code에서만.
 
+- 슬롯 8 · 13:00 · 화면 직접 관측 (13:35 늦게 기록) · Sales — 11:00 | 미관측 | - · 12:00 | 미관측 | - (보드 없음 → PM이 G2 「슬롯」으로 옮김)
+- 2026-10-24 13:35 · Sales(태진) · 행사 모드 ① 행사 계정 yes(사람 확인 13:35, Console 크레딧 충분) · ② 최초 허용 호출 11:10 · ③ off → `log/2026-10-24_sales-buyer_2.md` · 산출물 `docs/gtm/` 5건(journey-io · market-claims · ai-displaced-occupations · verify-e68-e59 · competitors) · 「제안」 9줄 · 검증 pii hits=0 · 블로커 없음 · 다음: 14:00 배포 URL에서 S1–S3 실행 → SUBMISSION 「테스트」 · 커밋 974451a
+
 ## 결정
 
 > 사용법: PM(결정자)이 「제안」이나 🚨 승인 답을 승격할 때만 쓴다 — `시각 · 결정 한 줄 · 결정자 · 근거(파일 경로나 제안 번호)`.

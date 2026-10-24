@@ -204,7 +204,7 @@ test('landing page is the phone kit with the app inside its phone', async ({ pag
   await expect(page).toHaveTitle('Dream Achieve Moments');
   await expect(page.locator('nav .brand')).toHaveText('Dream Achieve Moments');
   await expect(page.locator('#why')).toBeAttached();
-  // The See the demo card holds the promo video: poster first, nothing downloads until play.
+  // The See the demo card holds the promo video: poster first, nothing downloads until it scrolls into view.
   const reelVideo = page.locator('#reel video');
   await expect(reelVideo).toHaveAttribute('poster', '/media/promo-poster.jpg');
   await expect(reelVideo).toHaveAttribute('preload', 'none');
@@ -213,8 +213,11 @@ test('landing page is the phone kit with the app inside its phone', async ({ pag
   const play = page.getByRole('button', { name: 'Play the 40-second Dream Achieve Moments video' });
   await expect(play).toHaveText('See the demo');
 
-  // Pressing it plays the video in place with controls; Escape pauses and brings the button back.
-  await play.scrollIntoViewIfNeeded();
+  // Scrolled into view, a muted preview plays without controls; pressing the button plays it in place
+  // with sound and controls; Escape pauses and brings the button back.
+  await page.locator('#reel').scrollIntoViewIfNeeded();
+  await expect(page.locator('#reel')).toHaveClass(/is-preview/);
+  await expect.poll(() => reelVideo.evaluate((v: HTMLVideoElement) => !v.paused && v.muted && !v.controls), { timeout: 15_000 }).toBe(true);
   await play.click();
   await expect(play).toBeHidden();
   await expect.poll(() => reelVideo.evaluate((v: HTMLVideoElement) => v.currentTime), { timeout: 15_000 }).toBeGreaterThan(0.3);

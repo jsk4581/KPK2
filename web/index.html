@@ -127,12 +127,13 @@
 
     /* Demo card rising after the merge */
     .reel { margin-top: -30vh; }
-    .reel-card { display: block; position: relative; height: clamp(320px, 46vw, 520px); border-radius: 24px; overflow: hidden; isolation: isolate; transform-origin: 50% 100%; will-change: transform; cursor: pointer;
+    .reel-card { display: block; position: relative; width: min(100%, 960px); margin-inline: auto; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden; isolation: isolate; transform-origin: 50% 100%; will-change: transform; cursor: pointer;
       background: radial-gradient(60% 80% at 25% 30%, #ecd6f6, transparent 70%), radial-gradient(50% 70% at 80% 70%, #f7f0d6, transparent 70%), #f3eef7; }
-    /* The promo video fills the card; the poster stands in until the visitor presses play */
+    /* The card keeps the video's 16:9 frame, so nothing is cropped; the poster stands in until it plays */
     .reel-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; border-radius: inherit; background: transparent; }
     .reel-card.is-playing { cursor: auto; }
     .reel-card.is-playing .play { display: none; }
+    .reel-card.is-preview .play { left: 20px; top: auto; bottom: 20px; transform: none; }
     .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 12px; border: 0; border-radius: 999px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); color: var(--ink); font: 500 14px/1 var(--sans); box-shadow: 0 10px 30px -10px rgba(0,0,0,.35); cursor: pointer; transition: box-shadow .2s; }
     .play:hover { box-shadow: 0 14px 34px -10px rgba(0,0,0,.45); }
     .play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -656,28 +657,47 @@
     const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.3 });
     document.querySelectorAll('.feature').forEach(f => io.observe(f));
 
-    // Promo video in the reel card. Nothing autoplays (with or without reduced motion): the poster and
-    // "See the demo" stay until the visitor presses the button or the card, then the video plays in place
-    // with sound and native controls. Escape pauses it and brings the button back (pressing it resumes);
-    // scrolling the card out of view pauses it; at the end the poster and the button return.
+    // Promo video in the reel card. Scrolling it into view starts a muted, looping preview with no
+    // controls (not under reduced motion); "See the demo" moves to the corner. Pressing the button or
+    // the card plays it from the start in place with sound and native controls. Escape pauses it and
+    // brings the button back (pressing it resumes); scrolling the card out of view pauses it and
+    // scrolling back resumes it; at the end the poster and the button return. After Escape or the
+    // end, the preview waits until the card has left the view and come back.
     (() => {
       const video = document.getElementById('reel-video');
       const btn = document.getElementById('reel-play');
       const playing = () => reel.classList.contains('is-playing');
+      const previewing = () => reel.classList.contains('is-preview');
+      let inView = false;
+      let held = false;                         // no preview until the card leaves and re-enters
 
       function stop(rewind) {
         const hadFocus = reel.contains(document.activeElement);
         video.pause();
         video.controls = false;
-        reel.classList.remove('is-playing');
+        reel.classList.remove('is-playing', 'is-preview');
+        held = true;
         if (rewind) video.load();               // back to the poster
         if (hadFocus) btn.focus();
       }
 
+      async function preview() {
+        if (still || held || playing() || previewing()) return;
+        reel.classList.add('is-preview');
+        video.muted = true;
+        video.loop = true;
+        video.preload = 'auto';
+        try { await video.play(); } catch { reel.classList.remove('is-preview'); }
+      }
+
       async function start() {
+        const fromPreview = previewing();
+        reel.classList.remove('is-preview');
         reel.classList.add('is-playing');
+        video.loop = false;
         video.controls = true;
         video.muted = false;
+        if (fromPreview) video.currentTime = 0;
         video.focus({ preventScroll: true });   // the button is hidden now; keep keyboard focus in the card
         try {
           await video.play();
@@ -694,9 +714,23 @@
 
       reel.addEventListener('click', () => { if (!playing()) start(); });
       video.addEventListener('ended', () => stop(true));
-      video.querySelector('source').addEventListener('error', () => stop(false));
+      video.querySelector('source').addEventListener('error', () => { held = true; stop(false); });
       addEventListener('keydown', (e) => { if (e.key === 'Escape' && playing()) stop(false); });
-      new IntersectionObserver(([e]) => { if (!e.isIntersecting && !video.paused) video.pause(); }, { threshold: 0.2 }).observe(reel);
+      new IntersectionObserver(([e]) => {
+        const visible = e.isIntersecting && e.intersectionRatio >= 0.5;
+        if (visible === inView) return;
+        inView = visible;
+        if (!inView) {
+          held = false;
+          if (!video.paused) video.pause();
+        } else if (playing()) {
+          video.play().catch(() => {});
+        } else if (previewing()) {
+          video.play().catch(() => {});
+        } else {
+          preview();
+        }
+      }, { threshold: 0.5 }).observe(reel);
     })();
 
     // Demo focus: the app inside the phone posts {type: 'dam:focus-demo'} after "Load sample persona".

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Market size · revenue model · US GTM — Sales 2026-10-24</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;background:#FCFCFB;color:#141018;width:1920px;padding:48px 72px;line-height:1.35}
+ h1{font-size:40px;font-weight:900;letter-spacing:-.02em}
+ h2{font-size:28px;font-weight:800;margin:0 0 6px}
+ .sub{font-size:18px;color:#5B5564}
+ .src{font-size:15px;color:#7A7482}
+ .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:28px}
+ .card{background:#fff;border:1px solid #E8E4EE;border-radius:20px;padding:28px 32px}
+ /* bars */
+ .bars{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+ .row{display:grid;grid-template-columns:300px 1fr 150px;align-items:center;gap:14px;font-size:18px}
+ .row .lab b{display:block;font-size:18px}
+ .row .lab span{font-size:14px;color:#7A7482}
+ .track{position:relative;height:26px;background:#F3F0F7;border-radius:4px}
+ .bar{position:absolute;left:0;top:0;height:26px;border-radius:0 4px 4px 0;min-width:4px}
+ .val{font-size:20px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+ .stage1{background:#7C3AED}.stage2{background:#D97706}.stage3{background:#0E9F8E}
+ .seq5{background:#2E1065}.seq4{background:#5B21B6}.seq3{background:#7C3AED}.seq2{background:#A78BFA}.seq1{background:#DDD6FE}
+ .legend{display:flex;gap:22px;font-size:16px;margin-top:14px;flex-wrap:wrap}
+ .legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+ .tip{position:fixed;pointer-events:none;background:#141018;color:#fff;font-size:14px;padding:8px 10px;border-radius:8px;display:none;max-width:360px;z-index:9}
+ .sep{height:1px;background:#E8E4EE;margin:14px 0}
+ /* diagram */
+ svg text{font-family:inherit}
+ table{border-collapse:collapse;width:100%;font-size:16px;margin-top:12px}
+ th,td{border-bottom:1px solid #E8E4EE;padding:9px 10px;text-align:left;vertical-align:top}
+ th{font-size:14px;color:#7A7482;letter-spacing:.06em;text-transform:uppercase}
+ .tag{display:inline-block;font-size:13px;padding:2px 8px;border-radius:999px;background:#F3F0F7;color:#5B21B6;font-weight:700;margin-left:6px}
+ .est{background:#FEF3C7;color:#92400E}
+</style></head>
+<body data-palette="#7C3AED,#D97706,#0E9F8E">
+<h1>Dream Achieve Moments (Second Draft) — market size · revenue model · US go-to-market</h1>
+<div class="sub">Sales draft 2026-10-24 16:00 · every number carries its source; <span class="tag est">est.</span> = hypothesis (our arithmetic on official counts). Person counts = US unless marked US+CA.</div>
+
+<div class="grid">
+ <div class="card">
+  <h2>A · TAM → SAM → SOM → first market</h2>
+  <div class="sub">Nested headcounts, linear scale. Hover a bar for the source.</div>
+  <div class="bars" id="funnel"></div>
+  <div class="sep"></div>
+  <div class="src">TAM = workers in BLS "Very high" AI-exposure occupations (BLS, 2026 — exposure ≠ job loss). SAM = BLS 2025–35 declining/flat occupations where BLS names AI or automation (est.). SOM = SAM filtered to age 25–44 and median pay ≥ $45k (est.). Beachhead = 5 creative/language occupations, US+CA official counts (BLS 2025 · Job Bank 2023). First market = US writers &amp; authors (BLS 2025; 65% self-employed).</div>
+ </div>
+ <div class="card">
+  <h2>B · Expansion ladder — three markets</h2>
+  <div class="sub">Occupation headcount by expansion stage. Sorted within stage.</div>
+  <div class="legend"><span><i class="stage1"></i>1st · writers &amp; copywriters (today)</span><span><i class="stage2"></i>2nd · creative &amp; language freelancers</span><span><i class="stage3"></i>3rd · office roles AI is rewriting (B2B)</span></div>
+  <div class="bars" id="ladder"></div>
+  <div class="sep"></div>
+  <div class="src">BLS Occupational Outlook Handbook 2025–35 (US) · Statistics Canada Job Bank 2023 (CA rows). 2nd-stage total ≈ 0.56M US + 0.145M CA; 3rd-stage rows are the largest BLS-declining occupations with an AI/automation outlook note. Bold "AI named" = BLS outlook text cites artificial intelligence.</div>
+ </div>
+</div>
+
+<div class="grid">
+ <div class="card">
+  <h2>C · Revenue model — B2C proves it, B2B pays for it</h2>
+  <div class="sub">Three revenue lines plus the opt-in data-credit loop. Prices are hypotheses until tested.</div>
+  <svg viewBox="0 0 860 500" width="100%" style="margin-top:12px">
+   <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7A7482"/></marker></defs>
+   <!-- user -->
+   <rect x="20" y="40" width="200" height="90" rx="16" fill="#F3F0F7" stroke="#7C3AED" stroke-width="2"/>
+   <text x="120" y="76" text-anchor="middle" font-size="20" font-weight="800">User (B2C)</text>
+   <text x="120" y="104" text-anchor="middle" font-size="15" fill="#5B5564">copywriter first</text>
+   <!-- free / pro -->
+   <rect x="300" y="20" width="230" height="60" rx="14" fill="#fff" stroke="#7C3AED" stroke-width="2"/>
+   <text x="415" y="45" text-anchor="middle" font-size="17" font-weight="800">① Free app</text>
+   <text x="415" y="67" text-anchor="middle" font-size="14" fill="#5B5564">story → 3 paths · acquisition</text>
+   <rect x="300" y="100" width="230" height="60" rx="14" fill="#fff" stroke="#7C3AED" stroke-width="2"/>
+   <text x="415" y="125" text-anchor="middle" font-size="17" font-weight="800">② Pro subscription</text>
+   <text x="415" y="147" text-anchor="middle" font-size="14" fill="#5B5564">weekly loop · $12/mo hypothesis (E24: $29–79)</text>
+   <line x1="220" y1="70" x2="300" y2="50" stroke="#7A7482" stroke-width="2" marker-end="url(#ar)"/>
+   <line x1="220" y1="100" x2="300" y2="130" stroke="#7A7482" stroke-width="2" marker-end="url(#ar)"/>
+   <!-- brain -->
+   <rect x="300" y="210" width="230" height="80" rx="16" fill="#7C3AED"/>
+   <text x="415" y="243" text-anchor="middle" font-size="19" font-weight="900" fill="#fff">DECISION BRAIN</text>
+   <text x="415" y="268" text-anchor="middle" font-size="14" fill="#EDE9FE">rules decide · Claude drafts · MCP server</text>
+   <line x1="415" y1="160" x2="415" y2="210" stroke="#7A7482" stroke-width="2" marker-end="url(#ar)"/>
+   <!-- b2b -->
+   <rect x="620" y="190" width="220" height="120" rx="16" fill="#FFF7ED" stroke="#D97706" stroke-width="2"/>
+   <text x="730" y="218" text-anchor="middle" font-size="18" font-weight="800">③ Brain API (B2B)</text>
+   <text x="730" y="242" text-anchor="middle" font-size="14" fill="#5B5564">usage-based (per call / per seat)</text>
+   <text x="730" y="264" text-anchor="middle" font-size="14" fill="#5B5564">outplacement &amp; HR · employers · Upwork</text>
+   <text x="730" y="286" text-anchor="middle" font-size="14" fill="#92400E">anchor: $600–2,600 / employee (E70)</text>
+   <line x1="530" y1="250" x2="620" y2="250" stroke="#7A7482" stroke-width="2" marker-end="url(#ar)"/>
+   <!-- data credit loop -->
+   <rect x="20" y="330" width="200" height="130" rx="16" fill="#ECFDF5" stroke="#0E9F8E" stroke-width="2"/>
+   <text x="120" y="358" text-anchor="middle" font-size="17" font-weight="800">④ Data-credit loop</text>
+   <text x="120" y="382" text-anchor="middle" font-size="13" fill="#5B5564">user opts in, per category</text>
+   <text x="120" y="402" text-anchor="middle" font-size="13" fill="#5B5564">default = not shared · revocable</text>
+   <text x="120" y="422" text-anchor="middle" font-size="13" fill="#5B5564">raw data stays on device</text>
+   <text x="120" y="442" text-anchor="middle" font-size="13" fill="#5B5564">→ credits pay the Pro fee</text>
+   <rect x="620" y="350" width="220" height="100" rx="16" fill="#ECFDF5" stroke="#0E9F8E" stroke-width="2"/>
+   <text x="730" y="380" text-anchor="middle" font-size="17" font-weight="800">⑤ Data license (B2B)</text>
+   <text x="730" y="404" text-anchor="middle" font-size="13" fill="#5B5564">de-identified, aggregated insights only</text>
+   <text x="730" y="424" text-anchor="middle" font-size="13" fill="#5B5564">"where is this occupation moving?"</text>
+   <line x1="120" y1="130" x2="120" y2="330" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+   <line x1="220" y1="400" x2="300" y2="400" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5"/>
+   <line x1="300" y1="400" x2="300" y2="290" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5"/>
+   <line x1="530" y1="400" x2="620" y2="400" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+   <line x1="415" y1="290" x2="415" y2="400" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5"/>
+   <path d="M730,450 C730,490 120,490 120,460" fill="none" stroke="#0E9F8E" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+   <text x="425" y="482" text-anchor="middle" font-size="13" fill="#0E9F8E" font-weight="700">license revenue → credits back to the user</text>
+  </svg>
+  <div class="src" style="margin-top:8px">Why this order: ① acquires, ② covers server cost, ③ is the main revenue (the brain is the product, tokens are the meter), ④/⑤ is optional upside and must pass CCPA "sale/share" + financial-incentive notice rules (CA Civ. Code §1798.140, §1798.125) — raw data never leaves the device; we sell inference and aggregates, not people's data. Datacoup (2012–2019) shows raw-data brokerage alone does not pay.</div>
+ </div>
+ <div class="card">
+  <h2>D · US go-to-market — sequenced</h2>
+  <table>
+   <tr><th>Phase</th><th>Who · where they already are</th><th>Offer · price</th><th>Evidence</th><th>Metric</th></tr>
+   <tr><td><b>0–3 mo</b><br>1st market</td><td>US freelance copywriters &amp; writers (140K, 65% self-employed). Upwork (Academy, AI hub), r/freelanceWriters &amp; r/copywriting, Substack/newsletter communities, LinkedIn "my clients use ChatGPT" threads</td><td>Free → Pro $12/mo <span class="tag est">est.</span> · sample-persona result shared as content, no ads</td><td>Income −5.2% after ChatGPT (Hui et al. 2023, verified) · Upwork Research Institute 2025: coaching demand +74%</td><td><b>2-week check-in retention</b> of users who chose a path</td></tr>
+   <tr><td><b>3–9 mo</b><br>2nd market</td><td>Translators (74K), graphic designers (253K), illustrators (29K), voice (≈39K proxy) + CA creative (145K). ProZ, Behance/Dribbble, AIGA, voice-actor guilds</td><td>Occupation-specific brains (path templates) — today's demo fails outside copywriting (S2 1/3 · S3 0/3)</td><td>UK SoA 2024: 36% translators, 26% illustrators lost work to AI (single-source, non-US) · Hui et al.: image-AI income −9.4%</td><td>Path-fit rate per occupation ≥ 2/3 before launch</td></tr>
+   <tr><td><b>9–24 mo</b><br>3rd market · B2B</td><td>Employers citing AI in layoffs (120,136 cuts Jan–Sep 2026, Challenger) · outplacement vendors (Intoo, RiseSmart, LHH, Right, Careerminds — no public APIs → resell / white-label) · state workforce boards (WIOA)</td><td>Brain API usage billing + employer-sponsored 12-mo seat priced under outplacement list ($600–2,600 / employee, E70)</td><td>Office occupations: admin 3.52M · CS 2.67M · bookkeeping 1.53M declining (BLS 2025–35)</td><td>Pilot: 1 vendor, 100 seats, 2-week retention vs. résumé-only cohort</td></tr>
+   <tr><td><b>Always</b><br>US-specific</td><td colspan="2">Consent-first data model (CCPA/CPRA notice, opt-in, revocation; WA My Health My Data if health signals ever enter) · 1099 freelancers pay themselves → monthly card billing, no procurement · English-only, US time zones for check-in notifications</td><td>5 outplacement vendors already market "AI career transition" (LHH Career Studio 2024) → differentiate on expertise transfer + weekly habit loop, not on "AI"</td><td>CAC payback &lt; 3 months at $12/mo <span class="tag est">est.</span></td></tr>
+  </table>
+ </div>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(n>=10e6?1:2).replace(/\.?0+$/,'') + 'M' : Math.round(n/1e3) + 'K';
+const funnel = [
+ {l:'TAM — "Very high" AI-exposure occupations', s:'BLS AI exposure categories, 2026 · XLSX sum · exposure ≠ job loss', v:53209000, c:'seq1', est:false},
+ {l:'SAM — BLS-declining occupations, AI/automation named', s:'BLS OOH 2025–35, our sum of E45–E55 (est.)', v:11800000, c:'seq2', est:true},
+ {l:'SOM — age 25–44 · median pay ≥ $45k', s:'CPS age share × SAM, pay filter (est.)', v:3000000, c:'seq3', est:true},
+ {l:'Beachhead — 5 creative/language occupations (US+CA)', s:'BLS 2025 + Job Bank 2023 official counts, summed', v:704300, c:'seq4', est:true},
+ {l:'First market — US writers & authors', s:'BLS OOH 2025 · 140,300 · 65% self-employed = ~91K freelance', v:140300, c:'seq5', est:false},
+];
+const ladder = [
+ {l:'Writers & authors (incl. copywriters)', v:140300, st:1, ai:true},
+ {l:'Graphic designers', v:253100, st:2, ai:true},
+ {l:'Canada: illustrators, graphic, writers, translators', v:144900, st:2, ai:false, ca:true},
+ {l:'Interpreters & translators', v:73900, st:2, ai:true},
+ {l:'Craft & fine artists (illustrators)', v:53400, st:2, ai:false},
+ {l:'Announcers & DJs (voice proxy)', v:38700, st:2, ai:true},
+ {l:'Secretaries & admin assistants', v:3515600, st:3, ai:true},
+ {l:'Customer service representatives', v:2666000, st:3, ai:false},
+ {l:'Bookkeeping & accounting clerks', v:1532400, st:3, ai:false},
+ {l:'Paralegals & legal assistants', v:404900, st:3, ai:true},
+ {l:'Public relations specialists', v:314500, st:3, ai:true},
+ {l:'Computer programmers', v:110800, st:3, ai:true},
+];
+const tip = document.getElementById('tip');
+function rows(el, data, max, cls, extra) {
+ el.innerHTML = data.map(d => `<div class="row" data-tip="${(d.s||'')}">
+  <div class="lab"><b>${d.l}${d.ai?' <span class="tag">AI named</span>':''}${d.ca?' <span class="tag">US+CA</span>':''}${d.est?' <span class="tag est">est.</span>':''}</b>${extra?`<span>${extra(d)}</span>`:''}</div>
+  <div class="track"><div class="bar ${cls(d)}" style="width:${Math.max(0.4, d.v/max*100)}%"></div></div>
+  <div class="val">${fmt(d.v)}</div></div>`).join('');
+ el.querySelectorAll('.row').forEach(r => { r.onmousemove = e => { const t = r.dataset.tip; if(!t) return; tip.style.display='block'; tip.textContent=t; tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY+14)+'px'; }; r.onmouseleave=()=>tip.style.display='none'; });
+}
+rows(document.getElementById('funnel'), funnel, 53209000, d=>'stage1', d=>d.s);
+rows(document.getElementById('ladder'), ladder, 3515600, d=>'stage'+d.st, null);
+</script>
+</body></html>

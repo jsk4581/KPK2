@@ -14,3 +14,5 @@ import './think.test.mjs';
 import './integration.test.mjs';
 import './security.test.mjs';
 import './compat.test.mjs';
+import './agent.test.mjs';
+import './agent-routes.test.mjs';

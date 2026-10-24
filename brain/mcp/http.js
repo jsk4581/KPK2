@@ -7,6 +7,8 @@
 //   GET    /v1/health        { ok, name, version, tools, uptimeSec }   (never needs a token)
 //   POST   /v1/think | /v1/rank-roles | /v1/plan-week | /v1/check-in | /v1/analyze-state | /v1/explain
 //   GET    /v1/scenario      scenario JSON
+//   POST   /v1/agent/chat    LLM agent turn (agent-routes.js; 503 agent_disabled without ctx.agent)
+//   GET    /v1/usage         agent token/cost ledger + pricing
 //
 // Cross-cutting: CORS on every response (incl. OPTIONS preflight), optional
 // bearer token, 120 req/min per client, 64KB body limit, one log line per request.
@@ -30,6 +32,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { SERVER_NAME, SERVER_VERSION, TOOL_NAMES, invokeBrain, validateInput } from './server.js';
 import { handleCompat, isCompatRoute } from './compat.js';
+import { createAgentRoutes, isAgentRoute, partnerKeyOf } from './agent-routes.js';
 
 export const BODY_LIMIT_BYTES = 64 * 1024;
 export const RATE_LIMIT = { limit: 120, windowMs: 60_000 };
@@ -239,7 +242,8 @@ export function startHttp({
   rateLimit = RATE_LIMIT,
   bodyLimit = BODY_LIMIT_BYTES,
   timeouts = TIMEOUTS,
-  log = defaultLog
+  log = defaultLog,
+  ctx = {}
 } = {}) {
   if (typeof brainServerFactory !== 'function') throw new TypeError('startHttp: brainServerFactory is required');
   if (!brain || typeof brain !== 'object') throw new TypeError('startHttp: brain is required');
@@ -247,6 +251,8 @@ export function startHttp({
   const origins = Array.isArray(corsOrigins) && corsOrigins.length ? corsOrigins : ['*'];
   const limiter = createRateLimiter(rateLimit);
   const startedAt = Date.now();
+  // ctx.agent (optional, from bin.js) serves /v1/agent/* and /v1/usage and upgrades /v1/interview.
+  const serveAgent = createAgentRoutes({ ctx, brain, bodyLimit, log, readBody, parseJson, sendJson });
 
   async function handleMcp(req, res, parsedBody) {
     const server = brainServerFactory();
@@ -347,6 +353,9 @@ export function startHttp({
       return;
     }
 
+    // Agent routes (/v1/agent/*, /v1/usage) share the CORS, rate-limit and token rules above.
+    if (isAgentRoute(path)) return serveAgent(req, res, path, method);
+
     // Build's web↔brain contract (/v1/interview, /v1/paths, /v1/plan, /v1/checkin, /v1/voice/token)
     // is dispatched to compat.js before the tool routes; same body limit, JSON parsing and error shape.
     if (isCompatRoute(path)) {
@@ -364,7 +373,7 @@ export function startHttp({
         sendError(res, 400, 'invalid_json', 'request body is not valid JSON');
         return;
       }
-      const out = handleCompat(path, json.value, brain);
+      const out = await handleCompat(path, json.value, brain, { ...ctx, partnerKey: partnerKeyOf(req.headers), log });
       sendJson(res, out.status, out.body);
       return;
     }

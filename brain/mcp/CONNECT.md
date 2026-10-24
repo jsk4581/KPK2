@@ -313,6 +313,102 @@ curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/voice/token" \
 
 ---
 
+## ⑤ 에이전트 계층(Claude 에이전트 + 토큰 계량)
+
+같은 서버가 `ANTHROPIC_API_KEY`(`brain/.env`, gitignored)가 있을 때만 켜는 선택 계층이다(`brain/agent/` + `brain/mcp/agent-routes.js`). `claude-opus-5-5` Tool Runner가 브레인 도구 7개(think·rank_roles·plan_week·check_in·analyze_state·explain·get_scenario)를 호출해 코치 문장을 쓰고 — 사람에 대한 판단은 **도구만** 내린다 — 호출마다 토큰·비용을 `X-Partner-Key`별로 합산한다. 키가 없거나 `BRAIN_AGENT=off`면 `/v1/agent/chat`은 503 `agent_disabled`, `/v1/interview`는 ④의 스크립트 답(`source: 'script'`)이다. CORS·64KB 상한·rate limit·bearer 토큰은 ①과 같다. 기동 로그 끝에 `agent: enabled (model claude-opus-5-5)`가 찍히면 켜진 것이다(키 값은 어디에도 출력되지 않는다).
+
+| 경로 | 본문 / 헤더 | 응답 |
+|---|---|---|
+| `POST /v1/agent/chat` | `{ user_turn: {source: script\|voice, text} \| string, history?: [{role: agent\|user, text}], lifelog?, persona?, scenario_id?, today? }` · 헤더 `X-Partner-Key: <키>`(없거나 형식 오류면 `demo`) | `{ reply: {text}, ready_for_paths, tool_calls: [{name, ms, ok}], usage: {model, input_tokens, output_tokens, cache_read_input_tokens, cache_creation_input_tokens, cost_usd}, trace[], stop_reason }` |
+| `GET /v1/usage` | — | `{ enabled, partners: {<키>: {calls, input_tokens, output_tokens, cache_read_input_tokens, cache_creation_input_tokens, cost_usd, last_at}}, total, pricing: {model, usd_per_mtok} }` — 메모리 장부라 서버 재시작 시 0 |
+| `POST /v1/interview` | ④와 같은 Build 규격 | 에이전트가 켜져 있으면 `source: 'agent'` + `usage`·`tool_calls`·에이전트 trace, 에이전트가 던지거나 빈 답이면 `source: 'script'`로 자동 대체(5xx 없음; 사유는 서버 로그 `AGENT_FALLBACK`) |
+
+- 빠진 본문 필드는 서버의 합성 시나리오(`dana-copywriter`, `_label: synthetic`)로 채운다. 도구 입력도 대화의 라이프로그·체크인·주간·오늘로 기본 채워지므로 모델이 라이프로그를 되돌려 보내지 않는다. Build 규격 라이프로그(`ts`)는 ④와 같은 매핑(`date`·source)으로 도구에 들어간다.
+- `ready_for_paths`는 코드가 정한다: user 턴(`source: script|voice`) 3개 이상이거나 답에 `[READY_FOR_PATHS]` 표식(본문에서 제거됨). `source`가 그 외(예: `checkin`)인 턴은 이벤트로 넘기고 세지 않는다.
+- 모델이 `stop_reason: 'refusal'`로 멈추면 고정 문장으로 답하고 도구를 더 돌리지 않는다. 답은 금지어 lint(`failed · streak · should have · lazy · because you` …)를 통과해야 한다.
+- 단가(USD/1M 토큰): input 4 · output 20 · cache read 0.20 · cache write 5(5분). 시스템 프롬프트+도구 정의(≈7.4K 토큰)는 캐시되어 첫 턴만 cache write, 이후 턴은 cache read다. 오류 본문은 ①과 같은 `{ error: { code, message } }`(400 invalid_json/invalid_input · 405 · 503 agent_disabled · 502 agent_error — 상세는 서버 로그에만).
+
+### curl 로 바로 확인
+
+```bash
+BRAIN=https://stayed-stock-advancement-taxi.trycloudflare.com
+
+# chat turn 1 — partner demo-vc; reply is 2-4 sentences that end in ONE question
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/agent/chat" \
+  -H 'Content-Type: application/json' -H 'X-Partner-Key: demo-vc' \
+  -d '{"user_turn":{"source":"script","text":"My clients now draft with ChatGPT and only send me polish work at a third of the rate."}}'
+
+# chat turn 2 — same partner; history carries turn 1 (role agent = the coach's line, apostrophes dropped for the shell)
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/agent/chat" \
+  -H 'Content-Type: application/json' -H 'X-Partner-Key: demo-vc' \
+  -d '{"history":[{"role":"user","source":"script","text":"My clients now draft with ChatGPT and only send me polish work at a third of the rate."},{"role":"agent","text":"Polish jobs at a third of the rate is a real change, and it makes sense that it is on your mind. Before we get to what is next, I would like to start with what has worked for you. In seven years of copywriting, which moments gave you the most energy?"}],"user_turn":{"source":"script","text":"The discovery calls. Sitting with a founder for 45 minutes and finding the two phrases their customers actually use, then watching that line show up on their homepage."}}'
+
+# usage — per partner + total + pricing (free: no model call)
+curl -s -w '\nHTTP %{http_code}\n' "$BRAIN/v1/usage"
+
+# interview (Build shape, user_turn null) — source agent + one question; no partner key → ledger row "demo"
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/interview" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana","role":"freelance copywriter"},"lifelog":[{"id":"l01","ts":"2026-10-05T09:00:00-05:00","source":"note","title":"Starting the two-week arc","summary":"Picked the messaging consultant path. Discovery calls give me energy."},{"id":"l02","ts":"2026-10-05T11:00:00-05:00","source":"calendar","title":"Discovery call: meal-kit launch","summary":"45-minute discovery call with a founder. Left with two phrases customers actually use."}],"history":[],"user_turn":null}'
+
+# agent off (no key, or BRAIN_AGENT=off at start) → 503 agent_disabled; /v1/interview then answers from the script
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/agent/chat" \
+  -H 'Content-Type: application/json' -d '{"user_turn":"hi"}'
+```
+
+### 검증 결과 (2026-10-24, 공개 URL 로 curl, 실호출 3회 ≈ $0.07)
+
+| 단계 | 요청 | 결과 |
+|---|---|---|
+| chat 1 | `X-Partner-Key: demo-vc`, user_turn 1개 | 200 · 3.7s · 3문장 + 질문 1개(`…which moments gave you the most energy?`) · `tool_calls []` · `stop_reason end_turn` · usage 2552 in / 136 out / cache write 7397 · `cost_usd 0.049913` |
+| chat 2 | history 2개(user + agent) + user_turn | 200 · 2.6s · 질문 1개(`…what pulls at you now, even if it's only a hunch?`) · usage 2682 in / 129 out / **cache read 7397** · `cost_usd 0.014787` |
+| usage | `GET /v1/usage` | 200 · `partners.demo-vc.calls 2` · `cost_usd 0.0647` |
+| interview | Build 규격, `user_turn: null`, 파트너 키 없음 | 200 · 2.8s · `source: 'agent'` · 질문 1개 · `ready_for_paths false` · usage 812 in / 151 out / cache read 7397 · `cost_usd 0.007747` · trace: L3 `Agent turn` → L3 `model turn 1: end_turn` → L1 scrub(designed) → L2 graph(designed) |
+| lint | 답 3개를 `brain/messages.js` `lint()`로 | 금지어 0 · `because you` 0 |
+
+`GET /v1/usage` 응답 예(위 호출 직후, 숫자는 실측):
+
+```json
+{
+  "enabled": true,
+  "partners": {
+    "demo-vc": {
+      "calls": 2,
+      "input_tokens": 5234,
+      "output_tokens": 265,
+      "cache_read_input_tokens": 7397,
+      "cache_creation_input_tokens": 7397,
+      "cost_usd": 0.0647,
+      "last_at": "2026-10-24T05:44:15.452Z"
+    },
+    "demo": {
+      "calls": 1,
+      "input_tokens": 812,
+      "output_tokens": 151,
+      "cache_read_input_tokens": 7397,
+      "cache_creation_input_tokens": 0,
+      "cost_usd": 0.007747,
+      "last_at": "2026-10-24T05:44:41.724Z"
+    }
+  },
+  "total": {
+    "calls": 3,
+    "input_tokens": 6046,
+    "output_tokens": 416,
+    "cache_read_input_tokens": 14794,
+    "cache_creation_input_tokens": 7397,
+    "cost_usd": 0.072447,
+    "last_at": "2026-10-24T05:44:41.724Z"
+  },
+  "pricing": {
+    "model": "claude-opus-5-5",
+    "usd_per_mtok": { "input": 4, "output": 20, "cache_read": 0.2, "cache_write": 5 }
+  }
+}
+```
+
+---
+
 ## 터널 재시작 시
 
 ```bash
@@ -321,7 +417,7 @@ cloudflared tunnel --url http://localhost:8787 --no-autoupdate 2>&1 | tee contex
 
 새 `https://<random>.trycloudflare.com` 이 찍히면:
 
-1. 이 파일의 URL 네 곳(상단, ①, ②, ④)을 바꾼다.
+1. 이 파일의 URL 다섯 곳(상단, ①, ②, ④, ⑤)을 바꾼다.
 2. 웹 `VITE_BRAIN_URL` 을 바꾸고 재배포한다.
 3. Claude Code 는 `claude mcp remove dam-brain` 후 다시 `add` 한다.
 4. 팀 채널에 새 URL 을 공유한다.

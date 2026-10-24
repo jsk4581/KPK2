@@ -7,13 +7,16 @@
 // app/data/persona-dana.json at load time (synthetic fallback copy) and process.hrtime
 // for the `ms` of trace steps that actually ran.
 //
-//   POST /v1/interview   {scenario_id, persona, lifelog[], history[], user_turn}  → {reply:{text}, ready_for_paths, trace[]}
+//   POST /v1/interview   {scenario_id, persona, lifelog[], history[], user_turn}  → {reply:{text}, ready_for_paths, trace[], source}
+//                        source is 'agent' when ctx.agent (bin.js, needs ANTHROPIC_API_KEY) answered the
+//                        turn (+ usage), 'script' for the fixed question list — also the fallback whenever
+//                        the agent throws, with a trace step saying so. BRAIN_AGENT=off forces 'script'.
 //   POST /v1/paths       {scenario_id, persona, lifelog[], history[]}             → {paths:[Path×3], trace[]}
 //   POST /v1/plan        {…, path: Path, today}                                   → {plan: Plan, trace[]}
 //   POST /v1/checkin     {…, path, plan, today, action_id, kind}                  → {plan, message, adjustment, share_card, trace[]}
 //   POST /v1/voice/token                                                          → 501 voice_not_enabled
 //
-// handleCompat(path, body, brain) → { status, body }. It never throws; errors are
+// handleCompat(path, body, brain, ctx?) → Promise<{ status, body }>. It never throws; errors are
 // { error: { code, message } } (400 malformed input, 409 not_checkable, 501 voice) and no
 // stack trace ever reaches a client. http.js keeps CORS, body limit, rate limit and token.
 //
@@ -29,6 +32,7 @@ import { milestones, nextQuestion } from '../goal.js';
 import { render, lint } from '../messages.js';
 import { buildPersonModel } from '../person.js';
 import { dateOrdinal, isIsoDate, ordinalDate, weekdayOf } from '../state.js';
+import { agentEnabled, chatInput } from './agent-routes.js';
 
 export const COMPAT_ROUTES = ['/v1/interview', '/v1/paths', '/v1/plan', '/v1/checkin', '/v1/voice/token'];
 
@@ -307,7 +311,7 @@ function ackFor(answerText, catalog) {
   return `I hear ${found.slice(0, 2).join(' and ')} in that.`;
 }
 
-function interview(body, brain) {
+function scriptedInterview(body, brain) {
   const trace = [];
   const lifelog = ingest(trace, body.lifelog);
   designedSteps(trace);
@@ -357,7 +361,75 @@ function interview(body, brain) {
     (final) => `lint ${lint(final).ok ? 'ok' : 'hits: ' + lint(final).hits.join(', ')}`,
   );
 
-  return { status: 200, body: { reply: { text }, ready_for_paths: ready, trace } };
+  return { status: 200, body: { reply: { text }, ready_for_paths: ready, trace, source: 'script' } };
+}
+
+const elapsedMs = (started) => Math.round((Number(process.hrtime.bigint() - started) / 1e6) * 100) / 100;
+
+function usageLine(usage) {
+  const u = asObject(usage);
+  const cost = Number.isFinite(Number(u.cost_usd)) ? ` · $${Number(u.cost_usd).toFixed(4)}` : '';
+  return `${u.input_tokens ?? '?'} in / ${u.output_tokens ?? '?'} out tokens (cache read ${u.cache_read_input_tokens ?? 0})${cost}`;
+}
+
+// Agent turn: the agent's own trace first, then the designed-only steps the scripted path also shows.
+function agentInterviewBody(result, started) {
+  const text = asText(asObject(result.reply).text).trim();
+  if (text === '') throw new Error('agent reply has no text');
+  // Same gate as the scripted path: a reply that trips the lint never reaches the person.
+  const check = lint(text);
+  if (!check.ok) {
+    const err = new Error(`agent reply tripped the lint: ${check.hits.join(', ')}`);
+    err.code = 'lint';
+    throw err;
+  }
+  const calls = asArray(result.tool_calls);
+  const trace = [{
+    layer: 'L3',
+    stage: 'interview',
+    label: 'Agent turn (Claude + brain tools)',
+    status: 'ran',
+    input_summary: clip(`${calls.length} tool call${calls.length === 1 ? '' : 's'}: ${calls.map((c) => `${asObject(c).name}${asObject(c).ok === false ? ' (failed)' : ''}`).join(', ') || 'none'}`),
+    output_summary: clip(`${text.length} chars · ready_for_paths ${result.ready_for_paths === true} · ${usageLine(result.usage)}`),
+    ms: elapsedMs(started),
+  }];
+  trace.push(...asArray(result.trace));
+  designedSteps(trace);
+  return {
+    reply: { text },
+    ready_for_paths: result.ready_for_paths === true,
+    trace,
+    usage: asObject(result.usage),
+    tool_calls: calls,
+    source: 'agent',
+  };
+}
+
+async function interview(body, brain, ctx) {
+  if (!agentEnabled(ctx)) return scriptedInterview(body, brain);
+  const started = process.hrtime.bigint();
+  try {
+    // The agent's tools take logic-shaped items (date, mapped source), the same mapping the scripted path applies.
+    const result = await ctx.agent.chat(chatInput({ ...body, lifelog: mapLifelog(body.lifelog) }, { partnerKey: ctx.partnerKey, scenario: brain.scenario }));
+    return { status: 200, body: agentInterviewBody(asObject(result), started) };
+  } catch (err) {
+    // The detail stays in the server log; the client gets the scripted turn and a trace step saying why.
+    if (typeof ctx.log === 'function') ctx.log(`${new Date().toISOString()} AGENT_FALLBACK /v1/interview ${err instanceof Error ? err.message : String(err)}`);
+    const scripted = scriptedInterview(body, brain);
+    const tripped = err && err.code === 'lint';
+    scripted.body.trace.unshift({
+      layer: 'L3',
+      stage: 'interview',
+      label: tripped ? 'Agent reply tripped the lint, scripted question used instead' : 'Agent unavailable, scripted interview used instead',
+      status: 'ran',
+      input_summary: tripped ? clip(err.message) : 'agent.chat() threw (detail in the server log)',
+      output_summary: tripped
+        ? 'fell back to the fixed question list; the agent turn is still counted in the usage ledger'
+        : 'fell back to the fixed question list; no usage recorded for this turn',
+      ms: elapsedMs(started),
+    });
+    return scripted;
+  }
 }
 
 // ---------- paths ----------
@@ -755,15 +827,15 @@ export function isCompatRoute(path) {
 
 const HANDLERS = { '/v1/interview': interview, '/v1/paths': paths, '/v1/plan': plan, '/v1/checkin': checkin };
 
-// path + parsed JSON body + the injected brain → { status, body }. Never throws.
-export function handleCompat(path, rawBody, brain) {
+// path + parsed JSON body + the injected brain (+ ctx {agent, partnerKey, log}) → { status, body }. Never throws.
+export async function handleCompat(path, rawBody, brain, ctx = {}) {
   if (path === '/v1/voice/token') return error(501, 'voice_not_enabled', VOICE_MESSAGE);
   const handler = HANDLERS[path];
   if (!handler) return error(404, 'not_found', `no compat route for ${path}`);
   const input = validate(path, rawBody);
   if (!input.ok) return error(400, 'invalid_input', input.error);
   try {
-    return handler(input.data, asObject(brain));
+    return await handler(input.data, asObject(brain), asObject(ctx));
   } catch (err) {
     // Message only; the stack stays on the server.
     return error(500, 'compat_error', err instanceof Error ? err.message : String(err));

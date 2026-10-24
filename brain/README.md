@@ -83,16 +83,25 @@ Build `app/logic.js`와의 관계 — 덮어쓰지 않고 위에 얹는다:
 ## 실행
 
 ```bash
-cd brain && npm install          # 의존성: @modelcontextprotocol/sdk, zod (Node >= 22)
-npm test                         # = node --test tests/   (2026-10-24 기준 190 pass / 0 fail)
+cd brain && npm install          # 의존성: @modelcontextprotocol/sdk, @anthropic-ai/sdk, zod (Node >= 22)
+npm test                         # = node --test tests/   (2026-10-24 기준 299 pass / 1 skipped(실호출 스모크) / 0 fail)
 bash scripts/start.sh            # HTTP 백그라운드 기동 → /v1/health 출력 (pid: .brain.pid, log: brain.log)
 bash scripts/status.sh           # health + 터널 URL(있으면) · 종료는 bash scripts/stop.sh
 node mcp/bin.js --stdio          # Claude Desktop / Claude Code 용 stdio MCP
 curl -s localhost:8787/v1/scenario | curl -s -X POST localhost:8787/v1/think -H 'content-type: application/json' -d @-
 ```
 
-환경변수: `PORT`(8787) · `HOST`(127.0.0.1) · `BRAIN_CORS_ORIGINS`(쉼표 목록, 기본 `*`) · `BRAIN_TOKEN`(선택 bearer).
+환경변수: `PORT`(8787) · `HOST`(127.0.0.1) · `BRAIN_CORS_ORIGINS`(쉼표 목록, 기본 `*`) · `BRAIN_TOKEN`(선택 bearer) · `ANTHROPIC_API_KEY`(선택, `.env`; 에이전트 계층 켬) · `BRAIN_AGENT=off`(에이전트 끄기).
 공개 URL(터널)로 Claude에 연결하는 절차는 `mcp/CONNECT.md`를 본다.
+
+## 에이전트 계층 (`agent/`, 선택)
+
+- **무엇**: Claude Opus 5.5(`claude-opus-5-5`) Tool Runner가 위 MCP 도구 7개(think·rank_roles·plan_week·check_in·analyze_state·explain·get_scenario)를 도구로 호출해 코치 대화를 쓴다. 사람에 대한 판단(위험·에너지·용량·오늘의 행동)은 **도구를 통해서만** 나오고 모델은 문장만 맡는다. 도구 입력은 대화의 라이프로그·체크인·주간으로 기본 채워진다.
+- **경로**: `POST /v1/agent/chat`(`{ user_turn, history?, lifelog?, persona?, scenario_id?, today? }` → `{ reply, ready_for_paths, tool_calls, usage, trace, stop_reason }`) · `GET /v1/usage`(파트너별 토큰·비용 합계). `POST /v1/interview`는 에이전트가 켜져 있으면 에이전트 답(`source: 'agent'`), 실패하면 스크립트 답(`source: 'script'`)으로 자동 대체한다.
+- **계량**: 요청 헤더 `X-Partner-Key: <키>`(없으면 `demo`)별로 호출 수·input/output/cache 토큰·`cost_usd`를 메모리 장부에 합산한다(재시작 시 초기화). 모든 에이전트 응답의 `usage`에 그 턴의 토큰·비용이 붙는다.
+- **단가(USD/1M 토큰)**: input 4 · output 20 · cache read 0.20 · cache write 5(5분 캐시). 시스템 프롬프트+도구 정의(≈7.4K 토큰)는 캐시되어 둘째 턴부터 cache read로 떨어진다(실측: 첫 턴 $0.0499, 둘째 턴 $0.0148).
+- **키**: `ANTHROPIC_API_KEY`는 `brain/.env`(gitignored)에만 둔다. `mcp/bin.js`가 기동 시 읽어 `process.env`에만 넣고 어디에도 출력하지 않는다. 키가 없으면 에이전트 없이(`agent: off`) 스크립트 인터뷰로만 동작한다.
+- **끄기**: `BRAIN_AGENT=off`로 기동하면 `/v1/agent/chat`은 503 `agent_disabled`, `/v1/interview`는 스크립트로 답한다. 테스트는 네트워크를 쓰지 않는다(실호출 스모크만 `RUN_LIVE=1 node --test tests/agent.test.mjs`).
 
 ## 안전
 

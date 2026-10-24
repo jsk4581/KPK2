@@ -4,6 +4,10 @@
 //
 // Env: PORT (8787) · HOST (127.0.0.1) · BRAIN_CORS_ORIGINS (comma list, default *)
 //      BRAIN_TOKEN (optional bearer token for /mcp and /v1/* except /v1/health)
+//      ANTHROPIC_API_KEY (optional; enables the agent: /v1/agent/chat, /v1/usage, LLM /v1/interview)
+//      BRAIN_AGENT=off (keep the agent loaded but answer /v1/interview from the script)
+// brain/.env (gitignored) is read first: KEY=VALUE lines fill process.env without overriding
+// variables already set. Values are never logged.
 
 import { readFileSync } from 'node:fs';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
@@ -11,6 +15,9 @@ import { BRAIN_FUNCTIONS, SERVER_NAME, SERVER_VERSION, createBrainServer } from 
 import { startHttp } from './http.js';
 
 const SCENARIO_PATH = new URL('../data/dana-14d.json', import.meta.url);
+const ENV_PATH = new URL('../.env', import.meta.url);
+const AGENT_MODULE = '../agent/index.js';
+const ENV_KEY_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 function fail(message) {
   process.stderr.write(`${SERVER_NAME}: ${message}\n`);
@@ -58,6 +65,51 @@ function loadScenario() {
   }
 }
 
+// Tiny .env loader: `KEY=VALUE` / `export KEY="VALUE"` lines; blanks and # comments skipped;
+// an existing process.env variable always wins. Returns the number of keys set (names only, no values).
+function loadDotEnv() {
+  let text;
+  try {
+    text = readFileSync(ENV_PATH, 'utf8');
+  } catch {
+    return 0;
+  }
+  let loaded = 0;
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (line === '' || line.startsWith('#')) continue;
+    const eq = line.indexOf('=');
+    if (eq <= 0) continue;
+    const key = line.slice(0, eq).trim().replace(/^export\s+/, '');
+    if (!ENV_KEY_RE.test(key)) continue;
+    let value = line.slice(eq + 1).trim();
+    const quoted = value.length >= 2 && ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'")));
+    if (quoted) value = value.slice(1, -1);
+    if (process.env[key] !== undefined) continue;
+    process.env[key] = value;
+    loaded += 1;
+  }
+  return loaded;
+}
+
+// The agent module is optional and may be absent: import it lazily, construct it only when a
+// key is present, and keep serving (scripted interview) if anything about it fails.
+async function loadAgent(brain) {
+  if (!process.env.ANTHROPIC_API_KEY) return null;
+  try {
+    const mod = await import(AGENT_MODULE);
+    const create = mod.createAgent ?? mod.default?.createAgent;
+    if (typeof create !== 'function') throw new Error(`${AGENT_MODULE} does not export createAgent`);
+    const agent = await create({ brain, scenario: brain.scenario });
+    if (!agent || typeof agent !== 'object') throw new Error('createAgent returned nothing');
+    return agent;
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    process.stderr.write(`${SERVER_NAME}: agent not loaded (${detail}); /v1/interview stays scripted\n`);
+    return null;
+  }
+}
+
 function parseOrigins(raw) {
   if (!raw) return ['*'];
   const list = raw
@@ -73,6 +125,7 @@ async function main() {
     usage();
     return;
   }
+  loadDotEnv();
   const brain = await loadBrain();
   brain.scenario = loadScenario();
 
@@ -88,16 +141,26 @@ async function main() {
   const port = Number.parseInt(process.env.PORT ?? '8787', 10);
   if (!Number.isFinite(port) || port < 0 || port > 65535) fail(`invalid PORT: ${process.env.PORT}`);
   const token = process.env.BRAIN_TOKEN ?? '';
+  const agent = await loadAgent(brain);
+  // Status only: the model name is public, the key is never printed.
+  const agentState = !agent
+    ? 'off'
+    : process.env.BRAIN_AGENT === 'off'
+      ? `loaded, interview scripted (model ${agent.model ?? 'unknown'})`
+      : agent.enabled
+        ? `enabled (model ${agent.model ?? 'unknown'})`
+        : 'disabled';
   const http = await startHttp({
     brainServerFactory: () => createBrainServer(brain),
     brain,
     port,
     host: process.env.HOST ?? '127.0.0.1',
     corsOrigins: parseOrigins(process.env.BRAIN_CORS_ORIGINS),
-    token
+    token,
+    ctx: { agent }
   });
   process.stdout.write(
-    `${SERVER_NAME} ${SERVER_VERSION} listening on ${http.url} (mcp: /mcp, health: /v1/health, auth: ${token ? 'bearer' : 'off'})\n`
+    `${SERVER_NAME} ${SERVER_VERSION} listening on ${http.url} (mcp: /mcp, health: /v1/health, auth: ${token ? 'bearer' : 'off'}, agent: ${agentState})\n`
   );
 
   // Last resort for an internet-exposed demo: every handler already catches its

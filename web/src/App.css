@@ -219,6 +219,9 @@
     height: clamp(640px, calc(100vh - 96px), 864px);
     width: auto;
     aspect-ratio: 410 / 864;
+    /* Short windows shorten the phone instead of narrowing it, so the screen
+       keeps a real 390px layout width (no cramped reflow, labels stay full size). */
+    min-width: 410px;
     min-height: 0;
     padding: 10px;
     border-radius: var(--r-phone);

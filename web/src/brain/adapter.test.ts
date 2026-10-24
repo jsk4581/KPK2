@@ -5,7 +5,7 @@ import type { BrainScenario } from '../api/brain';
 import { createInitialState, reducer } from '../state/store';
 import type { AppState, CheckinRecord, Day, LifelogSource, RankedRole, Week } from '../state/types';
 import scenarioJson from './__fixtures__/scenario.json';
-import { SCENARIO_ID_PREFIX, isoForWeekday, toThinkInput } from './adapter';
+import { SCENARIO_ID_PREFIX, demoTodayIso, isoForWeekday, toThinkInput } from './adapter';
 
 const scenario = scenarioJson as unknown as BrainScenario;
 const draft = persona.fallback.paths[0];
@@ -45,6 +45,20 @@ describe('isoForWeekday', () => {
   it('gives no date for NextWeek or a bad today', () => {
     expect(isoForWeekday('NextWeek', '2026-10-18')).toBeNull();
     expect(isoForWeekday('Thu', 'Thu')).toBeNull();
+  });
+});
+
+describe('demoTodayIso', () => {
+  it('is the persona today weekday in the week of its latest lifelog item', () => {
+    // persona.today is Thu; the latest persona item is 2026-10-22, a Thursday.
+    expect(persona.today).toBe('Thu');
+    expect(demoTodayIso(persona)).toBe('2026-10-22');
+    expect(demoTodayIso({ today: 'Mon', lifelog: [{ id: 'x', date: '2026-10-22', source: 'note' }] })).toBe('2026-10-19');
+  });
+
+  it('is null without a dated item or a weekday', () => {
+    expect(demoTodayIso({ today: 'Thu', lifelog: [] })).toBeNull();
+    expect(demoTodayIso({ today: 'Someday', lifelog: [{ id: 'x', date: '2026-10-22', source: 'note' }] })).toBeNull();
   });
 });
 
@@ -89,7 +103,7 @@ describe('toThinkInput', () => {
     expect(new Set(input.lifelog!.map((i) => i.source))).toEqual(new Set(['note', 'sms']));
   });
 
-  it('appends session check-ins after the history, dated in the scenario week', () => {
+  it('appends session check-ins after the history, dated in the demo week', () => {
     const state = flowState({ sample: true });
     const input = toThinkInput(state, persona, scenario);
     const history = scenario.checkins.length;
@@ -97,10 +111,12 @@ describe('toThinkInput', () => {
     expect(input.checkins!.slice(0, history).every((c) => c.actionId.startsWith(SCENARIO_ID_PREFIX))).toBe(true);
     expect(input.checkins!.slice(0, history).map((c) => c.date)).toEqual(scenario.checkins.map((c) => c.date));
     expect(input.checkins!.slice(history)).toEqual([
-      { actionId: 'a1', kind: 'done', day: 'Thu', date: '2026-10-15' },
-      { actionId: 'a2', kind: 'not_today', day: 'Thu', date: '2026-10-15' },
+      { actionId: 'a1', kind: 'done', day: 'Thu', date: '2026-10-22' },
+      { actionId: 'a2', kind: 'not_today', day: 'Thu', date: '2026-10-22' },
     ]);
-    expect(input.today).toBe(scenario.today);
+    // The demo today (the Week screen's day), not the scenario's own today.
+    expect(input.today).toBe('2026-10-22');
+    expect(input.today).not.toBe(scenario.today);
   });
 
   it('sends the chosen path, this week and the picked condition', () => {
@@ -112,17 +128,17 @@ describe('toThinkInput', () => {
     expect('condition' in toThinkInput(flowState({ sample: true }), persona, scenario)).toBe(false);
   });
 
-  it('without the scenario: our lifelog only, check-ins keep the weekday, no today', () => {
+  it('without the scenario: our lifelog only, still dated on the demo today', () => {
     const state = flowState({ sample: true });
     const input = toThinkInput(state, persona, null);
     expect(input.lifelog!.map((i) => i.id)).toEqual(
       persona.lifelog.filter((i) => ['note', 'saved_link', 'calendar'].includes(i.source)).map((i) => i.id),
     );
     expect(input.checkins).toEqual([
-      { actionId: 'a1', kind: 'done', day: 'Thu' },
-      { actionId: 'a2', kind: 'not_today', day: 'Thu' },
+      { actionId: 'a1', kind: 'done', day: 'Thu', date: '2026-10-22' },
+      { actionId: 'a2', kind: 'not_today', day: 'Thu', date: '2026-10-22' },
     ]);
-    expect('today' in input).toBe(false);
+    expect(input.today).toBe('2026-10-22');
   });
 
   it('stays under the server body limit (64 KB) with every source on', () => {

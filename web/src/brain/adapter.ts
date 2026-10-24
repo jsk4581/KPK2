@@ -15,10 +15,10 @@ import type { AppState, Day } from '../state/types';
 //    b. checkins = the scenario check-ins (history; actionId prefixed "scenario-" so the history
 //       is never counted against this week's actions a1-a3) followed by this session's check-ins.
 //    c. Session check-ins keep their weekday label and get an ISO date: the day with that label
-//       in the scenario's current week (Monday to Sunday, the week that holds scenario.today).
-//       Without a scenario they keep the weekday label only and carry no date.
-//    d. today = scenario.today when the scenario loaded; otherwise not sent (the server reads
-//       the latest dated item).
+//       in the demo week (Monday to Sunday, the week that holds the demo today, see d).
+//    d. today = the demo today as an ISO date: the persona's `today` weekday (the same day the
+//       Week screen uses) in the week of the persona's latest lifelog item. Never the scenario's
+//       own today, so the brain and the Week screen agree on which actions are due or overdue.
 //    e. condition = the condition the user picked on the week screen, when one was picked.
 // 4. For everyone: fields are sent exactly as currently on screen (never recomputed, edits kept),
 //    rankedRoles as ranked, the chosen path draft (with its role title) and this week's actions
@@ -29,6 +29,7 @@ export const SCENARIO_ID_PREFIX = 'scenario-';
 const WEEK_DAYS: readonly Day[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export interface PersonaLike {
+  today: string;
   lifelog: ReadonlyArray<{ id: string; date: string; source: string; [key: string]: unknown }>;
 }
 
@@ -54,6 +55,15 @@ export function isoForWeekday(day: string, todayIso: string): string | null {
   if (today === null || index < 0) return null;
   const todayIndex = (new Date(today).getUTCDay() + 6) % 7; // Mon = 0
   return formatIso(today + (index - todayIndex) * 86_400_000);
+}
+
+// The demo today as an ISO date: the persona's `today` weekday (what the Week screen calls
+// today) in the Monday-to-Sunday week that holds the persona's latest lifelog date. Null when
+// the persona has no dated item or no weekday.
+export function demoTodayIso(persona: PersonaLike): string | null {
+  const dates = persona.lifelog.map((item) => item.date).filter((d) => parseIso(d) !== null).sort();
+  const latest = dates[dates.length - 1];
+  return latest ? isoForWeekday(persona.today, latest) : null;
 }
 
 function chosenPath(state: AppState): Record<string, unknown> | undefined {
@@ -88,9 +98,10 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
     ...c,
     actionId: `${SCENARIO_ID_PREFIX}${c.actionId}`,
   }));
+  const today = demoTodayIso(persona);
   const sessionCheckins: BrainCheckin[] = state.checkins.map((c) => {
     const record: BrainCheckin = { actionId: c.actionId, kind: c.kind, day: c.day };
-    const date = scenario ? isoForWeekday(c.day, scenario.today) : null;
+    const date = today ? isoForWeekday(c.day, today) : null;
     if (date) record.date = date;
     return record;
   });
@@ -102,7 +113,7 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
     enabledSources: [...state.enabledSources],
     checkins: [...pastCheckins, ...sessionCheckins],
     ...(path ? { path } : {}),
-    ...(scenario ? { today: scenario.today } : {}),
+    ...(today ? { today } : {}),
     ...(state.condition !== null && state.condition >= 1 && state.condition <= 5 ? { condition: state.condition } : {}),
   };
 }

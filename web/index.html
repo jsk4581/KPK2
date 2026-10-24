@@ -44,7 +44,7 @@
     .nav-links a { opacity: .82; }
     .nav-links a:hover { opacity: 1; }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 999px; font: 500 15px/1 var(--sans); border: 1px solid transparent; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 999px; font: 500 15px/1 var(--sans); white-space: nowrap; border: 1px solid transparent; cursor: pointer; transition: transform .2s, box-shadow .2s; }
     .btn:hover { transform: translateY(-1px); }
     .btn-dark { background: var(--ink); color: #fff; box-shadow: 0 6px 18px -8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
     .btn-light { background: #fff; color: var(--ink); border-color: var(--line); box-shadow: 0 4px 14px -8px rgba(0,0,0,.18); }
@@ -142,7 +142,7 @@
     .quote .btn { margin-top: 26px; }
 
     /* How it works, with the CSS phone */
-    .demo { padding: 90px 0 140px; border-top: 1px solid var(--line); }
+    .demo { padding: 90px 0 140px; border-top: 1px solid var(--line); overflow-x: clip; }
     .demo-grid { display: grid; grid-template-columns: 1fr auto; gap: 72px; align-items: center; }
     .demo h2 { margin: 18px 0 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; }
     .steps { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 12px; }
@@ -179,6 +179,7 @@
 
     @media (max-width: 860px) {
       .nav-links { display: none; }
+      .brand { font-size: 16px; white-space: nowrap; }
       .demo-grid { grid-template-columns: 1fr; justify-items: center; gap: 48px; }
       .demo-copy { width: 100%; }
       .float-card { display: none; }
@@ -188,6 +189,10 @@
       .chip { padding: 7px 10px 7px 7px; }
       .chip b { font-size: 12px; }
       .chip-ico { width: 24px; height: 30px; }
+    }
+    @media (max-width: 380px) {
+      .brand { font-size: 14px; gap: 8px; }
+      nav .btn-sm { padding: 0 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .marquee-track, .float-card { animation: none; }

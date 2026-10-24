@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Saved links: share sheet target and its result dialog. -->
+    <string name="saved_link_share_label">Save link</string>
+    <string name="saved_link_saved">Link saved</string>
+    <string name="saved_link_no_link">No link found</string>
+    <string name="saved_link_no_link_body">Second Draft saves shared text only when it contains a web link (http or https).</string>
+    <string name="saved_link_off">Saved links are off</string>
+    <string name="saved_link_off_body">Turn on Saved links in the Sources tab of Second Draft to save shared links.</string>
+    <string name="saved_link_failed">Could not save the link</string>
+    <string name="saved_link_failed_body">Something went wrong on this phone. Try sharing the link again.</string>
+    <string name="saved_link_done">Done</string>
+</resources>

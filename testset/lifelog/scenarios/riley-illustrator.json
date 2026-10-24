@@ -1,0 +1,641 @@
+{
+  "_label": "synthetic",
+  "_note": "[SIMULATION] Riley is not a real person. Every client, studio, link and message is invented. No crisis language is used; this scenario tests the low-condition escalation, not the crisis path.",
+  "id": "riley-illustrator",
+  "source_refs": [
+    "docs/gtm/journey-io.md scenario C (Sales)"
+  ],
+  "story": "struggle-and-escalate: a step keeps moving (replan question), four silent days (reconnect), two low weeks (suggest a person, shrink to one micro step)",
+  "arc_start": "2026-09-28",
+  "today": "2026-10-18",
+  "persona": {
+    "name": "Riley",
+    "role": "Freelance illustrator / 2D designer",
+    "years": 5,
+    "location": "US Pacific Northwest",
+    "headline": "Image generators took the thumbnail work."
+  },
+  "fields": {
+    "career": "Five years freelancing as an illustrator: social thumbnails, character sheets and a few pitch decks for small game studios. Clients came back because my characters looked the same in every panel.",
+    "now": "Image generators ate the thumbnail and social work this year. I feel obsolete some weeks and I have stopped opening my sketchbook.",
+    "pull": "I love storyboarding and figuring out how a scene reads in five panels. Games pull me. I also liked giving portfolio feedback to students."
+  },
+  "dream_moment": {
+    "text": "An indie game trailer ships with my storyboard, and the credits read 'Storyboard: Riley'.",
+    "horizon": "first storyboard credit within 6 months",
+    "tags": [
+      "storyboarding",
+      "visual-narrative",
+      "shot-composition",
+      "game-art-pipeline"
+    ],
+    "signals": [
+      {
+        "id": "d1",
+        "gate": "M1",
+        "text": "One 6-panel board finished, even rough"
+      },
+      {
+        "id": "d2",
+        "gate": "M2",
+        "text": "Two boards in the portfolio and one note from someone in games"
+      },
+      {
+        "id": "d3",
+        "gate": "M3",
+        "text": "A studio asks for a board for a real scene"
+      },
+      {
+        "id": "d4",
+        "gate": "M4",
+        "text": "Name in a credit roll"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "character-consistency",
+      "name": "Character consistency",
+      "keywords": [
+        "character sheet",
+        "consistency",
+        "on-model"
+      ]
+    },
+    {
+      "id": "storyboarding",
+      "name": "Storyboarding",
+      "keywords": [
+        "storyboard",
+        "board"
+      ]
+    },
+    {
+      "id": "visual-narrative",
+      "name": "Visual narrative",
+      "keywords": [
+        "scene reads",
+        "story beat",
+        "visual story"
+      ]
+    },
+    {
+      "id": "thumbnail-sketching",
+      "name": "Thumbnail sketching",
+      "keywords": [
+        "thumbnail panel",
+        "rough panel",
+        "thumbnails"
+      ]
+    },
+    {
+      "id": "shot-composition",
+      "name": "Shot composition",
+      "keywords": [
+        "framing",
+        "camera angle",
+        "composition"
+      ]
+    },
+    {
+      "id": "animatic-editing",
+      "name": "Animatic editing",
+      "keywords": [
+        "animatic"
+      ]
+    },
+    {
+      "id": "color-scripting",
+      "name": "Color scripting",
+      "keywords": [
+        "color script"
+      ]
+    },
+    {
+      "id": "game-art-pipeline",
+      "name": "Game art pipeline",
+      "keywords": [
+        "game studio",
+        "indie studio",
+        "trailer"
+      ]
+    },
+    {
+      "id": "client-revisions",
+      "name": "Client revisions",
+      "keywords": [
+        "revision",
+        "feedback round"
+      ]
+    },
+    {
+      "id": "portfolio-curation",
+      "name": "Portfolio curation",
+      "keywords": [
+        "portfolio"
+      ]
+    },
+    {
+      "id": "teaching-feedback",
+      "name": "Teaching and feedback",
+      "keywords": [
+        "students",
+        "portfolio review"
+      ]
+    },
+    {
+      "id": "ai-image-tools",
+      "name": "AI image tools",
+      "keywords": [
+        "image generator",
+        "midjourney-style"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "storyboard-narrative-designer",
+      "title": "Storyboard & Visual Narrative Designer",
+      "requires": [
+        "storyboarding",
+        "visual-narrative",
+        "shot-composition",
+        "thumbnail-sketching",
+        "animatic-editing",
+        "character-consistency"
+      ],
+      "ai_exposure": {
+        "augment": 0.45,
+        "replace": 0.3,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        99,
+        101,
+        100
+      ]
+    },
+    {
+      "id": "ai-pipeline-art-director",
+      "title": "Art Director for AI-assisted Pipelines",
+      "requires": [
+        "character-consistency",
+        "ai-image-tools",
+        "color-scripting",
+        "game-art-pipeline",
+        "client-revisions",
+        "portfolio-curation"
+      ],
+      "ai_exposure": {
+        "augment": 0.6,
+        "replace": 0.2,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        104,
+        108,
+        110
+      ]
+    },
+    {
+      "id": "illustration-mentor",
+      "title": "Illustration Mentor / Portfolio Reviewer",
+      "requires": [
+        "teaching-feedback",
+        "portfolio-curation",
+        "character-consistency",
+        "client-revisions"
+      ],
+      "ai_exposure": {
+        "augment": 0.4,
+        "replace": 0.15,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        97,
+        96,
+        95
+      ]
+    }
+  ],
+  "path": {
+    "role_id": "storyboard-narrative-designer",
+    "title": "Storyboard & Visual Narrative Designer",
+    "chosen_on": "2026-09-28"
+  },
+  "weeks": [
+    {
+      "start": "2026-09-28",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Pick 3 consistency examples from the portfolio",
+          "minutes": 20,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Pick one example"
+        },
+        {
+          "id": "a2",
+          "title": "Storyboard a 30-second scene in 6 panels",
+          "minutes": 30,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Draw the first panel"
+        },
+        {
+          "id": "a3",
+          "title": "Read 5 indie studio job posts",
+          "minutes": 20,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Read one post"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-05",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Draw 3 thumbnail panels for one scene",
+          "minutes": 15,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Draw one panel"
+        },
+        {
+          "id": "a2",
+          "title": "Watch one animatic breakdown and note 3 cuts",
+          "minutes": 20,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Watch 3 minutes"
+        },
+        {
+          "id": "a3",
+          "title": "Send one panel to an old studio client",
+          "minutes": 15,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Pick the panel"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-12",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Draw one panel of any scene",
+          "minutes": 10,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Draw a box and one figure"
+        },
+        {
+          "id": "a2",
+          "title": "Write 3 lines on a game scene you would board",
+          "minutes": 10,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write one line"
+        },
+        {
+          "id": "a3",
+          "title": "Look at one storyboard artist's portfolio",
+          "minutes": 10,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Open the page"
+        }
+      ]
+    }
+  ],
+  "gate_events": [],
+  "lifelog": [
+    {
+      "id": "r01",
+      "date": "2026-09-28",
+      "source": "note",
+      "title": "Starting the arc",
+      "summary": "Chose storyboarding. It is the only work I still daydream about.",
+      "tags": [
+        "storyboarding"
+      ],
+      "url": null,
+      "field": "pull",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "r02",
+      "date": "2026-09-28",
+      "source": "messenger",
+      "title": "Client cancels thumbnail retainer",
+      "summary": "Last social thumbnail client says they will generate images in-house.",
+      "tags": [],
+      "url": null,
+      "field": "now",
+      "signal": "rest"
+    },
+    {
+      "id": "r03",
+      "date": "2026-09-29",
+      "source": "document",
+      "title": "Three consistency examples",
+      "summary": "Picked three character sheets where the hero stays on-model across 12 poses.",
+      "tags": [
+        "character-consistency",
+        "portfolio-curation"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "r04",
+      "date": "2026-09-30",
+      "source": "saved_link",
+      "title": "How trailer boards are made",
+      "summary": "Saved a breakdown of a game trailer storyboard and its animatic.",
+      "tags": [
+        "storyboarding",
+        "animatic-editing",
+        "game-art-pipeline"
+      ],
+      "url": "https://example.com/articles/trailer-boards",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "r05",
+      "date": "2026-10-01",
+      "source": "note",
+      "title": "Stuck on the 6-panel board",
+      "summary": "Do not know how to show camera movement between panels. Closed the file.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "skill"
+    },
+    {
+      "id": "r06",
+      "date": "2026-10-02",
+      "source": "note",
+      "title": "Did not open the sketchbook",
+      "summary": "Scrolled for two hours instead.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "r07",
+      "date": "2026-10-02",
+      "source": "photo",
+      "title": "Photo of a coffee cup",
+      "summary": "Accidental photo.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "r08",
+      "date": "2026-10-03",
+      "source": "note",
+      "title": "Five indie studio posts",
+      "summary": "Three of five want storyboards plus animatics. Two mention character consistency by name.",
+      "tags": [
+        "game-art-pipeline",
+        "storyboarding",
+        "character-consistency"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career",
+      "field": "pull"
+    },
+    {
+      "id": "r09",
+      "date": "2026-10-04",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "2 of 3. The board moved twice. Maybe it is too big, not that I am bad at it.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "r10",
+      "date": "2026-10-05",
+      "source": "sms",
+      "title": "Card payment reminder",
+      "summary": "Bank reminder text.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "r10b",
+      "date": "2026-10-05",
+      "source": "note",
+      "title": "Heavy Monday",
+      "summary": "Hard to start anything. Looked at the plan and closed it.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "r11",
+      "date": "2026-10-06",
+      "source": "note",
+      "title": "Not today",
+      "summary": "Too flat to draw. Moved the thumbnails.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "r12",
+      "date": "2026-10-11",
+      "source": "note",
+      "title": "Opened the app after four days",
+      "summary": "Bad week. Did nothing, did not want to look at the plan.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "r13",
+      "date": "2026-10-12",
+      "source": "note",
+      "title": "Smaller week",
+      "summary": "Agreed to 10-minute steps only.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "r14",
+      "date": "2026-10-13",
+      "source": "photo",
+      "title": "One rough panel",
+      "summary": "A box, a figure, an arrow for the camera. Ten minutes.",
+      "tags": [
+        "thumbnail-sketching",
+        "storyboarding"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "career"
+    },
+    {
+      "id": "r15",
+      "date": "2026-10-14",
+      "source": "note",
+      "title": "Tired",
+      "summary": "Slept badly again.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "r16",
+      "date": "2026-10-15",
+      "source": "note",
+      "title": "Not today",
+      "summary": "No energy after a revision round on the last illustration job.",
+      "tags": [
+        "client-revisions"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "energy"
+    },
+    {
+      "id": "r17",
+      "date": "2026-10-16",
+      "source": "note",
+      "title": "Three lines on a scene",
+      "summary": "The opening of a farming game: dawn, the barn door, the dog looks back. Ten minutes.",
+      "tags": [
+        "visual-narrative",
+        "game-art-pipeline"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "career"
+    },
+    {
+      "id": "r18",
+      "date": "2026-10-17",
+      "source": "note",
+      "title": "Not today",
+      "summary": "Did not feel like looking at other people's work today.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "r19",
+      "date": "2026-10-18",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "2 of 3 small ones. Still low most days.",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    }
+  ],
+  "checkins": [
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-09-29"
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Thu",
+      "date": "2026-10-01",
+      "blocker_reason": "skill"
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Fri",
+      "date": "2026-10-02",
+      "blocker_reason": "mood"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-03"
+    },
+    {
+      "actionId": "a1",
+      "kind": "not_today",
+      "day": "Tue",
+      "date": "2026-10-06",
+      "blocker_reason": "mood"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-13",
+      "variant": "micro",
+      "minutes": 10
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Thu",
+      "date": "2026-10-15",
+      "blocker_reason": "energy"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Fri",
+      "date": "2026-10-16",
+      "variant": "micro",
+      "minutes": 10
+    },
+    {
+      "actionId": "a3",
+      "kind": "not_today",
+      "day": "Sat",
+      "date": "2026-10-17",
+      "blocker_reason": "mood"
+    }
+  ]
+}

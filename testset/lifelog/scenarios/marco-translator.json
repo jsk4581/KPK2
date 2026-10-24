@@ -1,0 +1,782 @@
+{
+  "_label": "synthetic",
+  "_note": "[SIMULATION] Marco is not a real person. Every client, company, link and message is invented.",
+  "id": "marco-translator",
+  "source_refs": [
+    "docs/gtm/journey-io.md scenario B (Sales)"
+  ],
+  "story": "steady-progress: three clean weeks, first gate (M1 Fit) passes with evidence, one step waits on another person",
+  "arc_start": "2026-09-28",
+  "today": "2026-10-18",
+  "persona": {
+    "name": "Marco",
+    "role": "Freelance EN-ES translator",
+    "years": 9,
+    "location": "US Southwest",
+    "headline": "Agencies send me machine output to fix now."
+  },
+  "fields": {
+    "career": "Nine years translating English and Spanish marketing and legal copy, the last four mostly for medical device companies. I built and kept the glossaries my clients relied on and caught terminology errors before regulators did.",
+    "now": "Since agencies switched to machine translation I mostly get post-editing jobs that pay far less. I fix the same machine errors every day and nobody pays for glossary work anymore.",
+    "pull": "I like building order: terminology databases, error categories, style guides. I am curious about the localization teams inside device companies, not agencies."
+  },
+  "dream_moment": {
+    "text": "The localization lead at a mid-size medical device company signs me as terminology owner for their Spanish launch, and the release ships with my glossary and zero terminology findings in regulatory review.",
+    "horizon": "first paid engagement within 12 weeks; in-house role within a year",
+    "tags": [
+      "terminology",
+      "localization-qa",
+      "medical-device-domain",
+      "client-communication"
+    ],
+    "signals": [
+      {
+        "id": "d1",
+        "gate": "M1",
+        "text": "A localization person tells me what actually hurts on their side"
+      },
+      {
+        "id": "d2",
+        "gate": "M2",
+        "text": "My glossary and QA checklist are read by someone outside my old clients"
+      },
+      {
+        "id": "d3",
+        "gate": "M3",
+        "text": "One paid terminology audit"
+      },
+      {
+        "id": "d4",
+        "gate": "M4",
+        "text": "Introduced by role (terminology owner), not by word count"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "terminology",
+      "name": "Terminology management",
+      "keywords": [
+        "glossary",
+        "termbase",
+        "terminology"
+      ]
+    },
+    {
+      "id": "localization-qa",
+      "name": "Localization QA",
+      "keywords": [
+        "localization qa",
+        "lqa",
+        "qa checklist"
+      ]
+    },
+    {
+      "id": "error-taxonomy",
+      "name": "Error taxonomy",
+      "keywords": [
+        "error categories",
+        "error type",
+        "mqm"
+      ]
+    },
+    {
+      "id": "medical-device-domain",
+      "name": "Medical device domain",
+      "keywords": [
+        "medical device",
+        "ifu",
+        "regulatory"
+      ]
+    },
+    {
+      "id": "style-guide",
+      "name": "Style guides",
+      "keywords": [
+        "style guide"
+      ]
+    },
+    {
+      "id": "client-communication",
+      "name": "Client communication",
+      "keywords": [
+        "client call",
+        "former pm",
+        "localization lead"
+      ]
+    },
+    {
+      "id": "mt-post-editing",
+      "name": "MT post-editing",
+      "keywords": [
+        "post-editing",
+        "machine translation",
+        "mt output"
+      ]
+    },
+    {
+      "id": "cultural-adaptation",
+      "name": "Cultural adaptation",
+      "keywords": [
+        "transcreation",
+        "cultural"
+      ]
+    },
+    {
+      "id": "cat-tools",
+      "name": "CAT tools",
+      "keywords": [
+        "cat tool",
+        "translation memory"
+      ]
+    },
+    {
+      "id": "project-pricing",
+      "name": "Project pricing",
+      "keywords": [
+        "fixed fee",
+        "pilot offer",
+        "audit price"
+      ]
+    },
+    {
+      "id": "ux-microcopy",
+      "name": "UX microcopy",
+      "keywords": [
+        "microcopy",
+        "button label"
+      ]
+    },
+    {
+      "id": "spanish-ux-writing",
+      "name": "Spanish UX writing",
+      "keywords": [
+        "spanish ux",
+        "app strings"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "loc-qa-terminology-lead",
+      "title": "Localization QA & Terminology Lead",
+      "requires": [
+        "terminology",
+        "localization-qa",
+        "error-taxonomy",
+        "medical-device-domain",
+        "style-guide",
+        "client-communication"
+      ],
+      "ai_exposure": {
+        "augment": 0.7,
+        "replace": 0.2,
+        "basis": "[SIMULATION] scenario estimate; method follows Eloundou et al. 2023 task exposure, split into augment vs replace"
+      },
+      "postings_index": [
+        100,
+        102,
+        105,
+        104
+      ]
+    },
+    {
+      "id": "bilingual-ux-writer",
+      "title": "Bilingual UX Writer (Spanish)",
+      "requires": [
+        "spanish-ux-writing",
+        "ux-microcopy",
+        "cultural-adaptation",
+        "style-guide",
+        "client-communication"
+      ],
+      "ai_exposure": {
+        "augment": 0.5,
+        "replace": 0.35,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        98,
+        99,
+        97
+      ]
+    },
+    {
+      "id": "mt-standards-consultant",
+      "title": "MT Post-editing Standards Consultant",
+      "requires": [
+        "mt-post-editing",
+        "error-taxonomy",
+        "style-guide",
+        "terminology",
+        "project-pricing"
+      ],
+      "ai_exposure": {
+        "augment": 0.6,
+        "replace": 0.25,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        101,
+        100,
+        103
+      ]
+    }
+  ],
+  "path": {
+    "role_id": "loc-qa-terminology-lead",
+    "title": "Localization QA & Terminology Lead",
+    "chosen_on": "2026-09-28"
+  },
+  "weeks": [
+    {
+      "start": "2026-09-28",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Sort 10 recent MT errors into categories",
+          "minutes": 25,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Sort 3 errors"
+        },
+        {
+          "id": "a2",
+          "title": "Draft a one-page device glossary sample",
+          "minutes": 30,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "List 10 terms"
+        },
+        {
+          "id": "a3",
+          "title": "Read 3 localization QA job posts and mark what you already do",
+          "minutes": 20,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Read one post"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-05",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Message one former PM at a device company for a 20-minute chat",
+          "minutes": 15,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the first line"
+        },
+        {
+          "id": "a2",
+          "title": "Turn the error categories into a one-page QA checklist",
+          "minutes": 30,
+          "day": "Wed",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write 3 checklist items"
+        },
+        {
+          "id": "a3",
+          "title": "Have the 20-minute chat and note 3 things they struggle with",
+          "minutes": 25,
+          "day": "Fri",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write 3 questions"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-12",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Send the glossary sample and checklist to the device PM",
+          "minutes": 15,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Attach the files only"
+        },
+        {
+          "id": "a2",
+          "title": "Write a 3-line pilot offer: terminology audit of one manual",
+          "minutes": 30,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the first line"
+        },
+        {
+          "id": "a3",
+          "title": "Rework one old legal job as a before/after QA case",
+          "minutes": 30,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the before line"
+        }
+      ]
+    }
+  ],
+  "gate_events": [
+    {
+      "gate": "M1",
+      "date": "2026-10-13",
+      "evidence": [
+        "m21",
+        "m15"
+      ],
+      "confirmed": true,
+      "note": "Chat with a localization lead (m21) + glossary sample (m15). Reviewed on Sunday 10-11 (m21); confirmed at the Tuesday check-in so the gate message lands on a day with a step."
+    }
+  ],
+  "lifelog": [
+    {
+      "id": "m01",
+      "date": "2026-09-28",
+      "source": "note",
+      "title": "Starting the arc",
+      "summary": "Picked the localization QA path. Glossary work is the part of my job I never wanted to hand over.",
+      "tags": [
+        "terminology"
+      ],
+      "url": null,
+      "field": "pull",
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m02",
+      "date": "2026-09-28",
+      "source": "calendar",
+      "title": "Post-editing batch: agency A",
+      "summary": "Four hours of MT output for a supplement brand. Same three error types again.",
+      "tags": [
+        "mt-post-editing"
+      ],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "m03",
+      "date": "2026-09-29",
+      "source": "document",
+      "title": "MT error log (10 items)",
+      "summary": "Sorted ten errors: false friends, unit formats, untranslated UI strings, inconsistent device terms.",
+      "tags": [
+        "error-taxonomy",
+        "localization-qa"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m04",
+      "date": "2026-09-29",
+      "source": "photo",
+      "title": "Blurry photo of a parking sign",
+      "summary": "Accidental photo from the car.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "m05",
+      "date": "2026-09-30",
+      "source": "saved_link",
+      "title": "MQM error typology explained",
+      "summary": "Saved a primer on standard translation error categories.",
+      "tags": [
+        "error-taxonomy"
+      ],
+      "url": "https://example.com/guides/mqm-primer",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m06",
+      "date": "2026-09-30",
+      "source": "calendar",
+      "title": "Post-editing batch: agency B",
+      "summary": "Legal NDA set, post-editing rate.",
+      "tags": [
+        "mt-post-editing"
+      ],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "m07",
+      "date": "2026-10-01",
+      "source": "document",
+      "title": "Device glossary sample v1",
+      "summary": "One page, 40 terms from an infusion pump IFU, with forbidden variants and a source column.",
+      "tags": [
+        "terminology",
+        "medical-device-domain"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m08",
+      "date": "2026-10-01",
+      "source": "sms",
+      "title": "Promo text from a phone carrier",
+      "summary": "Advertising message.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "m09",
+      "date": "2026-10-02",
+      "source": "saved_link",
+      "title": "What localization teams at device makers do",
+      "summary": "Article on in-house localization roles and regulatory review.",
+      "tags": [
+        "localization-qa",
+        "medical-device-domain"
+      ],
+      "url": "https://example.com/articles/in-house-localization",
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m10",
+      "date": "2026-10-03",
+      "source": "note",
+      "title": "Three LQA posts read",
+      "summary": "Two of three posts ask for termbase ownership and error categorization. I already do both.",
+      "tags": [
+        "localization-qa",
+        "terminology"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career",
+      "field": "pull"
+    },
+    {
+      "id": "m11",
+      "date": "2026-10-04",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "3 of 3. Felt like my real job for the first time in months.",
+      "tags": [],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m12",
+      "date": "2026-10-05",
+      "source": "calendar",
+      "title": "Post-editing batch: agency A",
+      "summary": "Three hours. Kept a running list of term errors.",
+      "tags": [
+        "mt-post-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "m13",
+      "date": "2026-10-06",
+      "source": "messenger",
+      "title": "Message to former device PM",
+      "summary": "Asked a former project manager at a device client for a 20-minute chat about their localization pain.",
+      "tags": [
+        "client-communication"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m14",
+      "date": "2026-10-07",
+      "source": "document",
+      "title": "LQA checklist v1",
+      "summary": "One page, 12 checks grouped by error category, built from the MT error log.",
+      "tags": [
+        "localization-qa",
+        "error-taxonomy",
+        "style-guide"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m15",
+      "date": "2026-10-07",
+      "source": "document",
+      "title": "Device glossary sample v2",
+      "summary": "Added definitions and an approval column after reading the in-house article.",
+      "tags": [
+        "terminology",
+        "medical-device-domain"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m16",
+      "date": "2026-10-08",
+      "source": "calendar",
+      "title": "Post-editing batch: agency B",
+      "summary": "Two hours.",
+      "tags": [
+        "mt-post-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "m17",
+      "date": "2026-10-08",
+      "source": "saved_link",
+      "title": "Pricing a terminology audit",
+      "summary": "Saved a guide on fixed-fee terminology audits.",
+      "tags": [
+        "project-pricing",
+        "terminology"
+      ],
+      "url": "https://example.com/guides/terminology-audit-pricing",
+      "signal": "career"
+    },
+    {
+      "id": "m18",
+      "date": "2026-10-09",
+      "source": "calendar",
+      "title": "Chat: localization lead (former PM)",
+      "summary": "20 minutes. They now lead localization. Pain: inconsistent terms across 9 languages, no owner for the Spanish termbase.",
+      "tags": [
+        "client-communication",
+        "localization-qa",
+        "terminology"
+      ],
+      "url": null,
+      "condition": 5,
+      "signal": "career"
+    },
+    {
+      "id": "m19",
+      "date": "2026-10-09",
+      "source": "note",
+      "title": "Three things they struggle with",
+      "summary": "No termbase owner; reviewers fix the same errors in every release; regulatory review finds term drift late.",
+      "tags": [
+        "localization-qa",
+        "medical-device-domain"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m20",
+      "date": "2026-10-10",
+      "source": "note",
+      "title": "Rest day",
+      "summary": "Family lunch, no work.",
+      "tags": [],
+      "url": null,
+      "condition": 4,
+      "signal": "rest"
+    },
+    {
+      "id": "m21",
+      "date": "2026-10-11",
+      "source": "note",
+      "title": "Weekly review: path check",
+      "summary": "3 of 3. The chat confirmed the problem I want to own. I agree this path fits.",
+      "tags": [
+        "terminology"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m22",
+      "date": "2026-10-12",
+      "source": "calendar",
+      "title": "Post-editing batch: agency A",
+      "summary": "Three hours.",
+      "tags": [
+        "mt-post-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "m23",
+      "date": "2026-10-13",
+      "source": "messenger",
+      "title": "Sent glossary and checklist",
+      "summary": "Sent both files to the localization lead with one line of context.",
+      "tags": [
+        "client-communication"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m24",
+      "date": "2026-10-14",
+      "source": "saved_link",
+      "title": "Spanish style guide for medical content",
+      "summary": "Saved a public style guide to compare with my own.",
+      "tags": [
+        "style-guide",
+        "medical-device-domain"
+      ],
+      "url": "https://example.com/guides/es-medical-style",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m25",
+      "date": "2026-10-15",
+      "source": "note",
+      "title": "Pilot offer waits",
+      "summary": "Want to hear back on the files before I price an audit.",
+      "tags": [],
+      "url": null,
+      "condition": 3,
+      "signal": "rest",
+      "blocker_reason": "people"
+    },
+    {
+      "id": "m26",
+      "date": "2026-10-16",
+      "source": "messenger",
+      "title": "Reply from localization lead",
+      "summary": "They liked the checklist and asked what an audit of one manual would cost.",
+      "tags": [
+        "client-communication"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m27",
+      "date": "2026-10-16",
+      "source": "document",
+      "title": "Pilot offer (3 lines)",
+      "summary": "Terminology audit of one IFU, fixed fee, five working days.",
+      "tags": [
+        "project-pricing",
+        "terminology"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m28",
+      "date": "2026-10-17",
+      "source": "document",
+      "title": "Before/after QA case",
+      "summary": "An old NDA job reworked: original errors, category, fix, and the rule added to the checklist.",
+      "tags": [
+        "localization-qa",
+        "error-taxonomy"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m29",
+      "date": "2026-10-18",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "3 of 3. One step waited a day for a reply. First real lead.",
+      "tags": [],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    }
+  ],
+  "checkins": [
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-09-29"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Thu",
+      "date": "2026-10-01"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-03"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-06"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Wed",
+      "date": "2026-10-07"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Fri",
+      "date": "2026-10-09"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-13"
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Thu",
+      "date": "2026-10-15",
+      "blocker_reason": "people"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Fri",
+      "date": "2026-10-16"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-17"
+    }
+  ]
+}

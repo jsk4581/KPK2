@@ -1,0 +1,38 @@
+[
+  {
+    "id": "marco-translator",
+    "archetype": "pivot-with-runway",
+    "risk_by_day": "ggggggggggggggggggggg",
+    "kinds": "none,full,gate,shrink,comeback",
+    "reviews": "up3 | up3 | up3",
+    "goal": "validated",
+    "constraint": "opportunity-social",
+    "drift": 1.629,
+    "recheck": false,
+    "lint": 0
+  },
+  {
+    "id": "priya-contentwriter",
+    "archetype": "income-pressure",
+    "risk_by_day": "ggggrgggggggggggggggg",
+    "kinds": "none,shrink,comeback,full",
+    "reviews": "keep2+replan | down2 | up2",
+    "goal": "provisional",
+    "constraint": "opportunity-time",
+    "drift": -16.129,
+    "recheck": true,
+    "lint": 0
+  },
+  {
+    "id": "riley-illustrator",
+    "archetype": "identity-grief",
+    "risk_by_day": "ggggrgggggrrraagggggg",
+    "kinds": "none,full,shrink,rest,reconnect",
+    "reviews": "keep3+replan | down1 | down1+low_condition_10_of_14",
+    "goal": "provisional",
+    "constraint": "motivation-automatic",
+    "drift": 0,
+    "recheck": false,
+    "lint": 0
+  }
+]

@@ -1,0 +1,709 @@
+{
+  "_label": "synthetic",
+  "_note": "[SIMULATION] Priya is not a real person. Every client, agency, link and message is invented.",
+  "id": "priya-contentwriter",
+  "source_refs": [
+    "Discord 2026-10-24 10:29 Gonzalo (message 1563363868787474495): three paths AI content editor, UX writer, prompt or content strategist",
+    "docs/gtm/journey-io.md input/output scope (Sales)"
+  ],
+  "story": "income-pressure-and-market-drift: over-planned first week (time), capped at two steps, the chosen path's postings fall 22% while the dream points to UX writing -> goal re-check question",
+  "arc_start": "2026-09-28",
+  "today": "2026-10-18",
+  "persona": {
+    "name": "Priya",
+    "role": "Freelance B2B content writer",
+    "years": 5,
+    "location": "US Northeast",
+    "headline": "Agencies send me AI drafts to fix for less."
+  },
+  "fields": {
+    "career": "Five years as an in-house then freelance content writer for B2B SaaS: blog posts, SEO pages and help center articles. Editors trusted my fact-checking and I owned the style guide at my last job.",
+    "now": "Two agencies now send me AI drafts to fix for less money. I take any client that pays because rent is due on the first, so my evenings are full.",
+    "pull": "I liked rewriting help center articles so users stopped filing tickets. Button labels and onboarding screens interest me."
+  },
+  "dream_moment": {
+    "text": "My onboarding copy ships inside a SaaS product, the support team tells me 'how do I' tickets dropped, and I am paid a salary as a UX writer.",
+    "horizon": "salaried UX writing role within 9 months",
+    "tags": [
+      "ux-microcopy",
+      "user-research",
+      "information-architecture",
+      "editing"
+    ],
+    "signals": [
+      {
+        "id": "d1",
+        "gate": "M1",
+        "text": "Three UX samples I am not embarrassed by"
+      },
+      {
+        "id": "d2",
+        "gate": "M2",
+        "text": "One help center rewrite shown as a before/after with a ticket metric"
+      },
+      {
+        "id": "d3",
+        "gate": "M3",
+        "text": "A product team reviews my samples"
+      },
+      {
+        "id": "d4",
+        "gate": "M4",
+        "text": "Offer letter that says UX Writer"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "editing",
+      "name": "Editing",
+      "keywords": [
+        "edit",
+        "editing",
+        "line edit"
+      ]
+    },
+    {
+      "id": "ai-draft-editing",
+      "name": "AI draft editing",
+      "keywords": [
+        "ai draft",
+        "ai drafts"
+      ]
+    },
+    {
+      "id": "fact-checking",
+      "name": "Fact-checking",
+      "keywords": [
+        "fact-check",
+        "fact-checking"
+      ]
+    },
+    {
+      "id": "brand-voice",
+      "name": "Brand voice",
+      "keywords": [
+        "brand voice",
+        "tone"
+      ]
+    },
+    {
+      "id": "style-guide",
+      "name": "Style guides",
+      "keywords": [
+        "style guide"
+      ]
+    },
+    {
+      "id": "seo-writing",
+      "name": "SEO writing",
+      "keywords": [
+        "seo"
+      ]
+    },
+    {
+      "id": "ux-microcopy",
+      "name": "UX microcopy",
+      "keywords": [
+        "button label",
+        "microcopy",
+        "empty state",
+        "onboarding screen"
+      ]
+    },
+    {
+      "id": "user-research",
+      "name": "User research",
+      "keywords": [
+        "support tickets",
+        "user interview",
+        "usability"
+      ]
+    },
+    {
+      "id": "information-architecture",
+      "name": "Information architecture",
+      "keywords": [
+        "help center structure",
+        "navigation",
+        "information architecture"
+      ]
+    },
+    {
+      "id": "content-strategy",
+      "name": "Content strategy",
+      "keywords": [
+        "content strategy",
+        "content plan"
+      ]
+    },
+    {
+      "id": "analytics",
+      "name": "Content analytics",
+      "keywords": [
+        "analytics",
+        "ticket metric"
+      ]
+    },
+    {
+      "id": "prompt-design",
+      "name": "Prompt design",
+      "keywords": [
+        "prompt"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "ai-content-editor",
+      "title": "AI Content Editor",
+      "requires": [
+        "editing",
+        "ai-draft-editing",
+        "fact-checking",
+        "brand-voice",
+        "style-guide",
+        "seo-writing"
+      ],
+      "ai_exposure": {
+        "augment": 0.35,
+        "replace": 0.55,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        93,
+        86,
+        78
+      ]
+    },
+    {
+      "id": "ux-writer",
+      "title": "UX Writer",
+      "requires": [
+        "ux-microcopy",
+        "user-research",
+        "information-architecture",
+        "style-guide",
+        "editing",
+        "brand-voice"
+      ],
+      "ai_exposure": {
+        "augment": 0.55,
+        "replace": 0.25,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        101,
+        103,
+        104
+      ]
+    },
+    {
+      "id": "content-strategist",
+      "title": "Content / Prompt Strategist",
+      "requires": [
+        "content-strategy",
+        "analytics",
+        "seo-writing",
+        "brand-voice",
+        "prompt-design",
+        "information-architecture"
+      ],
+      "ai_exposure": {
+        "augment": 0.6,
+        "replace": 0.25,
+        "basis": "[SIMULATION] scenario estimate"
+      },
+      "postings_index": [
+        100,
+        100,
+        99,
+        101
+      ]
+    }
+  ],
+  "path": {
+    "role_id": "ai-content-editor",
+    "title": "AI Content Editor",
+    "chosen_on": "2026-09-28",
+    "why": "closest to paid work this month (income first)"
+  },
+  "weeks": [
+    {
+      "start": "2026-09-28",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Build an AI draft editing checklist from 3 recent jobs",
+          "minutes": 30,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "List 3 fixes you always make"
+        },
+        {
+          "id": "a2",
+          "title": "Rewrite one AI draft as a portfolio before/after",
+          "minutes": 30,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Rewrite the first paragraph"
+        },
+        {
+          "id": "a3",
+          "title": "Update the LinkedIn headline to AI content editor",
+          "minutes": 30,
+          "day": "Sat",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write the headline only"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-05",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Edit one AI draft and log the 5 fixes you made",
+          "minutes": 20,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Log 2 fixes"
+        },
+        {
+          "id": "a2",
+          "title": "Rewrite one help center article as onboarding microcopy",
+          "minutes": 20,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Rewrite the title and first step"
+        }
+      ]
+    },
+    {
+      "start": "2026-10-12",
+      "actions": [
+        {
+          "id": "a1",
+          "title": "Read 5 AI content editor posts and note the rate range",
+          "minutes": 15,
+          "day": "Tue",
+          "status": "todo",
+          "moves": 0,
+          "short": "Read 2 posts"
+        },
+        {
+          "id": "a2",
+          "title": "Write 3 button labels and 1 empty state for a sample app",
+          "minutes": 20,
+          "day": "Thu",
+          "status": "todo",
+          "moves": 0,
+          "short": "Write one label"
+        }
+      ]
+    }
+  ],
+  "gate_events": [],
+  "lifelog": [
+    {
+      "id": "p01",
+      "date": "2026-09-28",
+      "source": "note",
+      "title": "Starting the arc",
+      "summary": "Chose AI content editor because it is closest to what agencies pay for this month.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "field": "now",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p02",
+      "date": "2026-09-28",
+      "source": "calendar",
+      "title": "Agency C: fix 4 AI drafts",
+      "summary": "Evening batch, flat fee per draft.",
+      "tags": [
+        "ai-draft-editing",
+        "editing"
+      ],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "p03",
+      "date": "2026-09-29",
+      "source": "calendar",
+      "title": "Agency D deadline moved up",
+      "summary": "Two SEO pages due tomorrow instead of Friday.",
+      "tags": [
+        "seo-writing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "p04",
+      "date": "2026-09-30",
+      "source": "document",
+      "title": "Editing checklist (3 fixes)",
+      "summary": "10-minute version: invented stats, generic intros, wrong product names.",
+      "tags": [
+        "ai-draft-editing",
+        "fact-checking"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p05",
+      "date": "2026-10-01",
+      "source": "calendar",
+      "title": "Agency C: fix 6 AI drafts",
+      "summary": "Four hours in the evening.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "p06",
+      "date": "2026-10-02",
+      "source": "sms",
+      "title": "Rent reminder",
+      "summary": "Automated text from the property manager.",
+      "tags": [],
+      "url": null,
+      "condition": 3,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "p07",
+      "date": "2026-10-03",
+      "source": "document",
+      "title": "LinkedIn headline",
+      "summary": "Changed to 'B2B content editor: human judgment on AI drafts'.",
+      "tags": [
+        "brand-voice"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p08",
+      "date": "2026-10-03",
+      "source": "saved_link",
+      "title": "Inside a UX writer's day",
+      "summary": "Saved an article about UX writers working from support tickets.",
+      "tags": [
+        "ux-microcopy",
+        "user-research"
+      ],
+      "url": "https://example.com/articles/ux-writer-day",
+      "field": "pull",
+      "signal": "career"
+    },
+    {
+      "id": "p09",
+      "date": "2026-10-04",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "2 of 3. The before/after moved twice. Thirty minutes was too much on agency nights.",
+      "tags": [],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "p10",
+      "date": "2026-10-05",
+      "source": "photo",
+      "title": "Screenshot of a grocery list",
+      "summary": "Accidental screenshot.",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "p10b",
+      "date": "2026-10-05",
+      "source": "calendar",
+      "title": "Agency C: fix 3 AI drafts",
+      "summary": "Evening batch.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "p11",
+      "date": "2026-10-06",
+      "source": "document",
+      "title": "AI draft fix log",
+      "summary": "Five fixes on one draft: two invented statistics, one wrong feature name, tone, structure.",
+      "tags": [
+        "ai-draft-editing",
+        "fact-checking",
+        "editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p12",
+      "date": "2026-10-07",
+      "source": "calendar",
+      "title": "Agency D: 3 SEO pages",
+      "summary": "Evening work.",
+      "tags": [
+        "seo-writing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "p13",
+      "date": "2026-10-08",
+      "source": "calendar",
+      "title": "Agency C: rush batch",
+      "summary": "Five drafts due by morning.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest",
+      "blocker_reason": "time"
+    },
+    {
+      "id": "p14",
+      "date": "2026-10-09",
+      "source": "document",
+      "title": "Help center rewrite as onboarding",
+      "summary": "Did it Friday anyway, outside the plan: turned a 900-word 'connect your calendar' article into 4 onboarding screens and an empty state.",
+      "tags": [
+        "ux-microcopy",
+        "information-architecture",
+        "editing"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "p15",
+      "date": "2026-10-09",
+      "source": "note",
+      "title": "This was fun",
+      "summary": "Lost track of time in a good way. More of this.",
+      "tags": [
+        "ux-microcopy"
+      ],
+      "url": null,
+      "field": "pull",
+      "signal": "career"
+    },
+    {
+      "id": "p16",
+      "date": "2026-10-10",
+      "source": "saved_link",
+      "title": "UX writing portfolio examples",
+      "summary": "Saved five UX writing portfolios with before/after screens.",
+      "tags": [
+        "ux-microcopy",
+        "portfolio"
+      ],
+      "url": "https://example.com/lists/ux-writing-portfolios",
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "p17",
+      "date": "2026-10-11",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "1 of 2 on the plan; the rewrite went to next week but I did it Friday anyway. Two steps fit next to agency work.",
+      "tags": [],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p18",
+      "date": "2026-10-12",
+      "source": "calendar",
+      "title": "Agency C: fix 4 AI drafts",
+      "summary": "Rate dropped again this month.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "p19",
+      "date": "2026-10-13",
+      "source": "note",
+      "title": "Five AI content editor posts",
+      "summary": "Fewer posts than two weeks ago. Most are per-draft flat fees, lower than my agency rate.",
+      "tags": [
+        "ai-draft-editing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career",
+      "field": "pull"
+    },
+    {
+      "id": "p20",
+      "date": "2026-10-14",
+      "source": "saved_link",
+      "title": "Support tickets as UX research",
+      "summary": "Saved a talk on using support tickets to find confusing UI text.",
+      "tags": [
+        "user-research",
+        "ux-microcopy"
+      ],
+      "url": "https://example.com/talks/tickets-as-research",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "p21",
+      "date": "2026-10-15",
+      "source": "document",
+      "title": "Three labels and an empty state",
+      "summary": "Sample invoicing app: 'Send invoice', 'Save draft', 'Remind client', and an empty state for no invoices.",
+      "tags": [
+        "ux-microcopy"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "p22",
+      "date": "2026-10-16",
+      "source": "calendar",
+      "title": "Agency D: 2 SEO pages",
+      "summary": "Evening work.",
+      "tags": [
+        "seo-writing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "rest"
+    },
+    {
+      "id": "p23",
+      "date": "2026-10-17",
+      "source": "messenger",
+      "title": "Former editor: coffee chat offer",
+      "summary": "Former editor now on a product team offers to look at UX samples.",
+      "tags": [
+        "ux-microcopy"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "p24",
+      "date": "2026-10-18",
+      "source": "note",
+      "title": "Weekly review",
+      "summary": "2 of 2. Editor jobs pay less every week. The UX work is the part I look forward to.",
+      "tags": [
+        "ux-microcopy"
+      ],
+      "url": null,
+      "field": "pull",
+      "condition": 3,
+      "signal": "career"
+    }
+  ],
+  "checkins": [
+    {
+      "actionId": "a1",
+      "kind": "not_today",
+      "day": "Tue",
+      "date": "2026-09-29",
+      "blocker_reason": "time"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Wed",
+      "date": "2026-09-30",
+      "variant": "micro",
+      "minutes": 10
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Thu",
+      "date": "2026-10-01",
+      "blocker_reason": "time"
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Fri",
+      "date": "2026-10-02",
+      "blocker_reason": "time"
+    },
+    {
+      "actionId": "a3",
+      "kind": "done",
+      "day": "Sat",
+      "date": "2026-10-03"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-06"
+    },
+    {
+      "actionId": "a2",
+      "kind": "not_today",
+      "day": "Thu",
+      "date": "2026-10-08",
+      "blocker_reason": "time"
+    },
+    {
+      "actionId": "a1",
+      "kind": "done",
+      "day": "Tue",
+      "date": "2026-10-13"
+    },
+    {
+      "actionId": "a2",
+      "kind": "done",
+      "day": "Thu",
+      "date": "2026-10-15"
+    }
+  ]
+}

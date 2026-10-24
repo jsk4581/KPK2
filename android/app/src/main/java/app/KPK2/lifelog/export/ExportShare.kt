@@ -15,11 +15,19 @@ object ExportShare {
 
     fun fileName(today: LocalDate = LocalDate.now()): String = "second-draft-lifelog-$today.json"
 
+    /** The cache folder that holds the latest export file. */
+    fun dir(context: Context): File = File(context.cacheDir, DIR)
+
     /** Replaces any earlier export so only the latest file sits in the cache. */
     fun writeFile(context: Context, json: String): File {
-        val dir = File(context.cacheDir, DIR).apply { mkdirs() }
-        dir.listFiles()?.forEach { it.delete() }
+        val dir = dir(context).apply { mkdirs() }
+        clear(dir)
         return File(dir, fileName()).apply { writeText(json, Charsets.UTF_8) }
+    }
+
+    /** Removes every export file in [dir], for example after the person deleted items it contains. */
+    fun clear(dir: File) {
+        dir.listFiles()?.forEach { it.delete() }
     }
 
     fun shareIntent(context: Context, file: File): Intent {

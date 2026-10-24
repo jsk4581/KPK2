@@ -18,6 +18,7 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.io.File
 
 @RunWith(RobolectricTestRunner::class)
 class ItemDeleterTest {
@@ -26,6 +27,7 @@ class ItemDeleterTest {
     private lateinit var db: LifelogDatabase
     private lateinit var repo: LifelogRepository
     private lateinit var store: DocumentStore
+    private lateinit var exports: File
 
     @Before
     fun open() {
@@ -33,12 +35,13 @@ class ItemDeleterTest {
         db = Room.inMemoryDatabaseBuilder(context, LifelogDatabase::class.java).allowMainThreadQueries().build()
         repo = LifelogRepository(db.lifelogDao())
         store = DocumentStore(temp.newFolder("documents"))
+        exports = temp.newFolder("exports")
     }
 
     @After
     fun close() = db.close()
 
-    private fun deleter() = ItemDeleter(repo, store)
+    private fun deleter() = ItemDeleter(repo, store, exports)
 
     /** Records a document item and writes its private copy, as the importer does. */
     private suspend fun addDocument(sha: String): LifelogItem {
@@ -77,5 +80,19 @@ class ItemDeleterTest {
 
         assertEquals(listOf(kept.id), repo.snapshot().map { it.id })
         assertEquals(setOf(DocumentRules.keyOfItemId(kept.id)), storedKeys())
+    }
+
+    @Test
+    fun deletingRemovesTheLastExportFile() = runTest {
+        repo.record(LifelogItem(id = "note-1", date = "2026-10-24", source = "note", title = "Fictional note", summary = ""))
+        repo.record(LifelogItem(id = "note-2", date = "2026-10-24", source = "note", title = "Other note", summary = ""))
+        File(exports, "second-draft-lifelog-2026-10-24.json").writeText("""{"items":[{"id":"note-1"}]}""")
+
+        deleter().delete("note-1")
+        assertEquals(0, exports.listFiles()!!.size)
+
+        File(exports, "second-draft-lifelog-2026-10-24.json").writeText("""{"items":[{"id":"note-2"}]}""")
+        deleter().deleteAll()
+        assertEquals(0, exports.listFiles()!!.size)
     }
 }

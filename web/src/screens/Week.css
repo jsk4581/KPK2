@@ -1,0 +1,207 @@
+/* This week screen. Calm palette only: no red-family warning colors anywhere. */
+.week {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.week h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.week-path {
+  margin: 0;
+  font-weight: 600;
+  color: #2f6fdb;
+}
+
+.week-arc summary {
+  cursor: pointer;
+  color: #5f6b7a;
+  font-size: 14px;
+}
+
+.week-arc p {
+  margin: 6px 0 0;
+  font-size: 14px;
+}
+
+.week-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.week-progress-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: #e3e8ef;
+  overflow: hidden;
+}
+
+.week-progress-bar span {
+  display: block;
+  height: 100%;
+  background: #2f9e6e;
+}
+
+.week-progress-text {
+  font-size: 13px;
+  color: #5f6b7a;
+}
+
+.week-condition {
+  border: 1px solid #d5dae1;
+  border-radius: 10px;
+  padding: 8px 12px 10px;
+  margin: 0;
+}
+
+.week-condition legend {
+  font-size: 13px;
+  color: #5f6b7a;
+  padding: 0 4px;
+}
+
+.week-condition-row {
+  display: flex;
+  gap: 8px;
+}
+
+.week-condition-btn {
+  flex: 1;
+  min-height: 36px;
+  border: 1px solid #d5dae1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2933;
+  font: inherit;
+  cursor: pointer;
+}
+
+.week-condition-btn[aria-pressed='true'] {
+  background: #2f6fdb;
+  border-color: #2f6fdb;
+  color: #ffffff;
+}
+
+.week-actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.week-action {
+  border: 1px solid #d5dae1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #ffffff;
+}
+
+.week-action-done {
+  background: #eef8f2;
+  border-color: #b9e0c9;
+}
+
+.week-action-moved {
+  background: #f1f5fb;
+  border-color: #c8d6ee;
+}
+
+.week-action-title {
+  margin: 0 0 4px;
+}
+
+.week-action-meta {
+  margin: 0;
+  font-size: 13px;
+  color: #5f6b7a;
+}
+
+.week-action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.week-btn {
+  border: 1px solid #2f6fdb;
+  background: #2f6fdb;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.week-btn-quiet {
+  background: #ffffff;
+  color: #2f6fdb;
+}
+
+.week-summary {
+  margin: 0;
+  font-size: 14px;
+  color: #5f6b7a;
+}
+
+.week-reply {
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f1f5fb;
+  border: 1px solid #c8d6ee;
+}
+
+.week-reply ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.week-reply-lead {
+  font-weight: 600;
+}
+
+.week-reply-moved {
+  color: #2f6fdb;
+}
+
+.week-share {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px dashed #2f9e6e;
+}
+
+.week-share p {
+  margin: 0 0 4px;
+}
+
+.week-share-path {
+  font-weight: 600;
+}
+
+.week-share-progress {
+  color: #2f9e6e;
+}
+
+.week-note {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #5f6b7a;
+  display: block;
+}
+
+.week-footer {
+  display: flex;
+  gap: 8px;
+}

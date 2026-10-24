@@ -51,3 +51,6 @@ data class LifelogItem(
  */
 @Entity(tableName = "deleted_item")
 data class DeletedItem(@PrimaryKey val id: String)
+
+/** Per-source totals for the Sources screen. */
+data class SourceStats(val source: String, val count: Int, val lastRecordedAt: Long)

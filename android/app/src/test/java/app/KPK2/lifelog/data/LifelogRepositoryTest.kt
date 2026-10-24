@@ -80,4 +80,19 @@ class LifelogRepositoryTest {
         repo.record(listOf(item("a", "2026-10-09"), item("new", "2026-10-12")))
         assertEquals(listOf("new"), repo.snapshot().map { it.id })
     }
+
+    @Test
+    fun sourceStatsCountItemsAndKeepTheNewestRecordedTime() = runTest {
+        repo.record(
+            listOf(
+                item("n1", "2026-10-09", recordedAt = 100),
+                item("n2", "2026-10-10", recordedAt = 300),
+                item("c1", "2026-10-10", recordedAt = 200).copy(source = "calendar"),
+            ),
+        )
+        val stats = repo.sourceStats.first()
+        assertEquals(setOf("note", "calendar"), stats.keys)
+        assertEquals(2 to 300L, stats.getValue("note").let { it.count to it.lastRecordedAt })
+        assertEquals(1 to 200L, stats.getValue("calendar").let { it.count to it.lastRecordedAt })
+    }
 }

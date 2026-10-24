@@ -19,6 +19,12 @@ abstract class LifelogDao {
     @Query("SELECT COUNT(*) FROM lifelog_item")
     abstract fun observeCount(): Flow<Int>
 
+    @Query(
+        "SELECT source, COUNT(*) AS count, MAX(recorded_at) AS lastRecordedAt " +
+            "FROM lifelog_item GROUP BY source",
+    )
+    abstract fun observeSourceStats(): Flow<List<SourceStats>>
+
     @Query("SELECT id FROM deleted_item WHERE id IN (:ids)")
     protected abstract suspend fun deletedAmong(ids: List<String>): List<String>
 

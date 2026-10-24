@@ -47,7 +47,7 @@ fun AppShell() {
         val modifier = Modifier.padding(innerPadding)
         when (current) {
             Destination.TIMELINE -> TimelineScreen(graph.repository, modifier)
-            Destination.SOURCES -> SourcesScreen(modifier)
+            Destination.SOURCES -> SourcesScreen(graph, modifier)
             Destination.EXPORT -> ExportScreen(graph.repository, modifier)
         }
     }

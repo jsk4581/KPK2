@@ -1,6 +1,7 @@
 package app.KPK2.lifelog.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /** The single read and write path to lifelog items on this device. */
 class LifelogRepository(private val dao: LifelogDao) {
@@ -9,6 +10,9 @@ class LifelogRepository(private val dao: LifelogDao) {
     val items: Flow<List<LifelogItem>> = dao.observeAll()
 
     val count: Flow<Int> = dao.observeCount()
+
+    /** Item count and newest recorded time, keyed by source wire name. Sources with no items are absent. */
+    val sourceStats: Flow<Map<String, SourceStats>> = dao.observeSourceStats().map { rows -> rows.associateBy { it.source } }
 
     suspend fun snapshot(): List<LifelogItem> = dao.all()
 

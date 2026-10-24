@@ -107,7 +107,10 @@ private fun ItemCard(item: LifelogItem, onDelete: () -> Unit) {
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.secondary,
                 )
-                Text(item.title, style = MaterialTheme.typography.titleSmall)
+                // A saved link shared without a subject has no title; skip the empty row.
+                if (item.title.isNotBlank()) {
+                    Text(item.title, style = MaterialTheme.typography.titleSmall)
+                }
                 if (item.summary.isNotBlank()) {
                     Text(item.summary, style = MaterialTheme.typography.bodyMedium)
                 }

@@ -1,6 +1,6 @@
 # Second Draft 결정 뇌(Decision Brain) 설계 — 공개 문서 · 2026-10-24 · 팀 Second Draft (KPK2)
 
-제품명 Dream Achieve Moments, 코드명 Second Draft.
+제품명 Next Chapter, 코드명 Second Draft.
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) — 6층 전체 아키텍처(커넥터 → 게이트웨이 → 파싱 → 온톨로지 → Brain → 인터페이스)와 v1.1 확정 결정
 - [BRAIN_ARCH.md](BRAIN_ARCH.md) — `app/logic.js` 위에 얹는 `brain/` 모듈(person·state·goal·constraint·monitor·policy·messages·explain)과 think() 흐름

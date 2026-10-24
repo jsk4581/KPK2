@@ -1,6 +1,6 @@
-# Dream Achieve Moments Brain — VC Q&A Sheet (EN / KO)
+# Next Chapter Brain — VC Q&A Sheet (EN / KO)
 
-> Product **Dream Achieve Moments** (code name Second Draft) · Public repo · 2026-10-24
+> Product **Next Chapter** (code name Second Draft) · Public repo · 2026-10-24
 > Scope: the **brain** (decision core + REST + MCP) and the business around it. 12 questions a VC is likely to ask, each with a crisp EN answer and a KO one-liner.
 > Evidence rules: every number carries an existing E-id from `docs/gtm/market-claims.md` / `docs/gtm/ai-displaced-occupations.md` with its label (`verified` / `single-source` / `hypothesis`). Anything without an E-id is marked **(hypothesis)**. All demo data is synthetic (`"_label": "synthetic"`, "Sample persona — synthetic"). No real users, no interviews, no contracts exist.
 > First sentence on any money question: **"We sell the brain — an inference API, billed per token, user-consented."**
@@ -65,7 +65,7 @@
 
 ## Q12. What did you build in the 5 hours, and what was pre-event? (disclosure)
 
-**EN.** Pre-event: the team's hackathon harness (CLAUDE.md / CONTRACT / HANDOFF / role kits / gate scripts) and the PM's prior coaching framework "TheGoal" (B:Essential, v0.3) that the brain's goal-state and milestone-gate logic is derived from — both are process and design assets, not product code. After the mission reveal (approx. 09:40): the mission choice, PRD, the `app/logic.js` core and its tests, the web demo, the `brain/` decision modules (person · state · goal · constraint · monitor · policy · messages · explain), the MCP server, HTTP/REST wrapper, the synthetic 14-day scenario, and all GTM research (E1–E70). By team rule, output from other AI tools created after the reveal was not used, and all AI calls ran on the event's Claude credits. The product name Dream Achieve Moments was fixed at 13:58 today.
+**EN.** Pre-event: the team's hackathon harness (CLAUDE.md / CONTRACT / HANDOFF / role kits / gate scripts) and the PM's prior coaching framework "TheGoal" (B:Essential, v0.3) that the brain's goal-state and milestone-gate logic is derived from — both are process and design assets, not product code. After the mission reveal (approx. 09:40): the mission choice, PRD, the `app/logic.js` core and its tests, the web demo, the `brain/` decision modules (person · state · goal · constraint · monitor · policy · messages · explain), the MCP server, HTTP/REST wrapper, the synthetic 14-day scenario, and all GTM research (E1–E70). By team rule, output from other AI tools created after the reveal was not used, and all AI calls ran on the event's Claude credits. The product name Next Chapter was fixed at 13:58 today.
 **KO.** 행사 전 자산은 팀 운영 하네스와 PM의 기존 코칭 프레임워크(TheGoal)뿐이고, 로직·웹·브레인·MCP·시나리오·시장 근거는 전부 미션 공개 후 만들었다. 타 AI 산출물은 쓰지 않았다.
 
 ---

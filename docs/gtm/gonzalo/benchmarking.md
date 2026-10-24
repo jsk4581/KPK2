@@ -9,7 +9,7 @@ Others do **one piece**: a dream board, a resume, or a habit streak. Nobody star
 
 ## Product name
 
-Gonzalo's pick (2026-10-24): **Next Chapter**. Pending Roy's confirmation, since the app and logo currently say "Dream Achieve Moments."
+Gonzalo's pick (2026-10-24): **Next Chapter**. Approved by Roy (PM) at 16:12; the previous name was Dream Achieve Moments.
 Name conflicts found (web search, not a trademark search):
 
 | App | What it is | Label |

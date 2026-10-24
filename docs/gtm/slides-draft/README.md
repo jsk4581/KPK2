@@ -1,6 +1,6 @@
 # 발표자료 초안 v4 (Sales, 2026-10-24 14:52) — GTM 인수용
 
-- v4: PM 13:58 결정 반영 — 제품명 **Dream Achieve Moments** · 새 랜딩(`/`, 라이트·보라 브랜드)에 맞춰 라이트 테마 + `footer-for-light-slides.png` · 1장에 랜딩 브라우저 샷(`shot-landing-web.png`) + 앱 폰 샷 · 2장 플로우·브레인 다이어그램 보라 톤. 앱 폰 샷은 아직 "Second Draft" 제목(배포본 기준) — 재배포 후 재캡처 필요.
+- v4: PM 13:58 결정 반영 — 제품명 **Next Chapter** · 새 랜딩(`/`, 라이트·보라 브랜드)에 맞춰 라이트 테마 + `footer-for-light-slides.png` · 1장에 랜딩 브라우저 샷(`shot-landing-web.png`) + 앱 폰 샷 · 2장 플로우·브레인 다이어그램 보라 톤. 앱 폰 샷은 아직 "Second Draft" 제목(배포본 기준) — 재배포 후 재캡처 필요.
 
 - v3: 시각 중심 재구성 — 1장 폰 목업 2대(Landing·Paths) + WHO/PAIN 필 + 큰 숫자 타일 3개 / 2장 폰 목업 3대 플로우(→) + "One brain · two doors" SVG 다이어그램 + Why us + Market·Next 7 days. 키트 규칙(2장·로고 띠·팀명·28px↑·행사 외 로고 없음) 준수.
 - v3 PDF: 2쪽 · 1,472,773바이트 · sha256 `be8051beb8929546b1351a3ccf2bfd69c3da4f9df38f1bed67f9292c31a2817b`

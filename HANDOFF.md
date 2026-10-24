@@ -38,6 +38,7 @@ stage: board
 - T12 done · 커밋 (EVIDENCE) · Sales — mission/EVIDENCE.md 생성: 「주장」은 PM 에이전트 초안(`docs/brain/drafts-mission/EVIDENCE.md`) 그대로 채택(GTM ✓ 대기), 「Buyer simulation」 S1–S3 전부 배포 URL 실행 결과로 교체(S2·S3 15:57 Playwright, 출처 `AI-drafted`) · `validate_mission.py mission --stage evidence` PASS 11/0 · 발견: 번역가·일러스트 입력에선 경로가 카피라이터 템플릿에 머묾(S2 1/3 · S3 0/3 적합) → 피치에 "오늘 데모는 비치헤드 직군 전용" 명시 필요
 - 16:03 · Sales · `docs/gtm/market-viz/` 신규 (market.html · market.png · market.pdf) — A TAM 53.2M → SAM 11.8M → SOM 3M → 비치헤드 704K → 1차 시장 140K 막대(출처·est. 표기) · B 확장 사다리 3단계(1차 작가 / 2차 창작·언어 프리랜서 / 3차 사무직 B2B) 직군별 막대 · C 수익 모델 다이어그램(무료→Pro→브레인 API→데이터 크레딧 루프·데이터 라이선스, CCPA 주석) · D 미국 GTM 3단계 표(채널·가격·근거·지표) — 결선 Q&A·DEMODAY용, 2장 덱 밖 자료. 팔레트 CVD 검증 PASS
 - T13 done · T14 doing(체크 1·2 PASS, 3–10 소유자 대기) · T21 todo(PITCH·pitch/slides.pdf 생기면 즉시) · T23: 13:00~15:30 회차 미관측 — Sales(사람) 슬롯 수 확인 요청 중
+- 2026-10-24 16:20 · GTM(곤살로) · 제품명 Next Chapter(PM 16:12 승인) 문서 반영: docs/brain · docs/gtm · docs/research · mission/EVIDENCE.md 텍스트의 Dream Achieve Moments → Next Chapter (이력 기록·이전 버전 슬라이드·이름 비교 분석은 그대로). 코드(brain/ · android/)와 스크린샷은 소유자(PM·Build) 확인 필요 · 블로커 없음
 
 ## 결정
 

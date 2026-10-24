@@ -21,7 +21,7 @@
 | 스텝 `Organize — Key points and priorities are pulled out.` | `Three paths — Each one carries your expertise forward, closest match first.` | 앱 Paths |
 | 스텝 `Next action — You get the one thing to do now.` | `This week — Three small actions and a check-in that never shames you.` | 앱 Week |
 | 목업 앱 `Today's summary · Type one line, get the next action · NEXT ACTION · EXAMPLE Send the quote draft · Files added 3 files · 12 items` | `Your paths · Three directions where your experience carries over · TOP MATCH · EXAMPLE Messaging & Positioning Consultant · What carries over 4 skills · This week 3 actions` | 앱 Paths 화면 |
-| 푸터 `Dream Achieve Moments · simulated screens, synthetic data` | 유지 | — |
+| 푸터 `Next Chapter · simulated screens, synthetic data` | 유지 | — |
 
 **바꾸지 않아도 되는 것**: 레이아웃·애니메이션·색·`Simulation · synthetic data` 표기·「Try the demo」 버튼·iframe 데모 구역.
 **소요**: 문자열 교체만 — Build 10~15분. freeze(14:00) 뒤라 **PM 승인 필요**(🚨). 승인 없으면 덱·피치 스크립트에서 "랜딩은 콘셉트 페이지, 제품은 폰 안의 데모"라고 한 문장 선언으로 방어.

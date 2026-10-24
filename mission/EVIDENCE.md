@@ -1,6 +1,6 @@
 # EVIDENCE — 2026-10-24 · v2
 
-> 제품: Dream Achieve Moments (개발 코드명 Second Draft) · 「주장」 소유 GTM(곤살로) · 「Buyer simulation」 소유 Sales(태진). 모든 숫자는 `docs/gtm/market-claims.md` · `docs/gtm/ai-displaced-occupations.md` · `docs/gtm/verify-e68-e59.md` · `docs/gtm/verify-payers.md` · `docs/gtm/competitors.md`에서 가져왔고 라벨은 원문에서 올리지 않았다. 슬라이드는 각 행을 `(E번호 · 라벨)`로 가리킨다. hypothesis 행은 슬라이드에 "가설(estimate)" 표기 필수.
+> 제품: Next Chapter (개발 코드명 Second Draft) · 「주장」 소유 GTM(곤살로) · 「Buyer simulation」 소유 Sales(태진). 모든 숫자는 `docs/gtm/market-claims.md` · `docs/gtm/ai-displaced-occupations.md` · `docs/gtm/verify-e68-e59.md` · `docs/gtm/verify-payers.md` · `docs/gtm/competitors.md`에서 가져왔고 라벨은 원문에서 올리지 않았다. 슬라이드는 각 행을 `(E번호 · 라벨)`로 가리킨다. hypothesis 행은 슬라이드에 "가설(estimate)" 표기 필수.
 
 ## 주장
 

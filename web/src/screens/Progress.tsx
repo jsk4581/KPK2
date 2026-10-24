@@ -76,6 +76,7 @@ const VIA_TAG: Record<NonNullable<TraceEntry['via']>, string> = {
   logic: 'tag',
   llm: 'tag tag-accent',
   fallback: 'tag tag-attention',
+  brain: 'tag tag-ok',
 };
 
 function EvidenceText({ item, titles }: { item: Evidence; titles: Map<string, string> }) {

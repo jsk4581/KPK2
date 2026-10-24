@@ -66,7 +66,7 @@ export async function think(input: ThinkInput): Promise<Record<string, unknown>>
     const body = await res.json().catch(() => ({}));
     throw new Error(body?.error?.message ?? `brain ${res.status}`);
   }
-  return res.json(); // { person, state, goal, constraint, monitor, intervention, explain, trace, context }
+  return res.json(); // { person, state, goal, constraint, monitor, intervention, explain, trace, trace_layers, labels, context }
 }
 
 export async function health(): Promise<boolean> {
@@ -82,6 +82,9 @@ export async function health(): Promise<boolean> {
 | `/v1/health` | GET | `{ ok, name, version, tools, uptimeSec }` |
 | `/v1/scenario` | GET | 합성 시나리오 JSON (`brain/data/dana-14d.json`) |
 | `/v1/think` | POST | 브레인 한 바퀴 (person → state → goal → constraint → intervention → explain) |
+| | | **[Why?] 패널용**: 응답에 `trace_layers`(L1–L4 13단계, `{ layer, stage, label, status: 'ran'\|'designed', input_summary, output_summary, ms }` — `/v1/interview` 등 compat trace와 같은 모양, `designed`는 `ms: null`)와 |
+| | | `labels`(`fields`: `state.selfEfficacy` → "Confidence" 등 내부 필드 표시 이름, `values`: `shrink` → "Smaller step", `opportunity-time` → "Time", `M1` → "Fit check" 등 enum 표시 이름)가 함께 온다. |
+| | | 둘 다 `think()` 출력 그대로이며(MCP `think` 도구도 동일), 모든 문장은 금지어 lint를 통과한다. 라벨 전체는 `brain/labels.js`. |
 | `/v1/rank-roles` | POST | 역할 랭킹 |
 | `/v1/plan-week` | POST | 이번 주 3개 액션 |
 | `/v1/check-in` | POST | done / not_today 처리 |

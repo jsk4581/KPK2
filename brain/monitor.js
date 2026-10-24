@@ -33,7 +33,8 @@ export const CRISIS_PHRASES = [
 ];
 
 // Fixed economic-pressure list (§6.5-4: rent, eviction, unpaid bills). Matched on word boundaries
-// (not substrings) so "current" or "parent" never trip "rent". Never stored or echoed either.
+// (not substrings) so "current", "parent" or "différent" never trip "rent": a letter or digit in
+// any script on either side means it is part of another word. Never stored or echoed either.
 export const ECONOMIC_PHRASES = [
   'rent',
   'eviction',
@@ -183,7 +184,7 @@ function containsCrisisLanguage(freeText) {
 }
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const ECONOMIC_PATTERNS = ECONOMIC_PHRASES.map((phrase) => new RegExp(`(^|[^a-z0-9])${escapeRegExp(phrase)}([^a-z0-9]|$)`));
+const ECONOMIC_PATTERNS = ECONOMIC_PHRASES.map((phrase) => new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(phrase)}(?=[^\\p{L}\\p{N}]|$)`, 'u'));
 
 function containsEconomicLanguage(freeText) {
   return freeTexts(freeText).some((text) => text !== '' && ECONOMIC_PATTERNS.some((pattern) => pattern.test(text)));
@@ -310,9 +311,11 @@ export function weeklyReview(input) {
   // One question at a time (§6.1): a step moved twice asks it; otherwise the first shrink to one
   // micro step (0 done) asks the same question instead of blame. An escalation message carries its
   // own sentence, so the shrink-driven question stays silent then.
+  // Crisis language pauses coaching (§6.5), so no question is asked at all then.
+  const paused = Boolean(escalate) && escalate.reason === 'crisis_language';
   const repeated = compare.drift.find((d) => d.type === 'repeated_move');
   const firstShrink = resize.direction === 'down' && resize.count === 1 && !escalate;
-  const replanQuestion = repeated || firstShrink ? REPLAN_QUESTION : null;
+  const replanQuestion = !paused && (repeated || firstShrink) ? REPLAN_QUESTION : null;
 
   if (escalate && escalate.reason === 'economic_pressure') {
     // §6.5-4: resources plus income first. The week keeps up to two steps (no growth) rather than

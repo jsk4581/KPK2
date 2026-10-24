@@ -7,6 +7,7 @@
 
 import { GATE_TEMPLATES } from './goal.js';
 import { isIsoDate, daysBetween } from './state.js';
+import { lint } from './messages.js';
 
 export const LEVELS = ['explore', 'build-proof', 'reach-out', 'apply'];
 
@@ -140,6 +141,8 @@ export function stageLevel({ chosenPathId, count, gates, reachOuts, applications
 // First unpassed gate with what it still needs. `missing` is built from the gate's own evaluation
 // when think() attached one, else from the ledger count against the gate's minDone; the user's own
 // confirm is always listed until the gate is passed (§6.4: nothing passes automatically).
+// Gates may come straight from a caller (think's `gates` input), so counts are clamped at 0, the
+// date is kept only when ISO, and the gate's own evidence text is used only when it passes lint.
 export function nextGate({ gates, count }) {
   const ordered = GATE_TEMPLATES.map((template) => gates.find((g) => asText(g.id) === template.id) || template);
   const gate = ordered.find((g) => g.passed !== true);
@@ -147,16 +150,17 @@ export function nextGate({ gates, count }) {
   const template = GATE_TEMPLATES.find((t) => t.id === asText(gate.id)) || GATE_TEMPLATES[0];
   const missing = [];
   const evaluation = asObject(gate.evaluation);
-  const required = finite(evaluation.required) ?? finite(gate.minDone) ?? template.minDone;
-  const done = finite(evaluation.done) ?? count;
+  const required = Math.max(0, finite(evaluation.required) ?? finite(gate.minDone) ?? template.minDone);
+  const done = Math.max(0, finite(evaluation.done) ?? count);
   if (done < required) missing.push(`${required - done} more done ${required - done === 1 ? 'step' : 'steps'} (${done}/${required})`);
   missing.push('your own confirm that this gate is passed');
+  const evidence = asText(gate.evidence).trim();
   return {
     name: [template.id, template.name].join(' '),
     id: template.id,
     week: finite(gate.week) ?? template.week,
-    date: gate.date || null,
-    criteria: asText(gate.evidence) || template.evidence,
+    date: isIsoDate(gate.date) ? gate.date : null,
+    criteria: evidence !== '' && lint(evidence).ok ? evidence : template.evidence,
     missing,
   };
 }

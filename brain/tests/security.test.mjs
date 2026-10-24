@@ -439,7 +439,9 @@ describe('input boundary: proofs on the real brain', () => {
     const viaMcp = await mcpCall(real.url, 'think', { ...thinkInput, confirmedGates: ['M1'] });
     assert.notEqual(viaMcp.result.isError, true);
     assert.equal(viaMcp.result.structuredContent.goal.state, 'validated');
-    assert.deepEqual(viaMcp.result.structuredContent, confirmed);
+    // trace_layers[].ms is wall-clock timing (never a judgment); it differs between the two runs.
+    const withoutMs = (report) => ({ ...report, trace_layers: report.trace_layers.map((step) => ({ ...step, ms: null })) });
+    assert.deepEqual(withoutMs(viaMcp.result.structuredContent), withoutMs(confirmed));
   });
 
   test('arcStart (and the arc_start alias) moves the gate dates', async () => {

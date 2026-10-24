@@ -16,6 +16,9 @@ const scenario = loadScenario();
 // What a client sends (the tool input shape); the catalog comes from the brain's fallback.
 const thinkInput = { fields: scenario.fields, lifelog: scenario.lifelog, path: scenario.path, week: scenario.week, checkins: scenario.checkins, today: scenario.today };
 
+// trace_layers[].ms is wall-clock timing (never a judgment); drop it before comparing two runs.
+const withoutMs = (report) => ({ ...report, trace_layers: report.trace_layers.map((step) => ({ ...step, ms: null })) });
+
 let child;
 let base;
 let stdout = '';
@@ -78,7 +81,7 @@ test('POST /v1/think with the scenario equals think() in-process (day 14: green,
   assert.ok(['full', 'comeback'].includes(body.intervention.kind));
   assert.equal(body.constraint.constraint, scenario.expected.rootConstraint);
   assert.equal(body.intervention.message.lint.ok, true);
-  assert.deepEqual(body, JSON.parse(JSON.stringify(think(thinkInput))));
+  assert.deepEqual(withoutMs(body), withoutMs(JSON.parse(JSON.stringify(think(thinkInput)))));
 });
 
 test('POST /v1/think with a bad shape → 400 invalid_input', async () => {
@@ -114,7 +117,7 @@ test('MCP: tools/list and tools/call think through the SDK client', async () => 
     assert.deepEqual(JSON.parse(result.content[0].text), report);
     assert.equal(report.state.risk.level, 'green');
     assert.ok(['full', 'comeback'].includes(report.intervention.kind));
-    assert.deepEqual(report, JSON.parse(JSON.stringify(think(thinkInput))));
+    assert.deepEqual(withoutMs(report), withoutMs(JSON.parse(JSON.stringify(think(thinkInput)))));
 
     const analyzed = await client.callTool({ name: 'analyze_state', arguments: { lifelog: scenario.lifelog, checkins: scenario.checkins, today: scenario.today } });
     assert.equal(analyzed.structuredContent.risk.level, 'green');

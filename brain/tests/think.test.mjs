@@ -8,8 +8,18 @@ import { applyCheckin } from '../../app/logic.js';
 import { think, rankRoles, planWeek, checkIn, analyzeState, explain, loadScenario, DEFAULT_SOURCES } from '../index.js';
 import { checkinId } from '../state.js';
 import { lint } from '../messages.js';
+import { LABELS, labelFor } from '../labels.js';
+import { INTERVENTION_KINDS } from '../policy.js';
+import { GOAL_STATES, GATE_TEMPLATES } from '../goal.js';
+import { LEVELS as READINESS_LEVELS } from '../jobs.js';
+import { CONSTRAINTS } from '../constraint.js';
+import { CRISIS_PHRASES } from '../monitor.js';
 
 const scenario = loadScenario();
+const maya = loadScenario('maya');
+
+// trace_layers[].ms is wall-clock timing (never a judgment); drop it before comparing two runs.
+const withoutMs = (report) => ({ ...report, trace_layers: report.trace_layers.map((step) => ({ ...step, ms: null })) });
 const DAY11 = scenario.expected.day11.date;
 const DAY14 = scenario.expected.day14.date;
 const WEEK2_START = '2026-10-12';
@@ -121,14 +131,15 @@ describe('think: day 14 (recovery)', () => {
 });
 
 describe('think: invariants', () => {
-  test('deterministic: same input -> deep-equal output, input not mutated', () => {
+  test('deterministic: same input -> deep-equal output (ms aside), input not mutated', () => {
     const input = sliceAt(DAY11);
     const frozen = JSON.stringify(input);
     const a = think(input);
     const b = think(JSON.parse(frozen));
-    assert.deepEqual(a, b);
+    assert.deepEqual(withoutMs(a), withoutMs(b));
     assert.equal(JSON.stringify(input), frozen);
-    assert.deepEqual(think(scenario), think(scenario));
+    assert.deepEqual(withoutMs(think(scenario)), withoutMs(think(scenario)));
+    assert.deepEqual(withoutMs(think(maya)), withoutMs(think(maya)));
   });
 
   test('explain cites only ids and dates that exist in the input', () => {
@@ -186,6 +197,118 @@ describe('think: invariants', () => {
     assert.equal(report.context.week.actions.length, 3);
     assert.equal(report.context.week.pathId, scenario.path.role_id);
     assert.ok(report.trace.some((t) => t.fn === 'buildWeek' && t.via === 'logic'));
+  });
+});
+
+// Every value found at a dotted path, flattening arrays on the way ('goal.milestones.id' -> the ids).
+function valuesAt(value, keys) {
+  if (keys.length === 0) return [value];
+  if (Array.isArray(value)) return value.flatMap((item) => valuesAt(item, keys));
+  if (value && typeof value === 'object') return valuesAt(value[keys[0]], keys.slice(1));
+  return [];
+}
+
+describe('think: trace_layers and labels (what the web [Why?] panel reads)', () => {
+  const STEP_KEYS = ['input_summary', 'label', 'layer', 'ms', 'output_summary', 'stage', 'status'];
+  const reports = {
+    'dana day 11': think(sliceAt(DAY11)),
+    'dana day 14': think(scenario),
+    'dana gate confirmed': think({ ...scenario, confirmedGates: ['M1'] }),
+    maya: think(maya),
+    'maya gate confirmed': think({ ...maya, confirmedGates: ['M1'] }),
+    empty: think({}),
+    crisis: think({ ...scenario, freeText: `I ${CRISIS_PHRASES[0]}` }),
+  };
+
+  test('trace_layers: compat step shape, L1..L4, statuses ran|designed, ms null only on designed', () => {
+    for (const [name, report] of Object.entries(reports)) {
+      assert.ok(report.trace_layers.length >= 6, `${name}: ${report.trace_layers.length} steps`);
+      for (const step of report.trace_layers) {
+        assert.deepEqual(Object.keys(step).sort(), STEP_KEYS, `${name}: ${step.label}`);
+        assert.ok(['L1', 'L2', 'L3', 'L4'].includes(step.layer), `${name}: layer ${step.layer}`);
+        assert.ok(['ran', 'designed'].includes(step.status), `${name}: status ${step.status}`);
+        if (step.status === 'ran') assert.ok(typeof step.ms === 'number' && Number.isFinite(step.ms) && step.ms >= 0, `${name}: ran "${step.label}" ms ${step.ms}`);
+        else assert.equal(step.ms, null, `${name}: designed "${step.label}" has ms null`);
+      }
+      // The story: ingest ran first; only the live scrub and the ontology graph are design-only.
+      assert.equal(report.trace_layers[0].layer, 'L1');
+      assert.equal(report.trace_layers[0].status, 'ran');
+      assert.deepEqual(report.trace_layers.filter((s) => s.status === 'designed').map((s) => s.stage), ['scrub', 'graph']);
+      const stages = report.trace_layers.map((s) => `${s.layer}:${s.stage}`);
+      for (const expected of ['L3:paths', 'L3:person', 'L3:goal', 'L4:state', 'L4:constraint', 'L4:monitor', 'L4:policy', 'L4:messages', 'L4:explain']) {
+        assert.ok(stages.includes(expected), `${name}: ${expected}`);
+      }
+      // The layered view reports the same pass as the judgment fields and the fn-level trace.
+      const ingest = report.trace_layers[0];
+      assert.match(ingest.output_summary, new RegExp(`^${report.context.lifelogCount} items from enabled sources`));
+      const policy = report.trace_layers.find((s) => s.stage === 'policy');
+      assert.ok(policy.output_summary.startsWith(report.intervention.kind), `${name}: ${policy.output_summary}`);
+      assert.deepEqual(report.trace.map((t) => Object.keys(t).sort()), report.trace.map(() => ['fn', 'input', 'output', 'via']));
+    }
+  });
+
+  test('trace_layers text is lint-clean and carries no vendor word', () => {
+    for (const [name, report] of Object.entries(reports)) {
+      for (const step of report.trace_layers) {
+        for (const text of [step.label, step.input_summary, step.output_summary]) {
+          assert.equal(typeof text, 'string', `${name}: ${step.label}`);
+          assert.equal(lint(text).ok, true, `${name}: "${text}"`);
+          assert.doesNotMatch(text, FORBIDDEN);
+          assert.ok(text.length <= 240 && !text.includes('undefined'), `${name}: "${text}"`);
+        }
+      }
+    }
+  });
+
+  test('labels: attached to the output, every string lint-clean, unknown paths/values -> null', () => {
+    for (const report of Object.values(reports)) assert.deepEqual(report.labels, LABELS);
+    const strings = [...Object.values(LABELS.fields), ...Object.values(LABELS.values).flatMap((map) => Object.values(map))];
+    assert.ok(strings.length >= 30);
+    for (const text of strings) {
+      assert.equal(typeof text, 'string');
+      assert.ok(text.trim().length > 0 && text.length <= 32, text);
+      assert.equal(lint(text).ok, true, text);
+      assert.doesNotMatch(text, FORBIDDEN);
+    }
+    assert.equal(labelFor('state.selfEfficacy'), 'Confidence');
+    assert.equal(labelFor('intervention.kind', 'shrink'), 'Smaller step');
+    assert.equal(labelFor('constraint.constraint', 'unknown'), 'Not enough signal yet');
+    assert.equal(labelFor('intervention.kind', 'teleport'), null);
+    assert.equal(labelFor('nope.nothing'), null);
+    assert.equal(labelFor('nope.nothing', 'x'), null);
+  });
+
+  test('labels cover every enum value the brain can produce, and every one produced on Dana and Maya', () => {
+    // Static: the enum tables of the modules themselves.
+    assert.deepEqual(Object.keys(LABELS.values['intervention.kind']).sort(), [...INTERVENTION_KINDS].sort());
+    assert.deepEqual(Object.keys(LABELS.values['goal.state']).sort(), [...GOAL_STATES].sort());
+    assert.deepEqual(Object.keys(LABELS.values['readiness.level']).sort(), [...READINESS_LEVELS].sort());
+    assert.deepEqual(Object.keys(LABELS.values['constraint.constraint']).sort(), [...CONSTRAINTS].sort());
+    assert.deepEqual(Object.keys(LABELS.values['goal.milestones.id']), GATE_TEMPLATES.map((g) => g.id));
+    assert.deepEqual(Object.keys(LABELS.values['state.risk.level']), ['green', 'amber', 'red']);
+
+    // Dynamic: walk each labelled path in every report; every value found must have a label and
+    // every labelled field path must exist in the output (no stale names).
+    const seen = new Map();
+    for (const [name, report] of Object.entries(reports)) {
+      for (const path of Object.keys(LABELS.values)) {
+        const found = valuesAt(report, path.split('.'));
+        assert.ok(found.length > 0, `${name}: nothing at ${path}`);
+        for (const value of found) {
+          assert.equal(typeof labelFor(path, value), 'string', `${name}: ${path} = ${value} has no label`);
+          seen.set(`${path}=${value}`, true);
+        }
+      }
+      for (const path of Object.keys(LABELS.fields)) {
+        const found = valuesAt(report, path.split('.'));
+        assert.ok(found.length > 0 && found.every((v) => v !== undefined), `${name}: ${path} missing from think output`);
+      }
+    }
+    // The reports above exercise the dip, the recovery, a passed gate, an empty input and the crisis pause.
+    for (const key of ['intervention.kind=full', 'intervention.kind=gate', 'intervention.kind=none', 'intervention.kind=pause', 'goal.state=ambiguous', 'goal.state=provisional', 'goal.state=validated', 'constraint.constraint=unknown', 'constraint.constraint=opportunity-time', 'constraint.constraint=motivation-automatic', 'readiness.level=explore', 'readiness.level=build-proof', 'state.risk.level=green', 'state.risk.level=amber']) {
+      assert.ok(seen.has(key), key);
+    }
+    assert.ok(seen.has('intervention.kind=shrink') || seen.has('intervention.kind=rest'));
   });
 });
 

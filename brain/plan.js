@@ -11,20 +11,25 @@
 // The anchor is never guessed: without one the line names only the day. ids, status, minutes and
 // every other field of an action stay as they were. An action's own `if_then` (LLM text) is replaced:
 // the day may have moved since it was written, and the brain writes the if-then, not the LLM.
+// The line is user-facing, so the title and the anchor (user or LLM text) enter it only when they
+// pass messages.lint: a title that fails is replaced by a neutral phrase, an anchor that fails is dropped.
+
+import { lint } from './messages.js';
 
 export const MILESTONES = ['M1', 'M2', 'M3', 'M4'];
 export const DEFAULT_MILESTONE = 'M1';
 export const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export const NEXT_WEEK = 'NextWeek';
+export const NEUTRAL_TITLE = 'take the planned step';
 
 const asObject = (value) => (value && typeof value === 'object' && !Array.isArray(value) ? value : {});
 const asArray = (value) => (Array.isArray(value) ? value : []);
 const cleanText = (value) => (typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '');
 
-// Anchor text as the person wrote it, minus a leading "after " so the line never says "after after".
+// Anchor text as the person wrote it, minus any leading "after " so the line never says "after after".
 function cleanAnchor(value) {
-  const text = cleanText(value).replace(/^after\s+/i, '');
-  return text === '' ? null : text;
+  const text = cleanText(value).replace(/^(after\s+)+/i, '');
+  return text === '' || !lint(text).ok ? null : text;
 }
 
 function validMilestone(value) {
@@ -47,8 +52,9 @@ function whenPhrase(day) {
 // One action (+ optional anchor) -> the if-then sentence, or null when there is no title to commit to.
 export function ifThenLine(action, anchor = null) {
   const a = asObject(action);
-  const title = cleanText(a.title);
-  if (title === '') return null;
+  const raw = cleanText(a.title);
+  if (raw === '') return null;
+  const title = lint(raw).ok ? raw : NEUTRAL_TITLE;
   const cue = cleanAnchor(anchor);
   return `${whenPhrase(a.day)}${cue ? ` after ${cue}` : ''}, I will ${title}`;
 }

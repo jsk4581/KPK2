@@ -28,6 +28,7 @@ brain/
   jobs.js         readinessScore — Job-readiness 0–100·단계(explore/build-proof/reach-out/apply)·다음 게이트
   messages.js     render(messageKey, slots) — 인정→재해석→10분 행동, 금지어 lint
   explain.js      explain(decision, inputs) — 규칙 이름 + 근거 id (logic.withTrace와 같은 trace 모양)
+  labels.js       LABELS · labelFor(path, value) — 내부 필드·enum 이름 → 웹 표시 이름 (think 출력 `labels`)
   mcp/server.js   MCP 도구 8개·리소스 1·프롬프트 1 (코어를 주입받음; index.js를 직접 import하지 않음)
   mcp/http.js     node:http — POST /mcp(Streamable HTTP) + REST /v1/* + Explorer 정적 페이지
   mcp/static.js   GET / · /explorer · /public/* → mcp/public/ (경로 탈출 차단)
@@ -43,7 +44,7 @@ brain/
 
 | 함수 | 입력(모두 선택) | 출력 |
 |---|---|---|
-| `think(input)` | `fields, lifelog, enabledSources, rankedRoles, path, week, checkins, condition, today, skills?, roles?, arcStart?, confirmedGates?, freeText?, goalHistory?, notNow?, constraints?, adaptability4c?, market?` (REST/MCP도 같은 키) | `{ person, state, goal{state, milestones, version, history, notNow, nextQuestion}, constraint, monitor, ledger, readiness, intervention{kind, actionId, minutes, choices, messageKey, message}, explain{rules, evidence, trace, text}, trace, context }` |
+| `think(input)` | `fields, lifelog, enabledSources, rankedRoles, path, week, checkins, condition, today, skills?, roles?, arcStart?, confirmedGates?, freeText?, goalHistory?, notNow?, constraints?, adaptability4c?, market?` (REST/MCP도 같은 키) | `{ person, state, goal{state, milestones, version, history, notNow, nextQuestion}, constraint, monitor, ledger, readiness, intervention{kind, actionId, minutes, choices, messageKey, message}, explain{rules, evidence, trace, text}, trace, trace_layers, labels, context }` |
 | `rankRoles(input)` | `fields, lifelog, enabledSources, userSkillIds?, skills?, roles?` | `{ fields, skillIds, roles(상위 3), enabledSources, trace }` |
 | `planWeek(input)` | `path, today, condition?, anchor?` | `{ week, view(컨디션 크기 조정판), today, condition }` — 행동마다 `ifThen`("On Tue, I will …", 앵커는 넘긴 것만)·`milestone`(기본 M1) |
 | `jobReadiness(input)` | think 입력과 동일 | `{ readiness{score 0–100, level, components, next_gate, next_level, explain}, ledger{entries, count, byGate, byType}, goal{state, version, milestones}, today, trace }` — 설계 prior, 결과 주장 아님 |
@@ -97,11 +98,19 @@ Build `app/logic.js`와의 관계 — 덮어쓰지 않고 위에 얹는다:
 - **경제 압박 에스컬레이션(§6.5-4)**: 집세·퇴거·"can't pay" 표현이면 코칭은 계속하되 `message.text` 마지막 줄에 실업급여·American Job Center 안내 문장을 덧붙이고(`message.escalation`), 주간 계획은 최대 2단계로 묶는다. 저컨디션 10/14일·red 2주도 같은 방식으로 문장을 덧붙인다.
 - **if-then(§3.3)**: `plan_week`의 모든 행동은 `ifThen`("On Thu, I will …")을 갖는다. 앵커는 호출자가 `anchor`로 준 것만 쓴다 — 추정하지 않는다.
 
+### 웹 [Why?]용 출력: trace_layers · labels
+
+- `trace_layers`: 같은 한 바퀴를 4층 이야기로 — `{ layer: 'L1'|'L2'|'L3'|'L4', stage, label, status: 'ran'|'designed', input_summary, output_summary, ms }` (`mcp/compat.js`의 trace와 같은 모양·라벨). L1 ingest → L2 scrub·graph(설계만, `ms: null`) → L3 paths·person·goal → L4 state·constraint·monitor·readiness·policy·messages·explain, 13단계.
+- `ran`은 이 호출에서 실제 실행된 단계에만 붙고 `ms`는 `process.hrtime` 실측이다(판단에는 쓰지 않음). 설계 단계를 실행한 것처럼 표시하지 않는다. fn 단위 `trace`(`{ fn, input, output, via }`)는 그대로 남는다.
+- `labels`: `labels.js`의 `LABELS` — `fields`(내부 필드 → 표시 이름: `state.selfEfficacy` → "Confidence", `state.risk.level` → "Risk of drifting", `state.capacityMin` → "Today's capacity (min)")와 `values`(enum 값 → 표시 이름: `shrink` → "Smaller step", `opportunity-time` → "Time", `unknown` → "Not enough signal yet", `provisional` → "Path chosen", `build-proof` → "Build proof", `M1` → "Fit check").
+- `labelFor(path, value?)`는 모르는 경로·값에 `null`을 돌려준다(추정 없음). 모든 라벨·요약 문장은 `messages.lint`를 통과한다(테스트가 Dana·Maya·빈 입력·게이트 통과·위기 일시정지에서 확인).
+- REST `/v1/think`와 MCP `think`는 `think()`를 그대로 돌려주므로 두 필드가 함께 온다. 두 번 호출한 결과는 `ms`만 다르고 나머지는 deep-equal이다.
+
 ## 실행
 
 ```bash
 cd brain && npm install          # 의존성: @modelcontextprotocol/sdk, @anthropic-ai/sdk, zod (Node >= 22)
-npm test                         # = node --test tests/   (2026-10-24 15:10 기준 469 tests: 468 pass / 1 skipped(실호출 스모크) / 0 fail)
+npm test                         # = node --test tests/   (2026-10-24 기준 473 tests: 472 pass / 1 skipped(실호출 스모크) / 0 fail)
 bash scripts/start.sh            # HTTP 백그라운드 기동 → /v1/health 출력 (pid: .brain.pid, log: brain.log)
 bash scripts/status.sh           # health + 터널 URL(있으면) · 종료는 bash scripts/stop.sh
 node mcp/bin.js --stdio          # Claude Desktop / Claude Code 용 stdio MCP

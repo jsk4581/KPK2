@@ -49,13 +49,13 @@ function Shell() {
   return (
     <div className="stage">
       <div className="stage-frame" aria-hidden="true">
-        <span>Second Draft</span>
+        <span>Dream Achieve Moments</span>
         <span>[SIMULATION] Demo · nothing is stored</span>
       </div>
       <div className="phone">
         <div className="phone-screen">
           <header className="topbar">
-            <span className="brand">Second Draft</span>
+            <span className="brand">Dream Achieve Moments</span>
             <button type="button" className="reset" onClick={() => dispatch({ type: 'reset' })}>
               <span className="roll">Reset</span>
             </button>

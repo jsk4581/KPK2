@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Second Draft</string>
+    <string name="app_name">Dream Achieve Moments</string>
 
     <string name="tab_timeline">Timeline</string>
     <string name="tab_sources">Sources</string>
@@ -19,7 +19,7 @@
     <string name="timeline_delete_all_title">Delete all items?</string>
     <string name="timeline_delete_all_body">This removes every lifelog item from this phone. Sources will not record them again.</string>
     <string name="timeline_delete_all_confirm">Delete all</string>
-    <string name="sources_intro">Choose what Second Draft may record on this phone. Everything stays on the device.</string>
+    <string name="sources_intro">Choose what Dream Achieve Moments may record on this phone. Everything stays on the device.</string>
     <string name="source_nothing_recorded">Nothing recorded yet</string>
     <plurals name="source_stats">
         <item quantity="one">%1$d item, last recorded %2$s</item>
@@ -31,9 +31,9 @@
     <string name="source_open_settings">Open settings</string>
 
     <string name="source_note">Notes</string>
-    <string name="source_note_desc">Notes you write or share into Second Draft.</string>
+    <string name="source_note_desc">Notes you write or share into Dream Achieve Moments.</string>
     <string name="source_saved_link">Saved links</string>
-    <string name="source_saved_link_desc">Links you save or share into Second Draft.</string>
+    <string name="source_saved_link_desc">Links you save or share into Dream Achieve Moments.</string>
     <string name="source_document">Documents</string>
     <string name="source_document_desc">Documents you choose to add.</string>
     <string name="source_calendar">Calendar</string>

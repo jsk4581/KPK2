@@ -7,6 +7,19 @@ Labels: `verified` / `single-source` / `hypothesis` / `[check needed]`. App fact
 
 Others do **one piece**: a dream board, a resume, or a habit streak. Nobody starts from **the moment AI pushes you out**, checks if the dream can **pay the bills**, and turns it into **daily habits that adapt** to your real life.
 
+## Product name
+
+Gonzalo's pick (2026-10-24): **Next Chapter**. Pending Roy's confirmation, since the app and logo currently say "Dream Achieve Moments."
+Name conflicts found (web search, not a trademark search):
+
+| App | What it is | Label |
+|---|---|---|
+| [Layoff Next Chapter](https://appgoblin.info/apps/6779501591) (iOS, June 2026) | Post-layoff utility: daily check-in, job tracker, savings runway calculator. Survival, not dreams | single-source |
+| [Mindset Playground](https://apps.apple.com/mx/app/mindset-playground/id6751512223) | 12-week life coaching; slogan "The Next Chapter of Your Life Starts Here" | single-source |
+| [NextChapter](https://apps.apple.com/ro/app/nextchapterbk/id1462986103) | Bankruptcy software | single-source |
+
+To do before public use: USPTO trademark and domain check.
+
 ## 1. Dream and goal apps (closest in concept)
 
 | App | What it does | Price | Gap vs us | Label |

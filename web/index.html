@@ -160,6 +160,17 @@
     .phone-wrap { position: relative; }
     .phone-wrap::before { content: ""; position: absolute; inset: 10% -30%; z-index: -1; background: radial-gradient(closest-side, rgba(142,72,177,.22), transparent); filter: blur(20px); }
 
+    /* Demo focus: after "Load sample persona" the phone is centred, lifted and the rest of the page dims */
+    .demo .phone { transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+    .demo .phone-wrap { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+    .demo .phone-wrap::before { transition: inset .6s ease, background .6s ease; }
+    .focus-scrim { position: fixed; inset: 0; z-index: 2; background: rgba(18, 10, 26, .5); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .5s ease; }
+    body.demo-focus .demo > .wrap { z-index: 40; }
+    body.demo-focus .demo .phone-wrap { z-index: 3; transform: translateX(var(--focus-x, 0px)); }
+    body.demo-focus .focus-scrim { opacity: 1; pointer-events: auto; cursor: zoom-out; }
+    body.demo-focus .demo .phone { transform: scale(1.06); }
+    body.demo-focus .demo .phone-wrap::before { inset: -6% -45%; background: radial-gradient(closest-side, rgba(190,140,230,.55), transparent); }
+
     /* Mock app inside the CSS phone (units: 1em = 1/43 of the frame) */
     .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(#f6f0fb, #fff 35%); font-family: var(--sans); text-align: left; }
     .app-body { flex: 1; padding: 1em 2.6em 2.6em; display: flex; flex-direction: column; gap: 1.6em; overflow: auto; }
@@ -208,6 +219,8 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .marquee-track, .float-card { animation: none; }
+      .demo .phone, .demo .phone-wrap, .demo .phone-wrap::before, .focus-scrim { transition: none; }
+      body.demo-focus .demo .phone { transform: none; }
       .feature { opacity: 1; transform: none; }
     }
   </style>
@@ -334,7 +347,8 @@
         </ul>
       </div>
 
-      <div class="phone-wrap">
+      <div class="focus-scrim" id="focus-scrim" aria-hidden="true"></div>
+      <div class="phone-wrap" id="demo-phone">
         <div class="phone" style="--phone-w:min(360px, 86vw)">
           <div class="phone__bezel">
             <div class="phone__screen" id="screen">
@@ -460,6 +474,60 @@
     // Feature cards fade up once
     const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.3 });
     document.querySelectorAll('.feature').forEach(f => io.observe(f));
+
+    // Demo focus: the app inside the phone posts {type: 'dam:focus-demo'} after "Load sample persona".
+    // The page centres the phone in the viewport below the sticky nav, lifts it and dims the rest; scrolling away,
+    // a click outside the phone or Escape releases it. On narrow screens the phone fills the
+    // column, so it only scrolls to the top. The iframe stays interactive throughout.
+    (() => {
+      const frame = document.querySelector('.demo .phone__iframe');
+      const phone = document.getElementById('demo-phone');
+      const scrim = document.getElementById('focus-scrim');
+      const navH = () => document.querySelector('nav').offsetHeight;
+      let target = null, arrived = false, settle = 0;
+
+      function release() {
+        document.body.classList.remove('demo-focus');
+        target = null;
+        clearTimeout(settle);
+      }
+
+      function focusDemo() {
+        const narrow = matchMedia('(max-width: 860px)').matches;
+        const r = phone.getBoundingClientRect();
+        const top = navH();
+        const room = innerHeight - top;
+        const offset = narrow || r.height >= room - 24 ? top + 12 : top + (room - r.height) / 2;
+        const max = document.documentElement.scrollHeight - innerHeight;
+        target = Math.min(max, Math.max(0, Math.round(scrollY + r.top - offset)));
+        arrived = false;
+        scrollTo({ top: target, behavior: still ? 'instant' : 'smooth' });
+        clearTimeout(settle);
+        settle = setTimeout(() => { arrived = true; }, still ? 0 : 1200);
+        if (narrow) return;
+        // Slide the phone from its column to the horizontal centre of the viewport
+        const shifted = document.body.classList.contains('demo-focus') ? parseFloat(phone.style.getPropertyValue('--focus-x')) || 0 : 0;
+        const base = r.left - shifted;
+        const dx = document.documentElement.clientWidth / 2 - (base + r.width / 2);
+        phone.style.setProperty('--focus-x', `${Math.round(dx)}px`);
+        document.body.classList.add('demo-focus');
+      }
+
+      addEventListener('message', (e) => {
+        if (!frame || e.source !== frame.contentWindow || e.origin !== location.origin) return;
+        if (!e.data || e.data.type !== 'dam:focus-demo') return;
+        focusDemo();
+      });
+      addEventListener('scroll', () => {
+        if (target === null) return;
+        const d = Math.abs(scrollY - target);
+        if (!arrived) { if (d < 2) arrived = true; return; }
+        if (d > 80) release();
+      }, { passive: true });
+      scrim.addEventListener('click', release);
+      addEventListener('keydown', (e) => { if (e.key === 'Escape') release(); });
+      addEventListener('resize', release);
+    })();
   </script>
   <script type="module">
     import { mountSilk } from './bg.js';

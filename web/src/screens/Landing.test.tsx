@@ -1,8 +1,11 @@
 import persona from '@app/data/persona-dana.json';
 import { fireEvent, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { requestDemoFocus } from '../embed/focusDemo';
 import { SIMULATION_LABEL } from './Landing';
 import { renderFlow, state } from './Paths.testkit';
+
+vi.mock('../embed/focusDemo', () => ({ requestDemoFocus: vi.fn(() => false) }));
 
 describe('Landing', () => {
   it('shows the empathy line, both entry buttons and the synthetic persona label', () => {
@@ -21,6 +24,17 @@ describe('Landing', () => {
     expect(state().screen).toBe('lifelog');
     expect(state().fields).toEqual(persona.fields);
     expect(state().editedFields.size).toBe(0);
+  });
+
+  it('Load sample persona asks the host page to focus the demo phone; Start does not', () => {
+    const spy = vi.mocked(requestDemoFocus);
+    spy.mockClear();
+    renderFlow();
+    fireEvent.click(screen.getByRole('button', { name: 'Load sample persona' }));
+    expect(spy).toHaveBeenCalledTimes(1);
+    renderFlow();
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('Start opens the inputs with three empty fields', () => {

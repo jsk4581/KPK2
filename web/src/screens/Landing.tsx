@@ -1,5 +1,6 @@
 import persona from '@app/data/persona-dana.json';
 import photoUrl from '@app/data/persona/dana.svg?url';
+import { requestDemoFocus } from '../embed/focusDemo';
 import { useStore } from '../state/store';
 import type { Screen } from '../state/types';
 import './LandingScreen.css';
@@ -16,6 +17,8 @@ export default function Landing() {
     dispatch({ type: 'reset' });
     dispatch({ type: 'prefillFields', fields: { ...persona.fields } });
     dispatch({ type: 'go', screen: SAMPLE_NEXT_SCREEN });
+    // Inside the landing page's demo phone: ask the page to bring the phone into focus.
+    requestDemoFocus();
   };
 
   const start = () => {

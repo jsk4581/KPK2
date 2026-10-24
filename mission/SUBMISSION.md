@@ -67,7 +67,7 @@ revise
 - 양식 파일: pitch/slides.pdf (미생성 · 양식 용량 제한 확인 필요)
 - 양식 설명·소개: Second Draft — an AI career agent that turns a displaced professional's expertise into three career paths that transfer, this week's three actions, and a check-in that never shames.
 - 양식 사전 준비물: 「기존 코드 가져왔어요」 체크 + 「무엇을 가져왔나요」에 "사전 준비물: 팀 프로세스 하네스(계약·스킬·템플릿·검증기)와 빈 앱 골격(제품 기능 0) — 10:00 새 공개 레포의 첫 커밋(pre-event 태그)으로 가져옴, 그 이후가 당일 작업"
-- 양식 서비스 이름: Second Draft
+- 양식 서비스 이름: Next Chapter (태진 16:10 결정 · PM 「결정」 기록 대기 · 13:58 Dream Achieve Moments에서 변경)
 - 양식 한 줄 소개: Your expertise, redrafted for the AI era — an AI career agent for workers whose jobs are being rewritten by AI.
 - 양식 타깃 해외 시장: US · freelance copywriters and writers, 3–10 years of experience, losing clients to generative AI
 - 양식 데모 사용법: ① Landing에서 「Load sample persona」(또는 「Start」 후 3칸 입력) ② 「Continue」 → 「Show my paths」 → 경로 카드에서 「Choose this path」 ③ This week에서 「Not today」를 눌러 "rest day" 응답과 이동(삭제 없음) 확인 · 로그인 없음 · 끝나면 「Reset」

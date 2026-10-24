@@ -1,4 +1,6 @@
-# 발표자료 초안 v4 (Sales, 2026-10-24 14:52) — GTM 인수용
+# 발표자료 초안 v6 (Sales, 2026-10-24 16:13) — GTM 인수용
+
+- v6: 제품명 **Next Chapter**(태진 16:10 결정 → PM 「결정」 기록 필요) · 2장을 비즈니스 슬라이드로 재구성 — 실제 스크린샷 2장 + 아키텍처(Lifelog → Ontology → Decision brain → Claude → MCP) · MARKET 막대(TAM 53.2M → SAM 11.8M → SOM 3.0M → 비치헤드 704K → 1차 140K, 쉬운 말 라벨) · HOW WE EXPAND 3단계 · ENTRY STRATEGY · HOW IT MAKES MONEY(구독 없음: 브레인 API B2B + 데이터 크레딧 루프 + 단위 비용). 글자 23px까지 내려감(키트 28px 권고보다 작음 — 내용 요청에 따른 트레이드오프). Second Draft 변형 파일은 삭제.
 
 - v4: PM 13:58 결정 반영 — 제품명 **Next Chapter** · 새 랜딩(`/`, 라이트·보라 브랜드)에 맞춰 라이트 테마 + `footer-for-light-slides.png` · 1장에 랜딩 브라우저 샷(`shot-landing-web.png`) + 앱 폰 샷 · 2장 플로우·브레인 다이어그램 보라 톤. 앱 폰 샷은 아직 "Second Draft" 제목(배포본 기준) — 재배포 후 재캡처 필요.
 

@@ -20,6 +20,9 @@ const APP_DIR = fileURLToPath(new URL('../', import.meta.url));
 const read = (rel) => readFileSync(join(APP_DIR, rel), 'utf8').replace(/\r\n/g, '\n');
 const FIXTURE_ROWS = JSON.parse(read('data/fixture.json')).rows;
 const { tokenize, sortByUrgency, decideNextAction } = logic;
+// The skeleton's no-match path needs an input that matches no fixture row. SMOKE_INPUT now holds the
+// Second Draft step-2 sentence, which does match a row (substring "as"), so these cases keep their own.
+const NO_MATCH_INPUT = '스모크 입력 123';
 
 function fakeElement(tag, id) {
   return {
@@ -90,10 +93,10 @@ describe('scaffold: decideNextAction (skeleton core action)', () => {
     assert.deepEqual(r.matchedIds, ['syn-002', 'syn-005', 'syn-004', 'syn-001', 'syn-003']);
   });
   test('no match falls back to the most urgent row', () => {
-    const r = decideNextAction(SMOKE_INPUT, FIXTURE_ROWS);
+    const r = decideNextAction(NO_MATCH_INPUT, FIXTURE_ROWS);
     assert.equal(r.reason, 'no-match');
     assert.equal(r.pickedId, 'syn-002');
-    assert.ok(r.action.includes(SMOKE_INPUT), 'SMOKE step 2: output contains the input');
+    assert.ok(r.action.includes(NO_MATCH_INPUT), 'skeleton step 2: output contains the input');
   });
   test('non-synthetic rows are ignored', () => {
     const r = decideNextAction('secret', [{ id: 'real-1', goal: 'secret plan', status: 'todo' }]);
@@ -114,12 +117,12 @@ describe('scaffold: decideNextAction (skeleton core action)', () => {
 });
 
 describe('scaffold: SMOKE step 2 and labels of the skeleton screen', () => {
-  test('step 2: SMOKE_INPUT + 핵심 행동 -> output contains the input (reason no-match)', async () => {
+  test('skeleton step 2: no-match input + 핵심 행동 -> output contains the input (reason no-match)', async () => {
     const doc = fakeDocument();
     const { els } = await boot(doc, { sheetUrl: '', fetchImpl: fileFetch });
-    els.input.value = SMOKE_INPUT;
+    els.input.value = NO_MATCH_INPUT;
     els.form.dispatch('submit');
-    assert.ok(els.output.textContent.includes(SMOKE_INPUT), els.output.textContent);
+    assert.ok(els.output.textContent.includes(NO_MATCH_INPUT), els.output.textContent);
     assert.equal(els.output.dataset.reason, 'no-match');
   });
   test('button labels 핵심 행동 and 초기화', () => {

@@ -126,10 +126,12 @@ class AppUsageCollector(
     private fun ignoredPackages(context: Context): Set<String> {
         val home = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
         val launchers = runCatching {
-            context.packageManager.queryIntentActivities(home, PackageManager.MATCH_DEFAULT_ONLY)
-                .mapNotNull { it.activityInfo?.packageName }
-        }.getOrDefault(emptyList())
-        return launchers.toSet() + context.packageName + SYSTEM_UI_PACKAGE
+            homeScreenPackages(
+                context.packageManager.queryIntentActivities(home, PackageManager.MATCH_DEFAULT_ONLY)
+                    .map { it.activityInfo?.packageName to it.priority },
+            )
+        }.getOrDefault(emptySet())
+        return launchers + context.packageName + SYSTEM_UI_PACKAGE
     }
 
     internal companion object {
@@ -137,6 +139,14 @@ class AppUsageCollector(
         fun startOfYesterday(nowMillis: Long, zone: ZoneId): Long =
             Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
                 .minusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+
+        /**
+         * Packages of real home screens among HOME activities given as (package, filter priority).
+         * Settings declares a placeholder home (FallbackHome, priority -1000) that only shows while the
+         * phone starts; counting it as a launcher would drop every minute spent in Settings.
+         */
+        fun homeScreenPackages(candidates: List<Pair<String?, Int>>): Set<String> =
+            candidates.filter { (_, priority) -> priority >= 0 }.mapNotNull { it.first }.toSet()
 
         private const val TAG = "AppUsageCollector"
         private const val SYSTEM_UI_PACKAGE = "com.android.systemui"

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dream Achieve Moments · Architecture (final, 1 slide)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+ /* Brand system = docs/gtm/slides-draft/slides.html v4.2 (light · purple). Kit footer band per templates/slide-kit/GUIDE.md. */
+ @page{size:1920px 1080px;margin:0}
+ *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
+ :root{--ink:#1C1A22;--mute:#5B5670;--p:#7C3AED;--p-d:#4C1D95;--p-l:#EDE9FE;--line:#E3DCF5;--amber:#D97706}
+ body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#EFEAF8}
+ @media print{body{background:none}}
+ .s{width:1920px;height:1080px;position:relative;overflow:hidden;color:var(--ink);margin:0 auto;
+    background:radial-gradient(900px 520px at 8% 0%,#F3EEFF,transparent 60%),radial-gradient(800px 500px at 100% 100%,#FFF4E3,transparent 60%),#FBF9FE}
+
+ /* header — deck values: team 26/700, topic 22/700 */
+ .team{position:absolute;top:56px;left:96px;font-size:26px;font-weight:700;color:var(--mute)}
+ .topic{position:absolute;top:56px;right:96px;font-size:22px;font-weight:700;color:var(--p);letter-spacing:.06em}
+ .title{position:absolute;left:96px;top:104px;width:1150px}
+ h1{font-size:70px;font-weight:900;line-height:1;letter-spacing:-.03em}
+ .sub{font-size:30px;font-weight:700;line-height:1.2;margin-top:14px;color:var(--p)}
+ .proof{position:absolute;right:96px;top:108px;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+ .pill{font-size:28px;font-weight:700;padding:8px 22px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--ink);white-space:nowrap}
+ .pill b{color:var(--p)}
+ .dot{display:inline-block;width:14px;height:14px;border-radius:50%;background:#16A34A;margin-right:10px;vertical-align:2px}
+
+ /* flow: 01 → 02 → 03 → 04 */
+ .flow{position:absolute;left:96px;right:96px;top:270px;height:440px;display:flex;align-items:stretch}
+ .box{background:#fff;border:2px solid var(--line);border-radius:26px;padding:22px;display:flex;flex-direction:column}
+ .k{font-size:24px;font-weight:800;color:var(--p);letter-spacing:.08em}
+ .h{font-size:34px;font-weight:900;line-height:1.1;margin-top:6px}
+ .t{font-size:28px;font-weight:600;line-height:1.3;color:var(--mute);margin-top:10px}
+ .arrow{width:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+ .arrow span{font-size:22px;font-weight:800;color:var(--p);margin-bottom:6px;white-space:nowrap}
+ .arrow i{display:block;width:44px;height:4px;background:var(--p);position:relative;border-radius:2px}
+ .arrow i::after{content:"";position:absolute;right:-4px;top:-8px;border-left:14px solid var(--p);border-top:10px solid transparent;border-bottom:10px solid transparent}
+
+ .in{width:300px}
+ .src{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:6px}
+ .src li{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:600;color:var(--ink)}
+ .src svg{width:26px;height:26px;flex:none;stroke:var(--p);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+ .src li.off{color:var(--mute);font-size:24px;font-weight:700;line-height:1.2;margin-top:4px;align-items:flex-start}
+ .src li.off .tog{margin-top:3px}
+ .tog{width:44px;height:24px;border-radius:12px;border:2px solid #B9B2CC;position:relative;flex:none}
+ .tog::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#B9B2CC}
+ .priv{margin-top:auto;font-size:24px;font-weight:800;line-height:1.25;color:var(--p-d)}
+ .chip{display:inline-block;font-size:22px;font-weight:800;padding:2px 10px;border-radius:999px;letter-spacing:.06em;background:#FEF3C7;color:#92400E;vertical-align:3px}
+
+ .brain{width:494px;background:linear-gradient(160deg,#7C3AED,#4C1D95);border:none;color:#fff;box-shadow:0 30px 90px rgba(124,58,237,.45)}
+ .brain .k{color:#E9DDFF}.brain .h{color:#fff}
+ .mods{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+ .mod{font-size:28px;font-weight:700;background:rgba(255,255,255,.14);border-radius:12px;padding:8px 12px;white-space:nowrap}
+ .mod.hi{background:#fff;color:var(--p-d);width:100%;font-weight:900}
+ .rule{margin-top:auto;font-size:26px;font-weight:600;line-height:1.3;color:#E9DDFF}
+ .why{margin-top:10px;font-size:26px;font-weight:600;color:#E9DDFF}
+ .why b{color:#fff;background:rgba(255,255,255,.18);padding:2px 10px;border-radius:8px}
+
+ .llm{width:250px}
+ .bill{margin-top:auto;font-size:24px;font-weight:800;line-height:1.25;color:var(--p-d)}
+
+ .out{flex:1}
+ .door{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-size:28px;font-weight:800;line-height:1.15;padding:16px 0;border-bottom:2px solid #F1ECFB}
+ .door:first-of-type{margin-top:8px}
+ .door:last-child{border-bottom:none}
+ .door small{display:block;font-size:24px;font-weight:600;color:var(--mute);margin-top:4px;line-height:1.2}
+ .tag{font-size:22px;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.06em;flex:none;margin-top:4px}
+ .live{background:#DCFCE7;color:#166534}.next{background:#FEF3C7;color:#92400E}
+
+ /* proof band: 3 cells, no numbers (flow keeps 01–04) */
+ .band{position:absolute;left:96px;right:96px;top:734px;height:144px;background:#fff;border:2px solid var(--line);border-radius:22px;display:grid;grid-template-columns:1fr 1fr 1fr}
+ .cell{padding:18px 28px;display:flex;flex-direction:column;justify-content:flex-start;gap:6px;border-right:2px solid #F1ECFB}
+ .cell:last-child{border-right:none}
+ .cell .n{font-size:22px;font-weight:800;color:var(--p);letter-spacing:.08em}
+ .cell .d{font-size:28px;font-weight:700;line-height:1.25;color:var(--ink)}
+ .cell .d em{font-style:normal;color:var(--p)}
+ .cell.hyp .n{color:var(--amber)}
+ .cell.hyp{background:linear-gradient(90deg,#FFF7ED,#fff 60%);border-radius:0 20px 20px 0}
+
+ .cap{position:absolute;left:96px;right:96px;top:892px;font-size:24px;font-weight:600;color:var(--mute);white-space:nowrap}
+ .foot{position:absolute;left:5%;right:5%;bottom:36px}
+ .foot img{width:100%;display:block}
+</style></head>
+<body>
+<section class="s">
+  <div class="team">팀 김박구이 · Dream Achieve Moments</div>
+  <div class="topic">ARCHITECTURE · WHY IT SCALES</div>
+
+  <div class="title">
+    <h1>One decision brain. Every door.</h1>
+    <div class="sub">For freelance writers losing work to AI:<br>a path, 3 actions a week, one smallest step today.</div>
+  </div>
+  <div class="proof">
+    <div class="pill"><span class="dot"></span>Live today: <b>web app · MCP (8 tools) · REST</b></div>
+    <div class="pill"><b>473</b> brain tests · <b>148</b> app tests · 0 errors</div>
+  </div>
+
+  <div class="flow">
+    <div class="box in">
+      <div class="k">01 · YOUR LIFE</div>
+      <div class="h">Opt-in only</div>
+      <ul class="src">
+        <li><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/></svg>notes</li>
+        <li><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>saved links</li>
+        <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>calendar</li>
+        <li class="off"><span class="tog"></span><span>messages OFF<br>by default</span></li>
+      </ul>
+      <div class="priv">Summaries only — raw data stays on your device <span class="chip">BY DESIGN</span></div>
+    </div>
+    <div class="arrow"><span>summary</span><i></i></div>
+    <div class="box brain">
+      <div class="k">02 · THE PRODUCT WE SELL</div>
+      <div class="h">Decision Brain</div>
+      <div class="mods">
+        <div class="mod">Who you are</div>
+        <div class="mod">What blocks you</div>
+        <div class="mod">Drift risk</div>
+        <div class="mod">12-week milestones</div>
+        <div class="mod hi">Today's smallest step</div>
+      </div>
+      <div class="rule">Deterministic rules<br>from behavioral science.</div>
+      <div class="why"><b>Why?</b> on every answer</div>
+    </div>
+    <div class="arrow"><span>judgment</span><i></i></div>
+    <div class="box llm">
+      <div class="k">03 · CLAUDE</div>
+      <div class="h">Writes the words</div>
+      <div class="t">One question at a time — never guesses.</div>
+      <div class="bill">Billed per token · metered live</div>
+    </div>
+    <div class="arrow"><span>words</span><i></i></div>
+    <div class="box out">
+      <div class="k">04 · EVERY DOOR</div>
+      <div class="door"><div>Web app<small>B2C · writers</small></div><span class="tag live">LIVE</span></div>
+      <div class="door"><div>Claude Desktop<small>Claude Code · MCP clients</small></div><span class="tag live">LIVE</span></div>
+      <div class="door"><div>Partner apps<small>HR, outplacement</small></div><span class="tag next">NEXT</span></div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="cell"><div class="n">AUDITABLE</div><div class="d">Not a prompt — <em>rule + evidence</em> on every answer</div></div>
+    <div class="cell"><div class="n">SOLD THREE WAYS</div><div class="d">One core: <em>web · REST · MCP</em></div></div>
+    <div class="cell hyp"><div class="n">MOAT · HYPOTHESIS</div><div class="d">Sharper per occupation: writers → translators → designers</div></div>
+  </div>
+
+  <div class="cap">Demo runs on synthetic data (Sample persona — synthetic) · no real users yet · pricing and moat are hypotheses · counts measured 2026-10-24</div>
+  <div class="foot"><img src="../../templates/slide-kit/footer-for-light-slides.png" alt=""></div>
+</section>
+</body></html>

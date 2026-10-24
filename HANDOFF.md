@@ -46,6 +46,7 @@ stage: decide
 - 작성:Sales 11:55 · `mission/PRD.md` → PM · 인풋 범위를 3단계로 닫는 제안 — 오늘: 텍스트 3칸만 / MVP: 포트폴리오 링크 1~3개 + 1탭 체크인 / 로드맵: 라이프로깅·생체·SNS (`docs/gtm/journey-io.md` 「인풋·아웃풋 범위」)
 - 작성:Sales 11:55 · `app/` 시드 데이터 → Build · 샘플 페르소나 "Dana" [SIMULATION] 입력 3칸·경로 3개·이번 주 행동 3개·Not today 문구를 [Load sample persona] 시드로 제안 (`docs/gtm/journey-io.md` 「대표 저니」)
 - 작성:Sales 11:55 · `mission/PITCH.md` → GTM · 아키텍처 문구 1줄 제안 "오늘 URL에서 도는 것은 filter·planner·monitor의 최소 버전, gateway·status·자동 수집은 설계 주장" + VC 지표 가설 "2주차 체크인 잔존율" (`docs/gtm/journey-io.md` 「GTM 한 줄」)
+- 작성:Sales 12:05 · `mission/EVIDENCE.md#주장` → GTM · E1–E27 후보 `docs/gtm/market-claims.md` — 강한 근거: BLS 2025 직군 규모(E1–E4) · Upwork 소득 −5.2%/−9.4% 연구(E11 verified) · 코치 시급 $139·아웃플레이스먼트 1인당 $1,660(E17·E18 verified) / 약한 가설: 10M 도달(E27, 비율 출처 없음) · 지불 전환율(E23·E24) — 슬라이드엔 공식 합계 70만 명(E25) + "10M은 가설"로 쓰길 제안
 
 ## 블로커
 

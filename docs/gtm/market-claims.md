@@ -1,0 +1,64 @@
+# Second Draft — 시장 근거 주장표 (market-claims)
+
+- 작성: Sales 2026-10-24 12:05 (초안) → GTM `mission/EVIDENCE.md#주장` E행 후보. 라벨 상향 금지 · hypothesis 행은 슬라이드에 "가설" 표기 필수
+- 제품: 생성형 AI로 일이 사라지는 3–10년차 전문직(1차: 미국·캐나다 프리랜스 카피라이터/작가 → 번역가, 일러스트레이터, 2D/그래픽 디자이너, 성우)의 커리어 경로를 다시 설계하는 개인 AI 에이전트
+- 라벨 규칙: `verified` = 독립 출처 2개 이상 일치 · `single-source` = 실재 출처 1개 · `hypothesis` = 추론(출처 칸 `없음 — 추론: …`, 연도 `-`)
+- 신뢰: 1(약함)–5(강함) 정수. BLS OOH는 2025-10 개정판이라 기준연도가 2025(전망 2025–35)로 바뀌어 있음. 캐나다 Job Bank는 2023 고용 기준.
+- 주의: BLS OOH 고용수는 "주된 직업" 기준 인원이며 자영업자를 포함. Upwork 64M은 "지난 12개월 내 프리랜스 경험자" 기준이라 서로 합산 불가.
+
+## 주장표
+
+| ID | 주장 | 출처 | 연도 | 지역·단위 | 라벨 | 신뢰 | 쓰이는 곳 |
+|---|---|---|---|---|---|---|---|
+| E1 | 미국 작가·저술가(Writers and Authors, 카피라이터 포함 SOC 27-3043) 고용 140,300명. 자영업(프리랜스) 비중 65%로 최대 고용 형태. 2025–35 고용 변화 −500명(0%, "거의 변화 없음"). 중위연봉 $76,910(2025.5) | Writers and Authors : Occupational Outlook Handbook, U.S. BLS · https://www.bls.gov/ooh/media-and-communication/writers-and-authors.htm | 2025 | 미국 · 명, %, 달러/년 | single-source | 5 | 1차 타깃 규모, 프리랜스 비중, 지불능력 |
+| E2 | 미국 통·번역가(Interpreters and Translators) 고용 73,900명. 자영업 28%. 2025–35 +1,500명(+2%, 평균보다 느림). 중위연봉 $60,170. BLS는 AI/기계번역이 효율을 높이고 번역가가 기계 산출물 후편집(post-edit)을 하는 추세를 명시 | Interpreters and Translators : Occupational Outlook Handbook, U.S. BLS · https://www.bls.gov/ooh/media-and-communication/interpreters-and-translators.htm | 2025 | 미국 · 명, %, 달러/년 | single-source | 5 | 확장 1단계(번역가) 규모 |
+| E3 | 미국 공예·순수미술가(Craft and Fine Artists) 고용 53,400명, 자영업 58%. 그중 일러스트레이터를 포함하는 Fine Artists(27-1013) 28,900명, 2025–35 −800명(−3%) 감소 전망. Fine Artists 중위연봉 $55,490 | Craft and Fine Artists : Occupational Outlook Handbook, U.S. BLS · https://www.bls.gov/ooh/arts-and-design/craft-and-fine-artists.htm | 2025 | 미국 · 명, %, 달러/년 | single-source | 5 | 확장 2단계(일러스트) 규모, 감소 전망 |
+| E4 | 미국 그래픽 디자이너 고용 253,100명, 자영업 20%. 2025–35 −4,200명(−2%) 감소 전망. 중위연봉 $62,960 | Graphic Designers : Occupational Outlook Handbook, U.S. BLS · https://www.bls.gov/ooh/arts-and-design/graphic-designers.htm | 2025 | 미국 · 명, %, 달러/년 | single-source | 5 | 확장 3단계(2D/그래픽) 규모, 감소 전망 |
+| E5 | 미국 방송 아나운서·DJ(27-3011) 고용 38,700명, 2025–35 −1,000명(−3%). BLS가 감소 요인으로 "AI DJ 운영 확대"를 명시. 성우(voice actor)는 BLS 별도 직종이 아니며 Actors(27-2011) 약 57,000명(2024)에 섞여 집계 → 성우 단독 공식 인원수는 없음 | Announcers and DJs : Occupational Outlook Handbook, U.S. BLS · https://www.bls.gov/ooh/media-and-communication/announcers.htm ; Voice Acting Industry Statistics 2026 (BLS OOH Actors 인용) · https://voxbooster.com/blog/voice-acting-industry-statistics-2026 | 2025 | 미국 · 명 | single-source | 3 | 확장 4단계(성우) 규모 상한선, AI 감소 요인 |
+| E6 | 캐나다 콘텐츠 작가(Content Writer, except Technical; NOC 51111 계열) 고용 27,200명(2023). 2024–33 수요·공급 "대체로 균형" | Job prospects Content Writer (except Technical) in Canada, Job Bank · https://www.jobbank.gc.ca/marketreport/outlook-occupation/296595/ca | 2023 | 캐나다 · 명 | single-source | 4 | 1차 타깃(캐나다) 규모 |
+| E7 | 캐나다 번역가(Translator; NOC 51114 계열) 고용 24,500명(2023). 2024–33 수요·공급 "대체로 균형". (같은 NOC의 Interpreter 페이지도 24,500명으로 동일 집단이므로 1회만 합산) | Job prospects Translator in Canada, Job Bank · https://www.jobbank.gc.ca/marketreport/outlook-occupation/24484/ca ; Job prospects Interpreter in Canada, Job Bank · https://www.jobbank.gc.ca/marketreport/outlook-occupation/24474/ca | 2023 | 캐나다 · 명 | single-source | 4 | 확장 1단계(캐나다) 규모 |
+| E8 | 캐나다 일러스트레이터·그래픽 디자이너(NOC 52120) 고용 93,200명(2023). 2024–33 전국적으로 "노동력 과잉(surplus) 위험 큼". 다수 지역 2025–27 전망 "매우 제한적" | Job prospects Illustrator and Graphic Designer in Canada, Job Bank · https://www.jobbank.gc.ca/marketreport/outlook-occupation/5747/ca ; Job outlooks for Graphic designers and illustrators, Job Bank · https://www.jobbank.gc.ca/outlookreport/occupation/5703 | 2023 | 캐나다 · 명 | verified | 4 | 확장 2–3단계(캐나다) 규모, 공급과잉 근거 |
+| E9 | 미국에서 2023년 한 해 프리랜스 일을 한 사람 6,400만 명(노동인구의 38%), 프리랜스 소득 $1.27조. 2022년은 6,000만 명(39%) | Upwork Study Finds 64 Million Americans Freelanced in 2023 · https://investors.upwork.com/news-releases/news-release-details/upwork-study-finds-64-million-americans-freelanced-2023-adding ; Number of freelancers grows to a record 39% of US workforce (SIA, Upwork 2022 인용) · https://www.staffingindustry.com/Editorial/IT-Staffing-Report/Jan.-5-2023/Number-of-freelancers-grows-to-a-record-39-of-US-workforce-earn-1.35-trillion | 2023 | 미국 · 명, % | single-source | 3 | 10M 확장 논리의 모수(부업·겸업 프리랜서는 BLS 직종 인원에 안 잡힘) |
+| E10 | 미국 핵심 4직종의 자영업(프리랜스) 인원 합계 약 19.3만 명 = 작가 91.2k(140,300×65%) + 번역 20.7k(73,900×28%) + 그래픽 50.6k(253,100×20%) + 미술가 31.0k(53,400×58%) | 없음 — 추론: E1–E4의 BLS 고용수 × BLS 자영업 비중을 곱해 산출 | - | 미국 · 명 | hypothesis | 4 | "프리랜스 우선" 1차 타깃의 보수적 하한 |
+| E11 | ChatGPT 출시 후 Upwork 글쓰기 프리랜서의 월간 수주 건수 −2%, 월 소득 −5.2%. 이미지 생성 AI 이후 디자이너·이미지 편집자·아티스트는 월 수주 −3.7%, 소득 −9.4%. 상위 프리랜서가 더 큰 타격(시사적 증거) | Study: AI tools cause a decline in freelance work and income, Olin Business School (Hui, Reshef & Zhou) · https://olin.washu.edu/about/news-and-media/news/2023/08/study-ai-tools-cause-a-decline-in-freelance-work-and-incomeat-least-in-the-short-run.php ; Artificial intelligence and its short-term effects on employment, VoxEU/CEPR · https://voxeu.org/voxeu/columns/artificial-intelligence-and-its-short-term-effects-employment | 2023 | 미국(Upwork 플랫폼) · % | verified | 4 | 문제 정의: "이미 소득이 줄고 있다" |
+| E12 | 온라인 프리랜스 공고 약 200만 건(61개국, 2021.7–2023.7) 분석: ChatGPT 이후 글쓰기(writing) 공고 −30.37%, 소프트웨어·웹개발 −20.62%; 이미지 생성 AI 이후 그래픽디자인 공고 −17.01% | What Impact Has Generative AI Already Had On The Labor Market? (Demirci, Hannane & Ye, "Who is AI Replacing?" 요약) · https://adigaskell.org/?p=37550 ; AI is coming for your online freelance jobs, The Hustle · https://thehustle.co/news/ai-is-coming-for-your-online-freelance-jobs | 2024 | 글로벌(미국 중심 플랫폼) · % | single-source | 3 | 문제 정의: 수요 자체가 줄었다(공고 기준). 2차 출처 간 저자 표기가 혼재하므로 원논문 링크로 교체 권장 |
+| E13 | 2025년 Upwork 글쓰기 프로젝트 수 전년 대비 −32%(220만 건 분석, 전 카테고리 중 최대 낙폭) — 상업 리포트 | AI Job Displacement Index – Which Freelance Skills Are at Risk (Vollna Upwork Market Report 인용), Jobbers · https://www.jobbers.io/ai-job-displacement-index-which-freelance-skills-are-at-risk/ | 2025 | 미국(Upwork) · % | single-source | 2 | 추세 지속의 보조 근거(2차 인용, 검증 전까지 슬라이드 본문 금지) |
+| E14 | 영국 작가협회(SoA) 설문(2024.1, 787명 응답): 번역가 36%, 일러스트레이터 26%가 이미 생성형 AI로 일감을 잃음. 번역가 43%, 일러스트레이터 37%는 창작 소득이 AI 때문에 감소 | A third of translators report losing work to generative AI systems, The Bookseller · https://thebookseller.com/news/a-third-of-translators-report-losing-work-to-generative-ai-systems-soa-survey-reveals ; SoA survey UK AI 2024, European Writers' Council · https://europeanwriterscouncil.eu/soa-survey-uk-ai-2024/ | 2024 | 영국 · % | verified | 3 | 확장 1–2단계(번역·일러스트) 피해 근거. 북미 아님 → 지역 한계 명시 필요 |
+| E15 | NAVA(미국 성우협회) 2026 State of Voiceover 설문(1,379명): 성우 21%가 AI 합성음성에 일감을 뺏겼다고 응답, 전년(약 14–15%) 대비 상승. 2025 설문(1,305명): 성우 74.9%가 연 $50,000 이하 소득 | Voice Acting Industry Statistics 2026 (NAVA 설문 인용) · https://voxbooster.com/blog/voice-acting-industry-statistics-2026 ; Will AI Kill the Voiceover Artist? [2025 Report], Podcastle · https://podcastle.ai/blog/will-ai-replace-voice-actors | 2026 | 미국 · %, 달러/년 | single-source | 3 | 확장 4단계(성우) 피해 근거 + 낮은 지불능력 경고 |
+| E16 | 타깃 직군 중위연봉(미국, 2025.5): 작가·저술가 $76,910 / 그래픽 디자이너 $62,960 / 통·번역가 $60,170 / 순수미술가(일러스트 포함) $55,490 / 아나운서·DJ 시급 $22.50. 전 직업 중위 $50,980 대비 성우를 제외하면 모두 상회 | Writers and Authors / Graphic Designers / Interpreters and Translators / Craft and Fine Artists / Announcers and DJs : OOH, U.S. BLS · https://www.bls.gov/ooh/ | 2025 | 미국 · 달러/년 | single-source | 5 | 지불능력: 중위소득 기준 월 $30–100 구독 여력 논리 |
+| E17 | 미국 커리어 코칭 가격: 일반 커리어 코칭 시간당 $80–225, 임원 코칭 $220–550(마켓플레이스 가이드). 코치 423명(50개국) 설문 기준 중위 시급 $139, 평균 $174 | How Much Does Career Coaching Cost: Guide for 2026, Noomii · https://orgs.noomii.com/how-much-does-career-coaching-cost/ ; Estimating Typical Career Coaching Costs and Value (Firework 2024 Career Coach Landscape Report 인용), Quenza · https://quenza.com/blog/?p=25535 | 2024 | 미국/글로벌 · 달러/시간 | verified | 3 | 가격 앵커: 인간 코치 1회 ≈ 월 구독료 |
+| E18 | 미국 기업 아웃플레이스먼트 지출: 1인당 벤치마크 $1,660(IBISWorld 2026, 2023–26 연 +2.5%). 업계 통상 평균 약 $1,900, 실무직 $1,200–3,800, 관리자 $4,000–8,000 | Outplacement Services Procurement Report, IBISWorld · https://www.ibisworld.com/united-states/procurement/outplacement-services/53933870 ; How Much Do Outplacement Services Cost?, Leland · https://www.joinleland.com/library/a/outplacement-services-cost | 2026 | 미국 · 달러/명 | verified | 3 | B2B2C 가격 앵커(기업이 1인당 이미 지불하는 금액) |
+| E19 | 코칭 산업 규모: 2022년 북미 코칭 매출 $20.88억, 북미 코치 34,200명(2019–22 +47%). 글로벌 매출 $45.64억(2019 대비 +60%) | 2023 ICF Global Coaching Study Executive Summary · https://coachingfederation.org/app/uploads/2023/04/2023ICFGlobalCoachingStudy_ExecutiveSummary.pdf | 2023 | 북미 · 달러/년, 명 | single-source | 4 | "사람들이 커리어 도움에 돈을 쓴다"는 지출 규모 |
+| E20 | 미국 직업훈련·커리어 카운슬링 산업(NAICS 62431) 시장 규모 $199억(2025, 2026.3 개정판; 2025.6판은 $171억). 범위가 비영리·정부 직업훈련을 포함해 아웃플레이스먼트만 분리 불가 | Job Training & Career Counseling in the US – Market Size, IBISWorld · https://www.ibisworld.com/united-states/market-size/job-training-career-counseling/1616/ | 2025 | 미국 · 달러/년 | single-source | 3 | 상위 시장 규모(TAM 상한 참고용) |
+| E21 | 미국 자기계발(personal development) 시장 규모 $125억(2024, GIA) / $113억(2025) → $162억(2031) 전망(Ken Research). 범위(코칭·강좌·도서·앱) 정의가 달라 수치 불일치 | Personal Development – Global Market (GIA, via GII) · https://www.giiresearch.com/report/go1656214-personal-development.html ; USA Personal Development Market Outlook to 2030, Ken Research · https://www.kenresearch.com/industry-reports/usa-personal-development-market.md | 2024 | 미국 · 달러/년 | verified | 2 | 소비자 직접 지불 시장의 존재 증거(유료 리서치 요약치라 신뢰 낮음) |
+| E22 | 미국 성인 65%가 최소 1개 모바일 앱 구독에 돈을 내고 있음(18–29세 77%) | Most Americans pay for mobile apps (YouGov 2025.7 설문 인용), eMarketer · https://www.emarketer.com/content/most-americans-pay-mobile-apps | 2025 | 미국 · % | single-source | 3 | 구독 결제 습관 근거 |
+| E23 | 자기계발·습관 앱에 "직접 돈을 내는" 미국 성인 비율은 공개 설문으로 확인되지 않음(Statista 2024 건강앱 구매 비율은 유료 벽). 가설: 앱 구독자(65%)의 일부, 10–25% 수준 | 없음 — 추론: E22의 65%와 Recurly 2023 "71%가 건강·웰니스 목표 달성에 구독을 활용"을 근거로 범위 추정 | - | 미국 · % | hypothesis | 2 | 소비자 전환율 가정(슬라이드엔 "가설" 표기 필수) |
+| E24 | 1인당 지불 의향 가격대: 월 $29–79 또는 프로그램형 $300–1,000. 근거: 인간 코치 1회($139 중위)보다 싸고 아웃플레이스먼트 1인당($1,660) 대비 1/2–1/5 | 없음 — 추론: E17·E18 가격 앵커에서 역산 | - | 미국·캐나다 · 달러/월 | hypothesis | 2 | 가격 정책 슬라이드 |
+| E25 | 핵심 5직군 공식 고용 합계(미국+캐나다) ≈ 704,300명 = 미국 559,400(E1–E5) + 캐나다 144,900(E6–E8). 구성 수치는 모두 출처 있음, 합산만 추론 | 없음 — 추론: E1–E8 합산(캐나다 성우·순수미술가 수치 없음 → 미포함) | - | 미국·캐나다 · 명 | hypothesis | 4 | 확장 사다리 1층(SOM) |
+| E26 | 인접 직군(편집자, 테크니컬 라이터, PR·마케팅 스페셜리스트, 사진가, 웹/UX 디자이너, 배우 등)을 더하면 약 2–3백만 명 규모로 추정. 개별 BLS 수치 미조사 | 없음 — 추론: BLS 27(예술·디자인·미디어) 및 13(마케팅) 대분류 일부를 가정, 이번 리서치에서 미검증 | - | 미국·캐나다 · 명 | hypothesis | 1 | 확장 사다리 2층(SAM) |
+| E27 | 10M 도달 경로: (a) E9의 미국 프리랜스 경험자 6,400만 명 중 글쓰기·디자인·번역·음성 계열이 15% 이상이면 ≈ 1,000만 명, 또는 (b) 생성형 AI 노출도 높은 3–10년차 북미 지식노동자 전체. 어느 쪽도 비율 출처 없음 | 없음 — 추론: Upwork 6,400만 명에 가정 비율 15%를 곱함(비율 근거 없음) | - | 미국·캐나다 · 명 | hypothesis | 1 | 확장 사다리 3층(TAM). 반드시 "가설" 표기 |
+
+## 확장 사다리 요약 (US+CA → 10M)
+
+| 층 | 집단 | 인원(명) | 근거 상태 | 관련 ID |
+|---|---|---|---|---|
+| 1 | 미국 작가·저술가(카피라이터 포함) | 140,300 | sourced (BLS 2025) | E1 |
+| 1 | 미국 통·번역가 | 73,900 | sourced (BLS 2025) | E2 |
+| 1 | 미국 공예·순수미술가(일러스트 포함 28,900) | 53,400 | sourced (BLS 2025) | E3 |
+| 1 | 미국 그래픽 디자이너 | 253,100 | sourced (BLS 2025) | E4 |
+| 1 | 미국 아나운서·DJ(성우 대리지표) | 38,700 | sourced (BLS 2025) — 성우 단독 수치 없음 | E5 |
+| 1 | 캐나다 콘텐츠 작가 | 27,200 | sourced (Job Bank 2023) | E6 |
+| 1 | 캐나다 번역가 | 24,500 | sourced (Job Bank 2023) | E7 |
+| 1 | 캐나다 일러스트·그래픽 디자이너 | 93,200 | sourced (Job Bank 2023) | E8 |
+| **1 합계** | **핵심 5직군 공식 고용(US+CA)** | **≈ 704,300** | 합산만 hypothesis | E25 |
+| 1' | 그중 미국 프리랜스(자영업) 인원 | ≈ 193,000 | hypothesis(출처 수치 곱셈) | E10 |
+| 2 | 인접 창작·커뮤니케이션 직군 | ≈ 2–3백만 | hypothesis(미검증) | E26 |
+| 3 | 프리랜스 경험자 6,400만 명 중 창작·언어 계열 ≈15% 또는 AI 고노출 3–10년차 지식노동자 | ≈ 1,000만 | hypothesis(비율 근거 없음) | E9, E27 |
+
+## 요약
+
+1. 가장 강한 주장 ① E1·E4·E3: BLS 2025 공식 수치로 1차 타깃(작가 140,300명, 자영업 65%)과 확장 직군(그래픽 253,100명 −2%, 일러스트 포함 순수미술가 28,900명 −3%)의 규모·감소 전망이 모두 정부 통계로 뒷받침됨.
+2. 가장 강한 주장 ② E11(verified): ChatGPT 이후 Upwork 글쓰기 프리랜서 월 소득 −5.2%, 이미지 계열 −9.4%(Hui·Reshef·Zhou) — 동료심사 학술 연구 + 2개 독립 보도로 "이미 소득이 줄었다"를 입증.
+3. 가장 강한 주장 ③ E17·E18(verified): 인간 커리어 코치 중위 시급 $139, 기업 아웃플레이스먼트 1인당 $1,660–1,900 — 지불 앵커가 실재하며 개인 중위연봉(E16, $55k–77k)도 전 직업 중위를 상회.
+4. 가장 약한 가정 ① E27: 10M 도달은 Upwork 6,400만 명 × 가정 비율 15%에 의존하며 그 비율의 출처가 전혀 없음. 공식 고용 합계(E25)는 약 70만 명에 그치므로 "10M 도달 가능 시장"은 인접 직군(E26)까지 모두 가설임.
+5. 가장 약한 가정 ② E23·E24: 자기계발 앱에 실제로 돈을 내는 비율과 월 $29–79 지불 의향은 간접 지표(앱 구독 65%, 코칭 가격)에서 역산한 추론이며, 성우는 74.9%가 연 $50k 이하(E15)라 지불능력이 가장 약한 세그먼트임.

@@ -51,6 +51,7 @@ stage: board
 - 12:25 · 서버측 Claude 키: 행사 크레딧 조직 키만, 배포 환경변수에만(레포·브라우저 금지), 실패 시 폴백 응답과 표시 · 승인 PM(우영) · 키 발급·등록은 Build와 PM이 손으로
 - 12:25 · 게이트 유지(G3 13:00 · freeze 14:00 · G4 14:45 · G5 15:30) · 제출 목표 15:00, 상한 16:00 · G3는 P0만 · 결정자 PM(우영)
 - 13:58 · 제품명 확정: **Dream Achieve Moments** — 제출 양식 「서비스 이름」·덱·랜딩·앱 제목에 이 이름을 쓴다. "Second Draft"는 개발 코드명·파일명으로만 남긴다(바꾸지 않음) · 결정자 PM(우영) · 영향: PITCH(GTM) · slides-draft(Sales) · web 제목(Build) · brain 서버 이름(PM)
+- 16:12 · 제품명 변경: **Next Chapter** — 배포 웹(Build 083db39)·덱(GTM 8671b56)이 이미 적용, 현장 구두 결정으로 판단해 PM-agent가 PRD·BOARD·초안을 맞춤. 제출 양식 「서비스 이름」도 Next Chapter. Dream Achieve Moments·Second Draft는 이전 후보/코드명 · 결정자 PM(우영) 확인 대기
 
 ## 제안
 

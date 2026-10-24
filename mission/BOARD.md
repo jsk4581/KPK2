@@ -3,7 +3,7 @@
 데모 URL: https://kpk2-second-draft.vercel.app (앱 직접 주소 /app.html · Build가 팀 채널에 13:41 공유 · app/SMOKE.md 「실행 기록」 회차 1 13:12 배포 URL 3/3 · HANDOFF 「체크포인트」에 `데모 URL` 줄은 없음 — PM이 채널·SMOKE 기록에서 옮김)
 
 > 작성 15:35 (PM) — G2 목표 10:35보다 늦게 만든 보드다. 상태는 HANDOFF 「결정」「체크포인트」「제안」· git log · mission/SUBMISSION.md · app/SMOKE.md의 기록만으로 적었다. 담당의 "완료했습니다" 말은 근거로 쓰지 않았다. Build 커밋 시각은 git에 UTC로 찍혀 있어 아래에는 +9h(KST)로 적는다.
-> 제품명: Dream Achieve Moments (13:58 결정 · 개발 코드명 Second Draft). Sales 15:30 재검토 제안은 T20.
+> 제품명: Next Chapter (13:58 결정 · 개발 코드명 Second Draft). Sales 15:30 재검토 제안은 T20.
 
 ## 게이트
 
@@ -45,10 +45,10 @@
 | T14 | submit-gate precheck (체크 1~9 드라이런, 제출 없음) — 체크 1·2 PASS, 3–10 NOT_RUN | 태진 | mission/SUBMISSION.md | 14:45 | G4 | T8,T13 | doing |
 | T15 | 발표자료 초안 v0–v4.2 (키트 2장 · 라벨 표기 · 화면 캡처) — a4f8a7e 13:53 → 36a4775 15:31 | 태진 | docs/gtm/slides-draft/ | 15:00 | G5 | T6 | done |
 | T16 | GTM 리서치·시나리오(Maya)·슬라이드 제안 — 4961d14 14:00 → a9d7805 15:16 | 곤살로 | docs/gtm/gonzalo/ | 15:00 | G5 | - | done |
-| T17 | 랜딩·앱 카피를 PRD 톤·제품명(Dream Achieve Moments)으로 맞춤 — bb5ce6a 14:40 · 99aad11 14:49 · Sales 15:11 확인 | 준서 | web/ | 15:15 | G5 | T9 | done |
+| T17 | 랜딩·앱 카피를 PRD 톤·제품명(Next Chapter)으로 맞춤 — bb5ce6a 14:40 · 99aad11 14:49 · Sales 15:11 확인 | 준서 | web/ | 15:15 | G5 | T9 | done |
 | T18 | PITCH final (라벨 점검 · 90초 스크립트) + pitch/slides.pdf — 미생성 | 곤살로 | mission/PITCH.md | 15:30 | G5 | T8,T12,T15 | doing |
 | T19 | integrate G3·G4·G5 (X-1~X-5 · 어긋남 → 「제안」) — HANDOFF에 integrate 기록 없음, 이 보드 작성이 첫 정리 | 우영 | HANDOFF.md#제안 | 15:30 | G5 | - | doing |
-| T20 | 제품명 최종 결정 — 13:58 Dream Achieve Moments 유지 여부 (Sales 15:30 Second Draft 재검토 제안, 15:40까지) | 우영 | HANDOFF.md#결정 | 15:40 | G5 | - | doing |
+| T20 | 제품명 최종 결정 — 13:58 Next Chapter 유지 여부 (Sales 15:30 Second Draft 재검토 제안, 15:40까지) | 우영 | HANDOFF.md#결정 | 15:40 | G5 | - | doing |
 | T21 | submit-gate final → 판정 (검사자 ≠ 작성자, X-5) | 태진 | mission/SUBMISSION.md | 15:45 | G6 | T14,T18 | todo |
 | T22 | 제출 확정 · 양식 9칸 · 제출 1회 · 접수 확인 저장 → G6 approved → submitted | 우영 | mission/BOARD.md | 16:00 | G6 | T21 | todo |
 | T23 | 슬롯 관측 — 10:00부터 매시, 13:00부터 30분 (append-only) — 12:00=8 한 건만 기록, 13:00 이후 미관측 | 태진 | mission/BOARD.md#슬롯 | 16:00 | G6 | - | doing |

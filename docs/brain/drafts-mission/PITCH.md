@@ -2,7 +2,7 @@
 
 > 초안 (DRAFT) · 소유 GTM(곤살로) · 저장 위치 `context/drafts/mission/PITCH.md` — `mission/PITCH.md`에는 GTM이 옮긴다.
 > 기준: 덱 v4.2 (Sales, `docs/gtm/slides-draft/slides.html`) + 곤살로 합산 제안(`docs/gtm/gonzalo/combined-proposal/`) + `docs/brain/VC_QA.md` + `docs/brain/architecture-vc.html` + PRD v2 (12:25) + DECISION (11:30).
-> 제품명: **Dream Achieve Moments** (PM 13:58 확정 · Sales 15:30 "Second Draft" 재검토 제안은 PM 결정 대기 — 바뀌면 Slide 1 제목 줄과 스크립트 첫 문장만 교체).
+> 제품명: **Next Chapter** (PM 13:58 확정 · Sales 15:30 "Second Draft" 재검토 제안은 PM 결정 대기 — 바뀌면 Slide 1 제목 줄과 스크립트 첫 문장만 교체).
 > 라벨 규칙: 슬라이드의 숫자 줄은 전부 `(E번호 · 라벨)` — E 번호와 라벨은 `docs/gtm/market-claims.md`(E1–E27 · E70)와 `docs/gtm/ai-displaced-occupations.md`(E28–E69) 그대로. 시뮬레이션 화면은 [SIMULATION]. 실적(계약·인터뷰·사용자 수)은 없다 — 쓰지 않는다.
 > 금지어(`brain/messages.js` lint): 청중용 영어 문장에 fail · missed(단 "not a missed day"는 허용) · broken · streak · behind · lazy · should · must · excuse · just · "because you"를 쓰지 않는다. 스크립트·슬라이드 영어 줄 lint 15:45 통과.
 
@@ -11,7 +11,7 @@
 > 키트 매핑 — 「무엇을, 누구에게」: 팀명 좌상단 · 서비스 이름 + 한 줄 · 타깃 해외 시장(국가·고객) · 문제 1–2줄 · 선택 주제. 라이트 테마 · `footer-for-light-slides.png` · 1920×1080 · 본문 28px 이상. 우측에 랜딩 브라우저 샷 + 앱 폰 샷 1대.
 
 - 팀명 · 주제: 팀 김박구이 · TOPIC — SAVE 10M JOBS FROM AI (SCHMIDT · 선언 주제 원문은 MISSION 「사실」) · 선언 레포 https://github.com/jsk4581/KPK2
-- 서비스 이름 · 한 줄: **Dream Achieve Moments** — *Your expertise, redrafted for the AI era.* An AI career agent that turns what you already know into your next career — and walks it with you, week by week.
+- 서비스 이름 · 한 줄: **Next Chapter** — *Your expertise, redrafted for the AI era.* An AI career agent that turns what you already know into your next career — and walks it with you, week by week.
 - 고객 (WHO): US freelance copywriters & writers, 3–10 years in — losing clients to generative AI (PRD 1)
 - 타깃 해외 시장: United States first (Canada next) · freelance copywriters and writers whose clients now draft with ChatGPT
 - 문제 (PAIN): "My clients draft with ChatGPT now." — alone, from zero, quits halfway. They do not know where their expertise transfers, prepare by themselves, and stop in the middle (PRD 2)
@@ -25,7 +25,7 @@
 
 > 키트 매핑 — 「오늘 만든 것」: 실제 스크린샷 1–2장 · 작동 방식과 Claude가 쓰이는 곳 · 왜 우리 팀인가 · 다음 7일. 우상단 데모 URL. 폰 샷 3대 플로우(→) + "ONE BRAIN · TWO DOORS" 다이어그램 + WHY US + MARKET · NEXT 7 DAYS 박스.
 
-- 데모: https://kpk2-second-draft.vercel.app · 스크린샷: `docs/gtm/slides-draft/shot-landing-web.png` (랜딩, Slide 1) · `shot-paths.png` · `shot-nottoday.png` (폰 샷, 15:19 재캡처 · 앱 제목 Dream Achieve Moments 반영본)
+- 데모: https://kpk2-second-draft.vercel.app · 스크린샷: `docs/gtm/slides-draft/shot-landing-web.png` (랜딩, Slide 1) · `shot-paths.png` · `shot-nottoday.png` (폰 샷, 15:19 재캡처 · 앱 제목 Next Chapter 반영본)
 - 핵심 장면: 1 · Tell your story — Load sample persona or Start · no login · nothing stored · [SIMULATION] persona → 2 · Three paths that transfer — what transfers · what's missing · first 2 weeks → 3 · This week · Not today — "a rest day, not a missed day" · moved, never deleted (제품 사양)
 - 작동 방식 (ONE BRAIN · TWO DOORS): Judgment is deterministic rules in `app/logic.js` + `brain/` — paths → week → check-in → explain; Claude writes only the words (one call drafts the path copy, a labelled `Sample result` fallback shows when no key is present). The same core serves the web demo and the MCP/REST brain server (제품 사양)
 - 오늘 실제로 도는 것 (LIVE TODAY): web demo at the URL above with a synthetic persona · brain REST + MCP server with 8 read-only tools (think · rank_roles · plan_week · check_in · analyze_state · explain · job_readiness · get_scenario) reachable over a quick tunnel · 619 automated tests passing, none red (app 147 + brain 472, run 15:40) (제품 사양)
@@ -38,9 +38,9 @@
 
 ## 스크립트 (90초)
 
-Hi, we are team Kim-Park-Gu-Yi, and this is Dream Achieve Moments.
+Hi, we are team Kim-Park-Gu-Yi, and this is Next Chapter.
 Freelance copywriters' work is being rewritten by AI first. After ChatGPT, their monthly income on Upwork fell five point two percent — peer-reviewed. Sixty-five percent of America's one hundred forty thousand writers are self-employed, so no employer pays for their transition. They prepare alone, from zero, and most stop halfway.
-Dream Achieve Moments starts from what they already know. Load your story — in the demo, a synthetic persona — and a decision brain, not a prompt, returns three career paths where your expertise transfers: what carries over, what is missing, the first two weeks. Pick one and you get this week's three actions. On a hard day you press Not today: a rest day, not a missed day — the action moves, nothing is deleted.
+Next Chapter starts from what they already know. Load your story — in the demo, a synthetic persona — and a decision brain, not a prompt, returns three career paths where your expertise transfers: what carries over, what is missing, the first two weeks. Pick one and you get this week's three actions. On a hard day you press Not today: a rest day, not a missed day — the action moves, nothing is deleted.
 Rules make every call and can explain it; Claude only writes the words. The same brain runs the web demo and an MCP server, so any app can embed it.
 Our beachhead is seven hundred thousand creative workers in the US and Canada; ten million is a labelled hypothesis. We ask for three intros: an outplacement buyer, Upwork, and a career-tech investor. The demo is live at kpk2-second-draft.vercel.app.
 
@@ -93,11 +93,11 @@ Our beachhead is seven hundred thousand creative workers in the US and Canada; t
 
 > 데모데이(19:00, 결선 8팀) 전용 — 3분 영어 발표, 약 400단어, 차분한 속도. 숫자 뒤 대괄호는 발표자 메모(읽지 않음). 리허설 2회 기록은 `mission/DEMODAY.md` 「리허설 기록」에.
 
-Good evening. We are team Kim-Park-Gu-Yi, and this is Dream Achieve Moments — your expertise, redrafted for the AI era.
+Good evening. We are team Kim-Park-Gu-Yi, and this is Next Chapter — your expertise, redrafted for the AI era.
 
 Start with one person: a freelance copywriter, seven years in, who opens her inbox and reads, "Can you polish the draft our AI wrote?" After ChatGPT, Upwork writing freelancers lost five point two percent of monthly income — peer-reviewed [E11 · verified]. Sixty-five percent of America's one hundred forty thousand writers are self-employed, so there is no HR team and no outplacement budget for them [E1 · single-source]. This year, through September, US employers named AI as the reason for one hundred twenty thousand job cuts [E59 · single-source]. These people prepare alone, from zero, and most stop halfway.
 
-Dream Achieve Moments starts from what she already knows. Here is the live demo. She loads her story — today a synthetic persona, clearly labelled. A decision brain reads her work history and returns three career paths where her expertise transfers: what carries over, what she would need to build, and the first two weeks. She chooses one and gets this week's three actions. On a hard day she presses Not today. The app says: today was a rest day, not a missed day. The action moves to another day; nothing is deleted.
+Next Chapter starts from what she already knows. Here is the live demo. She loads her story — today a synthetic persona, clearly labelled. A decision brain reads her work history and returns three career paths where her expertise transfers: what carries over, what she would need to build, and the first two weeks. She chooses one and gets this week's three actions. On a hard day she presses Not today. The app says: today was a rest day, not a missed day. The action moves to another day; nothing is deleted.
 
 Why is this hard to copy? Rules make every call, and every answer ships with the rule and the evidence that produced it. Claude writes the words, never the verdict. Auditable, so an HR buyer can sign off. We built it once and sell it three ways: the web app, a REST API, and an MCP server any AI agent can call — all live today on synthetic data. Nothing you type is stored.
 
@@ -123,7 +123,7 @@ We ask for three introductions: an outplacement buyer, Upwork, and a career-tech
 10. **해자는?** ① 테스트·설명 가능한 판단 정책 ② 대체 직군별 도메인 브레인 팩(가설) ③ 전환 뒤에도 이어지는 동의 기반 주간 증거 루프(가설). 오늘은 사용자 0명이라 데이터 해자를 주장하지 않는다. VC_QA Q10.
 11. **가격 앵커?** 벤더 공개가 $600–2,600/인·3개월(E70 · single-source) · 인간 코치 중위 $139/시간(E17 · verified) · Pro 월 $29–79(E24 · hypothesis). 구 "$1,660/인"은 재확인 실패로 폐기(E18). 5대 벤더 중 4곳이 이미 "AI 커리어 전환"을 마케팅 — 우리 쐐기는 AI 대체 직군 특화 + 프로그램 뒤 주간 팔로업, 첫 B2B는 API 플러그인이 아니라 리셀·화이트라벨. VC_QA Q11.
 12. **오늘 만든 것 vs 사전 준비물?** 행사 전: 팀 운영 하네스(계약·스킬·템플릿·검증기)와 PM의 기존 코칭 프레임워크 설계 — 제품 코드 아님. 미션 공개(09:40) 후: 미션 선택·PRD·`app/logic.js`와 테스트·웹 데모·`brain/` 판단 모듈·MCP/REST 서버·합성 14일 시나리오·시장 근거 E1–E70 전부. 타 AI 산출물 미사용, 행사 Claude 크레딧만. 제품명은 13:58 확정. VC_QA Q12.
-13. **제품명이 왜 Dream Achieve Moments인가?** PM 13:58 확정, 개발 코드명 Second Draft. 출시 브랜드는 제출 후 재검토 대상(`docs/gtm/naming-and-ui-copy.md` §A — 동명 AI 글쓰기 앱 충돌, USPTO 미조회) — "working title"이라고 답한다.
+13. **제품명이 왜 Next Chapter인가?** PM 13:58 확정, 개발 코드명 Second Draft. 출시 브랜드는 제출 후 재검토 대상(`docs/gtm/naming-and-ui-copy.md` §A — 동명 AI 글쓰기 앱 충돌, USPTO 미조회) — "working title"이라고 답한다.
 
 ## 오늘 도는 것 · 다음 (정직 표기)
 

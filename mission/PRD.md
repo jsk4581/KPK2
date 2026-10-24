@@ -16,7 +16,7 @@ Tiny: PASS — 판단은 logic.js 결정론 함수, LLM은 1회(폴백 JSON으�
 
 ## 사용자 경험 (UX 흐름)
 
-> 제품명(확정 13:58): **Dream Achieve Moments** (개발 코드명 Second Draft) — *Your expertise, redrafted for the AI era.* 데모 페르소나·라이프로그는 전부 [SIMULATION] 합성 데이터다 ("Sample persona — synthetic").
+> 제품명(16:12 변경): **Next Chapter** (이전 후보 Dream Achieve Moments · 개발 코드명 Second Draft) — *Your expertise, redrafted for the AI era.* 데모 페르소나·라이프로그는 전부 [SIMULATION] 합성 데이터다 ("Sample persona — synthetic").
 > 판단은 규칙(결정론, `app/logic.js`)이 하고 LLM은 문장과 경로 초안만 쓴다. 같은 `logic.js`를 웹과 MCP 서버가 함께 쓴다.
 
 | # | 순간 | 사용자의 마음 | 화면 | 사용자가 하는 것 | 제품이 하는 것 | 우선 |

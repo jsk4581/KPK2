@@ -82,7 +82,7 @@ export interface TraceEntry {
   fn: string;
   input: string;
   output: string;
-  via?: 'logic' | 'llm' | 'fallback';
+  via?: 'logic' | 'llm' | 'fallback' | 'brain';
 }
 
 export interface AppState {

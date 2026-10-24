@@ -4,6 +4,8 @@ import persona from '@app/data/persona-dana.json';
 import { staggerStyle } from '../motion';
 import { useStore } from '../state/store';
 import type { AppState, TraceEntry } from '../state/types';
+import { brainSteps, useBrain } from '../brain/useBrain';
+import BrainPanel from './BrainPanel';
 import './Progress.css';
 
 type LifelogItem = (typeof persona.lifelog)[number];
@@ -50,6 +52,7 @@ const VIA_LABEL: Record<NonNullable<TraceEntry['via']>, string> = {
   logic: 'Rule (logic.js)',
   llm: 'AI-drafted',
   fallback: 'Sample output (offline)',
+  brain: 'Brain',
 };
 
 const tracedProgressSignals = logic.withTrace('progressSignals', logic.progressSignals);
@@ -112,7 +115,8 @@ export default function Progress() {
     () => new Map((state.week?.actions ?? []).map((a) => [a.id, a.title] as [string, string])),
     [state.week],
   );
-  const steps: TraceEntry[] = [...state.trace, signalsTrace];
+  const brain = useBrain(state);
+  const steps: TraceEntry[] = [...state.trace, signalsTrace, ...brainSteps(brain)];
   const hasLifelogEvidence = signals.evidence.some((e) => e.type === 'lifelog');
 
   const level = Math.max(0, MOMENTUM_LEVELS.indexOf(signals.momentum));
@@ -159,6 +163,8 @@ export default function Progress() {
           </dd>
         </div>
       </dl>
+
+      <BrainPanel view={brain} />
 
       <h3 className="progress-subhead">Evidence</h3>
       {state.checkins.length === 0 && (

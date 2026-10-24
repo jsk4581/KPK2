@@ -1,0 +1,103 @@
+/* Decision brain section on the Progress tab. Neutral palette; elevated risk uses the
+   non-red attention token (falls back to the same amber-brown when the token is absent). */
+.brain-panel {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 4px;
+}
+
+.brain-panel h3 {
+  margin: 12px 0 2px;
+  font-size: 15px;
+}
+
+.brain-panel h4 {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.brain-panel p {
+  margin: 0;
+}
+
+.brain-sim,
+.brain-muted,
+.brain-offline {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.brain-panel .brain-sim {
+  margin-bottom: 8px;
+}
+
+.brain-offline {
+  margin: 12px 0 0;
+}
+
+.brain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.brain-cell {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.brain-cell dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.brain-cell dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+}
+
+.brain-attention {
+  border-color: var(--attention, #8a5300);
+  background: var(--attention-tint, #fdf3e1);
+}
+
+.brain-attention dd {
+  color: var(--attention, #8a5300);
+}
+
+.brain-reasons {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.brain-block {
+  margin-top: 10px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.brain-skeleton {
+  display: grid;
+  gap: 8px;
+}
+
+.brain-skeleton span {
+  display: block;
+  height: 14px;
+  border-radius: 6px;
+  background: var(--border);
+  opacity: 0.5;
+}
+
+.brain-skeleton span:nth-child(2) {
+  width: 80%;
+}
+
+.brain-skeleton span:nth-child(3) {
+  width: 60%;
+}

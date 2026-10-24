@@ -40,6 +40,7 @@
 |---|---|---|---|---|
 | 1 | 14:15 | 3/3 (배포 URL · 브라우저) | 없음 — 경로 카드 출처 `Sample output (offline)`(LLM 키 없음 폴백, SMOKE 기준 통과) | 결함(기능 영향 없음): 폰 폭 390px에서 Landing 소개 문단 오른쪽 잘림 → Build에게 HANDOFF 「제안」 |
 | 2 | 14:22 | 3/3 (배포 URL · Playwright headless Chrome 430×932) | 없음 — Load sample persona → Continue → Show my paths → What transfers 카드 3장(Skill overlap 67%) → Choose this path → This week 3개 → Not today → "Today was a rest day, not a missed day." · Moved to Sat · 0/3 done · 1 moved | 캡처 5장 `docs/gtm/slides-draft/shot-*.png` → 덱 2장에 삽입 |
+| 3 | 15:19 | 3/3 (배포 URL `/app.html` · Playwright headless Chrome 430×932) | 없음 — 제품명 Dream Achieve Moments 반영본. Load sample persona → Continue → Show my paths → 카드 3장 → Choose this path → This week(0 of 3 done · How's your energy today?) → Not today → "Today was a rest day, not a missed day." · Moved to Sat · 0/3 done · 1 moved | 덱 폰 샷 3장 재캡처 · 랜딩(`/`)·앱 모바일 에뮬레이션 390×844 가로 넘침 0 확인(14:18 잘림 보고는 오탐 → HANDOFF 정정) |
 
 ## 알려진 결함
 

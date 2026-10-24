@@ -204,7 +204,24 @@ test('landing page is the phone kit with the app inside its phone', async ({ pag
   await expect(page).toHaveTitle('Dream Achieve Moments');
   await expect(page.locator('nav .brand')).toHaveText('Dream Achieve Moments');
   await expect(page.locator('#why')).toBeAttached();
-  await expect(page.locator('#reel-screen .app')).toBeAttached();
+  // The See the demo card holds the promo video: poster first, nothing downloads until play.
+  const reelVideo = page.locator('#reel video');
+  await expect(reelVideo).toHaveAttribute('poster', '/media/promo-poster.jpg');
+  await expect(reelVideo).toHaveAttribute('preload', 'none');
+  await expect(reelVideo).not.toHaveAttribute('autoplay', /.*/);
+  await expect(reelVideo.locator('source')).toHaveAttribute('src', '/media/promo.mp4');
+  const play = page.getByRole('button', { name: 'Play the 40-second Dream Achieve Moments video' });
+  await expect(play).toHaveText('See the demo');
+
+  // Pressing it plays the video in place with controls; Escape pauses and brings the button back.
+  await play.scrollIntoViewIfNeeded();
+  await play.click();
+  await expect(play).toBeHidden();
+  await expect.poll(() => reelVideo.evaluate((v: HTMLVideoElement) => v.currentTime), { timeout: 15_000 }).toBeGreaterThan(0.3);
+  await expect(reelVideo).toHaveJSProperty('controls', true);
+  await page.keyboard.press('Escape');
+  await expect(play).toBeFocused();
+  await expect(reelVideo).toHaveJSProperty('paused', true);
 
   const iframe = page.locator('#demo .phone__screen iframe.phone__iframe');
   await expect(iframe).toHaveAttribute('src', '/app.html');

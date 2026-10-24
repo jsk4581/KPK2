@@ -54,7 +54,7 @@ export function drawPlaceholderScreen() {
   x.fillStyle = '#0f0f0f'; x.font = font(600, 46); x.fillText('9:41', 120, 112);
   rr(870, 84, 90, 40, 12, '#0f0f0f');
 
-  // Same content as the CSS mock screen (#mock-tpl): the synthetic sample persona's first path
+  // The synthetic sample persona's first path
   x.font = font(500, 34); x.fillStyle = '#8e48b1'; x.fillText('[SIMULATION] SAMPLE: DANA', 80, 250);
   x.font = font(700, 76); x.fillStyle = '#0f0f0f'; x.fillText('Your three paths', 80, 345);
   x.font = font(400, 38); x.fillStyle = '#6e6e6e'; x.fillText('Seven years of copy, carried into new work.', 80, 410);

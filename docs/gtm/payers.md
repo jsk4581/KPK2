@@ -14,6 +14,15 @@
 | 6 | 공공 노동시장 프로그램 (US DOL WIOA·주 워크포스 보드, 캐나다 ESDC) | 재교육 예산 존재 · AI 전환 정책 수요 | 상담사용 브레인 | 계약 | 정책 채널 — 느림 |
 | 7 | 라이프로그 보유 브랜드 (스포츠·이커머스·도서 플랫폼) | 비식별 지향·행동 데이터 기반 상품 기획 | 일반 인구 라이프로그 브레인 · Data License | — | **비치헤드(카피라이터)와 접점 없음** · 라이프로그 ③④층 이후 18–24개월 가설 |
 
+## 14:05 검증 반영 (`docs/gtm/verify-payers.md`)
+
+- **가격 앵커 정정**: "$1,660/인"은 공식·주요 출처로 재확인되지 않음 → **벤더 공개가 $600–2,600/인**(Intoo $600–1,300 · RiseSmart $899–2,599, 3개월, E70)으로 교체. 제3자 평균 약 $1,900(Leland, E18 single-source 2)은 보조로만.
+- **차별점 정정**: 5대 벤더 중 4곳(LHH Career Studio 2024-11 · Careerminds · Intoo · RiseSmart 20,000+ 리스킬 강좌)이 이미 "AI 커리어 전환·리스킬링"을 마케팅 중 → "기존 벤더에 없는 기능"이라 말하면 틀림. 차별점은 **AI로 대체된 직군 특화 + 전환 뒤 주간 습관 팔로업(비판단 루프)**로 좁힌다.
+- **연동 경로**: 5개사 어느 곳도 공개 API·서드파티 파트너 프로그램 없음(Careerminds Global Alliance는 리퍼럴형) → 1순위 B2B는 "MCP 연동"이 아니라 **리셀·화이트라벨 영업**으로 말해야 현실적.
+- **플랫폼(3순위) 보강**: Upwork Academy(2022, 무료)·AI Education Library(2023)·AI Services hub 운영, Upwork Research Institute 2025: 커리어 코칭 수요 +74%, 생성형 AI 모델링 수요 +220%. Fiverr는 자체 교육을 2025-12 매각(리스킬링 프로그램 없음) → Upwork가 유일한 플랫폼 파트너 후보.
+- **경쟁(4순위) 확인**: Coursera Coach = Coursera Plus($59/월) 구독자용 코스 내 어시스턴트 + 희망 직무 기반 추천(2025-04), 배경에서 새 직무를 설계하지 않음. Google Career Dreamer(2025-02, 무료, 미국 한정 실험) = Career Identity Statement + 탐색만, 후속·습관 없음 → 차별점 PASS.
+- 미확인 잔여: LHH·Right Management·Careerminds 공개 가격, Contra 프로그램, Coursera Coach 최초 출시 연도.
+
 ## 판정
 
 - 지금 돈이 있는 곳은 **1·2** — 공식 벤치마크($1,660/인)와 모수(AI 사유 감원 12만 명)가 둘 다 숫자로 있다. 피치 B2B 대표 예시로 권고.

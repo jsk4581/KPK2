@@ -47,27 +47,32 @@ export function drawPlaceholderScreen() {
   x.fillStyle = '#0f0f0f'; x.font = font(600, 46); x.fillText('9:41', 120, 112);
   rr(870, 84, 90, 40, 12, '#0f0f0f');
 
-  x.font = font(500, 34); x.fillStyle = '#8e48b1'; x.fillText('SIMULATION', 80, 250);
-  x.font = font(700, 76); x.fillStyle = '#0f0f0f'; x.fillText("Today's summary", 80, 345);
-  x.font = font(400, 38); x.fillStyle = '#6e6e6e'; x.fillText('One line in, the next action out', 80, 410);
+  // Same content as the CSS mock screen (#mock-tpl): the synthetic sample persona's first path
+  x.font = font(500, 34); x.fillStyle = '#8e48b1'; x.fillText('[SIMULATION] SAMPLE: DANA', 80, 250);
+  x.font = font(700, 76); x.fillStyle = '#0f0f0f'; x.fillText('Your three paths', 80, 345);
+  x.font = font(400, 38); x.fillStyle = '#6e6e6e'; x.fillText('Seven years of copy, carried into new work.', 80, 410);
 
-  rr(80, 480, 920, 300, 44, '#8e48b1');
-  x.fillStyle = '#ffffff'; x.font = font(500, 36); x.fillText('NEXT ACTION', 130, 560);
-  x.font = font(700, 58); x.fillText('Send the quote draft', 130, 650);
-  x.font = font(400, 34); x.globalAlpha = 0.8; x.fillText('Synthetic data · example', 130, 720); x.globalAlpha = 1;
+  rr(80, 480, 920, 340, 44, '#8e48b1');
+  x.fillStyle = '#ffffff'; x.font = font(500, 34); x.fillText('PATH 1 OF 3 \u00b7 SKILL OVERLAP 67%', 130, 555);
+  x.font = font(700, 56); x.fillText('Messaging & Positioning', 130, 640); x.fillText('Consultant', 130, 705);
+  x.font = font(400, 32); x.globalAlpha = 0.8; x.fillText('Synthetic persona \u00b7 example', 130, 770); x.globalAlpha = 1;
 
-  const rows = [['Files added', '3 files', '#e9dcf3'], ['Key points', '12 items', '#e3e9f3'], ['To review', '2 items', '#f4f5f5']];
+  const rows = [
+    ['What transfers', 'Discovery calls, positioning, workshops', '#e9dcf3'],
+    ["What's missing", 'Case studies, project pricing', '#e3e9f3'],
+    ['This week', '3 actions \u00b7 30 minutes or less', '#f4f5f5'],
+  ];
   rows.forEach(([t, s, col], i) => {
-    const y = 840 + i * 200;
-    rr(80, y, 920, 170, 36, '#f4f5f5');
-    rr(120, y + 40, 90, 90, 24, col);
-    x.fillStyle = '#0f0f0f'; x.font = font(600, 42); x.fillText(t, 250, y + 80);
-    x.fillStyle = '#858585'; x.font = font(400, 32); x.fillText(s, 250, y + 128);
+    const y = 870 + i * 190;
+    rr(80, y, 920, 160, 36, '#f4f5f5');
+    rr(120, y + 35, 90, 90, 24, col);
+    x.fillStyle = '#0f0f0f'; x.font = font(600, 42); x.fillText(t, 250, y + 75);
+    x.fillStyle = '#858585'; x.font = font(400, 32); x.fillText(s, 250, y + 123);
   });
 
   rr(80, c.height - 330, 920, 140, 70, '#0f0f0f');
   x.fillStyle = '#fff'; x.font = font(600, 44); x.textAlign = 'center';
-  x.fillText('Get started', 540, c.height - 245);
+  x.fillText('Show my paths', 540, c.height - 245);
   rr(380, c.height - 70, 320, 14, 7, '#0f0f0f');
   return c;
 }

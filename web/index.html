@@ -115,6 +115,7 @@
       box-shadow: inset 0 -3px 0 rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.25), 0 18px 40px -12px rgba(142,72,177,.55); }
     .core svg { width: 32px; height: 32px; }
     .core::after { content: ""; position: absolute; inset: -18px; border-radius: 30px; background: radial-gradient(closest-side, rgba(142,72,177,.35), transparent); opacity: var(--glow, 0); z-index: -1; }
+    .merge-tag { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); margin: 0; font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: center; }
     .result { position: absolute; left: 50%; top: 50%; width: min(760px, 100% - 32px); transform: translate(-50%, -50%); margin: 0; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.22; letter-spacing: -.03em; font-weight: 500; opacity: 0; will-change: filter, opacity, transform; text-wrap: balance; }
 
     /* Demo card rising after the merge */
@@ -191,6 +192,14 @@
       .chip b { font-size: 12px; }
       .chip-ico { width: 24px; height: 30px; }
     }
+    @media (max-width: 600px) {
+      /* Two chips per row must fit side by side: fixed half width, titles may wrap */
+      .chip { width: calc(50vw - 22px); white-space: normal; align-items: flex-start; }
+      .chip > div { min-width: 0; }
+      .chip b { line-height: 1.3; }
+      .chip small { font-size: 10px; letter-spacing: .02em; margin-top: 2px; }
+      .chip-ico { flex: none; }
+    }
     @media (max-width: 380px) {
       .brand { font-size: 14px; gap: 8px; }
       nav .btn-sm { padding: 0 12px; }
@@ -241,7 +250,7 @@
         <div class="fc-row"><i class="fc-ico" style="background:var(--accent)"></i><div><b>Skill overlap 67%</b><small>PATH 1 OF 3 · SYNTHETIC</small></div></div>
       </div>
       <div class="float-card left" aria-hidden="true">
-        <div class="fc-row"><i class="fc-ico" style="background:#f0a020"></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED</small></div></div>
+        <div class="fc-row"><i class="fc-ico" style="background:#f0a020"></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED · SAMPLE</small></div></div>
       </div>
       <!-- Shown only when WebGL or the CDN fails -->
       <div class="phone phone-fallback" style="--phone-w:290px"><div class="phone__bezel"><div class="phone__screen">
@@ -271,6 +280,7 @@
         <div class="chip" data-x="1" data-y="-1"><span class="chip-ico" style="background:#3d7bf5">CAL</span><div><b>Discovery call, skincare</b><small>CALENDAR · 45 MIN</small></div></div>
         <div class="chip" data-x="-1" data-y="1"><span class="chip-ico" style="background:#1f8a4c">LINK</span><div><b>AI drafts sound the same</b><small>SAVED LINK · OCT 10</small></div></div>
         <div class="chip" data-x="1" data-y="1"><span class="chip-ico" style="background:var(--accent)">TXT</span><div><b>Career: 7 yrs of copy</b><small>YOUR STORY · 3 BOXES</small></div></div>
+        <p class="merge-tag">[SIMULATION] Sample inputs from Dana, a synthetic persona</p>
         <div class="core" id="core"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h9a5 5 0 0 1 0 10h-3"/><path d="M25 23h-9a5 5 0 0 1 0-10h3"/><path d="m10 6-3 3 3 3M22 26l3-3-3-3"/></svg></div>
         <p class="result" id="result">Your notes and story go in. Out come three paths that keep your skills and three actions for this week.</p>
       </div>
@@ -284,7 +294,7 @@
       <div class="features">
         <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><b>Three paths that keep your skills</b><span>Every card starts with What transfers, then What's missing and your first 2 weeks.</span></div>
         <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><b>Three small actions this week</b><span>30 minutes or less each, 10 on low-energy days. Not today moves a step, never deletes it.</span></div>
-        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16l4-5 3 3 5-7"/></svg><b>Rules decide, AI writes the words</b><span>Every call comes from tested rules, and Why? shows the evidence behind it.</span></div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16l4-5 3 3 5-7"/></svg><b>Rules decide, AI only drafts the words</b><span>Every call comes from tested rules, and Why? shows the evidence behind it. If the AI is unavailable, a labelled sample answer stands in.</span></div>
       </div>
     </div>
 
@@ -302,9 +312,9 @@
     <div class="wrap">
       <p>Why now: writing work is already shifting. Each number keeps its source label.</p>
       <div class="features">
-        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 7l4 5 3-3 5 7"/></svg><b>Writing earnings down 5.2%</b><span>Monthly, for Upwork writing freelancers after ChatGPT launched; jobs down 2%. Hui, Reshef &amp; Zhou, 2023. Verified.</span></div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 7l4 5 3-3 5 7"/></svg><b>Upwork writing earnings down 5.2%</b><span>Monthly, for Upwork writing freelancers after ChatGPT launched; jobs down 2%. Hui, Reshef &amp; Zhou, 2023. Verified.</span></div>
         <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg><b>AI named in the writers' outlook</b><span>BLS: AI use for writing "is projected to dampen demand" for writers. Occupational Outlook Handbook, 2025-35. Single source.</span></div>
-        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16v-3M11 16V9M16 16V5"/></svg><b>120,136 US job cuts citing AI</b><span>Announced cuts where the employer named AI, Jan to Sep 2026. Challenger, Gray &amp; Christmas. Single source.</span></div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16v-3M11 16V9M16 16V5"/></svg><b>120,136 US job cuts citing AI</b><span>Announced cuts across all industries where the employer named AI, Jan to Sep 2026. Challenger, Gray &amp; Christmas. Single source.</span></div>
       </div>
     </div>
   </section>
@@ -316,7 +326,7 @@
         <h2>From your story to this week's plan, in four steps</h2>
         <ul class="steps">
           <li><i>01</i><div><b>Tell your story</b><span>Three boxes or the sample. Nothing you type is stored.</span></div></li>
-          <li><i>02</i><div><b>Connect only what you allow</b><span>Notes, links, calendar. Texts stay off by default.</span></div></li>
+          <li><i>02</i><div><b>Connect only what you allow</b><span>Notes, links, calendar. Texts stay off by default. Demo data is synthetic.</span></div></li>
           <li><i>03</i><div><b>Choose one of three paths</b><span>What transfers, what's missing, your first 2 weeks.</span></div></li>
           <li><i>04</i><div><b>Walk it this week</b><span>Three small actions. Not today moves a step, never deletes.</span></div></li>
         </ul>

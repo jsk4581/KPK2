@@ -182,6 +182,45 @@
 
     .home-bar { position: absolute; z-index: 12; bottom: .9em; left: 50%; width: 13.5em; height: .5em; transform: translateX(-50%); border-radius: 1em; background: #0f0f0f; }
 
+    /* Architecture: two inline SVG diagrams drawn with the page palette */
+    .arch { padding: 90px 0 120px; border-top: 1px solid var(--line); }
+    .arch h2 { margin: 18px 0 0; max-width: 760px; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
+    .arch-lead { margin: 18px 0 0; max-width: 620px; color: var(--muted); font-size: 17px; text-wrap: pretty; }
+    .arch-fig { margin: 48px 0 0; min-width: 0; }
+    .arch-fig + .arch-fig { margin-top: 40px; }
+    .arch-label { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .arch-label b { color: var(--ink); font-weight: 500; }
+    .arch-scroll { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 18px; background: var(--bg); }
+    .arch-scroll svg { display: block; width: 100%; min-width: 1080px; height: auto; }
+    .arch-hint { display: none; margin: -6px 0 12px; font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    @media (max-width: 860px) { .arch-hint { display: block; } }
+    .arch-fig figcaption { margin-top: 14px; max-width: 760px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
+    .arch svg .mask { fill: var(--bg); }
+    .arch svg .n-svc { fill: var(--bg); stroke: var(--ink); stroke-width: 1; }
+    .arch svg .n-ext { fill: var(--surface); stroke: var(--faint); stroke-width: 1; }
+    .arch svg .n-opt { fill: var(--bg); stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 3; }
+    .arch svg .n-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+    .arch svg .zone { fill: var(--surface); fill-opacity: .55; stroke: var(--faint); stroke-width: 1; stroke-dasharray: 4 4; }
+    .arch svg .t-tag, .arch svg .t-zone, .arch svg .t-eyebrow { fill: var(--muted); font: 500 11px var(--mono); letter-spacing: .08em; }
+    .arch svg .t-name { fill: var(--ink); font: 600 14px var(--sans); letter-spacing: -.01em; }
+    .arch svg .t-sub { fill: var(--muted); font: 400 11px var(--mono); }
+    .arch svg .t-arrow { fill: var(--muted); font: 500 11px var(--mono); letter-spacing: .02em; }
+    .arch svg .t-note { fill: var(--muted); font: 400 12px var(--sans); }
+    .arch svg .t-legend { fill: var(--muted); font: 400 12px var(--sans); }
+    .arch svg .t-layer { fill: var(--ink); font: 600 16px var(--sans); letter-spacing: -.01em; }
+    .arch svg .t-body { fill: #555; font: 400 13px var(--sans); }
+    .arch svg .t-ink { fill: var(--ink); }
+    .arch svg .t-accent { fill: var(--accent); }
+    .arch svg .a-def { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .arch svg .a-acc { fill: none; stroke: var(--accent); stroke-width: 1.6; }
+    .arch svg .a-dash { stroke-width: 1; stroke-dasharray: 5 4; }
+    .arch svg .m-def { fill: var(--muted); }
+    .arch svg .m-acc { fill: var(--accent); }
+    .arch svg .rule-line { stroke: var(--line); stroke-width: 1; }
+    .arch svg .band { fill: var(--bg); }
+    .arch svg .band-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+    .arch svg .stack-outline { fill: none; stroke: var(--faint); stroke-width: 1; }
+
     footer { padding: 40px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
     footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
@@ -227,7 +266,7 @@
         <img class="brand-mark" src="/logo.svg" alt="" width="30" height="30">
         Dream Achieve Moments
       </a>
-      <div class="nav-links"><a href="#why">Why</a><a href="#now">Why now</a><a href="#how">How it works</a><a href="#demo">Demo</a></div>
+      <div class="nav-links"><a href="#why">Why</a><a href="#now">Why now</a><a href="#how">How it works</a><a href="#demo">Demo</a><a href="#architecture">Architecture</a></div>
       <a class="btn btn-light btn-sm" href="#demo">Try the demo</a>
     </div>
   </nav>
@@ -356,6 +395,183 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="arch" id="architecture">
+    <div class="wrap">
+      <span class="eyebrow">Architecture</span>
+      <h2>Rules make the call. Claude only writes the words.</h2>
+      <p class="arch-lead">Tested rules make every decision, in your browser or on our decision brain. Claude only words the paths, and if any step is down the demo keeps working.</p>
+
+      <figure class="arch-fig">
+        <p class="arch-label"><b>01</b> How a click flows through the system</p>
+        <p class="arch-hint" aria-hidden="true">Swipe sideways to see the whole diagram</p>
+        <div class="arch-scroll">
+          <svg viewBox="0 0 1120 608" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-flow-title arch-flow-desc">
+            <title id="arch-flow-title">How a click flows through Dream Achieve Moments</title>
+            <desc id="arch-flow-desc">The browser loads the Vercel site, which shows the demo app in an iframe. The demo app calls /api/paths, a Vercel Function that makes one Claude Sonnet 5.5 call with a labelled fallback. The demo app also calls the rules-only decision brain on the PM laptop through a Cloudflare tunnel, retries a backup tunnel when the primary fails, and falls back to on-device signals when both are down. An MCP client and the Android lifelog app are optional inputs; the Android app is not wired yet.</desc>
+            <defs>
+              <marker id="arch-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-def" points="0 0, 8 3, 0 6"/></marker>
+              <marker id="arch-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-acc" points="0 0, 8 3, 0 6"/></marker>
+            </defs>
+
+            <!-- PM laptop zone around the tunnel and the brain -->
+            <rect class="zone" x="716" y="196" width="400" height="168" rx="10"/>
+            <text class="t-zone" x="730" y="216">PM LAPTOP (UNTIL 21:00)</text>
+
+            <!-- Connections -->
+            <line class="a-def" x1="156" y1="286" x2="212" y2="286" marker-end="url(#arch-arrow)"/>
+            <line class="a-def" x1="372" y1="286" x2="440" y2="286" marker-end="url(#arch-arrow)"/>
+            <line class="a-def" x1="532" y1="232" x2="532" y2="156" marker-end="url(#arch-arrow)"/>
+            <line class="a-def" x1="624" y1="102" x2="732" y2="102" marker-end="url(#arch-arrow)"/>
+            <path class="a-acc" d="M 624 286 H 732 M 896 286 H 932" marker-end="url(#arch-arrow-accent)"/>
+            <line class="a-def a-dash" x1="814" y1="420" x2="814" y2="340" marker-end="url(#arch-arrow)"/>
+            <line class="a-def a-dash" x1="1018" y1="420" x2="1018" y2="340" marker-end="url(#arch-arrow)"/>
+
+            <!-- Connection labels -->
+            <text class="t-arrow" x="184" y="276" text-anchor="middle">HTTPS</text>
+            <text class="t-arrow" x="406" y="276" text-anchor="middle">IFRAME</text>
+            <text class="t-arrow" x="542" y="198">POST /API/PATHS</text>
+            <text class="t-arrow" x="678" y="92" text-anchor="middle">MESSAGES API</text>
+            <text class="t-arrow" x="678" y="276" text-anchor="middle">/V1/THINK</text>
+            <text class="t-arrow" x="824" y="388">MCP</text>
+            <text class="t-arrow" x="1008" y="388" text-anchor="end">JSON (ROADMAP)</text>
+
+            <!-- Nodes -->
+            <rect class="n-ext" x="16" y="232" width="140" height="108" rx="10"/>
+            <text class="t-tag" x="28" y="254">USER</text>
+            <text class="t-name" x="28" y="280">Judge's browser</text>
+            <text class="t-sub" x="28" y="300">laptop or phone</text>
+            <text class="t-sub" x="28" y="316">no login</text>
+
+            <rect class="n-svc" x="212" y="232" width="160" height="108" rx="10"/>
+            <text class="t-tag" x="224" y="254">WEB</text>
+            <text class="t-name" x="224" y="280">Vercel site</text>
+            <text class="t-sub" x="224" y="300">landing page at /</text>
+            <text class="t-sub" x="224" y="316">static + Functions</text>
+
+            <rect class="n-svc" x="440" y="232" width="184" height="108" rx="10"/>
+            <text class="t-tag" x="452" y="254">APP</text>
+            <text class="t-name" x="452" y="280">Demo app in the phone</text>
+            <text class="t-sub" x="452" y="300">React, /app.html iframe</text>
+            <text class="t-sub" x="452" y="316">app/logic.js in browser</text>
+
+            <rect class="n-svc" x="440" y="48" width="184" height="108" rx="10"/>
+            <text class="t-tag" x="452" y="70">API</text>
+            <text class="t-name" x="452" y="96">/api/paths</text>
+            <text class="t-sub" x="452" y="116">Vercel Function</text>
+            <text class="t-sub" x="452" y="132">1 Claude call, 12 s cap</text>
+            <text class="t-sub" x="452" y="148">labelled fallback</text>
+
+            <rect class="n-ext" x="732" y="48" width="164" height="108" rx="10"/>
+            <text class="t-tag" x="744" y="70">EXT</text>
+            <text class="t-name" x="744" y="96">Claude Sonnet 5.5</text>
+            <text class="t-sub" x="744" y="116">path wording only</text>
+            <text class="t-sub" x="744" y="132">key in Vercel env</text>
+
+            <rect class="n-ext" x="732" y="232" width="164" height="108" rx="10"/>
+            <text class="t-tag" x="744" y="254">EDGE</text>
+            <text class="t-name" x="744" y="280">Cloudflare tunnel</text>
+            <text class="t-sub" x="744" y="300">primary + backup</text>
+            <text class="t-sub" x="744" y="316">CORS: Vercel origin</text>
+
+            <rect class="n-focal" x="932" y="232" width="172" height="108" rx="10"/>
+            <text class="t-tag" x="944" y="254">CORE</text>
+            <text class="t-name" x="944" y="280">Decision brain</text>
+            <text class="t-sub" x="944" y="300">brain/ + app/logic.js</text>
+            <text class="t-sub" x="944" y="316">rules only, no LLM</text>
+            <text class="t-sub" x="944" y="332">8 MCP tools + REST</text>
+
+            <rect class="n-opt" x="724" y="420" width="180" height="108" rx="10"/>
+            <text class="t-tag" x="736" y="442">OPTIONAL</text>
+            <text class="t-name" x="736" y="468">MCP client</text>
+            <text class="t-sub" x="736" y="488">Claude Desktop or Code</text>
+            <text class="t-sub" x="736" y="504">connects to /mcp</text>
+
+            <rect class="n-opt" x="932" y="420" width="172" height="108" rx="10"/>
+            <text class="t-tag" x="944" y="442">OPTIONAL</text>
+            <text class="t-name" x="944" y="468">Android lifelog app</text>
+            <text class="t-sub" x="944" y="488">on-device, 11 sources</text>
+            <text class="t-sub" x="944" y="504">JSON export</text>
+            <text class="t-sub" x="944" y="520">not wired yet</text>
+
+            <!-- Fallback note under the demo app -->
+            <text class="t-eyebrow" x="440" y="384">FALLBACK</text>
+            <text class="t-note" x="440" y="404">Primary tunnel down: retry the backup.</text>
+            <text class="t-note" x="440" y="422">Both down: on-device signals, offline line.</text>
+
+            <!-- Legend -->
+            <line class="rule-line" x1="16" y1="560" x2="1104" y2="560"/>
+            <text class="t-eyebrow" x="16" y="590">LEGEND</text>
+            <rect class="n-svc" x="96" y="580" width="14" height="10" rx="2"/>
+            <text class="t-legend" x="116" y="590">Our code</text>
+            <rect class="n-ext" x="196" y="580" width="14" height="10" rx="2"/>
+            <text class="t-legend" x="216" y="590">External or user</text>
+            <rect class="n-opt" x="336" y="580" width="14" height="10" rx="2"/>
+            <text class="t-legend" x="356" y="590">Optional</text>
+            <line class="a-def" x1="432" y1="585" x2="460" y2="585" marker-end="url(#arch-arrow)"/>
+            <text class="t-legend" x="468" y="590">Request</text>
+            <line class="a-def a-dash" x1="540" y1="585" x2="568" y2="585" marker-end="url(#arch-arrow)"/>
+            <text class="t-legend" x="576" y="590">Optional or roadmap</text>
+          </svg>
+        </div>
+        <figcaption>The purple path is the one that matters: the demo app asks the decision brain through a Cloudflare tunnel, and the brain answers with rules, not an LLM. If the primary tunnel fails the app retries the backup; if both are down the demo keeps working and the Progress tab shows on-device signals and an offline line.</figcaption>
+      </figure>
+
+      <figure class="arch-fig">
+        <p class="arch-label"><b>02</b> What each layer is built with</p>
+        <p class="arch-hint" aria-hidden="true">Swipe sideways to see the whole diagram</p>
+        <div class="arch-scroll">
+          <svg viewBox="0 0 1120 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-stack-title arch-stack-desc">
+            <title id="arch-stack-title">Dream Achieve Moments technology stack</title>
+            <desc id="arch-stack-desc">Six layers: presentation, judgment, serving, AI, mobile and quality, with the technologies in each. The judgment layer, where deterministic rules make every decision, is highlighted.</desc>
+
+            <text class="t-eyebrow" x="40" y="36">LAYER</text>
+            <text class="t-eyebrow" x="400" y="36">BUILT WITH</text>
+
+            <rect class="band" x="16" y="52" width="1088" height="460"/>
+            <line class="rule-line" x1="16" y1="296" x2="1104" y2="296"/>
+            <line class="rule-line" x1="16" y1="368" x2="1104" y2="368"/>
+            <line class="rule-line" x1="16" y1="440" x2="1104" y2="440"/>
+            <rect class="stack-outline" x="16" y="52" width="1088" height="460" rx="4"/>
+            <rect class="band-focal" x="16" y="124" width="1088" height="100"/>
+
+            <text class="t-eyebrow" x="40" y="93">L1</text>
+            <text class="t-layer" x="80" y="94">Presentation</text>
+            <text class="t-body" x="400" y="83">Landing page · HTML/CSS · three.js 0.160 3D phone · animated background</text>
+            <text class="t-body" x="400" y="103">Demo app · React 18 + TypeScript + Vite, served at /app.html</text>
+
+            <text class="t-eyebrow t-accent" x="40" y="169">L2</text>
+            <text class="t-layer" x="80" y="170">Judgment</text>
+            <text class="t-note t-ink" x="80" y="190">Rules decide, the LLM only writes sentences</text>
+            <text class="t-body t-ink" x="400" y="159">app/logic.js · pure deterministic functions: path ranking by skill overlap, week plan,</text>
+            <text class="t-body t-ink" x="400" y="179">Not today moves, condition sizing, progress signals</text>
+            <text class="t-body t-ink" x="400" y="199">brain/ · person, state, goal, plan, constraint, monitor, policy, explain · Node 22 · MCP SDK, 8 tools</text>
+
+            <text class="t-eyebrow" x="40" y="265">L3</text>
+            <text class="t-layer" x="80" y="266">Serving</text>
+            <text class="t-body" x="400" y="255">Vercel · static files + Node Functions (/api/paths)</text>
+            <text class="t-body" x="400" y="275">Cloudflare tunnel from the PM laptop, plus a backup tunnel · REST /v1/think · MCP /mcp</text>
+
+            <text class="t-eyebrow" x="40" y="337">L4</text>
+            <text class="t-layer" x="80" y="338">AI</text>
+            <text class="t-body" x="400" y="327">Claude Sonnet 5.5 · path wording only</text>
+            <text class="t-body" x="400" y="347">Anthropic Messages API · structured JSON · 12 s limit, labelled fallback</text>
+
+            <text class="t-eyebrow" x="40" y="409">L5</text>
+            <text class="t-layer" x="80" y="410">Mobile</text>
+            <text class="t-body" x="400" y="399">Android app · Kotlin · Jetpack Compose · Room · WorkManager · minSdk 29</text>
+            <text class="t-body" x="400" y="419">On-device lifelog, 11 sources, JSON export · optional, not wired to the web yet</text>
+
+            <text class="t-eyebrow" x="40" y="481">L6</text>
+            <text class="t-layer" x="80" y="482">Quality</text>
+            <text class="t-body" x="400" y="471">vitest (web) · Playwright e2e · node --test (logic)</text>
+            <text class="t-body" x="400" y="491">Gradle unit tests + lint · privacy scan</text>
+          </svg>
+        </div>
+        <figcaption>Every choice the app makes comes from the deterministic Judgment layer. Claude is called only to word the suggested paths, and a labelled sample answer stands in when it is unavailable.</figcaption>
+      </figure>
     </div>
   </section>
 

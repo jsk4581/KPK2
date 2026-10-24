@@ -52,6 +52,9 @@ async function loadBrain() {
     else missing.push(name);
   }
   if (missing.length) fail(`brain/index.js does not export: ${missing.join(', ')}`);
+  // Optional: lets get_scenario / GET /v1/scenario?id= serve the other synthetic scenarios (maya).
+  const loader = mod.loadScenario ?? mod.default?.loadScenario;
+  if (typeof loader === 'function') brain.loadScenario = loader;
   return brain;
 }
 

@@ -1,7 +1,7 @@
 // messages.js — Decision Brain sentence policy. Deterministic templates, `{}` slots only.
 // Every message is ack (one fact) -> reframe (one sentence of progress) -> smallest next step
 // (<= 10–15 min). Autonomy language, two choices, no commands, no banned words, no "because you".
-// Templates: context/ALGORITHM_DESIGN_v1.md §5.1–5.2. First lines reuse Build's constants.
+// Templates: docs/brain/ALGORITHM_DESIGN.md §5.1–5.2. First lines reuse Build's constants.
 
 import { REST_DAY_LINE, REFRAME_LINE, COMEBACK_LINE, SHORT_ACTION_MINUTES } from '../app/logic.js';
 
@@ -20,9 +20,25 @@ export const MESSAGE_KEYS = [
   'FULL',
 ];
 
-// Banned phrasing. "not a missed day" (the rest-day line) is the one allowed exception.
-export const BANNED_PATTERN = /\b(failed|failure|missed day|streak|should have|lazy|because you)\b/gi;
-export const ALLOWED_PHRASE = /not a missed day/gi;
+// Banned phrasing — the full §5.1-4 list, SDT "should/must" (§5.1-2) and the cause-assigning
+// variants of "because you" (v1.1-4). Whole words only, so "adjust", "mustard" and "broker" pass.
+// "not a missed day" (the rest-day line) is the one allowed exception.
+export const BANNED_WORDS = [
+  'fail', 'fails', 'failed', 'failing', 'failure', 'failures',
+  'missed', 'broke', 'broken', 'streak', 'streaks', 'behind', 'lazy',
+  'should', 'must', 'excuse', 'excuses', 'just',
+  'because you', 'since you', 'you seemed',
+];
+const BANNED_SOURCE = `\\b(${BANNED_WORDS.map((w) => w.replace(/ /g, '\\s+')).join('|')})\\b`;
+const ALLOWED_SOURCE = 'not a missed day';
+
+// Exported for callers that only need to read the pattern. lint() never runs these shared objects:
+// a /g RegExp remembers lastIndex across test/exec/matchAll, so a shared one makes results depend
+// on the previous call. Each lint call builds its own.
+export const BANNED_PATTERN = new RegExp(BANNED_SOURCE, 'gi');
+export const ALLOWED_PHRASE = new RegExp(ALLOWED_SOURCE, 'gi');
+const bannedPattern = () => new RegExp(BANNED_SOURCE, 'gi');
+const allowedPhrase = () => new RegExp(ALLOWED_SOURCE, 'gi');
 
 const asText = (value) => (value === null || value === undefined ? '' : String(value));
 
@@ -49,6 +65,7 @@ export function fillSlots(slots) {
     next_action: str(s.next_action, ''),
     next_min: num(s.next_min, SHORT_ACTION_MINUTES),
     moved_day: str(s.moved_day, 'Today'),
+    moves: num(s.moves, 2),
     micro_min: num(s.micro_min, SHORT_ACTION_MINUTES),
     micro_title: str(s.micro_title, 'the 10-minute version'),
     cond: num(s.cond, null),
@@ -81,7 +98,7 @@ const TEMPLATES = {
     next: 'Keep 3 steps, or shrink to 2 this week? Your call.',
   }),
   CARRIED: (s) => ({
-    ack: `${s.action} has moved for two weeks.`,
+    ack: `${s.action} has moved ${s.moves} times.`,
     reframe: 'That is information about the step, not a verdict on you.',
     next: 'One question: is it the wrong step, or the wrong size?',
   }),
@@ -129,11 +146,12 @@ const TEMPLATES = {
   }),
 };
 
-// Text -> { ok, hits[] }. Case-insensitive; the literal "not a missed day" is allowed.
+// Text -> { ok, hits[] }. Case-insensitive; the literal "not a missed day" is allowed. Stateless:
+// fresh RegExps per call, so the same input always gives the same result.
 export function lint(text) {
   const source = Array.isArray(text) ? text.map(asText).join('\n') : asText(text);
-  const scrubbed = source.replace(ALLOWED_PHRASE, '');
-  const hits = [...scrubbed.matchAll(BANNED_PATTERN)].map((m) => m[0]);
+  const scrubbed = source.replace(allowedPhrase(), ' ');
+  const hits = [...scrubbed.matchAll(bannedPattern())].map((m) => m[0]);
   return { ok: hits.length === 0, hits };
 }
 
@@ -141,8 +159,9 @@ export function lint(text) {
 // banned phrase into a message; numbers and day names cannot.
 export const TEXT_SLOTS = ['action', 'next_action', 'micro_title', 'next_day', 'moved_day', 'gate', 'evidence', 'next_gate', 'question'];
 
-// Fill slots, then replace any text slot that fails lint with its neutral default so the sentence
-// stays clean without rewriting the person's words. Returns { slots, scrubbed: [slot names] }.
+// Fill slots, then replace any text slot that fails lint (same BANNED_WORDS, same allowed phrase)
+// with its neutral default so the sentence stays clean without rewriting the person's words.
+// Returns { slots, scrubbed: [slot names] }.
 export function cleanSlots(slots) {
   const filled = fillSlots(slots);
   const neutral = fillSlots({});

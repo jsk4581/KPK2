@@ -31,7 +31,48 @@
       "knowWhy": [
         "ux-microcopy"
       ],
-      "transfers": []
+      "transfers": [],
+      "quotes": {
+        "ai-draft-editing": [
+          {
+            "field": "now",
+            "quote": "Two agencies now send me AI drafts to fix for less money."
+          }
+        ],
+        "brand-voice": [],
+        "editing": [
+          {
+            "field": "career",
+            "quote": "Editors trusted my fact-checking and I owned the style guide at my last job."
+          }
+        ],
+        "fact-checking": [
+          {
+            "field": "career",
+            "quote": "Editors trusted my fact-checking and I owned the style guide at my last job."
+          }
+        ],
+        "information-architecture": [],
+        "seo-writing": [
+          {
+            "field": "career",
+            "quote": "writer for B2B SaaS: blog posts, SEO pages and help center articles."
+          }
+        ],
+        "style-guide": [
+          {
+            "field": "career",
+            "quote": "Editors trusted my fact-checking and I owned the style guide at my last job."
+          }
+        ],
+        "user-research": [],
+        "ux-microcopy": [
+          {
+            "field": "pull",
+            "quote": "Button labels and onboarding screens interest me."
+          }
+        ]
+      }
     }
   },
   "ontology": {
@@ -1342,7 +1383,7 @@
             "moves>=2"
           ]
         },
-        "message": "Rewrite one AI draft as a portfolio before/after has moved for two weeks.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
+        "message": "Rewrite one AI draft as a portfolio before/after has moved 2 times.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
         "message_lint": []
       },
       {
@@ -1386,7 +1427,7 @@
             "moves>=2"
           ]
         },
-        "message": "Rewrite one AI draft as a portfolio before/after has moved for two weeks.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
+        "message": "Rewrite one AI draft as a portfolio before/after has moved 2 times.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
         "message_lint": []
       },
       {

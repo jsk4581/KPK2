@@ -392,7 +392,7 @@ describe('POST /v1/interview with the agent', () => {
     const first = res.body.trace[0];
     assert.equal(first.status, 'ran');
     assert.match(first.label, /tripped the lint/);
-    assert.match(first.input_summary, /should have/);
+    assert.match(first.input_summary, /should/);
     assert.match(first.output_summary, /still counted/);
     assert.equal(fakeAgent.ledger.summary().partners.lintco.turns, 1);
     assert.ok(logLines.some((line) => line.includes('AGENT_FALLBACK /v1/interview') && line.includes('tripped the lint')));

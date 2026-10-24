@@ -21,6 +21,16 @@ export const BASE_CAPACITY_MIN = 30;
 export const MICRO_MINUTES = 10;
 // g(cond): capacity never grows above the 30-minute base, even at 5 (no over-promising).
 export const CAPACITY_FACTOR = { 1: 0.2, 2: 0.4, 3: 0.7, 4: 1, 5: 1 };
+// h(cond_trend) (§4.3): a falling condition (last 3 days vs the 3 before, <= -1) shrinks
+// capacity by 0.8. A null trend (fewer than two 3-day windows with a report) applies nothing.
+export const TREND_FACTOR = 0.8;
+export const TREND_DOWN_THRESHOLD = -1;
+// Capacity rule names cited in `capacityReasons` (same style as RISK_RULES).
+export const CAPACITY_RULES = {
+  cond_trend_down: 'condition trend (mean of last 3 days - mean of the 3 before) <= -1 -> capacity x 0.8',
+};
+// Consistency window (§4.3 C_7): logged days over the last 7 calendar rows / 7.
+export const CONSISTENCY_WINDOW_DAYS = 7;
 // Risk score table (§4.3). Rule names are what `risk.reasons` and explain() cite.
 export const RISK_RULES = {
   gap_days: 'days since the last logged day (lifelog or check-in): >= 2 -> +2, >= 4 -> +3',
@@ -35,6 +45,7 @@ const MAX_WINDOW_DAYS = 400;
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 const asText = (value) => (value === null || value === undefined ? '' : String(value));
+const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
 const round3 = (n) => Math.round((n + Number.EPSILON) * 1000) / 1000;
 const clamp01 = (n) => Math.min(1, Math.max(0, n));
 
@@ -88,6 +99,13 @@ export function capacityMinutes(condition) {
   return Math.round(BASE_CAPACITY_MIN * CAPACITY_FACTOR[c]);
 }
 
+// h(cond_trend): TREND_FACTOR when the trend is a number <= TREND_DOWN_THRESHOLD, else 1.
+export function trendFactor(condTrend) {
+  const t = Number(condTrend);
+  if (condTrend === null || condTrend === undefined || !Number.isFinite(t)) return 1;
+  return t <= TREND_DOWN_THRESHOLD ? TREND_FACTOR : 1;
+}
+
 export function riskLevel(points) {
   if (points <= 1) return 'green';
   if (points <= 3) return 'amber';
@@ -139,9 +157,16 @@ function normalizeInput(a, b, c, d) {
 
 // ---------- estimateState ----------
 
-// -> { energy, energySource, momentum, selfEfficacy, capacityMin, dataGapDays, gapDays,
+// -> { energy, energySource, momentum, selfEfficacy,
+//      capacityMin, capacityBase, capacityFactor, capacityReasons[], capacityRules,
+//      showedUp, consistency7, dataGapDays, gapDays,
 //      consecRest, condMean3, condTrend, firstWeek, today, lastLogId, lastLogDate,
 //      risk: { points, level, reasons[], checks[] }, features[] }
+// capacityMin = round(capacityBase x capacityFactor): base is 30 x g(energy), factor is
+// h(condTrend) = 0.8 when energy is a fresh self-report and the trend is <= -1
+// (capacityReasons then lists 'cond_trend_down'); energy null keeps the base 30.
+// showedUp = logged days in the window (cumulative, never reset); consistency7 = logged days
+// in the last 7 rows / 7, 2 decimals.
 // features[] is the per-day table (one row per calendar day from the first dated event
 // to today) so explain() can cite the exact day a rule fired on.
 export function estimateState(a, b, c, d) {
@@ -270,6 +295,18 @@ export function estimateState(a, b, c, d) {
   const arcDay = arcStart && todayDate ? daysBetween(arcStart, todayDate) : null;
   const firstWeek = arcDay === null ? null : arcDay >= 0 && arcDay < 7;
 
+  // ----- showed up (cumulative logged days, never resets) and C_7 consistency (§4.2–4.3) -----
+  const showedUp = loggedDays.length;
+  const consistency7 = round2(features.slice(-CONSISTENCY_WINDOW_DAYS).filter((f) => f.logged).length / CONSISTENCY_WINDOW_DAYS);
+
+  // ----- capacity: Cap = 30 x g(energy) x h(condTrend) (§4.3); reasons name the rule that fired -----
+  // h only modifies a fresh self-report: with energy null the base 30 is kept as-is, so a
+  // trend built from stale reports is never carried forward into today's capacity.
+  const capacityBase = capacityMinutes(energy);
+  const capacityFactor = energy === null ? 1 : trendFactor(condTrend);
+  const capacityMin = Math.round(capacityBase * capacityFactor);
+  const capacityReasons = capacityFactor !== 1 ? ['cond_trend_down'] : [];
+
   // ----- risk table: every rule reports hit / clear / skipped (a skipped check is never "clear") -----
   const checks = [
     { rule: 'gap_days', value: gapDays, points: gapDays === null ? 0 : gapDays >= 4 ? 3 : gapDays >= 2 ? 2 : 0, skipped: gapDays === null },
@@ -287,7 +324,13 @@ export function estimateState(a, b, c, d) {
     energySource,
     momentum: round3(momentum),
     selfEfficacy: round3(selfEfficacy),
-    capacityMin: capacityMinutes(energy),
+    capacityMin,
+    capacityBase,
+    capacityFactor,
+    capacityReasons,
+    capacityRules: { ...CAPACITY_RULES },
+    showedUp,
+    consistency7,
     dataGapDays,
     gapDays,
     consecRest,

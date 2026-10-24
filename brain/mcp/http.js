@@ -4,9 +4,10 @@
 //   POST   /mcp              JSON-RPC → fresh McpServer + stateless transport per request
 //   GET    /mcp              405 (stateless server has no standalone SSE stream to offer)
 //   DELETE /mcp              handled by the transport (nothing to close; answers 200)
+//   GET    / | /explorer | /public/*   Brain Explorer page + static files (static.js; no token)
 //   GET    /v1/health        { ok, name, version, tools, uptimeSec }   (never needs a token)
-//   POST   /v1/think | /v1/rank-roles | /v1/plan-week | /v1/check-in | /v1/analyze-state | /v1/explain
-//   GET    /v1/scenario      scenario JSON
+//   POST   /v1/think | /v1/rank-roles | /v1/plan-week | /v1/check-in | /v1/analyze-state | /v1/explain | /v1/job-readiness
+//   GET    /v1/scenario[?id=dana|maya]   scenario JSON
 //   POST   /v1/agent/chat    LLM agent turn (agent-routes.js; 503 agent_disabled without ctx.agent)
 //   GET    /v1/usage         agent token/cost ledger + pricing
 //
@@ -30,9 +31,10 @@
 import { createServer } from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { SERVER_NAME, SERVER_VERSION, TOOL_NAMES, invokeBrain, validateInput } from './server.js';
+import { SERVER_NAME, SERVER_VERSION, TOOL_NAMES, SCENARIO_IDS, invokeBrain, validateInput, scenarioOf } from './server.js';
 import { handleCompat, isCompatRoute } from './compat.js';
 import { createAgentRoutes, isAgentRoute, partnerKeyOf } from './agent-routes.js';
+import { PUBLIC_DIR, isStaticRoute, serveStatic } from './static.js';
 
 export const BODY_LIMIT_BYTES = 64 * 1024;
 export const RATE_LIMIT = { limit: 120, windowMs: 60_000 };
@@ -56,7 +58,8 @@ export const REST_ROUTES = {
   '/v1/plan-week': 'plan_week',
   '/v1/check-in': 'check_in',
   '/v1/analyze-state': 'analyze_state',
-  '/v1/explain': 'explain'
+  '/v1/explain': 'explain',
+  '/v1/job-readiness': 'job_readiness'
 };
 
 const noop = () => {};
@@ -301,8 +304,11 @@ export function startHttp({
 
   async function route(req, res) {
     let path;
+    let query;
     try {
-      path = new URL(req.url ?? '/', 'http://localhost').pathname;
+      const url = new URL(req.url ?? '/', 'http://localhost');
+      path = url.pathname;
+      query = url.searchParams;
     } catch {
       sendError(res, 400, 'bad_request', 'malformed request target');
       return;
@@ -322,13 +328,9 @@ export function startHttp({
       return;
     }
 
-    if (path === '/' && method === 'GET') {
-      sendJson(res, 200, {
-        name: SERVER_NAME,
-        version: SERVER_VERSION,
-        mcp: '/mcp',
-        rest: ['/v1/health', '/v1/scenario', ...Object.keys(REST_ROUTES)]
-      });
+    // Brain Explorer page and its static files (brain/mcp/public): no token, GET/HEAD only.
+    if (isStaticRoute(path)) {
+      await serveStatic(req, res, { root: PUBLIC_DIR });
       return;
     }
 
@@ -415,11 +417,19 @@ export function startHttp({
         sendError(res, 405, 'method_not_allowed', 'use GET', { Allow: 'GET, OPTIONS' });
         return;
       }
-      if (brain.scenario === undefined) {
-        sendError(res, 404, 'scenario_missing', 'scenario is not loaded');
+      const id = query.get('id');
+      if (id !== null && id !== '' && !SCENARIO_IDS.includes(id)) {
+        sendError(res, 400, 'invalid_input', `id: expected ${SCENARIO_IDS.join(' | ')}`);
         return;
       }
-      sendJson(res, 200, brain.scenario);
+      let scenario;
+      try {
+        scenario = scenarioOf(brain, id);
+      } catch (err) {
+        sendError(res, 404, 'scenario_missing', err instanceof Error ? err.message : String(err));
+        return;
+      }
+      sendJson(res, 200, scenario);
       return;
     }
 

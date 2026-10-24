@@ -1,4 +1,5 @@
-// goal.js — goal clarification (TheGoal): goal state, 12-week gates, the one next question, gate rules.
+// goal.js — goal clarification (TheGoal): goal state, 12-week gates, the one next question, gate rules,
+// goal version history.
 // Pure and deterministic: no DOM, no network, no clock. Dates are ISO arithmetic from a startDate the
 // caller passes in. Nothing passes a gate automatically: evidence AND the user's confirm flag are both
 // required (ALGORITHM_DESIGN_v1 §3.1, §3.3, §6.4). A check that could not run is reported as not passed.
@@ -70,13 +71,63 @@ export function addDays(isoDate, days) {
   return ordinalToIso(ordinal + Math.round(Number(days)));
 }
 
-// Goal state (§3.1): no path -> ambiguous; path chosen -> provisional; any gate passed -> validated
-// (validated-for-now: it is re-checked at every later gate). Check-ins alone do not change the state.
+// A gate is due when the caller flagged it (due === true) or its date is at or before `today`.
+// Without a today (or dates) nothing is known to be due, so the re-check below cannot trigger.
+function gateDue(gate, todayOrdinal) {
+  if (gate.due === true) return true;
+  const gateOrdinal = dateOrdinal(gate.date);
+  return todayOrdinal !== null && gateOrdinal !== null && gateOrdinal <= todayOrdinal;
+}
+
+// Goal state (§3.1): no path -> ambiguous; path chosen -> provisional; a gate passed -> validated.
+// "Validated" is validated-for-now: it is re-checked at every later gate, so when the most recent
+// due gate (array order = dependency order) is not passed while an earlier one was, the state goes
+// back to provisional. Input: { chosenPathId, gates, today? }. Check-ins alone do not change the state.
 export function goalState(input) {
-  const { chosenPathId, gates } = asObject(input);
+  const { chosenPathId, gates, today } = asObject(input);
   if (!asText(chosenPathId)) return 'ambiguous';
-  const passed = asArray(gates).some((gate) => gate && typeof gate === 'object' && gate.passed === true);
-  return passed ? 'validated' : 'provisional';
+  const list = asArray(gates).filter((gate) => gate && typeof gate === 'object');
+  if (!list.some((gate) => gate.passed === true)) return 'provisional';
+  const todayOrdinal = dateOrdinal(today);
+  let latestDue = -1;
+  list.forEach((gate, index) => {
+    if (gateDue(gate, todayOrdinal)) latestDue = index;
+  });
+  if (latestDue < 0 || list[latestDue].passed === true) return 'validated';
+  const earlierPassed = list.slice(0, latestDue).some((gate) => gate.passed === true);
+  return earlierPassed ? 'provisional' : 'validated';
+}
+
+// Goal version history (§2.1 goal_version, §3.3, §6.1 step 4): a pure append.
+//   prev  = { version, history[], not_now[] } from the last call (or an array of entries, or nothing)
+//   event = { at, from, to, reason, gateId?, decision?, not_now? }   (at is the caller's date; no clock)
+// Returns a new { version, history, not_now }; prev and event are never mutated. version = history
+// length. not_now is passed through and extended with the event's not_now items (deduplicated, ordered).
+// An empty event only copies prev. A gate that is not passed is recorded as a decision + reason, never
+// as a failure.
+export function goalHistory(prev, event) {
+  const base = Array.isArray(prev) ? { history: prev } : asObject(prev);
+  const history = asArray(base.history)
+    .filter((entry) => entry && typeof entry === 'object')
+    .map((entry) => ({ ...entry }));
+  const notNow = [];
+  for (const item of [...asArray(base.not_now ?? base.notNow), ...asArray(asObject(event).not_now ?? asObject(event).notNow)]) {
+    const text = asText(item).trim();
+    if (text !== '' && !notNow.includes(text)) notNow.push(text);
+  }
+  const ev = asObject(event);
+  if (Object.keys(ev).length > 0) {
+    const entry = {
+      at: asText(ev.at) || null,
+      from: asText(ev.from) || null,
+      to: asText(ev.to) || null,
+      reason: asText(ev.reason) || null,
+    };
+    if (asText(ev.gateId)) entry.gateId = asText(ev.gateId);
+    if (asText(ev.decision)) entry.decision = asText(ev.decision);
+    history.push(entry);
+  }
+  return { version: history.length, history, not_now: notNow };
 }
 
 // Exactly four gates for a chosen path (a fallback path draft or a rankRoles entry).
@@ -146,25 +197,49 @@ export function nextQuestion(input) {
   return { key, ...QUESTION_TABLE[key] };
 }
 
-function doneCount(gate, { checkins, week }) {
-  const records = asArray(checkins).filter((c) => c && c.kind === 'done');
-  if (records.length > 0 || asArray(checkins).length > 0) {
-    // A check-in may carry the arc week it happened in; without it the MVP's single week is assumed.
-    return records.filter((c) => c.week === undefined || c.week === null || Number(c.week) <= gate.week).length;
+// Arc week of an ISO date: week 1 = arcStart .. arcStart + 6 days (same convention as state.js
+// firstWeek), so a gate's date (arcStart + week * 7) is the review day that opens the next week.
+// null when either date is not YYYY-MM-DD.
+function arcWeekOf(date, arcStart) {
+  const day = dateOrdinal(date);
+  const start = dateOrdinal(arcStart);
+  if (day === null || start === null) return null;
+  return Math.floor((day - start) / 7) + 1;
+}
+
+// The arc week a check-in belongs to: its own `week` when given, else derived from its `date` and
+// arcStart; null when neither is known (the MVP's single week is then assumed and it counts).
+function checkinWeek(checkin, arcStart) {
+  if (checkin.week !== undefined && checkin.week !== null) return Number(checkin.week);
+  return arcWeekOf(checkin.date, arcStart);
+}
+
+function doneCount(gate, { checkins, week, arcStart }) {
+  const all = asArray(checkins);
+  if (all.length > 0) {
+    return all
+      .filter((c) => c && c.kind === 'done')
+      .filter((c) => {
+        const arcWeek = checkinWeek(c, arcStart);
+        return arcWeek === null || arcWeek <= gate.week;
+      }).length;
   }
   return asArray(week && week.actions).filter((a) => a && a.status === 'done').length;
 }
 
 // Gate evaluation with reasons: { passed, gateId, done, required, confirmed, reasons[] }.
 // Rule: done check-ins up to the gate's week >= minDone AND confirmed === true (the user's own
-// "yes, this is working"). Missing inputs are reasons, never a pass.
+// "yes, this is working"). A check-in without `week` but with `date` is placed in its arc week from
+// arcStart = gate.date - week * 7 days (context.arcStart when the gate has no date); check-ins after
+// the gate week do not count. Missing inputs are reasons, never a pass.
 export function evaluateGate(gate, context) {
   const template = asObject(gate);
   const ctx = asObject(context);
   const base = GATE_TEMPLATES.find((g) => g.id === template.id) || GATE_TEMPLATES[0];
   const required = template.minDone !== undefined && Number.isFinite(Number(template.minDone)) ? Number(template.minDone) : base.minDone;
   const week = template.week !== undefined && Number.isFinite(Number(template.week)) ? Number(template.week) : base.week;
-  const done = doneCount({ week }, ctx);
+  const arcStart = addDays(template.date, -week * 7) ?? (dateOrdinal(ctx.arcStart) !== null ? ctx.arcStart : null);
+  const done = doneCount({ week }, { ...ctx, arcStart });
   const confirmed = ctx.confirmed === true;
   const reasons = [];
   if (done < required) reasons.push('done_below_minimum');

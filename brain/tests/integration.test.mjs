@@ -57,7 +57,7 @@ after(async () => {
   }
 });
 
-test('GET /v1/health answers with the 7 tools', async () => {
+test('GET /v1/health answers with the 8 tools', async () => {
   const res = await fetch(`${base}/v1/health`);
   assert.equal(res.status, 200);
   const body = await res.json();

@@ -3,6 +3,8 @@
 // check-in (`reason` / `blocker_reason`) or a lifelog item's `blocker_reason`. With no
 // reasons the answer is 'unknown' — nothing is guessed from condition or activity.
 // Rules: context/ALGORITHM_DESIGN_v1.md §3.4 (recency-weighted argmax, one constraint at a time).
+// Same `today` rule as state.js: events dated after `today` do not exist yet, so replaying an
+// earlier day over the full history gives the same answer as the history sliced at that day.
 
 import { isIsoDate, daysBetween, resolveCheckinDate, checkinId } from './state.js';
 
@@ -68,20 +70,24 @@ export function rootConstraint(history) {
 
   const signals = [];
   let unknownCount = 0;
+  // Dated after `today` -> not yet happened -> ignored. Undated (unresolvable) events are kept.
+  const afterToday = (date) => Boolean(date) && Boolean(todayDate) && daysBetween(date, todayDate) < 0;
 
   checkins.forEach((checkin, index) => {
     if (!checkin || checkin.kind !== 'not_today') return;
+    const date = resolveCheckinDate(checkin, todayDate);
+    if (afterToday(date)) return;
     const reason = reasonOf(checkin);
     if (reason === null || reason === undefined || reason === '') return;
     const constraint = classifyBlocker(reason);
     if (constraint === 'unknown') { unknownCount += 1; return; }
-    const date = resolveCheckinDate(checkin, todayDate);
     // Without a date the position in the check-in list stands in for age (newest last).
     const ageDays = date && todayDate ? daysBetween(date, todayDate) : checkins.length - 1 - index;
     signals.push({ id: checkinId(checkin), type: 'checkin', reason: asText(reason), constraint, date, ageDays, weight: recencyWeight(ageDays) });
   });
 
   for (const item of items) {
+    if (isIsoDate(item.date) && afterToday(item.date)) continue;
     const reason = item.blocker_reason;
     if (reason === null || reason === undefined || reason === '') continue;
     const constraint = classifyBlocker(reason);

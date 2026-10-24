@@ -1,15 +1,28 @@
 // policy.js — Decision Brain intervention policy (JITAI + EAST): "today, which one action,
 // how big, and framed how". Pure and deterministic. Exactly one action per day.
-// Rules: context/ALGORITHM_DESIGN_v1.md §4.4–4.6. Reuses Build's helpers from app/logic.js
-// (checkableActions, sizeForCondition, applyCheckin) instead of re-implementing them.
+// Rules: context/ALGORITHM_DESIGN_v1.md §4.4–4.6, §6.5 (crisis pause). Reuses Build's helpers from
+// app/logic.js (checkableActions, sizeForCondition, applyCheckin) instead of re-implementing them.
 
 import { WEEK_DAYS, NEXT_WEEK, SHORT_ACTION_MINUTES, checkableActions, sizeForCondition, applyCheckin } from '../app/logic.js';
 import { isIsoDate, weekdayOf, validCondition, capacityMinutes } from './state.js';
 import { lint } from './messages.js';
 
-export const INTERVENTION_KINDS = ['full', 'shrink', 'rest', 'reconnect', 'comeback', 'gate', 'none'];
+export const INTERVENTION_KINDS = ['full', 'shrink', 'rest', 'reconnect', 'comeback', 'gate', 'none', 'pause'];
 export const RECONNECT_GAP_DAYS = 4;
 export const CARRIED_MOVES = 2;
+
+// §6.5: crisis language stops coaching before any other rule. The escalation comes from
+// monitor.detectEscalation / weeklyReview as { reason, message }; only `reason` is read here.
+export const CRISIS_REASON = 'crisis_language';
+export const CRISIS_MESSAGE_KEY = 'CRISIS_SUPPORT';
+// Fixed support text: supportive, non-diagnostic, no judgement, never a word of what the person
+// typed. Rendered as-is by the caller (messages.js has no template for this key on purpose).
+export const CRISIS_TEXT = [
+  'Thank you for telling us. You matter more than any plan, and this is more than a coaching app can hold.',
+  'If you are in the US, you can call or text 988 (Suicide & Crisis Lifeline) at any hour. If you are in immediate danger, please call your local emergency services.',
+  'Outside the US, your local emergency number or a crisis line can connect you with a person right now.',
+  'Coaching is paused for now — nothing is lost, and the plan will be here whenever you want it back.',
+].join('\n');
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 const asText = (value) => (value === null || value === undefined ? '' : String(value));
@@ -63,14 +76,41 @@ export function moveTarget(week, actionId, todayWeekday) {
 }
 
 function normalizeInput(a, b, c, d, e) {
-  // decideIntervention({state, constraint, week, today, checkins}) or the positional form
-  // decideIntervention(state, constraint, week, today, checkins) from BRAIN_ARCH_v2 §1.
-  if (a && typeof a === 'object' && b === undefined && ('state' in a || 'week' in a)) return a;
+  // decideIntervention({state, constraint, week, today, checkins, gate?, escalate?}) or the
+  // positional form decideIntervention(state, constraint, week, today, checkins) from BRAIN_ARCH_v2 §1
+  // (gate and escalate are object-form only).
+  if (a && typeof a === 'object' && b === undefined && ('state' in a || 'week' in a || 'escalate' in a)) return a;
   return { state: a, constraint: b, week: c, today: d, checkins: e };
 }
 
+// True only for monitor's crisis escalation { reason: 'crisis_language', ... }.
+function isCrisisEscalation(escalate) {
+  return Boolean(escalate) && typeof escalate === 'object' && asText(escalate.reason) === CRISIS_REASON;
+}
+
+// §6.5: coaching pauses — no action, no choices, one fixed support text. Nothing from the input
+// (the escalation's message, the person's words) is copied into the decision.
+function pauseDecision(todayWeekday, constraint) {
+  return {
+    kind: 'pause',
+    actionId: null,
+    minutes: 0,
+    choices: [],
+    messageKey: CRISIS_MESSAGE_KEY,
+    reasons: [CRISIS_REASON],
+    variant: null,
+    lead: 'support',
+    day: todayWeekday,
+    nextDay: null,
+    constraint,
+    action: null,
+    slots: {},
+    text: CRISIS_TEXT,
+  };
+}
+
 // -> { kind, actionId, minutes, choices[2], messageKey, reasons[], variant, lead, day,
-//      nextDay, constraint, action, slots }
+//      nextDay, constraint, action, slots }  (kind 'pause' adds `text` and has choices [])
 export function decideIntervention(a, b, c, d, e) {
   const input = normalizeInput(a, b, c, d, e);
   const state = input.state && typeof input.state === 'object' ? input.state : {};
@@ -81,6 +121,9 @@ export function decideIntervention(a, b, c, d, e) {
   const capacityMin = Number.isFinite(Number(state.capacityMin)) ? Number(state.capacityMin) : capacityMinutes(energy);
   const dataGapDays = Number.isFinite(Number(state.dataGapDays)) && state.dataGapDays !== null ? Number(state.dataGapDays) : null;
   const todayWeekday = resolveWeekday(input.today, week);
+
+  // Crisis language wins over every other rule, including a passed gate and a week with no action.
+  if (isCrisisEscalation(input.escalate)) return pauseDecision(todayWeekday, constraint);
 
   const actions = asArray(week.actions);
   const done = actions.filter((x) => x.status === 'done').length;

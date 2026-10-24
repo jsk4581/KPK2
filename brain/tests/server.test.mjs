@@ -70,7 +70,7 @@ test('GET /v1/health → 200 with tool list and CORS header', async () => {
   assert.equal(body.ok, true);
   assert.equal(body.name, 'dream-achieve-moments-brain');
   assert.match(body.version, /^\d+\.\d+\.\d+/);
-  assert.deepEqual(body.tools, ['think', 'rank_roles', 'plan_week', 'check_in', 'analyze_state', 'explain', 'get_scenario']);
+  assert.deepEqual(body.tools, ['think', 'rank_roles', 'plan_week', 'check_in', 'analyze_state', 'explain', 'job_readiness', 'get_scenario']);
   assert.equal(typeof body.uptimeSec, 'number');
 });
 
@@ -209,14 +209,14 @@ test('GET /mcp → 405 (stateless, no SSE stream)', async () => {
   assert.equal(res.status, 405);
 });
 
-test('tools/list via SDK Client + StreamableHTTPClientTransport → 7 tools', async () => {
+test('tools/list via SDK Client + StreamableHTTPClientTransport → 8 tools', async () => {
   const client = new Client({ name: 'server-test', version: '0.0.0' });
   const transport = new StreamableHTTPClientTransport(new URL(`${base}/mcp`));
   await client.connect(transport);
   try {
     const { tools } = await client.listTools();
     assert.deepEqual(tools.map((tool) => tool.name), TOOL_NAMES);
-    assert.equal(tools.length, 7);
+    assert.equal(tools.length, 8);
     for (const tool of tools) assert.equal(tool.inputSchema.type, 'object');
 
     const think = await client.callTool({ name: 'think', arguments: { today: 'Thu', condition: 2 } });

@@ -3,7 +3,8 @@
 // inputs). Uses Build's data shapes (docs/logic-contract.md): week {actions:[{id,title,minutes,day,
 // status,moves,short}]}, check-ins [{actionId, kind, day, date?}], lifelog items [{id,date,...}].
 // Rules follow ALGORITHM_DESIGN_v1 §4.5 (rest-day), §6.1 (weekly review), §6.2 (drift, plateau),
-// §6.5 (escalation). Moved steps are moved, never deleted; nothing here uses the banned words.
+// §6.5 (escalation: crisis language, economic pressure, low condition, red risk).
+// Moved steps are moved, never deleted; nothing here uses the banned words.
 
 import { WEEK_DAYS, NEXT_WEEK, MAX_ACTION_MINUTES, SHORT_ACTION_MINUTES } from '../app/logic.js';
 
@@ -31,11 +32,28 @@ export const CRISIS_PHRASES = [
   'end it all',
 ];
 
+// Fixed economic-pressure list (§6.5-4: rent, eviction, unpaid bills). Matched on word boundaries
+// (not substrings) so "current" or "parent" never trip "rent". Never stored or echoed either.
+export const ECONOMIC_PHRASES = [
+  'rent',
+  'eviction',
+  'evicted',
+  "can't pay",
+  'cannot pay',
+  'overdue bills',
+  'no money for',
+];
+
 export const ESCALATION_MESSAGES = {
   crisis_language:
     'This is more than a coaching app can hold, and we are pausing the plan for now. ' +
     'If you are in the US, you can call or text 988 (Suicide & Crisis Lifeline) at any hour. ' +
     'Elsewhere, please reach your local emergency number or a crisis line. You deserve a person right now.',
+  economic_pressure:
+    'Money pressure comes before any plan, and it says nothing about you or your effort. ' +
+    'If you are in the US, unemployment insurance is claimed through your state workforce agency, and an American Job Center ' +
+    '(free, found via CareerOneStop) can help with benefits, training, and paid work right away. ' +
+    'The week stays at two steps at most, with income-related steps first.',
   low_condition_10_of_14:
     'Energy has been at 2 or lower on most days for two weeks. That may be beyond what a coaching app can help with — ' +
     'would you like to talk with a doctor or a counselor? The plan is reduced to one small step for now.',
@@ -155,9 +173,20 @@ export function compareWeek(input) {
   return { onTrack: drift.length === 0 && !plateau && stale.length === 0, done, moved, planned, stale, drift, plateau };
 }
 
+// Free text (string or array) as lower-cased strings; curly apostrophes become straight ones.
+function freeTexts(freeText) {
+  return (Array.isArray(freeText) ? freeText : [freeText]).map((t) => asText(t).toLowerCase().replace(/[‘’]/g, "'"));
+}
+
 function containsCrisisLanguage(freeText) {
-  const texts = (Array.isArray(freeText) ? freeText : [freeText]).map((t) => asText(t).toLowerCase());
-  return texts.some((text) => text !== '' && CRISIS_PHRASES.some((phrase) => text.includes(phrase)));
+  return freeTexts(freeText).some((text) => text !== '' && CRISIS_PHRASES.some((phrase) => text.includes(phrase)));
+}
+
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const ECONOMIC_PATTERNS = ECONOMIC_PHRASES.map((phrase) => new RegExp(`(^|[^a-z0-9])${escapeRegExp(phrase)}([^a-z0-9]|$)`));
+
+function containsEconomicLanguage(freeText) {
+  return freeTexts(freeText).some((text) => text !== '' && ECONOMIC_PATTERNS.some((pattern) => pattern.test(text)));
 }
 
 // Mean of the known condition values (1..5) in the window; null when none are known.
@@ -182,10 +211,12 @@ function redTwoWeeks(state) {
   return current === 'red' && previous === 'red';
 }
 
-// Escalation (§6.5): one signal at most, in priority order. Crisis language stops coaching first.
+// Escalation (§6.5): one signal at most, in priority order. Crisis language stops coaching first;
+// economic pressure (rent, eviction, unpaid bills) comes right after it and points to resources.
 export function detectEscalation(input) {
   const { state, freeText } = asObject(input);
   if (containsCrisisLanguage(freeText)) return { reason: 'crisis_language', message: ESCALATION_MESSAGES.crisis_language };
+  if (containsEconomicLanguage(freeText)) return { reason: 'economic_pressure', message: ESCALATION_MESSAGES.economic_pressure };
   const conditions = asArray(state && state.conditions);
   if (conditions.length > 0 && lowConditionDays(conditions) >= LOW_CONDITION_DAYS) {
     return { reason: 'low_condition_10_of_14', message: ESCALATION_MESSAGES.low_condition_10_of_14 };
@@ -268,19 +299,27 @@ export function weeklyReview(input) {
   const compare = compareWeek({ week, checkins, lifelog, today });
 
   let resize = resizePlan({ week, done: compare.done, planned: compare.planned, condition: reviewCondition(state) });
+  const capAtTwo = (why) => ({ direction: 'keep', pct: 0, count: 2, minutes: typicalMinutes(actions), micro: false, why });
 
   // §2.3 B: the income-pressure prior keeps the week at two steps at most (no growth either).
   const archetype = asText(person && person.traits && person.traits.archetype);
-  if (archetype === 'income-pressure' && resize.count > 2) {
-    resize = { direction: 'keep', pct: 0, count: 2, minutes: typicalMinutes(actions), micro: false, why: 'capped at 2 steps, same size (income-pressure prior)' };
-  }
-
-  const repeated = compare.drift.find((d) => d.type === 'repeated_move');
-  const replanQuestion = repeated ? REPLAN_QUESTION : null;
+  if (archetype === 'income-pressure' && resize.count > 2) resize = capAtTwo('capped at 2 steps, same size (income-pressure prior)');
 
   const escalate = detectEscalation({ state, freeText });
-  if (escalate) {
-    // §6.5: every escalation shrinks the plan to one micro step; coaching pauses on crisis language.
+
+  // One question at a time (§6.1): a step moved twice asks it; otherwise the first shrink to one
+  // micro step (0 done) asks the same question instead of blame. An escalation message carries its
+  // own sentence, so the shrink-driven question stays silent then.
+  const repeated = compare.drift.find((d) => d.type === 'repeated_move');
+  const firstShrink = resize.direction === 'down' && resize.count === 1 && !escalate;
+  const replanQuestion = repeated || firstShrink ? REPLAN_QUESTION : null;
+
+  if (escalate && escalate.reason === 'economic_pressure') {
+    // §6.5-4: resources plus income first. The week keeps up to two steps (no growth) rather than
+    // shrinking to one: money pressure is a reason to keep moving toward income, not to pause.
+    if (resize.direction === 'up' || resize.count > 2) resize = capAtTwo('capped at 2 steps, same size (economic pressure: income first)');
+  } else if (escalate) {
+    // §6.5: the other escalations shrink the plan to one micro step; coaching pauses on crisis language.
     resize = { direction: 'down', pct: 0, count: 1, minutes: SHORT_ACTION_MINUTES, micro: true, why: `escalation: ${escalate.reason}` };
   }
 

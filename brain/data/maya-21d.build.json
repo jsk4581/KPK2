@@ -1,0 +1,1204 @@
+{
+  "_label": "synthetic",
+  "_note": "Sample persona — synthetic. [SIMULATION] 21-day lifelog for the Decision Brain demo: the dream path (home bakery). Maya R. is fictional; every client, neighbor, link and message is invented. Build shape: lifelog items are LifeEvents (ts, source, kind, value, consentScope, label) per docs/brain/MCP_DESIGN.md §5; `kind` keeps the original brain source name.",
+  "id": "maya-copywriter-bakery",
+  "arc_start": "2026-09-28",
+  "today": "2026-10-18",
+  "timezone": "America/Chicago",
+  "persona": {
+    "name": "Maya R.",
+    "role": "Freelance copywriter",
+    "years": 8,
+    "location": "Austin, TX",
+    "headline": "AI can’t bake my bread.",
+    "dream": "Bring back my parents’ bakery, starting from my home kitchen.",
+    "photo": "persona/maya.svg"
+  },
+  "fields": {
+    "career": "Eight years as a freelance copywriter for B2B SaaS: blog posts, email sequences, case studies. Clients kept me because I could run a customer interview and explain the product better than their PM. I was good at it. It was never my passion.",
+    "now": "My biggest client now drafts with AI and only wants light edits: USD 800 a month instead of USD 3,300. I need at least USD 4,000 a month, I have 10 to 12 free hours a week and one child. I cannot lose more money, and I know nothing about running a food business.",
+    "pull": "My parents ran a bakery for 25 years; it closed in 2019 and I still have my mother’s recipe notebook. “Bakery?” shows up in my notes four times since 2022. What I miss is the Saturday smell and the neighbors who came for bread and stayed to talk."
+  },
+  "skills": [
+    {
+      "id": "sourdough-baking",
+      "name": "Bread and pastry baking",
+      "keywords": [
+        "sourdough",
+        "test bake",
+        "bake day",
+        "recipe notebook",
+        "mini loaves"
+      ]
+    },
+    {
+      "id": "recipe-costing",
+      "name": "Recipe costing and pricing",
+      "keywords": [
+        "recipe cost",
+        "cost per loaf",
+        "ingredient cost",
+        "saturday box",
+        "margin"
+      ]
+    },
+    {
+      "id": "local-marketing",
+      "name": "Neighborhood marketing",
+      "keywords": [
+        "tasting day",
+        "pre-order",
+        "neighbors",
+        "local marketing",
+        "qr code"
+      ]
+    },
+    {
+      "id": "food-safety-cert",
+      "name": "Food safety and cottage food rules",
+      "keywords": [
+        "food handler",
+        "cottage food",
+        "label text",
+        "food safety"
+      ]
+    },
+    {
+      "id": "storytelling",
+      "name": "Origin stories",
+      "keywords": [
+        "bakery story",
+        "origin story",
+        "brand story",
+        "story page"
+      ]
+    },
+    {
+      "id": "community-building",
+      "name": "Regulars and community",
+      "keywords": [
+        "regulars",
+        "community",
+        "neighborhood",
+        "people who stay to talk"
+      ]
+    },
+    {
+      "id": "ops-scheduling",
+      "name": "Baking and delivery operations",
+      "keywords": [
+        "baking schedule",
+        "shopping list",
+        "delivery route",
+        "kitchen slot"
+      ]
+    },
+    {
+      "id": "customer-interview",
+      "name": "Customer interviews",
+      "keywords": [
+        "customer interview",
+        "discovery call",
+        "interview notes"
+      ]
+    },
+    {
+      "id": "product-explainer",
+      "name": "Explaining complex products",
+      "keywords": [
+        "case study",
+        "explain the product",
+        "product explainer"
+      ]
+    },
+    {
+      "id": "email-copy",
+      "name": "Email sequences",
+      "keywords": [
+        "email sequence",
+        "email copy",
+        "newsletter"
+      ]
+    },
+    {
+      "id": "content-strategy",
+      "name": "Content strategy",
+      "keywords": [
+        "content plan",
+        "editorial calendar",
+        "content strategy"
+      ]
+    },
+    {
+      "id": "pricing-offer",
+      "name": "Packaging an offer",
+      "keywords": [
+        "package price",
+        "flat fee",
+        "offer page",
+        "retainer"
+      ]
+    },
+    {
+      "id": "voice-guide",
+      "name": "Brand voice guides",
+      "keywords": [
+        "brand voice",
+        "voice guide",
+        "tone of voice"
+      ]
+    },
+    {
+      "id": "ai-editing",
+      "name": "Editing AI drafts",
+      "keywords": [
+        "ai draft",
+        "light editing",
+        "light edits",
+        "polish"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "home-bakery",
+      "title": "Home Bakery Micro-business (Saturday box)",
+      "dream": true,
+      "requires": [
+        "sourdough-baking",
+        "recipe-costing",
+        "local-marketing",
+        "food-safety-cert",
+        "storytelling",
+        "community-building",
+        "ops-scheduling"
+      ]
+    },
+    {
+      "id": "content-strategist",
+      "title": "B2B SaaS Content Strategist",
+      "requires": [
+        "content-strategy",
+        "customer-interview",
+        "product-explainer",
+        "email-copy",
+        "pricing-offer"
+      ]
+    },
+    {
+      "id": "brand-voice-editor",
+      "title": "AI Draft Editor & Brand Voice Lead",
+      "requires": [
+        "voice-guide",
+        "ai-editing",
+        "email-copy",
+        "storytelling",
+        "pricing-offer"
+      ]
+    }
+  ],
+  "fallback": {
+    "paths": [
+      {
+        "role_id": "home-bakery",
+        "one_liner": "AI cannot bake your bread, but it can do everything around it: start a Saturday pre-order box from your home kitchen under the Texas cottage food law, for under USD 200.",
+        "first_two_weeks": [
+          "Take the online food handler course and let the agent draft your label text.",
+          "Bake the three best recipes from the notebook and cost each one."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Do the first module of the online food handler course",
+              "minutes": 20,
+              "day": "Tue",
+              "short": "Open the course and finish the first video only."
+            },
+            {
+              "title": "Bake one recipe from the notebook and write down what it cost",
+              "minutes": 30,
+              "day": "Thu",
+              "short": "Weigh the flour and write the ingredient cost for one loaf."
+            },
+            {
+              "title": "Write the pre-order page story of your parents’ bakery",
+              "minutes": 25,
+              "day": "Sat",
+              "short": "Write the first sentence of the bakery story."
+            }
+          ]
+        },
+        "arc_12w": "From a push email to a sold-out Saturday box and a shared-kitchen night slot, with your two remaining clients as the bridge."
+      },
+      {
+        "role_id": "content-strategist",
+        "one_liner": "Plan what a SaaS team publishes and why: eight years of product knowledge become judgment that AI drafts cannot replace.",
+        "first_two_weeks": [
+          "Turn two past case studies into a one-page content plan for one client.",
+          "Offer that client a paid quarterly content plan instead of per-post writing."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Draft a one-page editorial calendar for one past client",
+              "minutes": 30,
+              "day": "Tue",
+              "short": "List the three topics the client keeps asking about."
+            },
+            {
+              "title": "Write the interview notes of your last customer interview as a content brief",
+              "minutes": 25,
+              "day": "Thu",
+              "short": "Write the one question the customer answered best."
+            },
+            {
+              "title": "Price a quarterly content plan as a package",
+              "minutes": 20,
+              "day": "Sat",
+              "short": "Write one package price on a sticky note."
+            }
+          ]
+        },
+        "arc_12w": "From per-post writing to one quarterly content plan retainer that pays more than the old posts did."
+      },
+      {
+        "role_id": "brand-voice-editor",
+        "one_liner": "Keep your clients while they draft with AI: sell the voice guide, the prompt set and the expert edit as one package.",
+        "first_two_weeks": [
+          "Collect ten AI drafts from the client that cut your rate and mark where the voice drifts.",
+          "Write a one-page voice guide and offer it with light edits as a monthly package."
+        ],
+        "week": {
+          "actions": [
+            {
+              "title": "Mark the voice drift in five AI drafts from one client",
+              "minutes": 30,
+              "day": "Tue",
+              "short": "Mark the drift in one AI draft."
+            },
+            {
+              "title": "Write a five-line brand voice checklist",
+              "minutes": 20,
+              "day": "Thu",
+              "short": "Write the first two checks."
+            },
+            {
+              "title": "Draft the package price email for AI draft + expert edit + voice guide",
+              "minutes": 25,
+              "day": "Sat",
+              "short": "Write only the subject line."
+            }
+          ]
+        },
+        "arc_12w": "From a cut rate for light edits to owning the client’s voice system at a package price."
+      }
+    ]
+  },
+  "path": {
+    "role_id": "home-bakery",
+    "title": "Home Bakery Micro-business (Saturday box)",
+    "one_liner": "AI cannot bake your bread, but it can do everything around it: start a Saturday pre-order box from your home kitchen under the Texas cottage food law, for under USD 200.",
+    "arc_12w": "From a push email to a sold-out Saturday box and a shared-kitchen night slot, with your two remaining clients as the bridge."
+  },
+  "week": {
+    "actions": [
+      {
+        "id": "a1",
+        "title": "Do the first food handler module",
+        "minutes": 20,
+        "day": "Tue",
+        "status": "todo",
+        "moves": 0,
+        "short": "Watch the first video only"
+      },
+      {
+        "id": "a2",
+        "title": "Bake one notebook recipe and cost it",
+        "minutes": 30,
+        "day": "Thu",
+        "status": "todo",
+        "moves": 0,
+        "short": "Write the cost of one loaf"
+      },
+      {
+        "id": "a3",
+        "title": "Write the pre-order page story",
+        "minutes": 25,
+        "day": "Sat",
+        "status": "todo",
+        "moves": 0,
+        "short": "Write the first sentence"
+      }
+    ],
+    "summary": "0/3 done",
+    "pathId": "home-bakery",
+    "pathTitle": "Home Bakery Micro-business (Saturday box)",
+    "today": "Sun",
+    "pendingComeback": false
+  },
+  "events": [
+    {
+      "id": "m01",
+      "ts": "2026-09-28T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Wrote the dream down for the first time: bring back my parents’ bakery, the Saturday smell, the neighbors who came for bread and stayed to talk. Chose the home bakery path. I know nothing about running a food business.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Dream dump: the bakery",
+      "tags": [
+        "interest:bakery",
+        "storytelling",
+        "community-building"
+      ],
+      "url": null,
+      "field": "pull",
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m02",
+      "ts": "2026-09-28T11:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Biggest client now drafts with AI and only wants light edits: USD 800 a month instead of USD 3,300. Forty percent of my income gone in one email.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "The push email",
+      "tags": [
+        "ai-editing",
+        "now"
+      ],
+      "url": null,
+      "field": "now",
+      "signal": "career"
+    },
+    {
+      "id": "m03",
+      "ts": "2026-09-28T14:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Two hours on job boards after the email. Applied to nothing.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 2h 05m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "m04",
+      "ts": "2026-09-29T08:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Scrolled content jobs until midnight. Every listing says AI-assisted.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 2h 20m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "noise"
+    },
+    {
+      "id": "m05",
+      "ts": "2026-09-29T11:00:00-05:00",
+      "source": "journal",
+      "kind": "saved_link",
+      "value": "Explainer: homemade bread can be sold directly to customers from home with a food handler card and labels, no city permit, pickup or in-person delivery only.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Texas cottage food law explained",
+      "tags": [
+        "food-safety-cert"
+      ],
+      "url": "https://example.com/guides/texas-cottage-food-basics",
+      "signal": "career"
+    },
+    {
+      "id": "c01",
+      "ts": "2026-09-29T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "not_today",
+      "value": "a1",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Tue",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "m06",
+      "ts": "2026-09-30T08:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "More scrolling. Did not open the food handler course.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 1h 50m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "noise"
+    },
+    {
+      "id": "m07",
+      "ts": "2026-09-30T11:00:00-05:00",
+      "source": "activity",
+      "kind": "photo",
+      "value": "Found a photo of the old storefront in the camera roll. Did not post it anywhere.",
+      "consentScope": "local_only",
+      "label": "synthetic",
+      "title": "Old bakery storefront (2018)",
+      "tags": [
+        "interest:bakery"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m08",
+      "ts": "2026-10-01T08:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Two hours again. Closed the laptop feeling behind.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 2h 00m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "noise"
+    },
+    {
+      "id": "m09",
+      "ts": "2026-10-01T11:00:00-05:00",
+      "source": "journal",
+      "kind": "messenger",
+      "value": "He sent a photo of mom’s recipe notebook page for the Saturday rolls. “You still have the notebook, right?”",
+      "consentScope": "local_only",
+      "label": "synthetic",
+      "title": "Message from my brother",
+      "tags": [
+        "interest:bakery"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m10",
+      "ts": "2026-10-02T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Twenty minutes of the food handler course. Easier than the scrolling.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Opened the course",
+      "tags": [
+        "food-safety-cert"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m11",
+      "ts": "2026-10-02T11:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Call with the client that cut the rate. Agreed on light edits for AI drafts, two days a week. The bridge income.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Client call: light-edit scope",
+      "tags": [
+        "ai-editing"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "c02",
+      "ts": "2026-10-02T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a1",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Fri"
+    },
+    {
+      "id": "m12",
+      "ts": "2026-10-03T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Baked the first notebook recipe. Ingredient cost USD 2.80 per batch of eight. Wrote it down as the agent asked.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Test bake: Saturday rolls",
+      "tags": [
+        "interest:bakery",
+        "sourdough-baking",
+        "recipe-costing"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m13",
+      "ts": "2026-10-03T11:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Forty minutes, down from two hours.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 40m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "c03",
+      "ts": "2026-10-03T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a2",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Sat"
+    },
+    {
+      "id": "m14",
+      "ts": "2026-10-04T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Two of three steps done. Scrolling dropped from two hours to forty minutes. Fear is still there, but so is the bread.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Week 1 review",
+      "tags": [
+        "weekly-review"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m15",
+      "ts": "2026-10-04T11:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Sunday walk, no laptop.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Walk with my son",
+      "tags": [],
+      "url": null,
+      "signal": "rest"
+    },
+    {
+      "id": "m16",
+      "ts": "2026-10-05T08:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Passed the online food handler exam. Card arrives this week. Legal to sell from home once the labels are right.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Food handler course: exam passed",
+      "tags": [
+        "food-safety-cert"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m17",
+      "ts": "2026-10-05T11:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "The agent drafted the cottage food label text; I only had to pick the font.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Label text drafted",
+      "tags": [
+        "food-safety-cert"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m18",
+      "ts": "2026-10-06T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Printed thirty labels. Food handler card is in the mail.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Labels printed",
+      "tags": [
+        "food-safety-cert"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m19",
+      "ts": "2026-10-06T11:00:00-05:00",
+      "source": "journal",
+      "kind": "saved_link",
+      "value": "A home baker’s post: first customers came from a tasting day with neighbors, not from social media.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "How a home bakery found its first 20 customers",
+      "tags": [
+        "local-marketing",
+        "community-building"
+      ],
+      "url": "https://example.com/posts/first-20-customers-home-bakery",
+      "signal": "career"
+    },
+    {
+      "id": "c04",
+      "ts": "2026-10-06T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a1",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Tue"
+    },
+    {
+      "id": "m20",
+      "ts": "2026-10-07T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "The notebook croissant collapsed twice. Posted the one good photo on Instagram anyway.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Test bake #2: croissant failed twice",
+      "tags": [
+        "interest:bakery",
+        "sourdough-baking"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m21",
+      "ts": "2026-10-07T11:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Edited four AI drafts for the bridge client. Two hours.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Light edits: client batch",
+      "tags": [
+        "ai-editing"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m22",
+      "ts": "2026-10-08T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "The Instagram post got 40 likes and 3 pre-orders. Felt like proof that I am kidding myself. Did not bake.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Forty likes, three pre-orders",
+      "tags": [
+        "local-marketing"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "career",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "m23",
+      "ts": "2026-10-08T11:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Back on the job boards for an hour.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 1h 10m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "c05",
+      "ts": "2026-10-08T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "not_today",
+      "value": "a2",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Thu",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "m24",
+      "ts": "2026-10-09T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Son home with a fever. No baking, no course. Did not want to open the app.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Son home sick",
+      "tags": [],
+      "url": null,
+      "condition": 2,
+      "signal": "rest",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "m25",
+      "ts": "2026-10-09T11:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Scrolled while he slept.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 55m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "c06",
+      "ts": "2026-10-09T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "not_today",
+      "value": "a2",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Fri",
+      "blocker_reason": "mood"
+    },
+    {
+      "id": "m26",
+      "ts": "2026-10-10T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Did not bake. Reread the notebook; in the margin of the rolls recipe my mother wrote “bread forgives.”",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Rested. Reread the notebook",
+      "tags": [
+        "interest:bakery"
+      ],
+      "url": null,
+      "condition": 2,
+      "signal": "rest"
+    },
+    {
+      "id": "m27",
+      "ts": "2026-10-10T11:00:00-05:00",
+      "source": "journal",
+      "kind": "sms",
+      "value": "Automated text: prescription ready for pickup.",
+      "consentScope": "local_only",
+      "label": "synthetic",
+      "title": "Pharmacy pickup reminder",
+      "tags": [],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "m28",
+      "ts": "2026-10-11T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Baked one loaf only, ten minutes of hands-on time while the fever broke. The agent said: you did not fail, you took a pause. Test one recipe this week instead of three.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "One loaf, ten minutes",
+      "tags": [
+        "interest:bakery",
+        "sourdough-baking"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m29",
+      "ts": "2026-10-11T11:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Three days off. The agent flagged the pattern: a home bakery’s first customers come from tasting, not from likes. Plan: 20 mini loaves for the neighbors.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Week 2 review",
+      "tags": [
+        "weekly-review",
+        "local-marketing"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "c07",
+      "ts": "2026-10-11T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a2",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Sun",
+      "variant": "micro"
+    },
+    {
+      "id": "m30",
+      "ts": "2026-10-12T08:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Planned the tasting day with the agent: 20 mini loaves for the neighbors on Sunday, a card and a QR code for pre-orders.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Tasting day plan",
+      "tags": [
+        "local-marketing",
+        "community-building"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m31",
+      "ts": "2026-10-12T11:00:00-05:00",
+      "source": "journal",
+      "kind": "saved_link",
+      "value": "Template for a one-page pre-order site with a QR code and pickup slots.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Free pre-order page template",
+      "tags": [
+        "local-marketing"
+      ],
+      "url": "https://example.com/templates/pre-order-page",
+      "signal": "career"
+    },
+    {
+      "id": "m32",
+      "ts": "2026-10-13T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "The agent built the pre-order page. I wrote the bakery story on it: 25 years, the Saturday smell, closed in 2019, back from my kitchen.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Pre-order page is live",
+      "tags": [
+        "storytelling",
+        "local-marketing",
+        "interest:bakery"
+      ],
+      "url": null,
+      "condition": 3,
+      "signal": "career"
+    },
+    {
+      "id": "m33",
+      "ts": "2026-10-13T11:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Three AI drafts edited. Bridge income on track.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Light edits: client batch",
+      "tags": [
+        "ai-editing"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "c08",
+      "ts": "2026-10-13T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a1",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Tue"
+    },
+    {
+      "id": "m34",
+      "ts": "2026-10-14T08:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Coffee with a home baker who sells 30 boxes a weekend from a shared kitchen slot. She started at her own oven, too. First real conversation with someone doing it.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Coffee with a home baker",
+      "tags": [
+        "interest:bakery",
+        "community-building",
+        "ops-scheduling"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m35",
+      "ts": "2026-10-14T11:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Her first customers came from a tasting. Her kitchen slot costs about USD 400 a month for 20 hours; she waited until orders paid for it.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "What she told me",
+      "tags": [
+        "recipe-costing",
+        "ops-scheduling"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m36",
+      "ts": "2026-10-15T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Baked and costed the three-recipe Saturday box: one sourdough loaf and four pastries. Ingredients and box about USD 12, price USD 35, margin USD 23.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Saturday box costed",
+      "tags": [
+        "interest:bakery",
+        "recipe-costing",
+        "sourdough-baking"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m37",
+      "ts": "2026-10-15T11:00:00-05:00",
+      "source": "journal",
+      "kind": "sms",
+      "value": "Bridge client asking whether I can take another light-edit batch next week.",
+      "consentScope": "local_only",
+      "label": "synthetic",
+      "title": "Client: edits next week?",
+      "tags": [
+        "ai-editing"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "c09",
+      "ts": "2026-10-15T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a2",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Thu"
+    },
+    {
+      "id": "m38",
+      "ts": "2026-10-16T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "The agent made the shopping list and the baking schedule for Saturday; I approved it in two minutes.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Shopping list and baking schedule",
+      "tags": [
+        "ops-scheduling"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m39",
+      "ts": "2026-10-16T11:00:00-05:00",
+      "source": "screen",
+      "kind": "app_usage",
+      "value": "Ten minutes. Closed it.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Job boards: 10m",
+      "tags": [
+        "app_usage",
+        "job-boards"
+      ],
+      "url": null,
+      "signal": "noise"
+    },
+    {
+      "id": "m40",
+      "ts": "2026-10-17T08:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Baked 20 mini loaves for the tasting. Kitchen smelled like Saturday mornings in 2015.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Bake day",
+      "tags": [
+        "interest:bakery",
+        "sourdough-baking"
+      ],
+      "url": null,
+      "condition": 4,
+      "signal": "career"
+    },
+    {
+      "id": "m41",
+      "ts": "2026-10-17T11:00:00-05:00",
+      "source": "activity",
+      "kind": "photo",
+      "value": "Photo of the loaves on the rack with the cards and QR codes.",
+      "consentScope": "local_only",
+      "label": "synthetic",
+      "title": "20 mini loaves cooling",
+      "tags": [
+        "interest:bakery"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "c10",
+      "ts": "2026-10-17T20:30:00-05:00",
+      "source": "checkin",
+      "kind": "done",
+      "value": "a3",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "day": "Sat"
+    },
+    {
+      "id": "m42",
+      "ts": "2026-10-18T08:00:00-05:00",
+      "source": "calendar",
+      "kind": "calendar",
+      "value": "Handed out 20 mini loaves on the block. People stayed to talk, like at my parents’ place.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Tasting day with the neighbors",
+      "tags": [
+        "local-marketing",
+        "community-building",
+        "interest:bakery"
+      ],
+      "url": null,
+      "condition": 5,
+      "signal": "career"
+    },
+    {
+      "id": "m43",
+      "ts": "2026-10-18T11:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Pre-orders went from 3 to 18 by the evening. Reality check passed: the first Saturday box is on. M1 Fit: yes, this fits me.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Eighteen pre-orders. M1: this fits",
+      "tags": [
+        "local-marketing",
+        "recipe-costing",
+        "weekly-review"
+      ],
+      "url": null,
+      "signal": "career"
+    },
+    {
+      "id": "m44",
+      "ts": "2026-10-18T14:00:00-05:00",
+      "source": "journal",
+      "kind": "note",
+      "value": "Three of three steps done. Next: first Saturday box, then a shared-kitchen night slot when the oven is full.",
+      "consentScope": "summary_ok",
+      "label": "synthetic",
+      "title": "Week 3 review",
+      "tags": [
+        "weekly-review",
+        "ops-scheduling"
+      ],
+      "url": null,
+      "signal": "career"
+    }
+  ],
+  "expected": {
+    "day4": {
+      "date": "2026-10-01",
+      "riskLevel": "red",
+      "reasons": [
+        "gap_days",
+        "low_momentum",
+        "first_week",
+        "data_gap"
+      ],
+      "note": "Two days of job-board scrolling only: app_usage/photo/messenger are not enabled sources, so the brain sees no log since 09-29. Noise is not showing up."
+    },
+    "day7": {
+      "date": "2026-10-04",
+      "riskLevel": "green"
+    },
+    "day12": {
+      "date": "2026-10-09",
+      "riskLevel": "amber",
+      "reasons": [
+        "consec_rest"
+      ]
+    },
+    "day13": {
+      "date": "2026-10-10",
+      "riskLevel": "amber",
+      "reasons": [
+        "consec_rest",
+        "low_condition"
+      ]
+    },
+    "day14": {
+      "date": "2026-10-11",
+      "riskLevel": "green",
+      "note": "micro comeback: one loaf, ten minutes"
+    },
+    "day21": {
+      "date": "2026-10-18",
+      "riskLevel": "green"
+    },
+    "rootConstraint": "motivation-automatic",
+    "rankedFirst": "home-bakery",
+    "m1": {
+      "id": "M1",
+      "name": "Fit",
+      "passedWhenConfirmed": true,
+      "evidence": "m34"
+    }
+  }
+}

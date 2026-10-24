@@ -227,6 +227,37 @@ function compactResult(result) {
   return rest;
 }
 
+// A tool_result above this size is compacted further: `context` keeps only its scalars (the fields,
+// ranking and week are already in the conversation context) and `monitor.review` drops the
+// comparison it repeats and the next-week seed. Judgment fields (state, goal, intervention,
+// explain, readiness) are never touched.
+export const TOOL_RESULT_SOFT_LIMIT = 12 * 1024;
+const CONTEXT_BULK_KEYS = ['fields', 'rankedRoles', 'week'];
+const REVIEW_BULK_KEYS = ['compare', 'nextWeekSeed'];
+
+function without(object, keys) {
+  return Object.fromEntries(Object.entries(object).filter(([key]) => !keys.includes(key)));
+}
+
+function compactReport(report) {
+  if (!isObject(report)) return report;
+  const out = { ...report };
+  if (isObject(out.context)) out.context = without(out.context, CONTEXT_BULK_KEYS);
+  if (isObject(out.monitor) && isObject(out.monitor.review)) out.monitor = { ...out.monitor, review: without(out.monitor.review, REVIEW_BULK_KEYS) };
+  return out;
+}
+
+// JSON for a tool_result: trace removed; above TOOL_RESULT_SOFT_LIMIT, context/monitor compacted too
+// (on the result and on a nested `brain` report, as check_in returns).
+export function serializeToolResult(result) {
+  const compact = compactResult(result);
+  const text = JSON.stringify(compact);
+  if (typeof text !== 'string' || text.length <= TOOL_RESULT_SOFT_LIMIT) return text;
+  const smaller = compactReport(compact);
+  if (isObject(smaller) && isObject(smaller.brain)) smaller.brain = compactReport(smaller.brain);
+  return JSON.stringify(smaller);
+}
+
 function errorMessage(err) {
   return err instanceof Error ? err.message : String(err);
 }
@@ -265,7 +296,7 @@ function buildTools({ brain, scenario, defaults, calls, trace }) {
           const elapsed = ms(start);
           calls.push({ name: spec.name, ms: elapsed, ok: true });
           trace.push({ layer: TRACE_LAYER, stage: TRACE_STAGE, label: `tool ${spec.name}`, status: 'ran', ms: elapsed });
-          return JSON.stringify(compactResult(result));
+          return serializeToolResult(result);
         } catch (err) {
           const elapsed = ms(start);
           calls.push({ name: spec.name, ms: elapsed, ok: false });

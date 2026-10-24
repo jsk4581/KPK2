@@ -28,7 +28,7 @@
     "archetype": "identity-grief",
     "risk_by_day": "ggggrgggggrrraagggggg",
     "kinds": "none,full,shrink,reconnect",
-    "reviews": "keep3+replan | down1 | down1+low_condition_10_of_14",
+    "reviews": "keep3+replan | down1+replan | down1+low_condition_10_of_14",
     "goal": "provisional",
     "constraint": "motivation-automatic",
     "drift": 0,

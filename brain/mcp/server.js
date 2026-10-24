@@ -25,6 +25,10 @@ export const SERVER_NAME = 'dream-achieve-moments-brain';
 export const SERVER_TITLE = 'Dream Achieve Moments Brain';
 export const SERVER_VERSION = pkg.version;
 export const SCENARIO_URI = 'brain://scenario/dana';
+// Synthetic demo scenarios get_scenario / GET /v1/scenario?id= can return. 'dana' is brain.scenario
+// (loaded by bin.js); the others come from brain.loadScenario(id) when the brain provides it.
+export const SCENARIO_IDS = ['dana', 'maya'];
+export const DEFAULT_SCENARIO_ID = 'dana';
 
 // --- input shapes (shared by MCP tools and the REST routes in http.js) -------
 //
@@ -65,6 +69,24 @@ const FreeText = z
   .optional()
   .describe('User-typed notes scanned for crisis language. Never stored, never echoed back.');
 const Reason = z.string().optional().describe('Not-today reason chip: time | energy | skill | people | mood');
+const ScenarioId = z.enum(SCENARIO_IDS).optional().describe('Which synthetic scenario: dana (14 days, default) | maya (21 days)');
+const GoalHistory = z
+  .union([z.looseObject({ version: z.number().optional(), history: z.array(AnyObject).optional(), not_now: z.array(z.string()).optional() }), z.array(AnyObject)])
+  .optional()
+  .describe('Goal version history from the last think ({ version, history[], not_now[] } or the history array); think appends one entry when the goal state changes');
+const Constraints = z
+  .looseObject({ hoursPerWeek: z.number().nullable().optional(), runwayMonths: z.number().nullable().optional(), careDuties: z.union([z.boolean(), z.string()]).nullable().optional() })
+  .optional()
+  .describe('Self-declared constraints (hours per week, runway in months, care duties); never inferred');
+const Adaptability = z
+  .looseObject({ concern: z.number().optional(), control: z.number().optional(), curiosity: z.number().optional(), confidence: z.number().optional() })
+  .optional()
+  .describe('Career adaptability 4C self-report (1-5 each); never inferred');
+const NotNow = z.array(z.string()).optional().describe('Ideas parked as "not now" (kept in the goal history, deduplicated)');
+const Market = z
+  .looseObject({ reachOuts: z.number().optional(), applications: z.number().optional() })
+  .optional()
+  .describe('Explicit market-contact counts for the readiness score; defaults to the ledger artifact types');
 
 const thinkShape = {
   fields: Fields.optional(),
@@ -83,7 +105,12 @@ const thinkShape = {
   confirmedGates: z.array(z.string()).optional().describe('Gate ids (M1..M4) the user confirmed; a gate never passes without it'),
   confirmed: z.boolean().optional().describe('Confirm every gate that has evidence (demo shortcut)'),
   gates: z.array(AnyObject).optional().describe('Pre-evaluated gates; replaces the milestone evaluation'),
-  freeText: FreeText
+  freeText: FreeText,
+  goalHistory: GoalHistory,
+  constraints: Constraints,
+  adaptability4c: Adaptability,
+  notNow: NotNow,
+  market: Market
 };
 
 // Tool table: name → brain function, description and input shape.
@@ -167,11 +194,19 @@ export const TOOLS = [
     }
   },
   {
+    name: 'job_readiness',
+    fn: 'jobReadiness',
+    title: 'Job readiness',
+    description:
+      'Success -> work: the evidence ledger (done check-ins only; Not today never counts) and the job-readiness score 0-100 with its level (explore | build-proof | reach-out | apply), the next gate and what it still needs. Same input as think; design priors, never an outcome claim.',
+    input: thinkShape
+  },
+  {
     name: 'get_scenario',
     fn: null,
-    title: 'Get the demo scenario',
-    description: 'Return the 14-day synthetic Dana scenario (labelled synthetic) used by the demo. No real person data.',
-    input: {}
+    title: 'Get a demo scenario',
+    description: 'Return a synthetic demo scenario (labelled synthetic): dana (14 days, default) or maya (21 days, dream path). No real person data.',
+    input: { id: ScenarioId }
   }
 ];
 
@@ -207,14 +242,24 @@ function issueLine(issue) {
   return `${path}: ${issue.message}`;
 }
 
+// The scenario for an id: 'dana' (or none) is brain.scenario; any other known id goes through
+// brain.loadScenario(id). Throws when the id is unknown or the scenario is not available.
+export function scenarioOf(brain, id) {
+  const key = id === undefined || id === null || String(id).trim() === '' ? DEFAULT_SCENARIO_ID : String(id).trim();
+  if (!SCENARIO_IDS.includes(key)) throw new Error(`unknown scenario: ${key} (expected ${SCENARIO_IDS.join(' | ')})`);
+  if (key === DEFAULT_SCENARIO_ID) {
+    if (brain.scenario === undefined) throw new Error('scenario is not loaded');
+    return brain.scenario;
+  }
+  if (typeof brain.loadScenario !== 'function') throw new Error(`scenario ${key} is not loaded`);
+  return brain.loadScenario(key);
+}
+
 // Call the brain for a tool with already-validated input. Throws on failure.
 export async function invokeBrain(brain, name, input) {
   const tool = toolByName.get(name);
   if (!tool) throw new Error(`unknown tool: ${name}`);
-  if (tool.fn === null) {
-    if (brain.scenario === undefined) throw new Error('scenario is not loaded');
-    return brain.scenario;
-  }
+  if (tool.fn === null) return scenarioOf(brain, isPlainObject(input) ? input.id : undefined);
   const fn = brain[tool.fn];
   if (typeof fn !== 'function') throw new Error(`${tool.fn} is not available in this brain`);
   return fn(input);
@@ -237,8 +282,8 @@ const PURE_ANNOTATIONS = { readOnlyHint: true, idempotentHint: true, openWorldHi
 const INSTRUCTIONS = [
   'Dream Achieve Moments Decision Brain (codename Second Draft): deterministic judgment rules for career second drafts.',
   'Tools never call a network or a clock; pass today and condition as inputs.',
-  'Start with get_scenario or the brain://scenario/dana resource for synthetic demo data,',
-  'then rank_roles → plan_week → check_in, or think for a full pass with explain.',
+  'Start with get_scenario (id dana | maya) or the brain://scenario/dana resource for synthetic demo data,',
+  'then rank_roles → plan_week → check_in, or think for a full pass with explain; job_readiness for the evidence ledger and score.',
   'All demo data is synthetic; never present a skipped check as passed.'
 ].join(' ');
 
@@ -256,7 +301,7 @@ export function createBrainServer(brain, opts = {}) {
       { title: tool.title, description: tool.description, inputSchema: tool.input, annotations: PURE_ANNOTATIONS },
       async (args) => {
         try {
-          const result = await invokeBrain({ ...brain, scenario }, tool.name, args ?? {});
+          const result = await invokeBrain(scenario === undefined ? brain : { ...brain, scenario }, tool.name, args ?? {});
           return toolResult(result);
         } catch (err) {
           return toolError('brain_error', errorMessage(err));

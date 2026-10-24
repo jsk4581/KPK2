@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dream Achieve Moments · Architecture for investors (1 slide)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+ /* Same brand system as docs/gtm/slides-draft/slides.html v4 (light · purple) */
+ @page{size:1920px 1080px;margin:0}
+ *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
+ :root{--ink:#1C1A22;--mute:#5B5670;--p:#7C3AED;--p-d:#4C1D95;--p-l:#EDE9FE;--line:#E3DCF5;--amber:#D97706}
+ body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#EFEAF8}
+ .s{width:1920px;height:1080px;position:relative;overflow:hidden;color:var(--ink);margin:0 auto;
+    background:radial-gradient(900px 520px at 8% 0%,#F3EEFF,transparent 60%),radial-gradient(800px 500px at 100% 100%,#FFF4E3,transparent 60%),#FBF9FE}
+ .team{position:absolute;top:56px;left:96px;font-size:28px;font-weight:700;color:var(--mute)}
+ .topic{position:absolute;top:56px;right:96px;font-size:28px;font-weight:800;color:var(--p);letter-spacing:.06em}
+ .title{position:absolute;left:96px;top:108px}
+ h1{font-size:72px;font-weight:900;line-height:1;letter-spacing:-.03em}
+ .sub{font-size:36px;font-weight:700;margin-top:14px;color:var(--p)}
+ .proof{position:absolute;right:96px;top:124px;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+ .pill{font-size:28px;font-weight:700;padding:8px 22px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--ink)}
+ .pill b{color:var(--p)}
+ .dot{display:inline-block;width:14px;height:14px;border-radius:50%;background:#16A34A;margin-right:10px;vertical-align:2px}
+
+ /* flow */
+ .flow{position:absolute;left:96px;right:96px;top:262px;height:372px;display:flex;align-items:stretch;gap:0}
+ .box{background:#fff;border:2px solid var(--line);border-radius:26px;padding:22px 26px;display:flex;flex-direction:column}
+ .k{font-size:22px;font-weight:800;color:var(--p);letter-spacing:.1em}
+ .h{font-size:34px;font-weight:900;line-height:1.1;margin-top:6px}
+ .t{font-size:28px;font-weight:600;line-height:1.3;color:var(--mute);margin-top:10px}
+ .arrow{width:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+ .arrow span{font-size:19px;font-weight:800;color:var(--p);margin-bottom:4px}
+ .arrow i{display:block;width:44px;height:4px;background:var(--p);position:relative;border-radius:2px}
+ .arrow i::after{content:"";position:absolute;right:-4px;top:-8px;border-left:14px solid var(--p);border-top:10px solid transparent;border-bottom:10px solid transparent}
+ .in{width:280px}
+ .brain{width:536px;background:linear-gradient(160deg,#7C3AED,#4C1D95);border:none;color:#fff;box-shadow:0 24px 60px rgba(124,58,237,.35)}
+ .brain .k{color:#E9DDFF}.brain .h{color:#fff}
+ .mods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+ .mod{font-size:28px;font-weight:700;background:rgba(255,255,255,.14);border-radius:12px;padding:8px 14px}
+ .mod.hi{background:#fff;color:var(--p-d);grid-column:span 2}
+ .why{margin-top:auto;font-size:26px;font-weight:600;color:#E9DDFF}
+ .why b{color:#fff;background:rgba(255,255,255,.18);padding:2px 10px;border-radius:8px}
+ .llm{width:262px}
+ .out{flex:1}
+ .door{display:flex;align-items:center;justify-content:space-between;font-size:28px;font-weight:800;padding:9px 0;border-bottom:2px solid #F1ECFB}
+ .door:last-child{border-bottom:none}
+ .door small{display:block;font-size:22px;font-weight:600;color:var(--mute)}
+ .tag{font-size:20px;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.06em;flex:none}
+ .live{background:#DCFCE7;color:#166534}.next{background:#FEF3C7;color:#92400E}
+
+ /* selling points */
+ .sell{position:absolute;left:96px;right:96px;top:654px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+ .card{background:#fff;border:2px solid var(--line);border-radius:22px;padding:20px 24px;height:250px;display:flex;flex-direction:column}
+ .card .n{font-size:22px;font-weight:800;color:var(--p);letter-spacing:.08em}
+ .card .big{font-size:34px;font-weight:900;line-height:1.1;margin-top:6px}
+ .card .d{font-size:28px;font-weight:600;line-height:1.28;color:var(--mute);margin-top:8px}
+ .card .vc{margin-top:auto;font-size:26px;font-weight:800;color:var(--p-d)}
+ .card .vc::before{content:"→ "}
+ .card.h{border-color:var(--amber)} .card.h .n{color:var(--amber)}
+ .cap{position:absolute;left:96px;top:926px;font-size:22px;font-weight:600;color:var(--mute)}
+ .foot{position:absolute;left:5%;right:5%;bottom:30px}
+ .foot img{width:100%;display:block}
+</style></head>
+<body>
+<section class="s">
+  <div class="team">팀 김박구이 · Dream Achieve Moments</div>
+  <div class="topic">ARCHITECTURE · WHY IT SCALES</div>
+
+  <div class="title">
+    <h1>One decision brain. Every door.</h1>
+    <div class="sub">Rules make the call — auditable. Claude only writes the words.</div>
+  </div>
+  <div class="proof">
+    <div class="pill"><span class="dot"></span>Live today: public <b>MCP + REST</b></div>
+    <div class="pill"><b>MCP</b> tools · <b>615</b> tests passing · 0 failing</div>
+  </div>
+
+  <div class="flow">
+    <div class="box in">
+      <div class="k">01 · YOUR LIFE</div>
+      <div class="h">On-device, opt-in</div>
+      <div class="t">notes · links · calendar</div>
+      <div class="t" style="margin-top:auto;color:var(--p-d);font-weight:800;font-size:26px">Summaries only — raw data stays on your device</div>
+    </div>
+    <div class="arrow"><span>summary</span><i></i></div>
+    <div class="box brain">
+      <div class="k">02 · THE PRODUCT WE SELL</div>
+      <div class="h">Decision Brain</div>
+      <div class="mods">
+        <div class="mod">Who you are</div>
+        <div class="mod">State &amp; risk</div>
+        <div class="mod">12-week gates</div>
+        <div class="mod">Root constraint</div>
+        <div class="mod hi">Today's smallest step</div>
+      </div>
+      <div class="why"><b>Why?</b> on every answer</div>
+    </div>
+    <div class="arrow"><span>judgment</span><i></i></div>
+    <div class="box llm">
+      <div class="k">03 · CLAUDE</div>
+      <div class="h">Writes the words</div>
+      <div class="t">Paths and coaching, one question at a time.</div>
+      <div class="t" style="margin-top:auto;color:var(--p-d);font-weight:800">Never judges.</div>
+    </div>
+    <div class="arrow"><span>words</span><i></i></div>
+    <div class="box out">
+      <div class="k">04 · EVERY DOOR</div>
+      <div class="door"><div>Web app<small>B2C · writers</small></div><span class="tag live">LIVE</span></div>
+      <div class="door"><div>Any AI agent<small>MCP</small></div><span class="tag live">LIVE</span></div>
+      <div class="door"><div>Partner apps<small>REST · HR, outplacement</small></div><span class="tag next">NEXT</span></div>
+    </div>
+  </div>
+
+  <div class="sell">
+    <div class="card">
+      <div class="n">01 · AUDITABLE</div>
+      <div class="big">Not a prompt</div>
+      <div class="d">Every answer ships with the rule and evidence behind it.</div>
+      <div class="vc">B2B buyers can sign off</div>
+    </div>
+    <div class="card">
+      <div class="n">02 · BUILT ONCE</div>
+      <div class="big">Sold three ways</div>
+      <div class="d">One core powers the app, the API and MCP.</div>
+      <div class="vc">B2C wedge, B2B per token</div>
+    </div>
+    <div class="card">
+      <div class="n">03 · PRIVATE BY DESIGN</div>
+      <div class="big">Raw data never leaves</div>
+      <div class="d">Partners get a judgment, not the user's logs.</div>
+      <div class="vc">Fewer privacy blockers</div>
+    </div>
+    <div class="card h">
+      <div class="n">04 · MOAT (HYPOTHESIS)</div>
+      <div class="big">Sharper per occupation</div>
+      <div class="d">Writers, then translators, designers, office roles.</div>
+      <div class="vc">Domain brain packs</div>
+    </div>
+  </div>
+
+  <div class="cap">Demo runs on synthetic data (Sample persona — synthetic) · no real users yet · pricing and moat are hypotheses</div>
+  <div class="foot"><img src="../../templates/slide-kit/footer-for-light-slides.png" alt=""></div>
+</section>
+</body></html>

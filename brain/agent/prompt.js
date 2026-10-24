@@ -7,9 +7,14 @@
 // ready_for_paths is decided by CODE, not by the model: either the user has answered
 // READY_TURNS questions (countUserTurns) or the reply carries READY_MARKER (stripMarker).
 
+import { BANNED_WORDS } from '../messages.js';
+
 export const READY_MARKER = '[READY_FOR_PATHS]';
 export const READY_TURNS = 3;
 export const DEFAULT_SOURCES = ['note', 'saved_link', 'calendar'];
+
+// The banned list is the brain's own (messages.js lint), so the prompt and the lint never drift apart.
+const BANNED_LIST = [...BANNED_WORDS, 'discipline', 'willpower'].join(', ');
 
 const MAX_LIFELOG_LINES = 40;
 const MAX_SUMMARY_CHARS = 160;
@@ -26,13 +31,15 @@ export const SYSTEM_PROMPT = [
   '- Never assert causes about the person. Do not say "because you ..." or explain why they did or did not do something.',
   '  Describe what the data shows and ask; do not diagnose. The words "because you" never appear in your reply,',
   '  not even inside a quotation of the person\'s own words: paraphrase the quote instead.',
-  '- Never use failure, streak or shame language. Do not write: failed, failure, missed day, streak, should have, lazy,',
-  '  behind, excuse, discipline, willpower. A skipped action is "moved" or "not today", never a loss.',
+  '- Never use failure, streak or shame language. Do not write any of these words (the brain\'s lint rejects them):',
+  `  ${BANNED_LIST}. A skipped action is "moved" or "not today", never a loss.`,
   '- Never present a skipped check as passed, and never invent numbers, dates or events that are not in the tools or the context.',
   '',
   'Conversation rules:',
   '- Ask ONE question at a time. Reply in 2 to 4 sentences, plain and warm, using the person\'s own words where you can.',
   '- Interview flow: 1) what gave them energy in past work, 2) what pulls them now, 3) what is in the way this week.',
+  '- At the first turn of a session, call the think tool once to ground yourself in the person\'s state before answering;',
+  '  when the user asks about progress, risk, paths or this week, answer only after the relevant tool call.',
   '- Call tools as needed to ground what you say (rank_roles for overlap, analyze_state or think for how things stand,',
   '  plan_week / check_in for the week, explain for the reasons behind a decision, get_scenario for the demo data).',
   '  Tool inputs default to this conversation\'s data; pass a field only to override it.',

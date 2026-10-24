@@ -409,6 +409,40 @@ curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/agent/chat" \
 
 ---
 
+## ⑥ Brain Explorer(브라우저) · job_readiness
+
+같은 서버가 정적 페이지 하나를 함께 낸다(`brain/mcp/public/explorer.html`, 자체 포함·CDN 없음, 토큰 불필요). 시나리오를 고르고 think·check_in·usage 를 눌러 보며 뇌의 판단과 trace 를 읽는 용도다.
+
+```
+https://stayed-stock-advancement-taxi.trycloudflare.com/explorer
+```
+
+(`/` 와 `/public/explorer.html` 도 같은 페이지. GET/HEAD 만 받고 `brain/mcp/public/` 밖은 404.)
+
+도구 8번째 `job_readiness`(REST `POST /v1/job-readiness`)는 think 와 같은 입력을 받아 증거 선반(done 체크인만)과 Job-readiness 점수(0–100, 설계 prior)·단계·다음 게이트가 아직 필요한 것을 돌려준다. `GET /v1/scenario?id=maya` 는 21일 합성 시나리오(꿈 경로)다.
+
+### curl 로 바로 확인
+
+```bash
+BRAIN=https://stayed-stock-advancement-taxi.trycloudflare.com
+
+# explorer page → 200 text/html
+curl -s -o /dev/null -w 'HTTP %{http_code} %{content_type}\n' "$BRAIN/explorer"
+
+# health → tools 8 (… explain, job_readiness, get_scenario)
+curl -s "$BRAIN/v1/health"
+
+# job-readiness on the Dana scenario → { readiness: { score, level, next_gate, … }, ledger: { count 6 … }, goal }
+curl -s "$BRAIN/v1/scenario" | curl -s -X POST "$BRAIN/v1/job-readiness" -H 'content-type: application/json' -d @- \
+  | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);console.log(j.readiness.score,j.readiness.level,j.readiness.next_gate.id,j.ledger.count)})'
+
+# maya scenario (21 days) → id maya-copywriter-bakery; unknown id → 400 invalid_input
+curl -s "$BRAIN/v1/scenario?id=maya" | head -c 200; echo
+curl -s -w '\nHTTP %{http_code}\n' "$BRAIN/v1/scenario?id=nope"
+```
+
+---
+
 ## 터널 재시작 시
 
 ```bash
@@ -417,7 +451,7 @@ cloudflared tunnel --url http://localhost:8787 --no-autoupdate 2>&1 | tee contex
 
 새 `https://<random>.trycloudflare.com` 이 찍히면:
 
-1. 이 파일의 URL 다섯 곳(상단, ①, ②, ④, ⑤)을 바꾼다.
+1. 이 파일의 URL 여섯 곳(상단, ①, ②, ④, ⑤, ⑥)을 바꾼다.
 2. 웹 `VITE_BRAIN_URL` 을 바꾸고 재배포한다.
 3. Claude Code 는 `claude mcp remove dam-brain` 후 다시 `add` 한다.
 4. 팀 채널에 새 URL 을 공유한다.

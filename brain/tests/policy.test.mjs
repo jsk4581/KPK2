@@ -10,6 +10,7 @@ import * as policy from '../policy.js';
 import * as state from '../state.js';
 import * as constraint from '../constraint.js';
 import * as messages from '../messages.js';
+import * as monitor from '../monitor.js';
 import { explain } from '../explain.js';
 
 // ---------- inline fixtures (synthetic) ----------
@@ -307,5 +308,98 @@ describe('pipeline + explain', () => {
     assert.deepEqual(why.rules, []);
     assert.deepEqual(why.evidence, []);
     assert.equal(typeof why.text, 'string');
+  });
+});
+
+// ---------- §6.5 crisis pause: escalation { reason: 'crisis_language' } from monitor ----------
+describe('decideIntervention: crisis pause (§6.5)', () => {
+  const CRISIS = { reason: 'crisis_language', message: 'placeholder escalation message' };
+  const PAUSE_KEYS = ['kind', 'actionId', 'minutes', 'choices', 'messageKey', 'reasons', 'variant', 'lead', 'day', 'nextDay', 'constraint', 'action', 'slots', 'text'];
+
+  test('crisis escalation -> pause: no action, no choices, CRISIS_SUPPORT, fixed support text', () => {
+    const d = decide({ state: stateStub({ energy: 4 }), escalate: CRISIS });
+    assert.equal(d.kind, 'pause');
+    assert.equal(d.actionId, null);
+    assert.equal(d.action, null);
+    assert.equal(d.minutes, 0);
+    assert.deepEqual(d.choices, []);
+    assert.equal(d.messageKey, 'CRISIS_SUPPORT');
+    assert.deepEqual(d.reasons, ['crisis_language']);
+    assert.equal(d.text, policy.CRISIS_TEXT);
+    assert.equal(d.day, 'Thu');
+    assert.equal(d.nextDay, null);
+    assert.equal(d.constraint, 'unknown');
+    assert.deepEqual(Object.keys(d).sort(), [...PAUSE_KEYS].sort());
+    assert.ok(policy.INTERVENTION_KINDS.includes('pause'));
+  });
+
+  test('support text: 988 + local emergency services, pause offered, non-diagnostic, passes lint', () => {
+    const text = policy.CRISIS_TEXT;
+    assert.match(text, /988/);
+    assert.match(text, /Suicide & Crisis Lifeline/);
+    assert.match(text, /local emergency/i);
+    assert.match(text, /paused/i);
+    assert.doesNotMatch(text, /diagnos|depress|disorder|illness|symptom/i);
+    assert.doesNotMatch(text, /\b(should|must|just|excuse|behind)\b/i);
+    assert.equal(messages.lint(text).ok, true);
+    assert.equal(messages.lint(decide({ escalate: CRISIS }).text).ok, true);
+  });
+
+  test('nothing from the escalation or the person reaches the decision (never echoed)', () => {
+    const typed = 'SYNTHETIC-TYPED-PHRASE-9f3a';
+    const d = decide({ escalate: { reason: 'crisis_language', message: typed, freeText: typed, matched: typed } });
+    assert.equal(d.kind, 'pause');
+    assert.equal(JSON.stringify(d).includes(typed), false);
+    assert.equal(d.text, policy.CRISIS_TEXT);
+  });
+
+  test('crisis wins over gate, reconnect, low energy, comeback and a week with no action', () => {
+    const cases = [
+      decide({ state: stateStub({ energy: 4 }), gate: { passed: true, name: 'Fit gate', evidence: 'x', next: 'Proof', weeks: 3 }, escalate: CRISIS }),
+      decide({ state: stateStub({ energy: 4, dataGapDays: 5 }), escalate: CRISIS }),
+      decide({ state: stateStub({ energy: 1, level: 'red' }), escalate: CRISIS }),
+      decide({ state: stateStub({ energy: 4 }), checkins: [{ actionId: 'a1', kind: 'not_today', day: 'Tue' }], escalate: CRISIS }),
+      decide({ week: freshWeek('Mon'), today: 'Mon', escalate: CRISIS }),
+      policy.decideIntervention({ escalate: CRISIS }),
+    ];
+    for (const d of cases) {
+      assert.equal(d.kind, 'pause');
+      assert.equal(d.messageKey, 'CRISIS_SUPPORT');
+      assert.deepEqual(d.choices, []);
+      assert.deepEqual(d.reasons, ['crisis_language']);
+    }
+  });
+
+  test('other escalation reasons, null or malformed escalate leave the decision unchanged', () => {
+    const base = decide({ state: stateStub({ energy: 4 }) });
+    for (const escalate of [null, undefined, {}, 'crisis_language', { reason: 'low_condition_10_of_14', message: 'x' }, { reason: 'risk_red_2_weeks', message: 'x' }, { reason: '' }]) {
+      assert.deepEqual(decide({ state: stateStub({ energy: 4 }), escalate }), base, `escalate=${JSON.stringify(escalate)}`);
+    }
+    assert.equal(base.kind, 'full');
+  });
+
+  test("monitor.weeklyReview's real escalation object pauses the policy; explain does not throw", () => {
+    const week = freshWeek();
+    const review = monitor.weeklyReview({ week, checkins: [], state: stateStub({ energy: 4 }), freeText: [`today I feel like I ${monitor.CRISIS_PHRASES[0]}`] });
+    assert.equal(review.escalate.reason, 'crisis_language');
+    assert.deepEqual(review.nextWeekSeed.actions, []);
+
+    const d = decide({ state: stateStub({ energy: 4 }), week, escalate: review.escalate });
+    assert.equal(d.kind, 'pause');
+    assert.equal(JSON.stringify(d).toLowerCase().includes(monitor.CRISIS_PHRASES[0]), false);
+
+    const why = explain(d, { state: stateStub({ energy: 4 }), constraint: { constraint: 'unknown', evidence: [] }, lifelog: [], checkins: [], week });
+    assert.ok(why.rules.includes('policy:crisis_language'));
+    assert.ok(why.text.startsWith('pause (0 min) -> CRISIS_SUPPORT'));
+    assert.equal(messages.lint(why.text).ok, true);
+  });
+
+  test('pause is deterministic and does not mutate the week', () => {
+    const week = freshWeek();
+    const snapshot = JSON.stringify(week);
+    const a = decide({ week, escalate: CRISIS });
+    const b = decide({ week, escalate: { ...CRISIS } });
+    assert.deepEqual(a, b);
+    assert.equal(JSON.stringify(week), snapshot);
   });
 });

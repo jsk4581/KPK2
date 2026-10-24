@@ -33,7 +33,59 @@
         "teaching-feedback",
         "visual-narrative"
       ],
-      "transfers": []
+      "transfers": [],
+      "quotes": {
+        "ai-image-tools": [
+          {
+            "field": "now",
+            "quote": "Image generators ate the thumbnail and social work this year."
+          }
+        ],
+        "animatic-editing": [],
+        "character-consistency": [
+          {
+            "field": "career",
+            "quote": "illustrator: social thumbnails, character sheets and a few pitch decks for small"
+          }
+        ],
+        "client-revisions": [],
+        "game-art-pipeline": [
+          {
+            "field": "career",
+            "quote": "and a few pitch decks for small game studios."
+          }
+        ],
+        "portfolio-curation": [
+          {
+            "field": "pull",
+            "quote": "I also liked giving portfolio feedback to students."
+          }
+        ],
+        "storyboarding": [
+          {
+            "field": "pull",
+            "quote": "I love storyboarding and figuring out how a scene reads in five panels."
+          }
+        ],
+        "teaching-feedback": [
+          {
+            "field": "pull",
+            "quote": "I also liked giving portfolio feedback to students."
+          }
+        ],
+        "thumbnail-sketching": [
+          {
+            "field": "career",
+            "quote": "as an illustrator: social thumbnails, character sheets and a few pitch"
+          }
+        ],
+        "visual-narrative": [
+          {
+            "field": "pull",
+            "quote": "I love storyboarding and figuring out how a scene reads in five panels."
+          }
+        ]
+      }
     }
   },
   "ontology": {
@@ -1211,7 +1263,7 @@
             "moves>=2"
           ]
         },
-        "message": "Storyboard a 30-second scene in 6 panels has moved for two weeks.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
+        "message": "Storyboard a 30-second scene in 6 panels has moved 2 times.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
         "message_lint": []
       },
       {
@@ -1255,7 +1307,7 @@
             "moves>=2"
           ]
         },
-        "message": "Storyboard a 30-second scene in 6 panels has moved for two weeks.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
+        "message": "Storyboard a 30-second scene in 6 panels has moved 2 times.\nThat is information about the step, not a verdict on you.\nOne question: is it the wrong step, or the wrong size?",
         "message_lint": []
       },
       {
@@ -1937,7 +1989,7 @@
           "micro": true,
           "why": "0 done: one 10-minute step next week, one question instead of blame"
         },
-        "replanQuestion": null,
+        "replanQuestion": "Is this the wrong step, or the wrong size?",
         "replanActionId": null,
         "escalate": null,
         "nextWeekSeed": {

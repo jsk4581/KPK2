@@ -775,13 +775,15 @@ function checkin(body, brain) {
       'adjust',
       'Share card gate (first Done of the week only)',
       `done before: ${week.actions.filter((a) => a.status === 'done').length}`,
-      () => (result.shareCard
-        ? {
-          headline: `Working on: ${asText(week.pathTitle) || 'a new path'}`,
-          body: `Just did: ${sentence(action.title)} ${result.shareCard.progress}.`,
-          copy_text: result.shareCard.text,
-        }
-        : null),
+      () => {
+        if (!result.shareCard) return null;
+        // Our own copy (not logic.js's shareCard.text): the card must pass the banned-word lint like
+        // every other sentence, and a step title that trips it is replaced by the neutral wording.
+        const doneTitle = lint(action.title).ok ? sentence(action.title) : sentence(NEUTRAL_TEN_MINUTE);
+        const headline = `Working on: ${asText(week.pathTitle) || 'a new path'}`;
+        const body = `Done today: ${doneTitle} ${result.shareCard.progress}.`;
+        return { headline, body, copy_text: `${headline}. ${body}` };
+      },
       (card) => (card ? 'first Done → share card (path title, finished action, progress only)' : 'not the first Done → no card'),
     );
     message = ran(

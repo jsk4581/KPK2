@@ -31,7 +31,50 @@
         "style-guide",
         "terminology"
       ],
-      "transfers": []
+      "transfers": [],
+      "quotes": {
+        "client-communication": [],
+        "error-taxonomy": [
+          {
+            "field": "pull",
+            "quote": "I like building order: terminology databases, error categories, style guides."
+          }
+        ],
+        "localization-qa": [],
+        "medical-device-domain": [
+          {
+            "field": "career",
+            "quote": "copy, the last four mostly for medical device companies."
+          }
+        ],
+        "mt-post-editing": [
+          {
+            "field": "now",
+            "quote": "machine translation I mostly get post-editing jobs that pay far less."
+          }
+        ],
+        "project-pricing": [],
+        "style-guide": [
+          {
+            "field": "pull",
+            "quote": "I like building order: terminology databases, error categories, style guides."
+          }
+        ],
+        "terminology": [
+          {
+            "field": "career",
+            "quote": "my clients relied on and caught terminology errors before regulators did."
+          },
+          {
+            "field": "now",
+            "quote": "every day and nobody pays for glossary work anymore."
+          },
+          {
+            "field": "pull",
+            "quote": "I like building order: terminology databases, error categories, style guides."
+          }
+        ]
+      }
     }
   },
   "ontology": {
@@ -1754,7 +1797,7 @@
         "energy": 3,
         "momentum": 0.656,
         "selfEfficacy": 0.895,
-        "capacityMin": 21,
+        "capacityMin": 17,
         "gapDays": 0,
         "dataGapDays": 0,
         "risk": {

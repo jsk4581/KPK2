@@ -6,9 +6,10 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import * as monitor from '../monitor.js';
+import { lint } from '../messages.js';
 import { buildWeek, applyCheckin } from '../../app/logic.js';
 
-const { compareWeek, weeklyReview, resizePlan, detectEscalation, lifelogGapDays, CRISIS_PHRASES, REPLAN_QUESTION, RESIZE_UP_CAP_PCT, DRIFT_TYPES } = monitor;
+const { compareWeek, weeklyReview, resizePlan, detectEscalation, lifelogGapDays, CRISIS_PHRASES, ECONOMIC_PHRASES, REPLAN_QUESTION, RESIZE_UP_CAP_PCT, DRIFT_TYPES } = monitor;
 
 const BANNED = ['fail', 'failed', 'missed', 'broke', 'broken', 'streak', 'behind', 'lazy', 'should', 'must', 'excuse', 'just'];
 const hasBanned = (text) => BANNED.filter((word) => new RegExp(`(^|[^a-z])${word}([^a-z]|$)`, 'i').test(text));
@@ -206,7 +207,11 @@ describe('weeklyReview', () => {
     assert.equal(review.replanQuestion, 'Is this the wrong step, or the wrong size?');
     assert.equal(review.replanActionId, 'a1');
     assert.equal(review.escalate, null);
-    const calm = weeklyReview({ week: freshWeek(), checkins: [], state: state(), person: person('unknown') });
+    // Calm: nothing moved twice and no shrink to one step (2/3 done -> keep) -> no question.
+    let calmWeek = freshWeek();
+    for (const id of ['a1', 'a2']) calmWeek = applyCheckin(calmWeek, id, 'done', 'Sat').week;
+    const calm = weeklyReview({ week: calmWeek, checkins: [done('a1', 'Sat'), done('a2', 'Sat')], state: state(), person: person('unknown') });
+    assert.equal(calm.resize.direction, 'keep');
     assert.equal(calm.replanQuestion, null);
     assert.equal(calm.replanActionId, null);
   });
@@ -305,12 +310,81 @@ describe('weeklyReview', () => {
     assert.equal(detectEscalation(), null);
   });
 
+  test('escalation: economic language -> unemployment insurance and American Job Center resources, text never echoed', () => {
+    for (const phrase of ['rent', 'eviction', 'evicted', "can't pay", 'overdue bills', 'no money for']) assert.ok(ECONOMIC_PHRASES.includes(phrase), phrase);
+    const freeText = "Rough month. I can't pay rent and the overdue bills keep coming.";
+    const review = weeklyReview({ week: freshWeek(), checkins: [], state: state(), person: person('unknown'), freeText });
+    assert.equal(review.escalate.reason, 'economic_pressure');
+    assert.match(review.escalate.message, /unemployment insurance/i);
+    assert.match(review.escalate.message, /American Job Center/);
+    assert.doesNotMatch(review.escalate.message, /diagnos|depress|disorder|doctor|counselor/i);
+    assert.deepEqual(lint(review.escalate.message), { ok: true, hits: [] });
+    assert.deepEqual(hasBanned(review.escalate.message), []);
+    const dump = JSON.stringify(review).toLowerCase();
+    assert.ok(!dump.includes(freeText.toLowerCase()), 'the free text is not in the result');
+    assert.ok(!dump.includes("can't pay") && !dump.includes('overdue bills'), 'no matched phrase is in the result');
+    // Array input, mixed case, curly apostrophe, and a bare "rent".
+    assert.equal(detectEscalation({ freeText: ['fine', 'I CAN’T PAY the deposit'] }).reason, 'economic_pressure');
+    assert.equal(detectEscalation({ freeText: 'Rent is due Friday and there is no money for it.' }).reason, 'economic_pressure');
+    // Word boundaries: "current", "different", "parent", "rental" are not money talk.
+    assert.equal(detectEscalation({ freeText: 'My current role is different from what my parent did; the rental market is fine.' }), null);
+    assert.equal(detectEscalation({ freeText: 'A tiring but ordinary week.' }), null);
+  });
+
+  test('escalation: economic pressure caps the week at two steps (income first) instead of one micro step', () => {
+    let week = freshWeek();
+    for (const id of ['a1', 'a2', 'a3']) week = applyCheckin(week, id, 'done', 'Sat').week;
+    const capped = weeklyReview({ week, checkins: [], state: state({ energy: 5 }), person: person('unknown'), freeText: 'Great week, but eviction notice came.' });
+    assert.equal(capped.escalate.reason, 'economic_pressure');
+    assert.deepEqual([capped.resize.direction, capped.resize.count, capped.resize.micro], ['keep', 2, false]);
+    assert.ok(capped.nextWeekSeed.actions.length <= 2);
+    // 0 done stays at one micro step (shrink is never undone), and the shrink question stays silent.
+    const shrunk = weeklyReview({ week: freshWeek(), checkins: [], state: state(), person: person('unknown'), freeText: 'Evicted next week.' });
+    assert.deepEqual([shrunk.resize.direction, shrunk.resize.count, shrunk.resize.micro], ['down', 1, true]);
+    assert.equal(shrunk.replanQuestion, null);
+  });
+
+  test('crisis language outranks economic language; economic outranks condition and risk', () => {
+    const conditions = Array(14).fill(1);
+    const both = detectEscalation({ state: state({ conditions, riskHistory: ['red', 'red'] }), freeText: `${CRISIS_PHRASES[0]} because I cannot pay rent` });
+    assert.equal(both.reason, 'crisis_language');
+    const economic = detectEscalation({ state: state({ conditions, riskHistory: ['red', 'red'] }), freeText: 'cannot pay rent' });
+    assert.equal(economic.reason, 'economic_pressure');
+    const review = weeklyReview({ week: freshWeek(), checkins: [], state: state({ conditions }), person: person('unknown'), freeText: `rent ${CRISIS_PHRASES[3]}` });
+    assert.equal(review.escalate.reason, 'crisis_language');
+    assert.deepEqual(review.nextWeekSeed.actions, []);
+  });
+
+  test('0 done -> the one replan question, asked once; 1 done or an escalation -> none', () => {
+    const zero = weeklyReview({ week: freshWeek(), checkins: [], state: state(), person: person('unknown') });
+    assert.deepEqual([zero.resize.direction, zero.resize.count], ['down', 1]);
+    assert.equal(zero.replanQuestion, REPLAN_QUESTION);
+    assert.equal(zero.replanActionId, null);
+    assert.equal(allStrings(zero).filter((s) => s === REPLAN_QUESTION).length, 1);
+    // A repeated move on a 0-done week still yields exactly one question, tied to the moved step.
+    const { week, checkins } = twiceMoved();
+    const moved = weeklyReview({ week, checkins, state: state(), person: person('unknown'), today: 'Fri' });
+    assert.equal(moved.replanQuestion, REPLAN_QUESTION);
+    assert.equal(moved.replanActionId, 'a1');
+    assert.equal(allStrings(moved).filter((s) => s === REPLAN_QUESTION).length, 1);
+    // 1 done -> down to two steps, no question.
+    const one = applyCheckin(freshWeek(), 'a1', 'done', 'Tue').week;
+    const oneDone = weeklyReview({ week: one, checkins: [done('a1', 'Tue')], state: state(), person: person('unknown') });
+    assert.deepEqual([oneDone.resize.direction, oneDone.resize.count, oneDone.replanQuestion], ['down', 2, null]);
+    // An escalation carries its own sentence: the shrink question stays silent.
+    const low = weeklyReview({ week: freshWeek(), checkins: [], state: state({ conditions: Array(14).fill(1) }), person: person('unknown') });
+    assert.equal(low.escalate.reason, 'low_condition_10_of_14');
+    assert.equal(low.replanQuestion, null);
+  });
+
   test('every sentence the review can produce is free of banned words', () => {
     const texts = [...Object.values(monitor.ESCALATION_MESSAGES), REPLAN_QUESTION];
     const { week, checkins } = twiceMoved();
     texts.push(...allStrings(weeklyReview({ week, checkins, state: state(), person: person('unknown'), today: 'Fri' })));
     texts.push(...allStrings(weeklyReview({ week: freshWeek(), checkins: [], state: state({ riskHistory: ['red', 'red'] }), person: person('income-pressure') })));
+    texts.push(...allStrings(weeklyReview({ week: freshWeek(), checkins: [], state: state(), person: person('unknown'), freeText: 'no money for the bus' })));
     assert.deepEqual(hasBanned(texts.join(' ')), []);
+    for (const message of Object.values(monitor.ESCALATION_MESSAGES)) assert.deepEqual(lint(message), { ok: true, hits: [] });
   });
 
   test('never throws and is deterministic', () => {

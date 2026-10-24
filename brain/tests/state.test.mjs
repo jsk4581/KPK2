@@ -50,7 +50,15 @@ describe('estimateState: 14-day synthetic scenario', () => {
     const s = state.estimateState(scenario(11));
     assert.equal(s.today, '2026-10-15');
     assert.equal(s.energy, 2);
-    assert.equal(s.capacityMin, 12);
+    // condition 2 -> base 12; days 9-11 (2,2,2) vs days 6-8 (3,-,3) -> trend -1 -> x0.8 -> 10
+    assert.equal(s.condTrend, -1);
+    assert.equal(s.capacityBase, 12);
+    assert.equal(s.capacityFactor, 0.8);
+    assert.equal(s.capacityMin, 10);
+    assert.deepEqual(s.capacityReasons, ['cond_trend_down']);
+    // days 4 and 7 have no note and no check-in -> 9 of 11 logged; last 7 rows (days 5-11) -> 6/7
+    assert.equal(s.showedUp, 9);
+    assert.equal(s.consistency7, 0.86);
     assert.equal(s.consecRest, 2);
     assert.equal(s.condMean3, 2);
     assert.equal(s.dataGapDays, 0);
@@ -72,6 +80,10 @@ describe('estimateState: 14-day synthetic scenario', () => {
     assert.equal(s.consecRest, 0);
     assert.equal(s.energy, 4);
     assert.equal(s.capacityMin, 30);
+    assert.equal(s.capacityFactor, 1);
+    assert.deepEqual(s.capacityReasons, []);
+    assert.equal(s.showedUp, 12);
+    assert.equal(s.consistency7, 1);
     assert.equal(s.features.length, 14);
     // day 11: 0.534 -> done, done, logged -> 0.69
     assert.equal(s.momentum, 0.69);
@@ -242,6 +254,129 @@ describe('capacity table', () => {
       assert.equal(s.capacityMin, cap);
       assert.deepEqual(s.energySource, { type: 'arg', date: today });
     }
+  });
+});
+
+describe('capacity trend factor h(cond_trend) (§4.3)', () => {
+  // Six consecutive days of notes with the given conditions; today is the last day.
+  function conditionRun(conditions, start = '2026-10-05') {
+    const startOrd = state.dateOrdinal(start);
+    const lifelog = conditions.map((condition, i) => ({
+      ...LABEL, id: `c${i + 1}`, date: state.ordinalDate(startOrd + i), source: 'note', title: `Note ${i + 1}`, summary: 'Sample persona — synthetic.', tags: [], url: null, condition,
+    }));
+    return { lifelog, checkins: [], today: state.ordinalDate(startOrd + conditions.length - 1) };
+  }
+
+  test('trend -1 -> capacity 17 from 21', () => {
+    const s = state.estimateState(conditionRun([4, 4, 4, 3, 3, 3]));
+    assert.equal(s.energy, 3);
+    assert.equal(s.condTrend, -1);
+    assert.equal(s.capacityBase, 21);
+    assert.equal(s.capacityFactor, state.TREND_FACTOR);
+    assert.equal(s.capacityMin, 17);
+    assert.deepEqual(s.capacityReasons, ['cond_trend_down']);
+    assert.equal(s.capacityRules.cond_trend_down, state.CAPACITY_RULES.cond_trend_down);
+  });
+
+  test('no change when trend flat', () => {
+    const s = state.estimateState(conditionRun([3, 3, 3, 3, 3, 3]));
+    assert.equal(s.condTrend, 0);
+    assert.equal(s.capacityBase, 21);
+    assert.equal(s.capacityFactor, 1);
+    assert.equal(s.capacityMin, 21);
+    assert.deepEqual(s.capacityReasons, []);
+  });
+
+  test('a dip short of -1 (-0.667) and a rising trend apply nothing', () => {
+    const dip = state.estimateState(conditionRun([4, 4, 3, 3, 3, 3]));
+    assert.equal(dip.condTrend, -0.667);
+    assert.equal(dip.capacityMin, 21);
+    const rise = state.estimateState(conditionRun([2, 2, 2, 3, 3, 3]));
+    assert.equal(rise.condTrend, 1);
+    assert.equal(rise.capacityMin, 21);
+    assert.deepEqual(rise.capacityReasons, []);
+  });
+
+  test('a steeper fall (-2) is still x0.8, never more', () => {
+    const s = state.estimateState(conditionRun([5, 5, 5, 3, 3, 3]));
+    assert.equal(s.condTrend, -2);
+    assert.equal(s.capacityFactor, 0.8);
+    assert.equal(s.capacityMin, 17);
+  });
+
+  test('no earlier window -> trend null -> factor 1', () => {
+    const s = state.estimateState(conditionRun([3, 3, 3]));
+    assert.equal(s.condTrend, null);
+    assert.equal(s.capacityFactor, 1);
+    assert.equal(s.capacityMin, 21);
+  });
+
+  test('energy null keeps the base 30 even when a stale trend is falling', () => {
+    // scenario(9) ends on 2026-10-13 (condition 2); two days later energy is null but the
+    // window still shows days 10-12 (3,-,3) vs 13-15 (2,-,-) -> trend -1
+    const { lifelog, checkins } = scenario(9);
+    const s = state.estimateState({ lifelog, checkins, today: '2026-10-15' });
+    assert.equal(s.energy, null);
+    assert.equal(s.condTrend, -1);
+    assert.equal(s.capacityBase, 30);
+    assert.equal(s.capacityFactor, 1);
+    assert.equal(s.capacityMin, 30);
+    assert.deepEqual(s.capacityReasons, []);
+  });
+
+  test('trendFactor helper: <= -1 -> 0.8, otherwise 1, never throws', () => {
+    assert.equal(state.TREND_FACTOR, 0.8);
+    assert.equal(state.TREND_DOWN_THRESHOLD, -1);
+    assert.deepEqual([-2, -1, -0.999, 0, 1.333].map(state.trendFactor), [0.8, 0.8, 1, 1, 1]);
+    assert.equal(state.trendFactor(null), 1);
+    assert.equal(state.trendFactor(undefined), 1);
+    assert.equal(state.trendFactor('nope'), 1);
+    assert.equal(state.trendFactor('-1'), 0.8);
+  });
+});
+
+describe('showedUp and consistency7 (§4.2–4.3)', () => {
+  test('inline fixture: showedUp counts logged days, consistency7 is the last 7 rows / 7', () => {
+    const day11 = state.estimateState(scenario(11));
+    assert.equal(day11.showedUp, 9);
+    assert.equal(day11.consistency7, 0.86);
+    const day14 = state.estimateState(scenario(14));
+    assert.equal(day14.showedUp, 12);
+    assert.equal(day14.consistency7, 1);
+  });
+
+  test('silent days lower consistency7 but never reset showedUp', () => {
+    const { lifelog, checkins } = scenario(14);
+    const s = state.estimateState({ lifelog, checkins, today: '2026-10-21' });
+    assert.equal(s.showedUp, 12);
+    // rows 10-15 .. 10-21: 10-15..10-18 logged, 10-19..10-21 silent -> 4/7
+    assert.equal(s.consistency7, 0.57);
+  });
+
+  test('fewer than 7 rows still divides by 7', () => {
+    const lifelog = [{ ...LABEL, id: 'l1', date: '2026-10-05', source: 'note', title: 'x', summary: 'y', tags: [], url: null }];
+    const s = state.estimateState({ lifelog, checkins: [], today: '2026-10-06' });
+    assert.equal(s.showedUp, 1);
+    assert.equal(s.consistency7, 0.14);
+  });
+
+  test('dana-14d.json: day 11 -> showedUp 11, consistency7 1.0; day 14 -> 14, 1.0', () => {
+    const day11 = state.estimateState({ lifelog: DANA.lifelog, checkins: DANA.checkins, today: DANA.expected.day11.date });
+    assert.equal(day11.showedUp, 11);
+    assert.equal(day11.consistency7, 1);
+    assert.equal(day11.risk.level, 'amber');
+    const day14 = state.estimateState({ lifelog: DANA.lifelog, checkins: DANA.checkins, today: DANA.expected.day14.date });
+    assert.equal(day14.showedUp, 14);
+    assert.equal(day14.consistency7, 1);
+    assert.equal(day14.risk.level, 'green');
+  });
+
+  test('empty input -> showedUp 0, consistency7 0', () => {
+    const s = state.estimateState({ lifelog: null, checkins: 'x', today: 42 });
+    assert.equal(s.showedUp, 0);
+    assert.equal(s.consistency7, 0);
+    assert.equal(s.capacityFactor, 1);
+    assert.deepEqual(s.capacityReasons, []);
   });
 });
 

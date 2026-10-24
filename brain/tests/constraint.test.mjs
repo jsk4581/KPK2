@@ -110,3 +110,56 @@ describe('rootConstraint', () => {
     assert.equal(JSON.stringify(checkins), snapshot);
   });
 });
+
+// ---------- `today` cuts the history: nothing dated after today exists yet (same rule as state.js) ----------
+describe('rootConstraint: today ignores later-dated events', () => {
+  // Same 14-day synthetic arc as policy.test.mjs: 2026-10-05 Mon .. 2026-10-15 Thu = day 11, then days 12..14.
+  const DAY11 = '2026-10-15';
+  const FULL = [
+    nt('a2', '2026-10-14', 'energy', { day: 'Wed' }),
+    nt('a2', DAY11, 'energy'),
+    nt('a3', '2026-10-16', 'time', { day: 'Fri' }),
+    nt('a3', '2026-10-17', 'time', { day: 'Sat' }),
+    nt('a3', '2026-10-18', 'time', { day: 'Sun' }),
+  ];
+  const LATER_LOG = [
+    { _label: 'synthetic', id: 'l9', date: '2026-10-17', source: 'note', title: 'x', summary: 'Sample persona — synthetic.', tags: [], url: null, blocker_reason: 'time' },
+  ];
+  const slice = (checkins, today) => checkins.filter((c) => c.date <= today);
+
+  test('full history + today = day 11 -> same constraint (and same result) as the day-11 slice', () => {
+    const sliced = constraint.rootConstraint({ checkins: slice(FULL, DAY11), lifelog: [], today: DAY11 });
+    const replay = constraint.rootConstraint({ checkins: FULL, lifelog: LATER_LOG, today: DAY11 });
+    assert.equal(sliced.constraint, 'motivation-automatic');
+    assert.deepEqual(replay, sliced);
+    assert.deepEqual(replay.evidence, [`a2@${DAY11}`, 'a2@2026-10-14']);
+    assert.equal(replay.scores['opportunity-time'], undefined);
+    assert.equal(replay.signals.length, 2);
+  });
+
+  test('the same history read at day 14 counts the later reasons (and the later lifelog item)', () => {
+    const r = constraint.rootConstraint({ checkins: FULL, lifelog: LATER_LOG, today: '2026-10-18' });
+    assert.equal(r.constraint, 'opportunity-time');
+    assert.ok(r.evidence.includes('l9'));
+    assert.equal(r.signals.length, 6);
+  });
+
+  test('without today the latest dated event is today, so nothing is dropped; an unknown chip after today is not counted', () => {
+    const r = constraint.rootConstraint({ checkins: FULL, lifelog: [] });
+    assert.equal(r.constraint, 'opportunity-time');
+    const withUnknown = constraint.rootConstraint({ checkins: [...FULL, nt('a1', '2026-10-19', 'unknown')], lifelog: [], today: DAY11 });
+    assert.equal(withUnknown.constraint, 'motivation-automatic');
+    assert.equal(withUnknown.reason, 'argmax');
+  });
+
+  test('weekday-only and dateless check-ins are never dropped by the cut', () => {
+    const checkins = [
+      { actionId: 'a1', kind: 'not_today', day: 'Mon', reason: 'skill' },
+      { actionId: 'a2', kind: 'not_today', reason: 'people' },
+      nt('a3', '2026-10-20', 'time', { day: 'Tue' }),
+    ];
+    const r = constraint.rootConstraint({ checkins, lifelog: [], today: DAY11 });
+    assert.deepEqual(Object.keys(r.scores).sort(), ['capability', 'opportunity-social']);
+    assert.equal(r.signals.some((s) => s.id === 'a3@2026-10-20'), false);
+  });
+});

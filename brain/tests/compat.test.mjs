@@ -400,7 +400,8 @@ describe('POST /v1/checkin (spec §3.4, today = Thu)', () => {
     assert.ok(card);
     assert.equal(typeof card.headline, 'string');
     assert.equal(typeof card.body, 'string');
-    assert.equal(card.copy_text, 'Working on: Messaging & Positioning Consultant. Just did: Action 2. 1/3 done.');
+    assert.equal(card.copy_text, 'Working on: Messaging & Positioning Consultant. Done today: Action 2. 1/3 done.');
+    assert.equal(card.body, 'Done today: Action 2. 1/3 done.');
     assert.match(card.body, /1\/3 done/);
     for (const text of [card.headline, card.body, card.copy_text]) {
       assert.doesNotMatch(text, /Dana|Midwest|\d{3}-\d{4}|@/);

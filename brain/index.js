@@ -13,23 +13,32 @@
 // allowed in this entry file and in mcp/bin.js only.
 //
 // Exports (the BRAIN CONTRACT in mcp/server.js: one input object in, JSON out):
-//   think, rankRoles, planWeek, checkIn, analyzeState, explain, loadScenario, DEFAULT_SOURCES
+//   think, rankRoles, planWeek, checkIn, analyzeState, explain, jobReadiness, loadScenario,
+//   DEFAULT_SOURCES, SCENARIO_IDS
 
 import { readFileSync } from 'node:fs';
 import * as logic from '../app/logic.js';
 import { buildPersonModel } from './person.js';
 import { estimateState, isIsoDate, validCondition, weekdayOf } from './state.js';
-import { goalState, milestones, nextQuestion, evaluateGate } from './goal.js';
+import { goalState, goalHistory, milestones, nextQuestion, evaluateGate } from './goal.js';
 import { rootConstraint } from './constraint.js';
 import { compareWeek, weeklyReview } from './monitor.js';
-import { decideIntervention, resolveWeekday } from './policy.js';
-import { render } from './messages.js';
+import { decideIntervention, resolveWeekday, CRISIS_MESSAGE_KEY } from './policy.js';
+import { render, lint } from './messages.js';
 import { explain as explainDecision } from './explain.js';
+import { buildLedger } from './evidence.js';
+import { readinessScore } from './jobs.js';
+import { withIfThen } from './plan.js';
 
 export const DEFAULT_SOURCES = ['note', 'saved_link', 'calendar'];
 export const CONDITION_HISTORY_DAYS = 14;
 
-const SCENARIO_URL = new URL('./data/dana-14d.json', import.meta.url);
+// Synthetic demo scenarios shipped with the brain (data/README.md). 'dana' is the default.
+export const SCENARIO_IDS = ['dana', 'maya'];
+const SCENARIO_FILES = {
+  dana: new URL('./data/dana-14d.json', import.meta.url),
+  maya: new URL('./data/maya-21d.json', import.meta.url),
+};
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 const asText = (value) => (value === null || value === undefined ? '' : String(value));
@@ -37,9 +46,13 @@ const asObject = (value) => (value && typeof value === 'object' && !Array.isArra
 
 // ---------- scenario (synthetic; the only file read in the brain core) ----------
 
-// Parsed brain/data/dana-14d.json. Throws when the file is missing or not JSON.
-export function loadScenario() {
-  return JSON.parse(readFileSync(SCENARIO_URL, 'utf8'));
+// Parsed brain/data/<id>.json ('dana' by default, or 'maya'). Throws on an unknown id and when
+// the file is missing or not JSON.
+export function loadScenario(id = 'dana') {
+  const key = asText(id).trim() || 'dana';
+  const url = SCENARIO_FILES[key];
+  if (!url) throw new Error(`unknown scenario: ${key} (expected ${SCENARIO_IDS.join(' | ')})`);
+  return JSON.parse(readFileSync(url, 'utf8'));
 }
 
 // Skill/role catalog used when a caller passes none. Falls back to empty catalogs so think()
@@ -149,13 +162,68 @@ function gateForPolicy(gates) {
   };
 }
 
+// ---------- goal history ----------
+
+// Why the goal state is what it is, in rule words (recorded in the goal history, never a judgement).
+function goalReason(status, gates) {
+  if (status === 'ambiguous') return 'no path chosen';
+  const passed = gates.filter((g) => g.passed === true);
+  if (status === 'validated') return `gate ${passed.map((g) => g.id).join(', ')} passed with confirm`;
+  return passed.length > 0 ? 'latest due gate not passed; re-check' : 'path chosen, no gate passed yet';
+}
+
+// Goal version history (§2.1 goal_version): the caller's previous history plus one entry when the
+// state changed since the last entry. `at` is the demo today (an input), never the clock.
+// input.notNow (string[]) is merged into not_now (deduplicated) without creating an entry.
+function goalVersion(input, status, gates, todayIso) {
+  const prev = Array.isArray(input.goalHistory) ? { history: input.goalHistory } : asObject(input.goalHistory);
+  const base = { ...prev, not_now: [...asArray(prev.not_now ?? prev.notNow), ...asArray(input.notNow)] };
+  const entries = asArray(base.history).filter((e) => e && typeof e === 'object');
+  const last = entries.length > 0 ? entries[entries.length - 1] : null;
+  const lastTo = last ? asText(last.to) || null : null;
+  // No entry while nothing changed, and none before a goal exists (ambiguous with no history).
+  if (lastTo === status || (lastTo === null && status === 'ambiguous')) return goalHistory(base, {});
+  const passed = gates.find((g) => g.passed === true);
+  const event = { at: todayIso, from: lastTo, to: status, reason: goalReason(status, gates) };
+  if (status === 'validated' && passed) event.gateId = passed.id;
+  return goalHistory(base, event);
+}
+
+// ---------- messages ----------
+
+// §6.5 crisis pause: the fixed support text from policy (decision.text) is the whole message.
+// Same shape as messages.render so consumers read ack / reframe / next / text / lint as usual.
+function crisisMessage(decision) {
+  const text = asText(decision.text);
+  const lines = text.split('\n');
+  return {
+    key: CRISIS_MESSAGE_KEY,
+    requestedKey: asText(decision.messageKey) || CRISIS_MESSAGE_KEY,
+    ack: lines[0] || text,
+    reframe: lines.slice(1, -1).join('\n'),
+    next: lines.length > 1 ? lines[lines.length - 1] : '',
+    text,
+    lint: { ...lint(text), scrubbed: [] },
+  };
+}
+
+// §6.5 non-crisis escalations (economic pressure, low condition, red risk): the resource sentence
+// from monitor is appended after the next-step line. The sentence is only added when it passes lint.
+function withEscalation(message, escalate) {
+  const sentence = asText(escalate && escalate.message).trim();
+  if (sentence === '' || !lint(sentence).ok) return message;
+  const text = [message.text, sentence].filter(Boolean).join('\n');
+  return { ...message, escalation: { reason: asText(escalate.reason), message: sentence }, text, lint: { ...lint(text), scrubbed: message.lint.scrubbed } };
+}
+
 // ---------- think ----------
 
 // One brain pass. Input (all optional; the screen state as is):
 //   { fields, lifelog, enabledSources, rankedRoles, path, week, checkins, condition, today,
-//     skills?, roles?, arcStart?, gates? | confirmedGates? | confirmed?, freeText? }
-// Output: { person, state, goal, constraint, monitor, intervention: { ...decision, message },
-//           explain, trace, context }
+//     skills?, roles?, arcStart?, gates? | confirmedGates? | confirmed?, freeText?,
+//     goalHistory?, notNow?, constraints?, adaptability4c?, market? }
+// Output: { person, state, goal, constraint, monitor, ledger, readiness,
+//           intervention: { ...decision, message }, explain, trace, context }
 export function think(rawInput) {
   const input = asObject(rawInput);
   const trace = [];
@@ -182,9 +250,10 @@ export function think(rawInput) {
   }
   const chosenPathId = chosenPathIdOf(path, week);
 
-  // 2. Who is this person.
+  // 2. Who is this person (constraints / adaptability are self-declared inputs, never inferred).
   const person = traced(trace, 'buildPersonModel', buildPersonModel, 'brain')({
     fields, lifelog, skills: catalog.skills, rankedRoles, chosenPathId, checkins,
+    constraints: input.constraints, adaptability4c: input.adaptability4c,
   });
 
   // 3. What state are they in (today / condition are inputs; arcStart fills in from the log).
@@ -196,9 +265,11 @@ export function think(rawInput) {
   // 4. What is blocking them (only from reasons they tapped).
   const constraint = traced(trace, 'rootConstraint', rootConstraint, 'brain')({ checkins, lifelog, today: todayIso });
 
-  // 5. What do they want and how far along are they.
+  // 5. What do they want and how far along are they. `today` lets goalState re-check a validated
+  //    goal at every due gate (a due gate not passed -> back to provisional).
   const gates = evaluateGates(path, state.arcStart, input, week, checkins);
-  const goalStatus = traced(trace, 'goalState', goalState, 'brain')({ chosenPathId, gates });
+  const goalStatus = traced(trace, 'goalState', goalState, 'brain')({ chosenPathId, gates, today: todayIso });
+  const history = goalVersion(input, goalStatus, gates, todayIso);
   const goal = {
     state: goalStatus,
     chosenPathId,
@@ -206,6 +277,9 @@ export function think(rawInput) {
     arcStart: state.arcStart,
     milestones: gates,
     nextQuestion: nextQuestion({ person, goalState: goalStatus, constraint: constraint.constraint }),
+    version: history.version,
+    history: history.history,
+    notNow: history.not_now,
   };
 
   // 6. Plan versus reality (+ the weekly review on the same inputs).
@@ -214,13 +288,28 @@ export function think(rawInput) {
   const review = weeklyReview({ week, checkins, state: { ...state, conditions }, person, today: todayIso ?? input.today, lifelog, freeText: input.freeText });
   const monitor = { ...compare, review };
 
-  // 7. Today: which one action, how big, framed how.
-  const decision = traced(trace, 'decideIntervention', decideIntervention, 'brain')({
-    state, constraint, week, today: input.today ?? todayWeekday, checkins, gate: gateForPolicy(gates),
+  // 7. Success -> work: the evidence shelf (done check-ins only) and the job-readiness score.
+  const ledger = traced(trace, 'buildLedger', buildLedger, 'brain')({
+    week, checkins, lifelog, path, today: todayIso, arcStart: state.arcStart, skills: catalog.skills,
   });
-  const message = traced(trace, 'render', render, 'brain')(decision.messageKey, decision.slots);
+  const readiness = traced(trace, 'readinessScore', readinessScore, 'brain')({
+    ledger, person, state, goal, milestones: gates, rankedRoles, path, market: input.market,
+  });
 
-  // 8. Why.
+  // 8. Today: which one action, how big, framed how. The weekly review's escalation goes in:
+  //    crisis language pauses coaching (§6.5), the other escalations add their resource sentence.
+  const decision = traced(trace, 'decideIntervention', decideIntervention, 'brain')({
+    state, constraint, week, today: input.today ?? todayWeekday, checkins, gate: gateForPolicy(gates), escalate: review.escalate,
+  });
+  let message;
+  if (decision.kind === 'pause') {
+    message = crisisMessage(decision);
+  } else {
+    message = traced(trace, 'render', render, 'brain')(decision.messageKey, decision.slots);
+    if (review.escalate) message = withEscalation(message, review.escalate);
+  }
+
+  // 9. Why.
   const why = explainDecision(decision, { state, constraint, lifelog, checkins, week, today: todayIso });
 
   return {
@@ -229,6 +318,8 @@ export function think(rawInput) {
     goal,
     constraint,
     monitor,
+    ledger,
+    readiness,
     intervention: { ...decision, message },
     explain: why,
     trace,
@@ -266,12 +357,15 @@ export function rankRoles(rawInput) {
   return { fields, skillIds, roles, enabledSources: sources, trace };
 }
 
-// { path, today, condition? } -> { week, view, today, condition }
+// { path, today, condition?, anchor? } -> { week, view, today, condition }
 // `view` is the week sized for the condition (Build's sizeForCondition); `week` is what check_in takes.
+// Every action carries its if-then line (plan.withIfThen): the day only, unless the caller names
+// an anchor (never guessed), and milestone M1 unless the action says otherwise.
 export function planWeek(rawInput) {
   const input = asObject(rawInput);
   const todayWeekday = resolveWeekday(input.today, null);
-  const week = logic.buildWeek(pathWithActions(input.path), todayWeekday);
+  const built = logic.buildWeek(pathWithActions(input.path), todayWeekday);
+  const week = withIfThen(built, { anchor: asText(input.anchor) || null, milestone: 'M1' });
   const condition = validCondition(input.condition);
   return { week, view: logic.sizeForCondition(week, condition), today: todayWeekday, condition };
 }
@@ -326,4 +420,20 @@ export function explain(rawInput) {
   });
 }
 
-export default { think, rankRoles, planWeek, checkIn, analyzeState, explain, loadScenario };
+// think input -> { readiness, ledger, goal: { state, chosenPathId, pathTitle, arcStart, version, milestones },
+//                  today, trace }
+// The "success -> work" view of one brain pass: the evidence shelf and the job-readiness score with
+// the gates they rest on. Same determinism and same inputs as think(); nothing is stored.
+export function jobReadiness(rawInput) {
+  const report = think(rawInput);
+  const { state, chosenPathId, pathTitle, arcStart, version, milestones: gates } = report.goal;
+  return {
+    readiness: report.readiness,
+    ledger: report.ledger,
+    goal: { state, chosenPathId, pathTitle, arcStart, version, milestones: gates },
+    today: report.context.today,
+    trace: report.trace.filter((entry) => entry.fn === 'buildLedger' || entry.fn === 'readinessScore'),
+  };
+}
+
+export default { think, rankRoles, planWeek, checkIn, analyzeState, explain, jobReadiness, loadScenario };

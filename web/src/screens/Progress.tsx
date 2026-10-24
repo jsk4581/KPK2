@@ -53,6 +53,7 @@ const VIA_LABEL: Record<NonNullable<TraceEntry['via']>, string> = {
   llm: 'AI-drafted',
   fallback: 'Sample result',
   brain: 'Brain',
+  brain_backup: 'Brain (backup)',
 };
 
 const tracedProgressSignals = logic.withTrace('progressSignals', logic.progressSignals);
@@ -77,6 +78,7 @@ const VIA_TAG: Record<NonNullable<TraceEntry['via']>, string> = {
   llm: 'tag tag-accent',
   fallback: 'tag tag-attention',
   brain: 'tag tag-ok',
+  brain_backup: 'tag tag-ok',
 };
 
 function EvidenceText({ item, titles }: { item: Evidence; titles: Map<string, string> }) {

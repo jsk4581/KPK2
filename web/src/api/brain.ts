@@ -1,13 +1,21 @@
 // Client for the Decision Brain server (rules only, no AI). The browser calls it directly:
-//   POST ${VITE_BRAIN_URL}/v1/think     one brain pass on the current screen state
-//   GET  ${VITE_BRAIN_URL}/v1/scenario  the server's synthetic 14-day history (fetched once)
-// Nothing here throws to the UI: every call answers { ok: true, data } or { ok: false, reason }.
+//   POST ${base}/v1/think     one brain pass on the current screen state
+//   GET  ${base}/v1/scenario  the server's synthetic 14-day history (fetched once)
+// The same server can be reached at two addresses: VITE_BRAIN_URL (primary) and
+// VITE_BRAIN_URL_BACKUP (backup). A call that fails on one (network error, timeout, 5xx,
+// 408, 429 or a bad answer) is sent again to the other; any other 4xx is a bad request and
+// is not retried. The address that answered last is tried first next time (page memory only).
+// Nothing here throws to the UI: every call answers { ok: true, data, served } or { ok: false, reason }.
 
-export const BRAIN_TIMEOUT_MS = 8000;
+// Per attempt, so the worst case with both addresses is twice this.
+export const BRAIN_TIMEOUT_MS = 6000;
 
 export type BrainFailure = 'not_configured' | 'timeout' | 'network' | 'http_error' | 'bad_shape';
 
-export type BrainResult<T> = { ok: true; data: T } | { ok: false; reason: BrainFailure };
+// Which address answered: the primary or the backup.
+export type BrainServed = 'primary' | 'backup';
+
+export type BrainResult<T> = { ok: true; data: T; served: BrainServed } | { ok: false; reason: BrainFailure };
 
 export interface BrainLifelogItem {
   id: string;
@@ -128,11 +136,30 @@ const isObject = (value: unknown): value is Record<string, unknown> =>
 const isTraceEntry = (value: unknown): value is BrainTraceEntry =>
   isObject(value) && typeof value.fn === 'string' && typeof value.input === 'string' && typeof value.output === 'string';
 
+function cleanUrl(raw: string | undefined): string | null {
+  const trimmed = (raw ?? '').trim().replace(/\/+$/, '');
+  return trimmed === '' ? null : trimmed;
+}
+
 // Read at call time so tests (vi.stubEnv) and builds both see the current value.
 export function brainUrl(): string | null {
-  const raw = (import.meta.env.VITE_BRAIN_URL as string | undefined) ?? '';
-  const trimmed = raw.trim().replace(/\/+$/, '');
-  return trimmed === '' ? null : trimmed;
+  return cleanUrl(import.meta.env.VITE_BRAIN_URL as string | undefined);
+}
+
+export function brainBackupUrl(): string | null {
+  return cleanUrl(import.meta.env.VITE_BRAIN_URL_BACKUP as string | undefined);
+}
+
+// The configured addresses, primary first, without blanks or duplicates.
+export function brainUrls(): string[] {
+  return [...new Set([brainUrl(), brainBackupUrl()].filter((u): u is string => Boolean(u)))];
+}
+
+// The address that answered last, so the next call starts there.
+let preferredBase: string | null = null;
+
+export function resetBrainPreference(): void {
+  preferredBase = null;
 }
 
 // Minimal shape check of a /v1/think answer: every part the screen reads is there.
@@ -163,36 +190,66 @@ export function isScenario(value: unknown): value is BrainScenario {
   );
 }
 
+type Attempt<T> = { ok: true; data: T } | { ok: false; reason: BrainFailure; retry: boolean };
+
+// 4xx means the request itself is wrong, so the other address would answer the same;
+// 408 (timeout) and 429 (rate limit) are about this address and are worth retrying.
+const retryStatus = (status: number): boolean => status >= 500 || status === 408 || status === 429;
+
+async function attempt<T>(
+  url: string,
+  init: RequestInit,
+  check: (value: unknown) => value is T,
+  fetchImpl: FetchLike,
+  timeoutMs: number,
+): Promise<Attempt<T>> {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  try {
+    const res = await fetchImpl(url, { ...init, signal: controller.signal });
+    if (!res.ok) return { ok: false, reason: 'http_error', retry: retryStatus(res.status) };
+    let body: unknown;
+    try {
+      body = await res.json();
+    } catch {
+      return { ok: false, reason: timedOut ? 'timeout' : 'bad_shape', retry: true };
+    }
+    return check(body) ? { ok: true, data: body } : { ok: false, reason: 'bad_shape', retry: true };
+  } catch {
+    return { ok: false, reason: timedOut ? 'timeout' : 'network', retry: true };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function request<T>(
   path: string,
   init: RequestInit,
   check: (value: unknown) => value is T,
   options: BrainOptions,
 ): Promise<BrainResult<T>> {
-  const base = options.baseUrl ?? brainUrl();
-  if (!base) return { ok: false, reason: 'not_configured' };
+  const bases = options.baseUrl ? [options.baseUrl] : brainUrls();
+  if (bases.length === 0) return { ok: false, reason: 'not_configured' };
+  const primary = options.baseUrl ?? brainUrl();
+  // Start with the address that answered last, then the others in their usual order.
+  const first = preferredBase && bases.includes(preferredBase) ? preferredBase : bases[0];
+  const order = [first, ...bases.filter((b) => b !== first)];
   const fetchImpl: FetchLike = options.fetchImpl ?? ((input, req) => fetch(input, req));
-  const controller = new AbortController();
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    controller.abort();
-  }, options.timeoutMs ?? BRAIN_TIMEOUT_MS);
-  try {
-    const res = await fetchImpl(`${base}${path}`, { ...init, signal: controller.signal });
-    if (!res.ok) return { ok: false, reason: 'http_error' };
-    let body: unknown;
-    try {
-      body = await res.json();
-    } catch {
-      return { ok: false, reason: timedOut ? 'timeout' : 'bad_shape' };
+  let reason: BrainFailure = 'network';
+  for (const base of order) {
+    const result = await attempt(`${base}${path}`, init, check, fetchImpl, options.timeoutMs ?? BRAIN_TIMEOUT_MS);
+    if (result.ok) {
+      preferredBase = base;
+      return { ok: true, data: result.data, served: base === primary ? 'primary' : 'backup' };
     }
-    return check(body) ? { ok: true, data: body } : { ok: false, reason: 'bad_shape' };
-  } catch {
-    return { ok: false, reason: timedOut ? 'timeout' : 'network' };
-  } finally {
-    clearTimeout(timer);
+    reason = result.reason;
+    if (!result.retry) break;
   }
+  return { ok: false, reason };
 }
 
 // One brain pass. Never throws.

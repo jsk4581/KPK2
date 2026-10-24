@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as logic from '@app/logic.js';
 import persona from '@app/data/persona-dana.json';
-import { resetScenarioCache, type ThinkOutput } from '../api/brain';
+import { resetBrainPreference, resetScenarioCache, type ThinkOutput } from '../api/brain';
 import thinkOut from '../brain/__fixtures__/think-out.json';
 import scenario from '../brain/__fixtures__/scenario.json';
 import { StoreProvider, createInitialState } from '../state/store';
@@ -159,7 +159,9 @@ function jsonResponse(body: unknown): Response {
 describe('Progress with the decision brain', () => {
   beforeEach(() => {
     vi.stubEnv('VITE_BRAIN_URL', 'https://brain.example.test');
+    vi.stubEnv('VITE_BRAIN_URL_BACKUP', '');
     resetScenarioCache();
+    resetBrainPreference();
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -192,6 +194,27 @@ describe('Progress with the decision brain', () => {
     expect(explainStep).toHaveTextContent('decision full a3 (20 min)');
     expect(explainStep).toHaveTextContent('policy:overdue');
     expect(explainStep).toHaveTextContent('lifelog l33 (2026-10-18): condition 4/5');
+  });
+
+  it('primary unreachable: the backup answers and the Why steps say Brain (backup)', async () => {
+    vi.stubEnv('VITE_BRAIN_URL_BACKUP', 'https://brain-backup.example.test');
+    const fetchMock = vi.fn(async (url: string) =>
+      url.startsWith('https://brain.example.test')
+        ? Promise.reject(new TypeError('Failed to fetch'))
+        : jsonResponse(url.endsWith('/v1/scenario') ? scenario : thinkOut),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    render(
+      <StoreProvider initialState={sampleState()}>
+        <Progress />
+      </StoreProvider>,
+    );
+    await waitFor(() => expect(screen.getByTestId('brain-energy')).toHaveTextContent('Good'));
+    expect(fetchMock.mock.calls.map((c) => c[0])).toContain('https://brain-backup.example.test/v1/think');
+    fireEvent.click(screen.getByRole('button', { name: 'Why?' }));
+    const brainPart = within(screen.getByTestId('why-steps')).getAllByRole('listitem').slice(2);
+    expect(brainPart.length).toBe(data.trace.length + 1);
+    brainPart.forEach((s) => expect(s).toHaveTextContent('Brain (backup)'));
   });
 
   it('keeps the local signals and adds no brain steps when the brain is unreachable', async () => {

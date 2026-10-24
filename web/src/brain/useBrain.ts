@@ -7,7 +7,8 @@ import { isSampleUser, sendsSyntheticHistory, toThinkInput } from './adapter';
 export type BrainView =
   | { status: 'loading' }
   // synthetic: the input carried synthetic history (sample persona), so the panel labels it.
-  | { status: 'ok'; data: ThinkOutput; synthetic: boolean }
+  // backup: the backup address answered this call, so the Why trace says "Brain (backup)".
+  | { status: 'ok'; data: ThinkOutput; synthetic: boolean; backup?: boolean }
   | { status: 'offline'; reason: BrainFailure };
 
 // Calls the brain when the screen opens and again after every new check-in while it stays
@@ -31,7 +32,7 @@ export function useBrain(state: AppState): BrainView {
       if (!alive) return;
       setView(
         result.ok
-          ? { status: 'ok', data: result.data, synthetic: sendsSyntheticHistory(input) }
+          ? { status: 'ok', data: result.data, synthetic: sendsSyntheticHistory(input), backup: result.served === 'backup' }
           : { status: 'offline', reason: result.reason },
       );
     })();
@@ -53,7 +54,8 @@ function clip(text: string, max = 160): string {
 export function brainSteps(view: BrainView): TraceEntry[] {
   if (view.status !== 'ok') return [];
   const { trace, explain, intervention } = view.data;
-  const steps: TraceEntry[] = trace.map((t) => ({ fn: t.fn, input: t.input, output: t.output, via: 'brain' }));
+  const via = view.backup ? 'brain_backup' : 'brain';
+  const steps: TraceEntry[] = trace.map((t) => ({ fn: t.fn, input: t.input, output: t.output, via }));
   const evidence = explain.evidence.map((e) =>
     clip(`${[e.type, e.id].filter(Boolean).join(' ')}${e.date ? ` (${e.date})` : ''}${e.note ? `: ${e.note}` : ''}`),
   );
@@ -61,7 +63,7 @@ export function brainSteps(view: BrainView): TraceEntry[] {
     fn: 'explain',
     input: `decision ${intervention.kind}${intervention.actionId ? ` ${intervention.actionId}` : ''} (${intervention.minutes} min)`,
     output: `rules: ${explain.rules.join(', ') || 'none'}; evidence: ${evidence.join('; ') || 'none'}`,
-    via: 'brain',
+    via,
   });
   return steps;
 }

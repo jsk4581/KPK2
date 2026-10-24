@@ -64,12 +64,12 @@ describe('LifelogCard', () => {
   it('prefills the three fields from enabled sources with summarizeLifelog', () => {
     renderCard();
     const expected = summarize(['note', 'saved_link', 'calendar']);
-    expect(field(/career/i).value).toBe(expected.career);
-    expect(field(/now/i).value).toBe(expected.now);
-    expect(field(/pulls/i).value).toBe(expected.pull);
+    expect(field(/your work/i).value).toBe(expected.career);
+    expect(field(/going on now/i).value).toBe(expected.now);
+    expect(field(/drawn to/i).value).toBe(expected.pull);
     expect(readProbe().fields).toEqual(expected);
     // sms and messenger items stay out by default.
-    expect(field(/now/i).value).not.toContain('budget is under review');
+    expect(field(/going on now/i).value).not.toContain('budget is under review');
   });
 
   it('recomputes the fields when a toggle changes', () => {
@@ -78,23 +78,23 @@ describe('LifelogCard', () => {
     const sources = ['note', 'saved_link', 'calendar', 'sms'];
     const expected = summarize(sources);
     expect(readProbe().enabledSources.slice().sort()).toEqual(sources.slice().sort());
-    expect(field(/now/i).value).toBe(expected.now);
-    expect(field(/now/i).value).toContain('budget is under review');
+    expect(field(/going on now/i).value).toBe(expected.now);
+    expect(field(/going on now/i).value).toContain('budget is under review');
 
     fireEvent.click(screen.getByRole('switch', { name: /Calendar/ }));
     expect(screen.getByRole('switch', { name: /Calendar/ })).not.toBeChecked();
-    expect(field(/career/i).value).toBe(summarize(['note', 'saved_link', 'sms']).career);
+    expect(field(/your work/i).value).toBe(summarize(['note', 'saved_link', 'sms']).career);
   });
 
   it('keeps a field the user edited when toggles change', () => {
     renderCard();
-    fireEvent.change(field(/now/i), { target: { value: 'My own words about now.' } });
+    fireEvent.change(field(/going on now/i), { target: { value: 'My own words about now.' } });
     fireEvent.click(screen.getByRole('switch', { name: /Text messages/ }));
     fireEvent.click(screen.getByRole('switch', { name: /Saved links/ }));
-    expect(field(/now/i).value).toBe('My own words about now.');
+    expect(field(/going on now/i).value).toBe('My own words about now.');
     const expected = summarize(['note', 'calendar', 'sms']);
-    expect(field(/career/i).value).toBe(expected.career);
-    expect(field(/pulls/i).value).toBe(expected.pull);
+    expect(field(/your work/i).value).toBe(expected.career);
+    expect(field(/drawn to/i).value).toBe(expected.pull);
     expect(readProbe().fields.now).toBe('My own words about now.');
   });
 
@@ -104,26 +104,26 @@ describe('LifelogCard', () => {
       fields: { ...initial.fields, career: 'Typed on the inputs screen.' },
       editedFields: new Set(['career']),
     });
-    expect(field(/career/i).value).toBe('Typed on the inputs screen.');
+    expect(field(/your work/i).value).toBe('Typed on the inputs screen.');
     fireEvent.click(screen.getByRole('switch', { name: /Messenger/ }));
-    expect(field(/career/i).value).toBe('Typed on the inputs screen.');
+    expect(field(/your work/i).value).toBe('Typed on the inputs screen.');
   });
 
-  it('lists every lifelog item with source icon, date and title, marked as simulation', () => {
+  it('lists every activity item with source icon, date and title, marked as simulation', () => {
     renderCard();
-    const list = screen.getByRole('list', { name: 'Lifelog items' });
+    const list = screen.getByRole('list', { name: 'Your activity' });
     const rows = within(list).getAllByRole('listitem');
     expect(rows).toHaveLength(persona.lifelog.length);
     const first = persona.lifelog[0];
     expect(within(rows[0]).getByText(first.title)).toBeInTheDocument();
     expect(within(rows[0]).getByText(first.date)).toBeInTheDocument();
     expect(within(rows[0]).getByRole('img', { name: 'Note' })).toBeInTheDocument();
-    expect(screen.getByText(/\[SIMULATION\] 14 days of synthetic lifelog/)).toBeInTheDocument();
+    expect(screen.getByText(/\[SIMULATION\] 14 days of synthetic activity/)).toBeInTheDocument();
   });
 
   it('marks items from switched-off sources as not used', () => {
     renderCard();
-    const list = screen.getByRole('list', { name: 'Lifelog items' });
+    const list = screen.getByRole('list', { name: 'Your activity' });
     const smsItem = persona.lifelog.find((item) => item.source === 'sms')!;
     const row = within(list).getByText(smsItem.title).closest('li')!;
     expect(within(row).getByText('Not used')).toBeInTheDocument();

@@ -5,6 +5,7 @@ import persona from '@app/data/persona-dana.json';
 import { useStore } from '../state/store';
 import type { FieldKey, Fields, LifelogSource, TraceEntry } from '../state/types';
 import './LifelogCard.css';
+import { FIELD_LABELS } from './Inputs';
 
 interface LifelogItem {
   id: string;
@@ -40,12 +41,6 @@ const SINGULAR: Record<LifelogSource, string> = {
   messenger: 'Messenger message',
   document: 'Document',
   photo: 'Photo',
-};
-
-const FIELD_LABELS: Record<FieldKey, string> = {
-  career: 'Your career and what you did well',
-  now: 'Where you are now and what worries you',
-  pull: 'What pulls you (1 to 3 things)',
 };
 
 const FIELD_ORDER: FieldKey[] = ['career', 'now', 'pull'];
@@ -153,13 +148,14 @@ export default function LifelogCard() {
         </p>
         {FIELD_ORDER.map((key) => (
           <label key={key} className="field prefill-field">
-            <span className="field-label">{FIELD_LABELS[key]}</span>
+            <span className="field-label">{FIELD_LABELS[key].label}</span>
             <textarea
               ref={(el) => {
                 fieldRefs.current[key] = el;
               }}
               rows={4}
               value={state.fields[key]}
+              placeholder={FIELD_LABELS[key].placeholder}
               onChange={(event) => dispatch({ type: 'editField', field: key, value: event.target.value })}
             />
           </label>
@@ -167,11 +163,11 @@ export default function LifelogCard() {
       </div>
 
       <div className="items" data-reveal="">
-        <h3 className="h3">Lifelog</h3>
+        <h3 className="h3">Your activity</h3>
         <p className="tag tag-sim sim-label">
-          [SIMULATION] 14 days of synthetic lifelog. {usedCount} of {ITEMS.length} items in use.
+          [SIMULATION] 14 days of synthetic activity. {usedCount} of {ITEMS.length} items in use.
         </p>
-        <ul aria-label="Lifelog items" className="item-list">
+        <ul aria-label="Your activity" className="item-list">
           {ITEMS.map((item) => {
             const source = item.source as LifelogSource;
             const on = enabled.has(source);

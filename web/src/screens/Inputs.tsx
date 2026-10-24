@@ -14,17 +14,18 @@ import type {
 import './Inputs.css';
 import { SIMULATION_LABEL } from './Landing';
 
+// Shared with the connected-data card so both screens ask the same three questions.
 export const FIELD_LABELS: Record<FieldKey, { label: string; placeholder: string }> = {
   career: {
-    label: 'Career and what you were good at',
-    placeholder: 'What you did, for whom, and what people kept you for.',
+    label: "Your work and what you're good at",
+    placeholder: 'What you did, for whom, and why clients kept coming back.',
   },
   now: {
-    label: "Where you are now and what's bothering you",
+    label: "What's going on now",
     placeholder: 'What changed, what you tried, what worries you.',
   },
   pull: {
-    label: 'What pulls you (1 to 3 things)',
+    label: "What you're drawn to (1 to 3 things)",
     placeholder: 'The parts of the work you enjoy, or something you keep reading about.',
   },
 };

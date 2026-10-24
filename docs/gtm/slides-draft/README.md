@@ -1,6 +1,6 @@
-# 발표자료 초안 v2 (Sales, 2026-10-24 15:30) — GTM 인수용
+# 발표자료 초안 v2 (Sales, 2026-10-24 14:25) — GTM 인수용
 
-- v2: 2장에 **실제 배포 스크린샷 3장** 삽입 (`shot-landing.png` · `shot-paths.png` · `shot-nottoday.png`, Playwright headless Chrome 430×932 @2x, 15:22 SMOKE 3/3 실행 중 캡처) · 우상단에 데모 URL `kpk2-second-draft.vercel.app` · `defect-phone-390.png`는 Build 전달용 결함 캡처(덱에 없음)
+- v2: 2장에 **실제 배포 스크린샷 3장** 삽입 (`shot-landing.png` · `shot-paths.png` · `shot-nottoday.png`, Playwright headless Chrome 430×932 @2x, 14:22 SMOKE 3/3 실행 중 캡처) · 우상단에 데모 URL `kpk2-second-draft.vercel.app` · `defect-phone-390.png`는 Build 전달용 결함 캡처(덱에 없음)
 - v2 PDF: 2쪽 · 488,472바이트 · sha256 `d4d3835e84c06a67f515e86147a966379d88d54ac35e9ff181f108cf86151b7a`
 
 - `slides.html` — 주최 키트 규칙(16:9 · 2장 · 로고 띠 · 팀명 좌상단 · 본문 28px↑)을 지키되 레이아웃은 재설계: 1장 히어로 + 큰 숫자 3개(출처명 표기) + 타깃·문제 2박스 / 2장 3단계 플로우 카드 + How·Why·Market 3박스. `pitch/slides.html`로 복사해 쓰면 된다 (소유: GTM).

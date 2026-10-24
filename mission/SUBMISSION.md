@@ -2,9 +2,9 @@
 
 검사자: Sales(태진)
 확정: PM(우영)
-시각: 15:15
+시각: 14:15
 소스 커밋: 38627aa
-배포 버전: 배포 시각 미확인(15:12 접근 확인) + 커밋 미확인 — Build 기입
+배포 버전: 배포 시각 미확인(14:12 접근 확인) + 커밋 미확인 — Build 기입
 발표 파일 sha256: 미제출 — 초안 v2 docs/gtm/slides-draft/slides.pdf d4d3835e84c06a67f515e86147a966379d88d54ac35e9ff181f108cf86151b7a (pitch/slides.pdf 생성 후 교체)
 
 <!-- submit-gate 영수증. 머리의 `검사자:`는 영수증 작성자(기본 Sales)다 — 보통 확정자(PM)와 다른 사람이지만 검증하지 않는다 (행 단위 규칙은 X-5. PM은 체크 3·5·6을 검사하고 확정도 한다). 사람 표기는 `역할(이름)`.
@@ -15,16 +15,16 @@
 
 | # | 확인 | 결과 | 증거 | 검사자 | 시각 |
 |---|---|---|---|---|---|
-| 1 | 데모 URL 접근 | PASS | https://kpk2-second-draft.vercel.app 을 로그인 없이 노트북 폭(1366)·폰 폭(390) 브라우저로 열어 Landing 확인 — 제목 "Second Draft" · "Nothing you type is stored." · `[SIMULATION] Sample persona: synthetic` · Load sample persona/Start/Reset 버튼, 로그인·오류 배너 없음 (캡처 landing-laptop.png · landing-phone.png) | Sales(태진) | 15:12 |
-| 2 | 핵심 행동 실행 (SMOKE 3/3) | PASS | 배포 URL 브라우저 수동 실행 3/3 — Load sample persona → Connected data → Show my paths → 경로 카드 3장(What transfers · What's missing · First 2 weeks, 출처 표시 `Sample output (offline)`) → Choose this path → This week 행동 3개 → Not today → "Today was a rest day, not a missed day." · Moved to <요일> · 0/3 done · 1 moved → Reset → Landing (「테스트」 회차 1) | Sales(태진) | 15:15 |
-| 3 | 2장 파일 (페이지 ≤ 2) | NOT_RUN | pitch/slides.pdf 미생성 — 초안 docs/gtm/slides-draft/slides.pdf 2쪽(참고) | PM(우영) | 15:15 |
-| 4 | 개인정보 0 | NOT_RUN | Build 검사 대기 — 참고: `python scripts/pii_scan.py docs/gtm` SUMMARY hits=0 (15:05) | Build(준서) | 15:15 |
-| 5 | 라벨·시뮬레이션 표기 | NOT_RUN | mission/EVIDENCE.md · mission/PITCH.md 미생성 → C-T2·C-E3·X-1 검사 불가 | PM(우영) | 15:15 |
-| 6 | 심사기준 매핑 | NOT_RUN | mission/PITCH.md 미생성 | PM(우영) | 15:15 |
-| 7 | 제출 양식 필드 | NOT_RUN | Build 검사 대기 — 「제출」 양식 줄 초안 아래 | Build(준서) | 15:15 |
-| 8 | 복구 경로 | NOT_RUN | app/RECOVERY.md 마지막 정상 태그·재배포 실측 미확인 — Build 확인 요청 | Sales(태진) | 15:15 |
-| 9 | 해시·커밋 | NOT_RUN | 배포 커밋 미기입 · pitch/slides.pdf 없음 → 해시 3종 대조 불가 | Sales(태진) | 15:15 |
-| 10 | 시각·슬롯 | NOT_RUN | Build 검사 대기 — 참고: 슬롯 13:00=8 (HANDOFF 체크포인트) · 행사 모드 log PM 1/4 · Sales 1/4 확인, Build·GTM log 미확인 | Build(준서) | 15:15 |
+| 1 | 데모 URL 접근 | PASS | https://kpk2-second-draft.vercel.app 을 로그인 없이 노트북 폭(1366)·폰 폭(390) 브라우저로 열어 Landing 확인 — 제목 "Second Draft" · "Nothing you type is stored." · `[SIMULATION] Sample persona: synthetic` · Load sample persona/Start/Reset 버튼, 로그인·오류 배너 없음 (캡처 landing-laptop.png · landing-phone.png) | Sales(태진) | 14:12 |
+| 2 | 핵심 행동 실행 (SMOKE 3/3) | PASS | 배포 URL 브라우저 수동 실행 3/3 — Load sample persona → Connected data → Show my paths → 경로 카드 3장(What transfers · What's missing · First 2 weeks, 출처 표시 `Sample output (offline)`) → Choose this path → This week 행동 3개 → Not today → "Today was a rest day, not a missed day." · Moved to <요일> · 0/3 done · 1 moved → Reset → Landing (「테스트」 회차 1) | Sales(태진) | 14:15 |
+| 3 | 2장 파일 (페이지 ≤ 2) | NOT_RUN | pitch/slides.pdf 미생성 — 초안 docs/gtm/slides-draft/slides.pdf 2쪽(참고) | PM(우영) | 14:15 |
+| 4 | 개인정보 0 | NOT_RUN | Build 검사 대기 — 참고: `python scripts/pii_scan.py docs/gtm` SUMMARY hits=0 (15:05) | Build(준서) | 14:15 |
+| 5 | 라벨·시뮬레이션 표기 | NOT_RUN | mission/EVIDENCE.md · mission/PITCH.md 미생성 → C-T2·C-E3·X-1 검사 불가 | PM(우영) | 14:15 |
+| 6 | 심사기준 매핑 | NOT_RUN | mission/PITCH.md 미생성 | PM(우영) | 14:15 |
+| 7 | 제출 양식 필드 | NOT_RUN | Build 검사 대기 — 「제출」 양식 줄 초안 아래 | Build(준서) | 14:15 |
+| 8 | 복구 경로 | NOT_RUN | app/RECOVERY.md 마지막 정상 태그·재배포 실측 미확인 — Build 확인 요청 | Sales(태진) | 14:15 |
+| 9 | 해시·커밋 | NOT_RUN | 배포 커밋 미기입 · pitch/slides.pdf 없음 → 해시 3종 대조 불가 | Sales(태진) | 14:15 |
+| 10 | 시각·슬롯 | NOT_RUN | Build 검사 대기 — 참고: 슬롯 13:00=8 (HANDOFF 체크포인트) · 행사 모드 log PM 1/4 · Sales 1/4 확인, Build·GTM log 미확인 | Build(준서) | 14:15 |
 
 ## 산출물
 
@@ -38,12 +38,12 @@
 
 | 회차 | 시각 | 통과 단계 | 실패 | 조치 |
 |---|---|---|---|---|
-| 1 | 15:15 | 3/3 (배포 URL · 브라우저) | 없음 — 경로 카드 출처 `Sample output (offline)`(LLM 키 없음 폴백, SMOKE 기준 통과) | 결함(기능 영향 없음): 폰 폭 390px에서 Landing 소개 문단 오른쪽 잘림 → Build에게 HANDOFF 「제안」 |
-| 2 | 15:22 | 3/3 (배포 URL · Playwright headless Chrome 430×932) | 없음 — Load sample persona → Continue → Show my paths → What transfers 카드 3장(Skill overlap 67%) → Choose this path → This week 3개 → Not today → "Today was a rest day, not a missed day." · Moved to Sat · 0/3 done · 1 moved | 캡처 5장 `docs/gtm/slides-draft/shot-*.png` → 덱 2장에 삽입 |
+| 1 | 14:15 | 3/3 (배포 URL · 브라우저) | 없음 — 경로 카드 출처 `Sample output (offline)`(LLM 키 없음 폴백, SMOKE 기준 통과) | 결함(기능 영향 없음): 폰 폭 390px에서 Landing 소개 문단 오른쪽 잘림 → Build에게 HANDOFF 「제안」 |
+| 2 | 14:22 | 3/3 (배포 URL · Playwright headless Chrome 430×932) | 없음 — Load sample persona → Continue → Show my paths → What transfers 카드 3장(Skill overlap 67%) → Choose this path → This week 3개 → Not today → "Today was a rest day, not a missed day." · Moved to Sat · 0/3 done · 1 moved | 캡처 5장 `docs/gtm/slides-draft/shot-*.png` → 덱 2장에 삽입 |
 
 ## 알려진 결함
 
-- precheck 미실행 (14:45 시점 배포 URL 미확인 — 15:12 확인 뒤 체크 1·2만 실행)
+- precheck 14:45 예정 — 14:12 체크 1·2 선행 실행, 3–10은 precheck에서
 - #3 NOT_RUN — pitch/slides.pdf 미생성 · 담당 GTM
 - #5 NOT_RUN — mission/EVIDENCE.md · PITCH.md 미생성 · 담당 GTM/PM
 - #6 NOT_RUN — mission/PITCH.md 미생성 · 담당 GTM

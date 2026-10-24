@@ -32,6 +32,13 @@ function flatFace(w, h, r) {
   return g;
 }
 
+// Row icons: Phosphor Icons, regular weight (MIT License, Copyright (c) 2023 Phosphor Icons)
+const ICONS = {
+  transfers: 'M213.66,181.66l-32,32a8,8,0,0,1-11.32-11.32L188.69,184H48a8,8,0,0,1,0-16H188.69l-18.35-18.34a8,8,0,0,1,11.32-11.32l32,32A8,8,0,0,1,213.66,181.66Zm-139.32-64a8,8,0,0,0,11.32-11.32L67.31,88H208a8,8,0,0,0,0-16H67.31L85.66,53.66A8,8,0,0,0,74.34,42.34l-32,32a8,8,0,0,0,0,11.32Z',
+  missing: 'M220.27,158.54a8,8,0,0,0-7.7-.46,20,20,0,1,1,0-36.16A8,8,0,0,0,224,114.69V72a16,16,0,0,0-16-16H171.78a35.36,35.36,0,0,0,.22-4,36.11,36.11,0,0,0-11.36-26.24,36,36,0,0,0-60.55,23.62,36.56,36.56,0,0,0,.14,6.62H64A16,16,0,0,0,48,72v32.22a35.36,35.36,0,0,0-4-.22,36.12,36.12,0,0,0-26.24,11.36,35.7,35.7,0,0,0-9.69,27,36.08,36.08,0,0,0,33.31,33.6,35.68,35.68,0,0,0,6.62-.14V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V165.31A8,8,0,0,0,220.27,158.54ZM208,208H64V165.31a8,8,0,0,0-11.43-7.23,20,20,0,1,1,0-36.16A8,8,0,0,0,64,114.69V72h46.69a8,8,0,0,0,7.23-11.43,20,20,0,1,1,36.16,0A8,8,0,0,0,161.31,72H208v32.23a35.68,35.68,0,0,0-6.62-.14A36,36,0,0,0,204,176a35.36,35.36,0,0,0,4-.22Z',
+  week: 'M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-38.34-85.66a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L116,164.69l42.34-42.35A8,8,0,0,1,169.66,122.34Z',
+};
+
 // Placeholder screen drawn on a canvas, same look as the CSS demo screen
 export function drawPlaceholderScreen() {
   const c = document.createElement('canvas');
@@ -58,14 +65,15 @@ export function drawPlaceholderScreen() {
   x.font = font(400, 32); x.globalAlpha = 0.8; x.fillText('Synthetic persona \u00b7 example', 130, 770); x.globalAlpha = 1;
 
   const rows = [
-    ['What transfers', 'Discovery calls, positioning, workshops', '#e9dcf3'],
-    ["What's missing", 'Case studies, project pricing', '#e3e9f3'],
-    ['This week', '3 actions \u00b7 30 minutes or less', '#f4f5f5'],
+    ['What transfers', 'Discovery calls, positioning, workshops', '#e2f3e8', '#1f8a4c', ICONS.transfers],
+    ["What's missing", 'Case studies, project pricing', '#fdf0d8', '#b46d00', ICONS.missing],
+    ['This week', '3 actions \u00b7 30 minutes or less', '#f1e6f8', '#8e48b1', ICONS.week],
   ];
-  rows.forEach(([t, s, col], i) => {
+  rows.forEach(([t, s, tile, ink, icon], i) => {
     const y = 870 + i * 190;
     rr(80, y, 920, 160, 36, '#f4f5f5');
-    rr(120, y + 35, 90, 90, 24, col);
+    rr(120, y + 35, 90, 90, 24, tile);
+    x.save(); x.translate(138, y + 53); x.scale(54 / 256, 54 / 256); x.fillStyle = ink; x.fill(new Path2D(icon)); x.restore();
     x.fillStyle = '#0f0f0f'; x.font = font(600, 42); x.fillText(t, 250, y + 75);
     x.fillStyle = '#858585'; x.font = font(400, 32); x.fillText(s, 250, y + 123);
   });

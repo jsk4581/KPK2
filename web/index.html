@@ -87,7 +87,12 @@
     .float-card.left { right: calc(50% + 160px); top: 330px; animation-delay: -3s; }
     .fc-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; }
     .fc-row + .fc-row { border-top: 1px solid var(--line); }
-    .fc-ico { width: 30px; height: 30px; border-radius: 8px; flex: none; }
+    .fc-ico { width: 30px; height: 30px; border-radius: 8px; flex: none; display: grid; place-items: center; }
+    .fc-ico svg { width: 18px; height: 18px; }
+    /* Soft tinted icon tiles (Phosphor Icons, regular weight) */
+    .ico-purple { background: var(--accent-soft); color: var(--accent); }
+    .ico-green { background: #e2f3e8; color: #1f8a4c; }
+    .ico-amber { background: #fdf0d8; color: #b46d00; }
     .fc-row b { display: block; font-size: 13px; font-weight: 600; }
     .fc-row small { display: block; font: 400 11px/1.3 var(--mono); color: var(--muted); }
     @keyframes bob { 50% { transform: translateY(-10px); } }
@@ -184,7 +189,8 @@
     .app-result small { font: 500 1.2em/1 var(--mono); letter-spacing: .06em; opacity: .8; }
     .app-result p { margin: .5em 0 0; font-size: 2em; font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
     .app-row { display: flex; align-items: center; gap: 1.2em; padding: 1.3em; border-radius: 1.6em; background: var(--surface); }
-    .app-row i { width: 3.6em; height: 3.6em; border-radius: 1em; flex: none; }
+    .app-row i { width: 3.6em; height: 3.6em; border-radius: 1em; flex: none; display: grid; place-items: center; }
+    .app-row i svg { width: 2.1em; height: 2.1em; }
     .app-row b { display: block; font-size: 1.5em; }
     .app-row span { font-size: 1.2em; color: #858585; }
     .home-bar { position: absolute; z-index: 12; bottom: .9em; left: 50%; width: 13.5em; height: .5em; transform: translateX(-50%); border-radius: 1em; background: #0f0f0f; }
@@ -259,13 +265,14 @@
       </div>
     </div>
 
+    <!-- Icons: Phosphor Icons (MIT License, Copyright (c) 2023 Phosphor Icons), https://phosphoricons.com -->
     <div class="stage" id="stage">
       <div class="float-card right" aria-hidden="true">
-        <div class="fc-row"><i class="fc-ico" style="background:#1f8a4c"></i><div><b>What transfers</b><small>DISCOVERY CALLS · POSITIONING</small></div></div>
-        <div class="fc-row"><i class="fc-ico" style="background:var(--accent)"></i><div><b>Skill overlap 67%</b><small>PATH 1 OF 3 · SYNTHETIC</small></div></div>
+        <div class="fc-row"><i class="fc-ico ico-green"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M213.66,181.66l-32,32a8,8,0,0,1-11.32-11.32L188.69,184H48a8,8,0,0,1,0-16H188.69l-18.35-18.34a8,8,0,0,1,11.32-11.32l32,32A8,8,0,0,1,213.66,181.66Zm-139.32-64a8,8,0,0,0,11.32-11.32L67.31,88H208a8,8,0,0,0,0-16H67.31L85.66,53.66A8,8,0,0,0,74.34,42.34l-32,32a8,8,0,0,0,0,11.32Z"/></svg></i><div><b>What transfers</b><small>DISCOVERY CALLS · POSITIONING</small></div></div>
+        <div class="fc-row"><i class="fc-ico ico-purple"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg></i><div><b>Skill overlap 67%</b><small>PATH 1 OF 3 · SYNTHETIC</small></div></div>
       </div>
       <div class="float-card left" aria-hidden="true">
-        <div class="fc-row"><i class="fc-ico" style="background:#f0a020"></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED · SAMPLE</small></div></div>
+        <div class="fc-row"><i class="fc-ico ico-amber"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED · SAMPLE</small></div></div>
       </div>
       <!-- Shown only when WebGL or the CDN fails -->
       <div class="phone phone-fallback" style="--phone-w:290px"><div class="phone__bezel"><div class="phone__screen">
@@ -383,8 +390,8 @@
                     <small>PATH 1 OF 3 · SKILL OVERLAP 67%</small>
                     <p id="mock-out">Messaging &amp; Positioning Consultant</p>
                   </div>
-                  <div class="app-row"><i style="background:#e9dcf3"></i><div><b>What transfers</b><br><span>Discovery calls, positioning, workshops</span></div></div>
-                  <div class="app-row"><i style="background:#e3e9f3"></i><div><b>What's missing</b><br><span>Case studies, project pricing</span></div></div>
+                  <div class="app-row"><i class="ico-green"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M213.66,181.66l-32,32a8,8,0,0,1-11.32-11.32L188.69,184H48a8,8,0,0,1,0-16H188.69l-18.35-18.34a8,8,0,0,1,11.32-11.32l32,32A8,8,0,0,1,213.66,181.66Zm-139.32-64a8,8,0,0,0,11.32-11.32L67.31,88H208a8,8,0,0,0,0-16H67.31L85.66,53.66A8,8,0,0,0,74.34,42.34l-32,32a8,8,0,0,0,0,11.32Z"/></svg></i><div><b>What transfers</b><br><span>Discovery calls, positioning, workshops</span></div></div>
+                  <div class="app-row"><i class="ico-amber"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M220.27,158.54a8,8,0,0,0-7.7-.46,20,20,0,1,1,0-36.16A8,8,0,0,0,224,114.69V72a16,16,0,0,0-16-16H171.78a35.36,35.36,0,0,0,.22-4,36.11,36.11,0,0,0-11.36-26.24,36,36,0,0,0-60.55,23.62,36.56,36.56,0,0,0,.14,6.62H64A16,16,0,0,0,48,72v32.22a35.36,35.36,0,0,0-4-.22,36.12,36.12,0,0,0-26.24,11.36,35.7,35.7,0,0,0-9.69,27,36.08,36.08,0,0,0,33.31,33.6,35.68,35.68,0,0,0,6.62-.14V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V165.31A8,8,0,0,0,220.27,158.54ZM208,208H64V165.31a8,8,0,0,0-11.43-7.23,20,20,0,1,1,0-36.16A8,8,0,0,0,64,114.69V72h46.69a8,8,0,0,0,7.23-11.43,20,20,0,1,1,36.16,0A8,8,0,0,0,161.31,72H208v32.23a35.68,35.68,0,0,0-6.62-.14A36,36,0,0,0,204,176a35.36,35.36,0,0,0,4-.22Z"/></svg></i><div><b>What's missing</b><br><span>Case studies, project pricing</span></div></div>
                 </div>
               </div>
   </template>

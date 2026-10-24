@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -198,7 +199,7 @@ private fun statsLine(stats: SourceStats?): String {
         System.currentTimeMillis(),
         DateUtils.MINUTE_IN_MILLIS,
     ).toString()
-    return stringResource(R.string.source_stats, stats.count, ago)
+    return pluralStringResource(R.plurals.source_stats, stats.count, stats.count, ago)
 }
 
 @Composable

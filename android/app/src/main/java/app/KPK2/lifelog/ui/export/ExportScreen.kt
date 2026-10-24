@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,7 +44,7 @@ fun ExportScreen(repository: LifelogRepository, modifier: Modifier = Modifier) {
     ) {
         Text(stringResource(R.string.export_intro), style = MaterialTheme.typography.bodyLarge)
         Text(stringResource(R.string.export_privacy), style = MaterialTheme.typography.bodyMedium)
-        Text(stringResource(R.string.export_count, count), style = MaterialTheme.typography.titleMedium)
+        Text(pluralStringResource(R.plurals.export_count, count, count), style = MaterialTheme.typography.titleMedium)
         Button(
             enabled = count > 0 && !busy,
             onClick = {

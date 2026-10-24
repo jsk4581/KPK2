@@ -10,7 +10,10 @@
     <string name="dismiss">Dismiss</string>
 
     <string name="timeline_empty">Nothing recorded yet. Turn on a source to start your lifelog.</string>
-    <string name="timeline_count">%1$d items on this phone</string>
+    <plurals name="timeline_count">
+        <item quantity="one">%1$d item on this phone</item>
+        <item quantity="other">%1$d items on this phone</item>
+    </plurals>
     <string name="timeline_delete_one">Delete item</string>
     <string name="timeline_delete_all">Delete all</string>
     <string name="timeline_delete_all_title">Delete all items?</string>
@@ -18,7 +21,10 @@
     <string name="timeline_delete_all_confirm">Delete all</string>
     <string name="sources_intro">Choose what Second Draft may record on this phone. Everything stays on the device.</string>
     <string name="source_nothing_recorded">Nothing recorded yet</string>
-    <string name="source_stats">%1$d items, last recorded %2$s</string>
+    <plurals name="source_stats">
+        <item quantity="one">%1$d item, last recorded %2$s</item>
+        <item quantity="other">%1$d items, last recorded %2$s</item>
+    </plurals>
     <string name="source_unavailable">Not available in this version</string>
     <string name="source_needs_access">Needs your permission to record</string>
     <string name="source_denied">Permission for %1$s was not granted. You can allow it in system settings.</string>
@@ -48,7 +54,10 @@
     <string name="source_device_desc">Events such as charging or connecting headphones.</string>
     <string name="export_intro">Save your lifelog as a JSON file and choose where to send it.</string>
     <string name="export_privacy">Nothing leaves this phone unless you share the file yourself. Backups never include your lifelog.</string>
-    <string name="export_count">%1$d items ready to export</string>
+    <plurals name="export_count">
+        <item quantity="one">%1$d item ready to export</item>
+        <item quantity="other">%1$d items ready to export</item>
+    </plurals>
     <string name="export_button">Export JSON</string>
     <string name="export_chooser_title">Share lifelog export</string>
     <string name="export_failed">Could not create the export file. Try again.</string>

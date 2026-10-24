@@ -40,6 +40,10 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.KPK2.lifelog.AppGraph
 import app.KPK2.lifelog.R
+import app.KPK2.lifelog.collect.document.AddDocumentCard
+import app.KPK2.lifelog.collect.health.HealthCollector
+import app.KPK2.lifelog.collect.location.RecordPlaceNowButton
+import app.KPK2.lifelog.collect.motion.MotionStatusNote
 import app.KPK2.lifelog.data.SourceStats
 import app.KPK2.lifelog.sources.Collector
 import app.KPK2.lifelog.sources.CollectorRegistry
@@ -129,6 +133,7 @@ fun SourcesScreen(graph: AppGraph, modifier: Modifier = Modifier) {
         item {
             Text(stringResource(R.string.sources_intro), style = MaterialTheme.typography.bodyLarge)
         }
+        item { AddDocumentCard() }
         deniedSource?.let { id ->
             item {
                 DeniedNotice(
@@ -150,6 +155,9 @@ fun SourcesScreen(graph: AppGraph, modifier: Modifier = Modifier) {
                     if (wantOn) turnOn(row.id, collector) else choose(row.id, false)
                 },
             )
+            if (row.id == SourceId.LOCATION && row.on) {
+                RecordPlaceNowButton(graph.repository)
+            }
         }
     }
 }
@@ -166,12 +174,16 @@ private fun SourceCard(row: SourceRow, onToggle: (Boolean) -> Unit) {
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.secondary,
                 )
+                val context = LocalContext.current
                 val note = when {
                     row.collector == null -> stringResource(R.string.source_unavailable)
-                    !row.accessGranted -> stringResource(R.string.source_needs_access)
+                    !row.accessGranted -> stringResource(
+                        (row.collector as? HealthCollector)?.statusNote(context) ?: R.string.source_needs_access,
+                    )
                     else -> null
                 }
                 note?.let { Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary) }
+                if (row.id == SourceId.MOTION && row.on) MotionStatusNote()
             }
             Switch(checked = row.on, onCheckedChange = onToggle, enabled = row.collector != null)
         }

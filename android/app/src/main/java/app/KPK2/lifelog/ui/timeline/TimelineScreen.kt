@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.KPK2.lifelog.R
+import app.KPK2.lifelog.collect.note.NewNoteButton
 import app.KPK2.lifelog.data.LifelogItem
 import app.KPK2.lifelog.data.LifelogRepository
 import kotlinx.coroutines.launch
@@ -52,6 +53,7 @@ fun TimelineScreen(repository: LifelogRepository, modifier: Modifier = Modifier)
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
+            NewNoteButton()
             TextButton(onClick = { confirmDeleteAll = true }, enabled = items.isNotEmpty()) {
                 Text(stringResource(R.string.timeline_delete_all))
             }

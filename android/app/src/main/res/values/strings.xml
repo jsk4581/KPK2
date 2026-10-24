@@ -43,7 +43,7 @@
     <string name="source_motion">Movement</string>
     <string name="source_motion_desc">Whether you were walking, on the move or still.</string>
     <string name="source_app_usage">App usage</string>
-    <string name="source_app_usage_desc">Time spent in apps, per app.</string>
+    <string name="source_app_usage_desc">Minutes per day in each kind of app, such as productivity or video. App names are not exported.</string>
     <string name="source_device">Phone events</string>
     <string name="source_device_desc">Events such as charging or connecting headphones.</string>
     <string name="export_intro">Save your lifelog as a JSON file and choose where to send it.</string>

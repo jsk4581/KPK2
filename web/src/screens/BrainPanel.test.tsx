@@ -35,6 +35,48 @@ describe('BrainPanel', () => {
     expect(screen.queryByTestId('brain-offline')).not.toBeInTheDocument();
   });
 
+  it('says Not enough data instead of showing the brain starting values (no data yet)', () => {
+    // A Start user with nothing on record: the brain answers its starting constants.
+    const empty = {
+      ...data,
+      state: {
+        energy: null,
+        momentum: 0.5,
+        selfEfficacy: 0.5,
+        today: null,
+        arcStart: null,
+        features: [],
+        risk: { level: 'green', reasons: [], points: 0 },
+      },
+    };
+    render(<BrainPanel view={{ status: 'ok', data: empty }} />);
+    expect(screen.getByTestId('brain-energy')).toHaveTextContent('Not reported');
+    expect(screen.getByTestId('brain-momentum')).toHaveTextContent('Not enough data');
+    expect(screen.getByTestId('brain-efficacy')).toHaveTextContent('Not enough data');
+    expect(screen.getByTestId('brain-risk')).toHaveTextContent('Not enough data');
+    expect(screen.getByTestId('brain-risk')).not.toHaveTextContent('Low');
+    expect(screen.getByTestId('brain-momentum')).not.toHaveTextContent('Building');
+    expect(screen.getByTestId('brain-efficacy')).not.toHaveTextContent('Growing');
+  });
+
+  it('waits for enough days before naming momentum and self-efficacy', () => {
+    const oneDay = {
+      ...data,
+      state: {
+        ...data.state,
+        momentum: 0.65,
+        selfEfficacy: 0.4,
+        features: [{ date: '2026-10-22', logged: true, done: 1, notToday: 1 }],
+        risk: { level: 'green', reasons: ['first_week'], points: 1 },
+      },
+    };
+    render(<BrainPanel view={{ status: 'ok', data: oneDay }} />);
+    expect(screen.getByTestId('brain-momentum')).toHaveTextContent('Not enough data (1 of 3 days so far)');
+    expect(screen.getByTestId('brain-efficacy')).toHaveTextContent('Not enough data (1 of 3 days so far)');
+    // The risk rules read real counts, so the level shows once there is a day of data.
+    expect(screen.getByTestId('brain-risk')).toHaveTextContent('Low');
+  });
+
   it('shows elevated risk with its reasons in the attention style', () => {
     const amber = {
       ...data,

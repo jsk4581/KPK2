@@ -1,5 +1,6 @@
 import type { ThinkOutput } from '../api/brain';
 import { SCENARIO_ID_PREFIX } from '../brain/adapter';
+import { MIN_DATA_DAYS, dataDays, riskMeasured } from '../brain/dataDays';
 import type { BrainView } from '../brain/useBrain';
 import './BrainPanel.css';
 
@@ -50,18 +51,32 @@ export function energyWord(energy: number | null | undefined): string {
   return 'High';
 }
 
-export function momentumWord(momentum: number | null | undefined): string {
-  if (typeof momentum !== 'number') return 'Not enough data';
+export const NOT_ENOUGH = 'Not enough data';
+
+// `days` = days of data behind the value (see brain/dataDays.ts); fewer than MIN_DATA_DAYS
+// means the value is still mostly the brain's starting point, not a measurement.
+export function momentumWord(momentum: number | null | undefined, days = MIN_DATA_DAYS): string {
+  if (typeof momentum !== 'number' || days < MIN_DATA_DAYS) return NOT_ENOUGH;
   if (momentum >= 0.65) return 'Strong';
   if (momentum >= 0.35) return 'Building';
   return 'Slow';
 }
 
-export function efficacyWord(value: number | null | undefined): string {
-  if (typeof value !== 'number') return 'Not enough data';
+export function efficacyWord(value: number | null | undefined, days = MIN_DATA_DAYS): string {
+  if (typeof value !== 'number' || days < MIN_DATA_DAYS) return NOT_ENOUGH;
   if (value >= 0.7) return 'Solid';
   if (value >= 0.4) return 'Growing';
   return 'Still forming';
+}
+
+function DaysSoFar({ days }: { days: number }) {
+  if (days >= MIN_DATA_DAYS) return null;
+  return (
+    <span className="brain-muted">
+      {' '}
+      ({days} of {MIN_DATA_DAYS} days so far)
+    </span>
+  );
 }
 
 function constraintWhy(constraint: ThinkOutput['constraint']): string {
@@ -87,7 +102,9 @@ function suggestion(intervention: ThinkOutput['intervention']): { title: string;
 
 function BrainData({ data }: { data: ThinkOutput }) {
   const { state, goal, constraint, monitor, intervention } = data;
-  const level = state.risk.level;
+  const days = dataDays(state);
+  const measured = riskMeasured(state, days);
+  const level = measured ? state.risk.level : 'unknown';
   const attention = level === 'amber' || level === 'red';
   const next = goal.milestones.find((m) => m.passed !== true) ?? null;
   const todo = suggestion(intervention);
@@ -106,15 +123,21 @@ function BrainData({ data }: { data: ThinkOutput }) {
         </div>
         <div className="brain-cell" data-testid="brain-momentum">
           <dt>Momentum</dt>
-          <dd>{momentumWord(state.momentum)}</dd>
+          <dd>
+            {momentumWord(state.momentum, days.logged)}
+            <DaysSoFar days={days.logged} />
+          </dd>
         </div>
         <div className="brain-cell" data-testid="brain-efficacy">
           <dt>Self-efficacy</dt>
-          <dd>{efficacyWord(state.selfEfficacy)}</dd>
+          <dd>
+            {efficacyWord(state.selfEfficacy, days.checkins)}
+            <DaysSoFar days={days.checkins} />
+          </dd>
         </div>
         <div className={`brain-cell${attention ? ' brain-attention' : ''}`} data-testid="brain-risk" data-level={level}>
           <dt>Drop-off risk</dt>
-          <dd>{RISK_WORD[level] ?? level}</dd>
+          <dd>{measured ? (RISK_WORD[level] ?? level) : NOT_ENOUGH}</dd>
         </div>
       </dl>
       {state.risk.reasons.length > 0 && (

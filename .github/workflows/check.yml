@@ -1,0 +1,59 @@
+# HTHn check — runs scripts/ci.sh (= scripts/check.sh --strict) on every push and pull request.
+# What CI checks: L1 structure tests, L2 validator on the fixtures, PII scan, L3 app tests, and —
+# only when HANDOFF.md says "mode: event" — the real mission/ up to HANDOFF's "stage:".
+# Before the event (mode: pre_event) CI checks the harness and the fixtures only, never mission/.
+# Results: GitHub repo → Actions → check (run summary lists the commit, mode/stage and RESULT lines).
+# Every check prints "RESULT <id> PASS|FAIL|NOT_RUN"; exit 0 PASS · 1 FAIL · 2 required check NOT_RUN.
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Both `node --test app/tests` (via app/tests/index.js) and an explicit file list work;
+      # check.sh passes the file list. A NOT_RUN in strict mode fails the job (exit 2).
+      # pipefail keeps ci.sh's exit code (0 PASS / 1 FAIL / 2 NOT_RUN) through tee. The copy goes to
+      # RUNNER_TEMP, outside the checkout, so the repo-wide PII scan never reads its own log.
+      - name: HTHn checks (strict)
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/ci.sh 2>&1 | tee "$RUNNER_TEMP/hthn-ci-output.txt"
+
+      # The commit, mode/stage and every RESULT line on the run page, so a submit-gate NOT_RUN can be
+      # resolved by linking this run (same commit) as evidence.
+      - name: Summary (commit · stage · RESULT lines)
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### HTHn check — ${GITHUB_SHA}"
+            echo '```'
+            grep -E '^(CI commit=|mode=|RESULT |CHECK )' "$RUNNER_TEMP/hthn-ci-output.txt" || echo "no output (the check step did not start)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

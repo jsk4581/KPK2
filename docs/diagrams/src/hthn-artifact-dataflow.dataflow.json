@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "산출물 흐름",
+    "subtitle": "mission/ artifacts and validators",
+    "output": "hthn-artifact-dataflow.html",
+    "viewBox": [
+      1080,
+      760
+    ]
+  },
+  "stages": [
+    {
+      "label": "입력"
+    },
+    {
+      "label": "결정"
+    },
+    {
+      "label": "병렬 작업"
+    },
+    {
+      "label": "통합"
+    },
+    {
+      "label": "제출"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "raw",
+      "type": "external",
+      "label": "미션 원문",
+      "sublabel": "09:00 공개",
+      "stage": 0,
+      "row": 0,
+      "tag": "읽기 전용"
+    },
+    {
+      "id": "mission",
+      "type": "frontend",
+      "label": "MISSION.md",
+      "sublabel": "사실·해석·후보",
+      "stage": 0,
+      "row": 2,
+      "tag": "해석"
+    },
+    {
+      "id": "decision",
+      "type": "backend",
+      "label": "DECISION.md",
+      "sublabel": "점수·기각·결정",
+      "stage": 1,
+      "row": 1,
+      "tag": "G1 10:20"
+    },
+    {
+      "id": "prd",
+      "type": "backend",
+      "label": "PRD.md",
+      "sublabel": "6문장 · C·U·T",
+      "stage": 1,
+      "row": 3,
+      "tag": "결정"
+    },
+    {
+      "id": "board",
+      "type": "messagebus",
+      "label": "mission/BOARD.md",
+      "sublabel": "게이트·작업·소유",
+      "stage": 2,
+      "row": 0,
+      "tag": "G2 10:35"
+    },
+    {
+      "id": "app",
+      "type": "cloud",
+      "label": "app/",
+      "sublabel": "SMOKE → tests",
+      "stage": 2,
+      "row": 2,
+      "tag": "G4 14:45"
+    },
+    {
+      "id": "evidence",
+      "type": "database",
+      "label": "EVIDENCE.md",
+      "sublabel": "주장·구매자 시뮬",
+      "stage": 2,
+      "row": 4,
+      "tag": "v1 → v2"
+    },
+    {
+      "id": "pitch",
+      "type": "frontend",
+      "label": "PITCH.md",
+      "sublabel": "2장 · 90초",
+      "stage": 3,
+      "row": 2,
+      "tag": "G5 15:30"
+    },
+    {
+      "id": "submission",
+      "type": "security",
+      "label": "SUBMISSION.md",
+      "sublabel": "체크·영수증",
+      "stage": 4,
+      "row": 1,
+      "tag": "G6 16:00"
+    },
+    {
+      "id": "window",
+      "type": "external",
+      "label": "제출 창구",
+      "sublabel": "사람이 제출",
+      "stage": 4,
+      "row": 3,
+      "tag": "17:00 마감"
+    }
+  ],
+  "flows": [
+    {
+      "from": "raw",
+      "to": "mission",
+      "label": "원문 보존",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        100,
+        270
+      ]
+    },
+    {
+      "from": "mission",
+      "to": "decision",
+      "label": "후보 3",
+      "variant": "emphasis"
+    },
+    {
+      "from": "decision",
+      "to": "prd",
+      "label": "선택 1",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        315,
+        385
+      ]
+    },
+    {
+      "from": "decision",
+      "to": "board",
+      "label": "게이트 5",
+      "variant": "default"
+    },
+    {
+      "from": "prd",
+      "to": "app",
+      "label": "핵심 행동 1",
+      "variant": "emphasis"
+    },
+    {
+      "from": "decision",
+      "to": "evidence",
+      "label": "시장 주장",
+      "classification": "simulation 표기",
+      "variant": "security",
+      "labelDy": 24
+    },
+    {
+      "from": "app",
+      "to": "pitch",
+      "label": "데모 장면",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "evidence",
+      "to": "pitch",
+      "label": "라벨 4종",
+      "classification": "simulation 표기",
+      "variant": "security"
+    },
+    {
+      "from": "board",
+      "to": "submission",
+      "label": "게이트 상태",
+      "variant": "dashed"
+    },
+    {
+      "from": "pitch",
+      "to": "submission",
+      "label": "2장",
+      "variant": "emphasis"
+    },
+    {
+      "from": "submission",
+      "to": "window",
+      "label": "체크 10",
+      "classification": "사람만",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        960,
+        385
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "검증기",
+      "items": [
+        "validate_mission.py --stage intake|decide|board|evidence|pitch|submit",
+        "출력: PASS|FAIL <stage> <rule-id> · SUMMARY",
+        "submit 단계 교차 규칙 X-1~X-3"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "라벨 규칙",
+      "items": [
+        "라벨: verified · single-source · hypothesis · simulation",
+        "buyer simulation = [SIMULATION] 표기, 실제 고객 아님",
+        "제출은 사람만 — 판정 approve 후 PM"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "시각 앵커",
+      "items": [
+        "G1 10:20 결정 · G2 10:35 보드 · G3 13:00 핵심 장면",
+        "14:00 freeze · G4 14:45 테스트 · G5 15:30 2장",
+        "G6 16:00 제출 · 16:50 최종 한계 (F1–F5 PASS일 때만) · 17:00 창구 마감"
+      ]
+    }
+  ]
+}

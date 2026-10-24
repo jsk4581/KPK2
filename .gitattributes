@@ -1,0 +1,16 @@
+# Line endings: LF everywhere, so scripts/check.sh runs in Git Bash and the app tests'
+# heading regexes match on Windows clones (core.autocrlf=true would otherwise add CR).
+* text=auto eol=lf
+*.sh text eol=lf
+
+# HANDOFF.md is append-only for everyone: when two people append at the same time, keep both lines.
+HANDOFF.md merge=union
+
+# Binary files are never converted or diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.pptx binary
+*.zip binary

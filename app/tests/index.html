@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTHn 스모크 러너</title>
+  <!-- Dependency-free browser runner (T0): runs app/SMOKE.md's 3 steps against the real DOM
+       of ../index.html inside a same-origin iframe and prints N/3 PASS.
+       Query params: ?target=../fallback.html (page to test) · &expect=fixture|sheet (data source).
+       Must be served over http(s): the deployed URL's /tests/, or `node scripts/serve.mjs` locally.
+       file:// (double-click) blocks the module imports — the classic guard below then shows FAIL
+       instead of hanging on "실행 중…". Before the first deploy, open app/fallback.html by hand. -->
+  <style>
+    :root { --bg: #f6f7f9; --surface: #fff; --text: #1b1f24; --muted: #5b6470; --border: #d9dde3; --pass: #1f7a45; --fail: #b42318; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111418; --surface: #1a1f25; --text: #e8ebef; --muted: #9aa4b1; --border: #2c333c; --pass: #4cc38a; --fail: #ff7b6b; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 20px 16px 40px; }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; }
+    .meta { color: var(--muted); margin: 0 0 12px; font-size: 0.9rem; word-break: break-all; }
+    #summary { font-size: 1.6rem; font-weight: 800; margin: 8px 0 12px; }
+    #summary[data-result="pass"] { color: var(--pass); }
+    #summary[data-result="fail"] { color: var(--fail); }
+    ol { padding-left: 20px; }
+    li { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; margin: 6px 0; }
+    li .verdict { font-weight: 800; }
+    li[data-result="pass"] .verdict { color: var(--pass); }
+    li[data-result="fail"] .verdict { color: var(--fail); }
+    li .detail { display: block; color: var(--muted); font-size: 0.85rem; word-break: break-word; }
+    #precheck { color: var(--muted); font-size: 0.9rem; }
+    iframe { width: 100%; height: 520px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>스모크 러너 — app/SMOKE.md 3단계</h1>
+    <p class="meta" id="meta">준비 중…</p>
+    <p id="summary" data-result="running">실행 중…</p>
+    <p id="precheck"></p>
+    <ol id="results"></ol>
+    <iframe id="target" title="테스트 대상 페이지"></iframe>
+  </main>
+  <script>
+    // Classic (non-module) guard: runs even when the browser blocks the module below.
+    (function () {
+      function fail(text, title) {
+        var summary = document.getElementById('summary');
+        summary.textContent = text;
+        summary.dataset.result = 'fail';
+        document.body.dataset.result = 'fail';
+        document.title = title;
+      }
+      if (location.protocol === 'file:') {
+        fail('FAIL — file://로 열었습니다. 배포 URL의 /tests/ 를 열거나 (node가 있으면 node scripts/serve.mjs → http://localhost:8000/tests/), 배포 전이면 app/fallback.html을 더블클릭해 SMOKE 3단계를 손으로 확인하세요.',
+          '0/3 FAIL — file://');
+        return;
+      }
+      // Watchdog: if the module never started (blocked or failed to load), say so instead of hanging.
+      setTimeout(function () {
+        if (!document.body.dataset.result && !document.body.dataset.started) {
+          fail('FAIL — 러너가 시작되지 않음(모듈 로드 차단). 개발자 도구 콘솔의 오류를 보세요.', '0/3 FAIL — 러너 시작 안 됨');
+        }
+      }, 5000);
+    })();
+  </script>
+  <script type="module">
+    import { decideNextAction, pickDataSource } from '../logic.js';
+    import { SHEET_API_URL } from '../config.js';
+    // Same input as app/SMOKE.md step 2 and the node tests — change it only in smoke-input.js.
+    import { SMOKE_INPUT } from './smoke-input.js';
+
+    document.body.dataset.started = '1';
+    const READY_TIMEOUT_MS = 15000;
+    const STEP_TIMEOUT_MS = 3000;
+
+    const params = new URLSearchParams(location.search);
+    const targetUrl = params.get('target') || '../index.html';
+    const expectedSource = params.get('expect') || pickDataSource(SHEET_API_URL);
+
+    const resultsEl = document.getElementById('results');
+    const summaryEl = document.getElementById('summary');
+    const frame = document.getElementById('target');
+    document.getElementById('meta').textContent =
+      `대상: ${targetUrl} · 기대 데이터 소스: ${expectedSource} · 입력: ${SMOKE_INPUT}`;
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function waitFor(check, timeoutMs) {
+      const deadline = Date.now() + timeoutMs;
+      while (Date.now() < deadline) {
+        try {
+          if (check()) return true;
+        } catch (err) {
+          // Element not there yet; keep polling.
+        }
+        await sleep(50);
+      }
+      return false;
+    }
+
+    function report(name, pass, detail) {
+      const li = document.createElement('li');
+      li.dataset.result = pass ? 'pass' : 'fail';
+      const verdict = document.createElement('span');
+      verdict.className = 'verdict';
+      verdict.textContent = pass ? 'PASS ' : 'FAIL ';
+      const label = document.createElement('span');
+      label.textContent = name;
+      const info = document.createElement('span');
+      info.className = 'detail';
+      info.textContent = detail;
+      li.append(verdict, label, info);
+      resultsEl.append(li);
+      return pass;
+    }
+
+    function loadFrame(url) {
+      return new Promise((resolve) => {
+        frame.addEventListener('load', () => resolve(), { once: true });
+        frame.src = url;
+      });
+    }
+
+    async function run() {
+      // Pre-check (not counted): the pure core action echoes the input.
+      const pre = decideNextAction(SMOKE_INPUT, []);
+      document.getElementById('precheck').textContent =
+        `사전 점검 logic.js: ${pre.action.includes(SMOKE_INPUT) ? 'OK' : 'FAIL'} (${pre.reason})`;
+
+      await loadFrame(targetUrl);
+      let doc;
+      try {
+        doc = frame.contentDocument;
+      } catch (err) {
+        doc = null;
+      }
+      if (!doc) {
+        report('1. 페이지가 열린다', false, 'iframe 문서에 접근할 수 없습니다 — 같은 출처(http 서버·배포 URL)에서 여세요.');
+        return finish(0);
+      }
+
+      let passed = 0;
+
+      // Step 1: page opens and shows the title and the app elements.
+      const step1 = await waitFor(() => {
+        const h1 = doc.querySelector('h1');
+        return doc.title.trim() !== '' && h1 && h1.textContent.trim() !== ''
+          && doc.getElementById('app-input') && doc.getElementById('app-run')
+          && doc.getElementById('app-output') && doc.getElementById('app-source');
+      }, STEP_TIMEOUT_MS);
+      const h1Text = doc.querySelector('h1') ? doc.querySelector('h1').textContent.trim() : '(없음)';
+      if (report('1. 페이지가 열리고 제목이 보인다', step1, `title="${doc.title}" · h1="${h1Text}"`)) passed += 1;
+
+      // Data must be on screen before steps 2-3 (sheet mode can take a few seconds).
+      const ready = await waitFor(() => doc.getElementById('app-source').dataset.state === 'ready', READY_TIMEOUT_MS);
+
+      // Step 2: type the input, press 핵심 행동, output contains the input.
+      let step2 = false;
+      let outputText = '';
+      if (ready) {
+        const input = doc.getElementById('app-input');
+        const button = doc.getElementById('app-run');
+        const output = doc.getElementById('app-output');
+        input.value = SMOKE_INPUT;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        button.click();
+        step2 = await waitFor(() => output.textContent.includes(SMOKE_INPUT), STEP_TIMEOUT_MS);
+        outputText = output.textContent;
+      }
+      if (report('2. 입력 → 「핵심 행동」 → 출력에 입력이 포함된다', step2,
+        ready ? `출력="${outputText}"` : `데이터 로드가 ${READY_TIMEOUT_MS / 1000}초 안에 끝나지 않았습니다.`)) passed += 1;
+
+      // Step 3: rows load and the indicator names the expected source.
+      const source = doc.getElementById('app-source');
+      const rows = doc.getElementById('app-rows');
+      const count = Number(source.dataset.count || 0);
+      // Optional error banner (app/DEPLOY.md): absent in older snapshots, must stay hidden when data loaded.
+      const banner = doc.getElementById('app-error');
+      const bannerHidden = !banner || banner.hidden;
+      const step3 = ready && source.dataset.source === expectedSource && count >= 1
+        && rows.children.length === count && source.textContent.includes(expectedSource) && bannerHidden;
+      if (report(`3. 가상 데이터가 로드되고 표시기가 ${expectedSource}`, step3,
+        `표시기="${source.textContent}" · 목록 ${rows.children.length}행${bannerHidden ? '' : ` · 오류 배너="${banner.textContent}"`}`)) passed += 1;
+
+      return finish(passed);
+    }
+
+    function finish(passed) {
+      const pass = passed === 3;
+      summaryEl.textContent = `${passed}/3 PASS`;
+      summaryEl.dataset.result = pass ? 'pass' : 'fail';
+      document.body.dataset.result = pass ? 'pass' : 'fail';
+      document.title = `${passed}/3 PASS — HTHn 스모크 러너`;
+      return passed;
+    }
+
+    if (location.protocol !== 'file:') {
+      run().catch((err) => {
+        report('러너 오류', false, String(err && err.message ? err.message : err));
+        finish(0);
+      });
+    }
+  </script>
+</body>
+</html>

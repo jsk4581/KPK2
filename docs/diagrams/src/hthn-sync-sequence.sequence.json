@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "동기화",
+    "subtitle": "Hermes ↔ claudex ↔ team ↔ git — ④층 — 운영자 맥 전용 · 팀원은 설치·사용하지 않음 · 09:00 이후 꺼짐",
+    "output": "hthn-sync-sequence.html",
+    "viewBox": [
+      820,
+      900
+    ]
+  },
+  "participants": [
+    {
+      "id": "roy",
+      "type": "external",
+      "label": "Roy",
+      "sublabel": "모바일"
+    },
+    {
+      "id": "hermes",
+      "type": "messagebus",
+      "label": "Hermes",
+      "sublabel": "Discord 봇"
+    },
+    {
+      "id": "discord",
+      "type": "external",
+      "label": "Discord",
+      "sublabel": "팀채널·대화"
+    },
+    {
+      "id": "claudex",
+      "type": "backend",
+      "label": "claudex",
+      "sublabel": "맥 세션"
+    },
+    {
+      "id": "git",
+      "type": "database",
+      "label": "git repo",
+      "sublabel": "상태 정본"
+    },
+    {
+      "id": "member",
+      "type": "frontend",
+      "label": "팀원",
+      "sublabel": "PM·Build 등"
+    },
+    {
+      "id": "mclaude",
+      "type": "cloud",
+      "label": "팀원 Claude",
+      "sublabel": "제공 크레딧"
+    }
+  ],
+  "segments": [
+    {
+      "from": 160,
+      "to": 450,
+      "label": "01 / 행사 전"
+    },
+    {
+      "from": 470,
+      "to": 815,
+      "label": "02 / 행사 당일 09:00~"
+    }
+  ],
+  "messages": [
+    {
+      "from": "roy",
+      "to": "hermes",
+      "y": 195,
+      "label": "지시",
+      "variant": "emphasis"
+    },
+    {
+      "from": "hermes",
+      "to": "discord",
+      "y": 235,
+      "label": "수집",
+      "variant": "default"
+    },
+    {
+      "from": "discord",
+      "to": "hermes",
+      "y": 270,
+      "label": "새 메시지",
+      "variant": "return"
+    },
+    {
+      "from": "hermes",
+      "to": "claudex",
+      "y": 310,
+      "label": "HANDOFF 제안",
+      "variant": "dashed",
+      "note": "SYNC_STATE 갱신"
+    },
+    {
+      "from": "claudex",
+      "to": "git",
+      "y": 350,
+      "label": "반영·커밋",
+      "variant": "emphasis"
+    },
+    {
+      "from": "claudex",
+      "to": "hermes",
+      "y": 375,
+      "label": "pending_for_hermes",
+      "variant": "return"
+    },
+    {
+      "from": "git",
+      "to": "member",
+      "y": 410,
+      "label": "pull",
+      "variant": "return"
+    },
+    {
+      "from": "hermes",
+      "to": "roy",
+      "y": 440,
+      "label": "브리핑",
+      "variant": "return"
+    },
+    {
+      "from": "roy",
+      "to": "discord",
+      "y": 505,
+      "label": "직접 작성",
+      "variant": "security",
+      "note": "Hermes 추론 금지"
+    },
+    {
+      "from": "member",
+      "to": "mclaude",
+      "y": 545,
+      "label": "작업 지시",
+      "variant": "emphasis"
+    },
+    {
+      "from": "mclaude",
+      "to": "git",
+      "y": 585,
+      "label": "push",
+      "variant": "emphasis"
+    },
+    {
+      "from": "git",
+      "to": "mclaude",
+      "y": 620,
+      "label": "pull",
+      "variant": "return"
+    },
+    {
+      "from": "mclaude",
+      "to": "member",
+      "y": 660,
+      "label": "「제안」",
+      "variant": "return",
+      "note": "HANDOFF"
+    },
+    {
+      "from": "member",
+      "to": "discord",
+      "y": 700,
+      "label": "PM 결정",
+      "variant": "default"
+    },
+    {
+      "from": "mclaude",
+      "to": "member",
+      "y": 740,
+      "label": "gate PASS",
+      "variant": "security",
+      "note": "submit-gate"
+    },
+    {
+      "from": "member",
+      "to": "git",
+      "y": 780,
+      "label": "최종 커밋",
+      "variant": "emphasis",
+      "note": "SUBMISSION 기록"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "hermes",
+      "from": 195,
+      "to": 445,
+      "type": "messagebus"
+    },
+    {
+      "participant": "claudex",
+      "from": 305,
+      "to": 380,
+      "type": "backend"
+    },
+    {
+      "participant": "mclaude",
+      "from": 540,
+      "to": 745,
+      "type": "cloud"
+    },
+    {
+      "participant": "member",
+      "from": 540,
+      "to": 785,
+      "type": "frontend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "정본",
+      "items": [
+        "정본: Discord=대화 · git=상태 · HANDOFF=실행 · 위키=지식",
+        "충돌 시 최신 Roy 결정 → 실행 정본 → 위키 순",
+        "기존 기록을 조용히 덮어쓰지 않는다"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "행사 전",
+      "items": [
+        "Hermes: Discord 수집 → SYNC_STATE·HANDOFF 제안",
+        "claudex: 반영·검증 후 repo 커밋",
+        "claudex → Hermes: pending_for_hermes 전달",
+        "팀원: pull로 같은 상태를 본다"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "행사 당일",
+      "items": [
+        "09:00 이후 Hermes 추론 금지 — 사람이 Discord에 직접",
+        "팀원 Claude는 git pull/push, HANDOFF에 「제안」만",
+        "PM이 창구에 직접 제출 (16:00 목표, 17:00 마감)"
+      ]
+    }
+  ]
+}

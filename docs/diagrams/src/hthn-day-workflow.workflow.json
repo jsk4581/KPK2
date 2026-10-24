@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "당일 흐름",
+    "subtitle": "08:30 check-in → 16:00 submit",
+    "output": "hthn-day-workflow.html"
+  },
+  "lanes": [
+    {
+      "id": "pm",
+      "label": "PM"
+    },
+    {
+      "id": "build",
+      "label": "Build"
+    },
+    {
+      "id": "gtm",
+      "label": "GTM·피치"
+    },
+    {
+      "id": "sales",
+      "label": "Sales·구매자"
+    },
+    {
+      "id": "gates",
+      "label": "게이트 · 지연 규칙",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p_enter",
+      "label": "진입 08:30",
+      "fromCol": 0,
+      "toCol": 0
+    },
+    {
+      "id": "p_mission",
+      "label": "미션 09:00",
+      "fromCol": 1,
+      "toCol": 1
+    },
+    {
+      "id": "p_decide",
+      "label": "G1 10:20",
+      "fromCol": 2,
+      "toCol": 2,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p_parallel",
+      "label": "병렬 ~14:00",
+      "fromCol": 3,
+      "toCol": 3
+    },
+    {
+      "id": "p_test",
+      "label": "테스트·피치",
+      "fromCol": 4,
+      "toCol": 4,
+      "variant": "dashed"
+    },
+    {
+      "id": "p_submit",
+      "label": "제출 16:00",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "security"
+    }
+  ],
+  "mainPath": [
+    "start",
+    "intake",
+    "board",
+    "demo",
+    "gate"
+  ],
+  "nodes": [
+    {
+      "id": "start",
+      "lane": "pm",
+      "col": 0,
+      "type": "frontend",
+      "label": "체크인·진입",
+      "sublabel": "hthn-start"
+    },
+    {
+      "id": "intake",
+      "lane": "pm",
+      "col": 1,
+      "type": "backend",
+      "label": "미션→결정",
+      "sublabel": "mission-intake",
+      "width": 112
+    },
+    {
+      "id": "board",
+      "lane": "pm",
+      "col": 3,
+      "type": "backend",
+      "label": "작업 보드",
+      "sublabel": "sprint-board · G2",
+      "width": 104
+    },
+    {
+      "id": "gate",
+      "lane": "pm",
+      "col": 5,
+      "type": "security",
+      "label": "제출 관문",
+      "sublabel": "submit-gate · G6",
+      "width": 100
+    },
+    {
+      "id": "demo",
+      "lane": "build",
+      "col": 3,
+      "type": "backend",
+      "label": "데모 빌드",
+      "sublabel": "demo-build · G3",
+      "width": 104
+    },
+    {
+      "id": "pitch",
+      "lane": "gtm",
+      "col": 4,
+      "type": "frontend",
+      "label": "2장 피치",
+      "sublabel": "pitch-compile · G5",
+      "width": 104
+    },
+    {
+      "id": "evidence",
+      "lane": "sales",
+      "col": 3,
+      "type": "database",
+      "label": "근거·시뮬",
+      "sublabel": "evidence-research",
+      "width": 124
+    },
+    {
+      "id": "slots",
+      "lane": "sales",
+      "col": 5,
+      "type": "external",
+      "label": "슬롯 기록",
+      "sublabel": "13:00~ 30분마다"
+    },
+    {
+      "id": "slip1",
+      "lane": "gates",
+      "col": 2,
+      "type": "security",
+      "label": "G1 초과",
+      "sublabel": "강제 선택"
+    },
+    {
+      "id": "slip3",
+      "lane": "gates",
+      "col": 3,
+      "type": "security",
+      "label": "G3 초과",
+      "sublabel": "장면 좁히기"
+    },
+    {
+      "id": "once",
+      "lane": "gates",
+      "col": 5,
+      "type": "security",
+      "label": "제출은 1회",
+      "sublabel": "재제출 불가"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "intake",
+      "variant": "emphasis"
+    },
+    {
+      "from": "intake",
+      "to": "board",
+      "label": "G1 결정",
+      "variant": "emphasis"
+    },
+    {
+      "from": "board",
+      "to": "demo",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "drop"
+    },
+    {
+      "from": "demo",
+      "to": "gate",
+      "label": "G4 14:45",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          540,
+          243
+        ],
+        [
+          540,
+          119
+        ]
+      ]
+    },
+    {
+      "from": "evidence",
+      "to": "pitch",
+      "label": "근거",
+      "variant": "dashed",
+      "role": "branch",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          430,
+          430
+        ],
+        [
+          500,
+          430
+        ]
+      ]
+    },
+    {
+      "from": "pitch",
+      "to": "gate",
+      "label": "2장",
+      "variant": "default",
+      "role": "branch",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          625,
+          367
+        ]
+      ]
+    },
+    {
+      "from": "slots",
+      "to": "once",
+      "variant": "dashed",
+      "role": "async",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "drop"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "제출 규칙",
+      "items": [
+        "제출 목표 16:00 · 창구 17:00",
+        "재제출 불가 · PASS 즉시 제출",
+        "16:50 최종 한계 (F1–F5 PASS일 때만) · 결함 기록"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "데모데이",
+      "items": [
+        "19:00 8팀×10분",
+        "1차 통과 시에만",
+        "17:00~19:00 준비"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "게이트 시각",
+      "items": [
+        "G1 10:20 결정 · G2 10:35 보드",
+        "G3 13:00 장면 · 14:00 freeze",
+        "12:30 피치 뼈대 · G4 14:45 테스트·precheck · G5 15:30 2장",
+        "G6 16:00 제출"
+      ]
+    }
+  ]
+}

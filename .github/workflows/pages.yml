@@ -1,0 +1,41 @@
+# Publishes ONLY app/ to GitHub Pages (never the repo root: HANDOFF.md, mission/, log/, roles/ stay private).
+# Off by default. Turning it on is an external publication → 🚨 one-decision PM approval first
+# (CONTRACT safety rule 5). After approval: repo → Settings → Pages → Source "GitHub Actions",
+# and repo → Settings → Secrets and variables → Actions → Variables → HTHN_PAGES = on.
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["app/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.HTHN_PAGES == 'on' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload app/ only
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: app
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

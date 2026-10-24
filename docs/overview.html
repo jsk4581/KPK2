@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTHn 한눈에 보기</title>
+<style>
+:root{--bg:#f7f7f5;--card:#ffffff;--ink:#1c1d1f;--muted:#5f6368;--line:#dcdcd6;--accent:#2f5bd3;--accent-soft:#e7edfb;--warn:#a15c00;--warn-soft:#fff3e0;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root{--bg:#141517;--card:#1d1f22;--ink:#e8e8e6;--muted:#a0a4aa;--line:#33363b;--accent:#8aa8ff;--accent-soft:#1f2a44;--warn:#ffb74d;--warn-soft:#3a2a12}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif;word-break:keep-all}
+main{max-width:1040px;margin:0 auto;padding:32px 16px 48px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:0 0 8px}
+h2{font-size:22px;margin:0 0 4px}
+h2 small{font-size:13px;color:var(--muted);font-weight:500;margin-left:6px}
+p{margin:0 0 8px}
+code{font-family:var(--mono);font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+.lede{font-size:18px;color:var(--muted);margin:0 0 14px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.badge{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn)}
+.date{font-size:13px;color:var(--muted);font-family:var(--mono)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:20px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0 18px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--bg)}
+.stat b{display:block;font-size:34px;line-height:1.1;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px}
+ul.why{margin:6px 0 12px;padding-left:20px;color:var(--muted)}
+ul.why li{margin:2px 0}
+.frame{width:100%;height:720px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.open{display:inline-block;margin-top:8px;font-size:14px;color:var(--accent);text-decoration:none;font-weight:600}
+.open:hover{text-decoration:underline}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0 0;display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
+ol.steps li{counter-increment:s;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
+ol.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--card);font-weight:700;font-size:13px;margin-right:6px}
+ol.steps small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.read{font-family:var(--mono);font-size:14px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+nav.toc a{font-size:13px;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--card)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:28px}
+footer p{margin:2px 0}
+@media (max-width:640px){.stats{grid-template-columns:1fr}ol.steps{grid-template-columns:1fr}.frame{height:560px}section{padding:16px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>HTHn — Hackathon Team Harness</h1>
+  <p class="lede">팀 repo를 여는 것. 설치 없음. 09:00 미션 → 16:00 제출을 같은 7단계·6게이트로.</p>
+  <div class="meta"><span class="badge">specified (리허설 전)</span><span class="date">2026-10-21</span></div>
+  <nav class="toc" aria-label="목차">
+    <a href="#summary">3분 요약</a><a href="#arch">구조</a><a href="#day">당일 흐름</a><a href="#tdd">TDD 루프</a><a href="#data">산출물 흐름</a><a href="#sync">동기화</a><a href="#state">상태 머신</a><a href="#onboard">온보딩</a>
+  </nav>
+</header>
+
+<section id="summary">
+  <h2>3분 요약 <small>Summary</small></h2>
+  <p><code>CLAUDE.md</code> 한 파일이 나머지를 끌어온다. 미션이 무엇이든 같은 7단계를 6개 게이트로 끊고, 제출은 <code>submit-gate</code> PASS 즉시 한 번만 한다(16:00 목표·상한, 16:50 최종 한계).</p>
+  <div class="stats">
+    <div class="stat"><b>7</b><span>스킬 — 전원 필수 2 (hthn-start · submit-gate) + 역할별 5</span></div>
+    <div class="stat"><b>6</b><span>게이트 — G1 10:20 결정 … G6 16:00 제출</span></div>
+    <div class="stat"><b>5</b><span>TDD 단계 — L0 계약 → L4 하네스 eval</span></div>
+  </div>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>역할</th><th>내가 쓰는 스킬</th><th>내 파일</th><th>내 게이트</th></tr></thead>
+    <tbody>
+      <tr><td><b>PM</b></td><td>hthn-start · mission-intake · sprint-board · submit-gate(확정자)</td><td><code>mission/MISSION.md</code> · <code>DECISION.md</code> · <code>PRD.md</code> · <code>mission/BOARD.md</code> · <code>HANDOFF.md</code></td><td>G1 10:20 결정 · G2 10:35 보드 · G6 16:00 제출 확정</td></tr>
+      <tr><td><b>Build</b></td><td>hthn-start · demo-build · submit-gate(검사)</td><td><code>app/SMOKE.md</code> · <code>app/tests/</code> · <code>app/</code> 코드 · <code>app/RECOVERY.md</code></td><td>G3 13:00 핵심 장면 · 14:00 freeze</td></tr>
+      <tr><td><b>GTM</b></td><td>hthn-start · evidence-research(market) · pitch-compile · submit-gate</td><td><code>mission/PITCH.md</code> · 2장 발표 파일 · <code>mission/DEMODAY.md</code></td><td>G4 14:45 (Sales와 함께) · G5 15:30 2장 확정</td></tr>
+      <tr><td><b>Sales</b></td><td>hthn-start · evidence-research(market·simulation) · submit-gate(검사)</td><td><code>mission/EVIDENCE.md</code> · <code>mission/SUBMISSION.md</code> · BOARD 슬롯 기록</td><td>G4 14:45 테스트 · G6 검사·영수증</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="arch">
+  <h2>구조 <small>Architecture</small></h2>
+  <ul class="why">
+    <li>4층: ①계약(<code>CLAUDE.md</code>·<code>CONTRACT.md</code>) ②스킬 7(전원 필수 2 + 역할별 5) ③관측(HANDOFF·BOARD·<code>mission/</code>·<code>log/</code>) ④실행(claudex·codexx·agyx·Hermes — Roy 맥 전용, 이식 안 함, 09:00 이후 꺼짐)</li>
+    <li>코어(계약·스킬·<code>templates/</code>·<code>roles/</code> — 당일 불변) · 오버레이(<code>mission/</code> — 09:00 이후 생성) · 제품(<code>app/</code> — 그날 만든 데모)</li>
+    <li>진실은 git 하나 — trunk 1개, 파일마다 소유자 1명, 쓰기 전 <code>pull --rebase</code>.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-architecture.html" loading="lazy" title="HTHn 구조" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-architecture.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="day">
+  <h2>당일 흐름 <small>Day workflow</small></h2>
+  <ul class="why">
+    <li>08:30 체크인 → 09:00 미션 → G1 10:20 결정 → G2 10:35 보드 → G3 13:00 핵심 장면 → 14:00 freeze.</li>
+    <li>G4 14:45 테스트 → G5 15:30 2장 → G6 16:00 제출 · 16:50 최종 한계 · 17:00 창구 마감 · 19:00 데모데이(8팀).</li>
+    <li>게이트가 밀리면 범위를 좁힌다 — 기능을 더하지 않는다. 16:00–17:00은 버퍼이고 계획에 쓰지 않는다.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-day-workflow.html" loading="lazy" title="당일 흐름" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-day-workflow.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="tdd">
+  <h2>TDD 루프 <small>TDD loop</small></h2>
+  <ul class="why">
+    <li>L0 계약 → L1 구조 테스트 → L2 산출물 검증기 → L3 앱 TDD → L4 하네스 eval([SIMULATION]).</li>
+    <li>당일: PRD 6문장 C·U·T → Build가 <code>app/SMOKE.md</code>와 <code>app/tests</code>를 먼저(실패·red) → 코드(통과·green) → 배포 URL에서 통과.</li>
+    <li>제출 직전 submit-gate가 검증기 <code>--stage submit</code>(T2) 또는 체크리스트 수동(T0)으로 PASS를 낸다.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-tdd-loop.html" loading="lazy" title="TDD 루프" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-tdd-loop.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="data">
+  <h2>산출물 흐름 <small>Artifact data flow</small></h2>
+  <ul class="why">
+    <li>미션 원문 → MISSION → DECISION·PRD → BOARD → app·EVIDENCE·PITCH → SUBMISSION 순으로 흐른다.</li>
+    <li>각 파일은 <code>templates/</code>에서 시작하고 <code>scripts/validate_mission.py</code>가 단계별로 검사한다.</li>
+    <li>시장 주장은 PRD가 아니라 DECISION·EVIDENCE에 둔다. 시뮬레이션 행은 <code>simulation</code> 라벨.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-artifact-dataflow.html" loading="lazy" title="산출물 흐름" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-artifact-dataflow.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="sync">
+  <h2>동기화 <small>Hermes ↔ claudex sync</small></h2>
+  <ul class="why">
+    <li><strong>④층 — 운영자 맥 전용 · 팀원은 설치·사용하지 않음 · 09:00 이후 꺼짐.</strong> 팀원의 동기화는 사람 ↔ git(HANDOFF·BOARD) ↔ Discord뿐이다.</li>
+    <li>Roy · Hermes · claudex 사이에서 결정이 어떻게 HANDOFF에 들어가는지 순서대로 본다.</li>
+    <li>당일 Discord 결정 → HANDOFF 반영은 담당자가 직접(T0). Hermes relay는 행사 전 보강일 뿐이다.</li>
+    <li>「제안」을 「결정」으로 올리는 것은 PM 한 사람이다.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-sync-sequence.html" loading="lazy" title="동기화" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-sync-sequence.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="state">
+  <h2>상태 머신 <small>Harness lifecycle</small></h2>
+  <ul class="why">
+    <li>하네스 승격 단계: 지금은 <code>specified</code>다.</li>
+    <li><code>manual-pilot</code>으로 오르려면 사람 리허설 1회가 필요하다.</li>
+    <li>오늘 밤의 시뮬레이션은 설계 검증이지 승격 근거가 아니다.</li>
+  </ul>
+  <iframe class="frame" src="diagrams/hthn-lifecycle.html" loading="lazy" title="하네스 상태 머신" style="width:100%;height:720px;border:1px solid var(--line);border-radius:12px"></iframe>
+  <a class="open" href="diagrams/hthn-lifecycle.html" target="_blank" rel="noopener">열기 ↗</a>
+</section>
+
+<section id="onboard">
+  <h2>온보딩 3단계 <small>Onboarding</small></h2>
+  <p>설치는 없다. 행사 전(10/22~23)에 4명 전원이 한 번 통과한다.</p>
+  <ol class="steps">
+    <li><b>repo 받기</b><small>5분 · <code>git clone</code> / GitHub Desktop / ZIP 다운로드</small></li>
+    <li><b>폴더에서 Claude 열기</b><small>1분 · CLI <code>claude</code> 또는 Desktop Code 탭 — <code>CLAUDE.md</code>가 읽힌다</small></li>
+    <li><b><code>/hthn-start</code></b><small>10분 · 환경 감지(묻지 않음) → 역할 1문 → 브리핑 → <code>me/</code> 3블록 → 왕복 검증</small></li>
+  </ol>
+  <h2 style="margin-top:20px">읽는 순서 <small>Reading order</small></h2>
+  <p class="read">README.md → CONTRACT.md → roles/&lt;나&gt;.md → HANDOFF.md / mission/BOARD.md (G2 전에는 없음)</p>
+</section>
+
+<section id="night">
+  <h2>오늘 밤 검증 결과 <small>Overnight verification · 2026-10-21 04:20</small></h2>
+  <table>
+    <thead><tr><th>검사</th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><td>단위 테스트 (구조·검증기·템플릿·check.sh)</td><td><strong>152 / 152 OK</strong></td></tr>
+      <tr><td>산출물 검증기 — 정상 fixture / 오류 fixture</td><td><strong>109 PASS · 0 FAIL</strong> / <strong>25종 규칙 FAIL 검출</strong></td></tr>
+      <tr><td>개인정보·비밀 스캔</td><td><strong>0건</strong> (110 파일)</td></tr>
+      <tr><td>앱 TDD 러너</td><td><strong>node 70 / 70 PASS</strong> (1 skip: 시트 모드 off)</td></tr>
+      <tr><td>통합 검사 <code>scripts/check.sh</code> · <code>scripts/ci.sh</code></td><td><strong>PASS</strong> (행사 전 모드)</td></tr>
+      <tr><td>스킬 7개 능력 선언</td><td><strong>7 / 7 T0</strong> (<code>requires: (없음)</code>)</td></tr>
+      <tr><td>시뮬레이션 리허설 <span class="badge">[SIMULATION]</span> 미션 3건</td><td>판정 평균 3.9 · 3.8 · 3.2 (5점) — 셋 다 제출 미도달 <strong>fail</strong>. 원인은 하네스 결함(배포·git 없는 경로, 🚨 승인자 미정의, BOARD 통합 누락, 리허설 모드) → 수정 반영. 승격 근거 아님</td></tr>
+      <tr><td>시나리오</td><td>실패복구 4 / 5 (카드 수정 필요) · 승인정지 <strong>5 / 5</strong> (제출·게시 0건, 🚨 기록)</td></tr>
+      <tr><td>리뷰 반영</td><td>codexx 레드팀 7건 → v1.1 · Opus 적대 리뷰(이식성·규칙·당일 실행성) · 적합성 리뷰 10건</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li>상세: <code>tests/sim/RESULTS.md</code> · 남은 결함 7건 중 <strong>CONTRACT 미확정 4개는 Roy/PM이 10/23 20:00 전에 확정</strong>(🚨 응답자 · R8 사전 승인 · 실데이터 입장 · 팀명).</li>
+    <li>상태는 여전히 <code>specified</code> — 사람 4인 동시 리허설(10/22~23)을 통과해야 <code>manual-pilot</code>.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>출처: <code>docs/HTHN_DESIGN.md</code> · <code>docs/TDD.md</code></p>
+  <p>도식은 Google Fonts를 불러오며, 오프라인에서는 시스템 글꼴로 표시된다.</p>
+  <p>[SIMULATION] 표기 규칙: 가상의 구매자·계약·후기·검증 결과는 실제 시장검증처럼 제시하지 않으며, 시뮬레이션 산출물에는 반드시 <code>[SIMULATION]</code>과 <code>simulation</code> 라벨을 붙인다.</p>
+</footer>
+</main>
+</body>
+</html>

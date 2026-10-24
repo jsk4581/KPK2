@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "HTHn 구조",
+    "subtitle": "4 layers · core/overlay/product — ④층 — 운영자 맥 전용 · 팀원은 설치·사용하지 않음 · 09:00 이후 꺼짐",
+    "output": "hthn-architecture.html"
+  },
+  "components": [
+    {
+      "id": "claude",
+      "type": "frontend",
+      "label": "CLAUDE.md",
+      "sublabel": "진입 지침",
+      "pos": [
+        100,
+        170
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "contract",
+      "type": "security",
+      "label": "CONTRACT.md",
+      "sublabel": "목표·역할·게이트",
+      "pos": [
+        100,
+        310
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "must",
+      "type": "backend",
+      "label": "전원 필수 2",
+      "sublabel": "start·submit",
+      "pos": [
+        330,
+        170
+      ],
+      "size": [
+        130,
+        60
+      ],
+      "tag": "T0"
+    },
+    {
+      "id": "role",
+      "type": "backend",
+      "label": "역할별 5",
+      "sublabel": "intake→pitch",
+      "pos": [
+        330,
+        310
+      ],
+      "size": [
+        130,
+        60
+      ],
+      "tag": "T0"
+    },
+    {
+      "id": "templates",
+      "type": "database",
+      "label": "templates/",
+      "sublabel": "양식 8 · roles/",
+      "pos": [
+        330,
+        430
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "mission",
+      "type": "messagebus",
+      "label": "mission/",
+      "sublabel": "미션·PRD·제출",
+      "pos": [
+        610,
+        170
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "handoff",
+      "type": "database",
+      "label": "HANDOFF.md",
+      "sublabel": "체크포인트",
+      "pos": [
+        610,
+        310
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "board",
+      "type": "database",
+      "label": "mission/BOARD.md",
+      "sublabel": "작업 보드",
+      "pos": [
+        760,
+        310
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "log",
+      "type": "database",
+      "label": "log/",
+      "sublabel": "세션 기록",
+      "pos": [
+        910,
+        310
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "app/",
+      "sublabel": "데모 웹앱",
+      "pos": [
+        1170,
+        170
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "claudex",
+      "type": "cloud",
+      "label": "claudex",
+      "sublabel": "총괄 · cmux",
+      "pos": [
+        330,
+        600
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "workers",
+      "type": "external",
+      "label": "codexx·agyx",
+      "sublabel": "+ Hermes relay",
+      "pos": [
+        610,
+        600
+      ],
+      "size": [
+        130,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "코어 core",
+      "wraps": [
+        "claude",
+        "contract",
+        "must",
+        "role",
+        "templates"
+      ],
+      "pad": 64
+    },
+    {
+      "kind": "region",
+      "label": "① 계약",
+      "wraps": [
+        "claude",
+        "contract"
+      ],
+      "pad": 44
+    },
+    {
+      "kind": "region",
+      "label": "② 스킬",
+      "wraps": [
+        "must",
+        "role",
+        "templates"
+      ],
+      "pad": 44
+    },
+    {
+      "kind": "region",
+      "label": "③ 관측",
+      "wraps": [
+        "mission",
+        "handoff",
+        "board",
+        "log"
+      ],
+      "pad": 60
+    },
+    {
+      "kind": "region",
+      "label": "오버레이",
+      "wraps": [
+        "mission"
+      ],
+      "pad": 28
+    },
+    {
+      "kind": "region",
+      "label": "제품",
+      "wraps": [
+        "app"
+      ],
+      "pad": 44
+    },
+    {
+      "kind": "security-group",
+      "label": "④ 실행 · Roy 맥 전용",
+      "wraps": [
+        "claudex",
+        "workers"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "from": "claude",
+      "to": "must",
+      "label": "진입",
+      "variant": "emphasis"
+    },
+    {
+      "from": "must",
+      "to": "mission",
+      "label": "작성",
+      "variant": "emphasis"
+    },
+    {
+      "from": "mission",
+      "to": "app",
+      "label": "구현",
+      "variant": "emphasis"
+    },
+    {
+      "from": "must",
+      "to": "role",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "from": "role",
+      "to": "handoff",
+      "label": "기록"
+    },
+    {
+      "from": "claudex",
+      "to": "templates",
+      "label": "행사 전만",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        395,
+        545
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "진실 계약 = git",
+      "items": [
+        "읽기 전 pull → 쓰기 → commit·push",
+        "HANDOFF에 커밋 해시 기록",
+        "git 없으면 ZIP + PM 커밋 (degraded 고지)"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "T0: 도구 없이도 결과",
+      "items": [
+        "①②는 반드시 이식, ④는 이식 안 함",
+        "스킬은 채팅창만으로도 같은 산출물",
+        "조용한 degrade 금지 — 고지 블록"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "능력 선언 헤더 4키",
+      "items": [
+        "requires · enhanced_by · degraded · verified_on",
+        "전원 필수 2: hthn-start · submit-gate",
+        "역할별 5: mission-intake · sprint-board · evidence-research · demo-build · pitch-compile"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "경계",
+      "items": [
+        "코어: 행사 전 확정, 당일 불변",
+        "오버레이 mission/: 09:00 미션 이후 생성",
+        "제품 app/: 그날 만든 데모",
+        "④ 실행: 09:00 이후 규칙상 꺼짐"
+      ]
+    }
+  ]
+}

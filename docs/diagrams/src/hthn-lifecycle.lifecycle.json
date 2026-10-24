@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "하네스 상태 머신",
+    "subtitle": "specified → verified",
+    "output": "hthn-lifecycle.html",
+    "viewBox": [
+      980,
+      600
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "하네스 상태 · HARNESS_REGISTRY"
+    },
+    {
+      "id": "side",
+      "label": "실패 · 보류"
+    },
+    {
+      "id": "terminal",
+      "label": "산출물 상태 → 산출물 흐름도"
+    }
+  ],
+  "states": [
+    {
+      "id": "specified",
+      "type": "start",
+      "label": "specified",
+      "sublabel": "설계 확정",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "현재"
+    },
+    {
+      "id": "pilot",
+      "type": "active",
+      "label": "manual-pilot",
+      "sublabel": "사람 리허설 1회",
+      "lane": "main",
+      "col": 1,
+      "step": "02"
+    },
+    {
+      "id": "implemented",
+      "type": "active",
+      "label": "implemented",
+      "sublabel": "어댑터·durable",
+      "lane": "main",
+      "col": 2,
+      "step": "03"
+    },
+    {
+      "id": "verified",
+      "type": "success",
+      "label": "verified",
+      "sublabel": "eval3·복구1·정지1",
+      "lane": "main",
+      "col": 3,
+      "step": "04"
+    },
+    {
+      "id": "failed",
+      "type": "failure",
+      "label": "리허설 실패",
+      "sublabel": "specified로",
+      "lane": "side",
+      "col": 0,
+      "tag": "되돌림"
+    },
+    {
+      "id": "paused",
+      "type": "waiting",
+      "label": "paused",
+      "sublabel": "보류 · 재개 대기",
+      "lane": "side",
+      "col": 2,
+      "tag": "보류"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "pilot",
+      "to": "failed",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          248,
+          307
+        ]
+      ]
+    },
+    {
+      "from": "failed",
+      "to": "specified",
+      "label": "재설계",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          402,
+          372
+        ],
+        [
+          20,
+          372
+        ],
+        [
+          20,
+          157
+        ]
+      ]
+    },
+    {
+      "from": "implemented",
+      "to": "paused",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          402,
+          236
+        ],
+        [
+          710,
+          236
+        ]
+      ],
+      "label": "보류",
+      "labelAt": [
+        560,
+        236
+      ]
+    },
+    {
+      "from": "paused",
+      "to": "implemented",
+      "label": "재개",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          810,
+          307
+        ],
+        [
+          810,
+          98
+        ],
+        [
+          402,
+          98
+        ]
+      ],
+      "labelAt": [
+        600,
+        98
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "10-20 야간 드라이런",
+      "items": [
+        "시뮬레이션 — 승격 근거 아님",
+        "specified → manual-pilot은 사람 리허설 1회 필요",
+        "결과 보고서에 시뮬레이션으로 표기"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "승격 조건",
+      "items": [
+        "manual-pilot: 사람 리허설 1회",
+        "implemented: 실행 어댑터 + durable state",
+        "verified: eval 3 + 실패복구 1 + 승인정지 1"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "당일 게이트 (10/24)",
+      "items": [
+        "09:00 미션 · G1 10:20 결정 · G2 10:35 보드",
+        "G3 13:00 핵심 장면 · 14:00 freeze",
+        "G4 14:45 테스트 · G5 15:30 2장 · G6 16:00 제출",
+        "16:50 최종 한계 (F1–F5 PASS일 때만) · 17:00 창구 마감 · 19:00 데모데이"
+      ]
+    }
+  ]
+}

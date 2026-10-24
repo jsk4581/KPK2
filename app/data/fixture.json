@@ -1,0 +1,11 @@
+{
+  "_label": "synthetic",
+  "_note": "[SIMULATION] 가상 데이터 — 실제 사람·고객이 아니다. 열은 app/sheet/Code.gs seedSyntheticSheet와 같다.",
+  "rows": [
+    { "id": "syn-001", "user": "agent_alpha", "goal": "Complete prototype wireframe", "status": "done", "updated_at": "2026-10-20T09:00:00Z", "label": "synthetic" },
+    { "id": "syn-002", "user": "agent_bravo", "goal": "Connect static frontend to Sheet API", "status": "in_progress", "updated_at": "2026-10-20T09:15:00Z", "label": "synthetic" },
+    { "id": "syn-003", "user": "agent_charlie", "goal": "Write synthetic dataset generator", "status": "done", "updated_at": "2026-10-20T09:30:00Z", "label": "synthetic" },
+    { "id": "syn-004", "user": "agent_delta", "goal": "Prepare 3-minute pitch deck", "status": "todo", "updated_at": "2026-10-20T09:45:00Z", "label": "synthetic" },
+    { "id": "syn-005", "user": "agent_echo", "goal": "Verify mobile viewport layout", "status": "in_progress", "updated_at": "2026-10-20T10:00:00Z", "label": "synthetic" }
+  ]
+}

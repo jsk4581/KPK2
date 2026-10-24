@@ -1,0 +1,27 @@
+# Personal instructions stay local (only the README and the keep-file are tracked)
+me/*
+!me/README.md
+!me/.gitkeep
+
+# Secrets never enter the repo
+app/.env*
+.env
+.env.*
+*.pem
+*.key
+*credentials*.json
+service-account*.json
+.clasprc.json
+.clasp.json
+.claude/settings.local.json
+
+# Recovery ZIPs of app/ go to the Desktop (app/RECOVERY.md), never into the repo
+*.zip
+
+# Dependencies and caches
+node_modules/
+__pycache__/
+*.pyc
+
+# OS noise
+.DS_Store

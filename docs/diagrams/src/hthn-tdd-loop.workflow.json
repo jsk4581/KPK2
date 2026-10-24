@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "TDD 루프",
+    "subtitle": "tests first, tonight and on the day",
+    "output": "hthn-tdd-loop.html"
+  },
+  "lanes": [
+    {
+      "id": "contract",
+      "label": "계약 (L0)"
+    },
+    {
+      "id": "tests",
+      "label": "테스트 (L1·L2)"
+    },
+    {
+      "id": "build",
+      "label": "빌드"
+    },
+    {
+      "id": "verify",
+      "label": "검증 (L3·L4)"
+    }
+  ],
+  "phases": [
+    {
+      "id": "tonight",
+      "label": "오늘 밤 · 하네스",
+      "fromCol": 0,
+      "toCol": 2,
+      "variant": "dashed"
+    },
+    {
+      "id": "day",
+      "label": "당일 · 앱",
+      "fromCol": 3,
+      "toCol": 5,
+      "variant": "emphasis"
+    }
+  ],
+  "groups": [
+    {
+      "id": "loop",
+      "label": "실패 → 통과",
+      "lane": "tests",
+      "fromCol": 0,
+      "toCol": 2,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "contract",
+    "tests_red",
+    "build",
+    "green",
+    "sim",
+    "prd",
+    "smoke",
+    "code",
+    "deploy",
+    "gate"
+  ],
+  "nodes": [
+    {
+      "id": "contract",
+      "lane": "contract",
+      "col": 0,
+      "type": "security",
+      "label": "§4 계약",
+      "sublabel": "CONTRACT.md"
+    },
+    {
+      "id": "tests_red",
+      "lane": "tests",
+      "col": 0,
+      "type": "backend",
+      "label": "테스트 먼저",
+      "sublabel": "실패(red)"
+    },
+    {
+      "id": "build",
+      "lane": "build",
+      "col": 1,
+      "type": "backend",
+      "label": "빌드",
+      "sublabel": "검증기·스킬"
+    },
+    {
+      "id": "sim",
+      "lane": "verify",
+      "col": 2,
+      "type": "messagebus",
+      "label": "시뮬레이션",
+      "sublabel": "미션 3 + 2"
+    },
+    {
+      "id": "green",
+      "lane": "tests",
+      "col": 1,
+      "type": "backend",
+      "label": "통과(green)",
+      "sublabel": "전부 통과"
+    },
+    {
+      "id": "prd",
+      "lane": "contract",
+      "col": 3,
+      "type": "security",
+      "label": "PRD 6문장",
+      "sublabel": "C·U·T · G1"
+    },
+    {
+      "id": "smoke",
+      "lane": "tests",
+      "col": 3,
+      "type": "backend",
+      "label": "SMOKE·tests",
+      "sublabel": "먼저 · 10:30"
+    },
+    {
+      "id": "code",
+      "lane": "build",
+      "col": 4,
+      "type": "backend",
+      "label": "코드",
+      "sublabel": "app/"
+    },
+    {
+      "id": "deploy",
+      "lane": "verify",
+      "col": 4,
+      "type": "cloud",
+      "label": "배포 URL",
+      "sublabel": "L3 통과"
+    },
+    {
+      "id": "gate",
+      "lane": "verify",
+      "col": 5,
+      "type": "security",
+      "label": "submit-gate",
+      "sublabel": "검증기 PASS",
+      "tag": "→ 제출 16:00"
+    }
+  ],
+  "edges": [
+    {
+      "from": "contract",
+      "to": "tests_red",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "drop"
+    },
+    {
+      "from": "tests_red",
+      "to": "build",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          88,
+          367
+        ]
+      ]
+    },
+    {
+      "from": "build",
+      "to": "green",
+      "variant": "emphasis",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "drop"
+    },
+    {
+      "from": "green",
+      "to": "sim",
+      "label": "L4 시뮬",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          300,
+          243
+        ]
+      ]
+    },
+    {
+      "from": "sim",
+      "to": "prd",
+      "label": "준비 완료",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          365,
+          491
+        ],
+        [
+          365,
+          119
+        ]
+      ]
+    },
+    {
+      "from": "sim",
+      "to": "build",
+      "label": "실패→수정",
+      "variant": "dashed",
+      "role": "return",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [
+        [
+          220,
+          491
+        ]
+      ]
+    },
+    {
+      "from": "prd",
+      "to": "smoke",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "drop"
+    },
+    {
+      "from": "smoke",
+      "to": "code",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          430,
+          305
+        ],
+        [
+          500,
+          305
+        ]
+      ]
+    },
+    {
+      "from": "code",
+      "to": "deploy",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "drop"
+    },
+    {
+      "from": "deploy",
+      "to": "gate",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "5층 테스트",
+      "items": [
+        "L0 계약 · L1 구조",
+        "L2 검증기 · L3 앱",
+        "L4 하네스 eval"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "시뮬레이션 ≠ manual-pilot",
+      "items": [
+        "오늘 밤 시뮬 = 설계 검증",
+        "승격엔 사람 리허설 1회",
+        "[SIMULATION] 표기 필수"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "당일 순서",
+      "items": [
+        "PRD → SMOKE·tests → 코드",
+        "배포 URL에서 테스트",
+        "검증기 PASS 후에만 제출"
+      ]
+    }
+  ]
+}

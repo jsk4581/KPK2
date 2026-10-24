@@ -410,15 +410,15 @@
         <div class="arch-scroll">
           <svg viewBox="0 0 1120 608" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-flow-title arch-flow-desc">
             <title id="arch-flow-title">How a click flows through Dream Achieve Moments</title>
-            <desc id="arch-flow-desc">The browser loads the Vercel site, which shows the demo app in an iframe. The demo app calls /api/paths, a Vercel Function that makes one Claude Sonnet 5.5 call with a labelled fallback. The demo app also calls the rules-only decision brain on the PM laptop through a Cloudflare tunnel, retries a backup tunnel when the primary fails, and falls back to on-device signals when both are down. An MCP client and the Android lifelog app are optional inputs; the Android app is not wired yet.</desc>
+            <desc id="arch-flow-desc">The browser loads the Vercel site, which shows the demo app in an iframe. The demo app calls /api/paths, a Vercel Function that makes one Claude Sonnet 5.5 call with a labelled fallback. The demo app also calls the rules-only decision brain on a team-hosted server through a Cloudflare tunnel, retries a backup tunnel when the primary fails, and falls back to on-device signals when both are down. An MCP client and the Android lifelog app are optional inputs; the Android app is not wired yet.</desc>
             <defs>
               <marker id="arch-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-def" points="0 0, 8 3, 0 6"/></marker>
               <marker id="arch-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-acc" points="0 0, 8 3, 0 6"/></marker>
             </defs>
 
-            <!-- PM laptop zone around the tunnel and the brain -->
+            <!-- Team-hosted server zone around the tunnel and the brain -->
             <rect class="zone" x="716" y="196" width="400" height="168" rx="10"/>
-            <text class="t-zone" x="730" y="216">PM LAPTOP (UNTIL 21:00)</text>
+            <text class="t-zone" x="730" y="216">TEAM-HOSTED SERVER</text>
 
             <!-- Connections -->
             <line class="a-def" x1="156" y1="286" x2="212" y2="286" marker-end="url(#arch-arrow)"/>
@@ -552,7 +552,7 @@
             <text class="t-eyebrow" x="40" y="265">L3</text>
             <text class="t-layer" x="80" y="266">Serving</text>
             <text class="t-body" x="400" y="255">Vercel · static files + Node Functions (/api/paths)</text>
-            <text class="t-body" x="400" y="275">Cloudflare tunnel from the PM laptop, plus a backup tunnel · REST /v1/think · MCP /mcp</text>
+            <text class="t-body" x="400" y="275">Cloudflare tunnel from the team server, plus a backup tunnel · REST /v1/think · MCP /mcp</text>
 
             <text class="t-eyebrow" x="40" y="337">L4</text>
             <text class="t-layer" x="80" y="338">AI</text>

@@ -62,7 +62,7 @@ test('GET /v1/health answers with the 7 tools', async () => {
   assert.equal(res.status, 200);
   const body = await res.json();
   assert.equal(body.ok, true);
-  assert.equal(body.name, 'second-draft-brain');
+  assert.equal(body.name, 'dream-achieve-moments-brain');
   assert.deepEqual(body.tools, TOOL_NAMES);
 });
 

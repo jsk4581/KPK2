@@ -1,4 +1,6 @@
-# brain/ — Second Draft Decision Brain (판단 코어 + REST + MCP)
+# brain/ — Dream Achieve Moments Decision Brain (판단 코어 + REST + MCP)
+
+> 제품명 **Dream Achieve Moments**, 코드명 Second Draft (파일·폴더 이름은 코드명 그대로).
 
 > 판단은 규칙, 문장만 LLM. 코어 하나(`app/logic.js` + `brain/`)를 웹·REST·MCP가 그대로 공유한다.
 > 모든 데모 데이터는 합성(`"_label": "synthetic"`, "Sample persona — synthetic")이다. 실제 사람 데이터는 없다.
@@ -64,7 +66,7 @@ Build `app/logic.js`와의 관계 — 덮어쓰지 않고 위에 얹는다:
 
 오류 본문은 항상 `{ error: { code, message } }` (400 invalid_json/invalid_input · 401 · 404 · 405 · 413 · 429 · 500). 스택 트레이스는 내보내지 않는다.
 
-## MCP 도구 7개 (`mcp/server.js`, 서버 이름 `second-draft-brain`)
+## MCP 도구 7개 (`mcp/server.js`, 서버 이름 `dream-achieve-moments-brain`, title `Dream Achieve Moments Brain`)
 
 | 도구 | 코어 함수 | 한 줄 |
 |---|---|---|

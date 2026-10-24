@@ -1,9 +1,9 @@
 {
-  "name": "second-draft-brain",
+  "name": "dream-achieve-moments-brain",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Decision Brain for Second Draft: deterministic judgment core exposed as an MCP server and a small REST API. Judgments are rules; LLMs only write sentences.",
+  "description": "Decision Brain for Dream Achieve Moments (code name Second Draft): deterministic judgment core exposed as an MCP server and a small REST API. Judgments are rules; LLMs only write sentences.",
   "scripts": {
     "test": "node --test tests/",
     "start": "node mcp/bin.js",

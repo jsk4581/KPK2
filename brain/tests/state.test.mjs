@@ -4,8 +4,12 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 import * as state from '../state.js';
+
+// The shared synthetic scenario (brain/data/dana-14d.json) for the replay regression below.
+const DANA = JSON.parse(readFileSync(new URL('../data/dana-14d.json', import.meta.url), 'utf8'));
 
 // ---------- inline fixture: 14 days, 2026-10-05 (Mon) .. 2026-10-18 (Sun) ----------
 // day 1–8 normal · 9–11 condition 2 with two Not today · 12 micro comeback · 14 green.
@@ -153,6 +157,71 @@ describe('estimateState: data gaps', () => {
     const check = s.risk.checks.find((c) => c.rule === 'data_gap');
     assert.equal(check.status, 'skipped');
     assert.ok(!s.risk.reasons.includes('data_gap'));
+  });
+});
+
+describe('estimateState: events after today are ignored (replay a past day from the full history)', () => {
+  test('inline fixture: all 14 days with today = day 11 equals the day-11 slice (amber)', () => {
+    const { lifelog, checkins } = scenario(14);
+    const day11 = DAYS.find((x) => x.n === 11).date;
+    const replayed = state.estimateState({ lifelog, checkins, today: day11 });
+    const sliced = state.estimateState(scenario(11));
+    assert.equal(replayed.consecRest, 2, 'the done check-ins of days 12-13 are after today');
+    assert.equal(replayed.risk.level, 'amber');
+    assert.deepEqual(replayed.risk.reasons, ['consec_rest', 'low_condition']);
+    assert.equal(replayed.lastLogId, 'l11');
+    assert.equal(replayed.dataGapDays, 0);
+    assert.equal(replayed.features.length, 11);
+    assert.deepEqual(replayed, sliced);
+  });
+
+  test('dana-14d.json: full history + today = expected.day11.date reproduces the day-11 amber', () => {
+    const { date, riskLevel, reasons } = DANA.expected.day11;
+    const full = state.estimateState({ lifelog: DANA.lifelog, checkins: DANA.checkins, today: date });
+    const sliced = state.estimateState({
+      lifelog: DANA.lifelog.filter((item) => item.date <= date),
+      checkins: DANA.checkins.filter((c) => c.date <= date),
+      today: date,
+    });
+    assert.equal(full.today, date);
+    assert.equal(full.risk.level, riskLevel);
+    assert.deepEqual(full.risk.reasons, reasons);
+    assert.equal(full.consecRest, 2);
+    assert.deepEqual(full, sliced);
+    // the same history at the scenario's own today is still the day-14 green
+    assert.equal(state.estimateState({ lifelog: DANA.lifelog, checkins: DANA.checkins, today: DANA.today }).risk.level, DANA.expected.day14.riskLevel);
+  });
+
+  test('lifelog after today does not count as the last log', () => {
+    const { lifelog, checkins } = scenario(14);
+    const s = state.estimateState({ lifelog, checkins, today: '2026-10-12' });
+    assert.equal(s.lastLogId, 'l08');
+    assert.equal(s.lastLogDate, '2026-10-12');
+    assert.equal(s.dataGapDays, 0);
+    assert.equal(s.features.length, 8);
+    assert.ok(s.features.every((f) => f.date <= '2026-10-12'));
+  });
+
+  test('a Not today dated after today is not a trailing rest day', () => {
+    const checkins = [
+      { actionId: 'a1', kind: 'done', day: 'Mon', date: '2026-10-05' },
+      { actionId: 'a2', kind: 'not_today', day: 'Tue', date: '2026-10-20' },
+      { actionId: 'a3', kind: 'not_today', day: 'Wed', date: '2026-10-21' },
+    ];
+    const s = state.estimateState({ lifelog: [], checkins, today: '2026-10-06' });
+    assert.equal(s.consecRest, 0);
+    assert.ok(!s.risk.reasons.includes('consec_rest'));
+    // and once today has caught up they count again
+    assert.equal(state.estimateState({ lifelog: [], checkins, today: '2026-10-21' }).consecRest, 2);
+  });
+
+  test('weekday-only check-ins (no date) still count: they resolve on or before today', () => {
+    const checkins = [
+      { actionId: 'a1', kind: 'not_today', day: 'Mon' },
+      { actionId: 'a2', kind: 'not_today', day: 'Tue' },
+    ];
+    assert.equal(state.estimateState({ lifelog: [], checkins, today: '2026-10-14' }).consecRest, 2);
+    assert.equal(state.estimateState({ lifelog: [], checkins, today: 'Wed' }).consecRest, 2);
   });
 });
 

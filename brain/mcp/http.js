@@ -29,6 +29,7 @@ import { createServer } from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { SERVER_NAME, SERVER_VERSION, TOOL_NAMES, invokeBrain, validateInput } from './server.js';
+import { handleCompat, isCompatRoute } from './compat.js';
 
 export const BODY_LIMIT_BYTES = 64 * 1024;
 export const RATE_LIMIT = { limit: 120, windowMs: 60_000 };
@@ -343,6 +344,28 @@ export function startHttp({
     const protectedRoute = path === '/mcp' || path.startsWith('/v1/');
     if (protectedRoute && !isAuthorized(req, token)) {
       sendError(res, 401, 'unauthorized', 'bearer token required', { 'WWW-Authenticate': `Bearer realm="${SERVER_NAME}"` });
+      return;
+    }
+
+    // Build's web↔brain contract (/v1/interview, /v1/paths, /v1/plan, /v1/checkin, /v1/voice/token)
+    // is dispatched to compat.js before the tool routes; same body limit, JSON parsing and error shape.
+    if (isCompatRoute(path)) {
+      if (method !== 'POST') {
+        sendError(res, 405, 'method_not_allowed', 'use POST', { Allow: 'POST, OPTIONS' });
+        return;
+      }
+      const body = await readBody(req, bodyLimit);
+      if (body.tooLarge) {
+        tooLarge(res);
+        return;
+      }
+      const json = parseJson(body.text);
+      if (!json.ok) {
+        sendError(res, 400, 'invalid_json', 'request body is not valid JSON');
+        return;
+      }
+      const out = handleCompat(path, json.value, brain);
+      sendJson(res, out.status, out.body);
       return;
     }
 

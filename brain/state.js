@@ -146,7 +146,7 @@ function normalizeInput(a, b, c, d) {
 // to today) so explain() can cite the exact day a rule fired on.
 export function estimateState(a, b, c, d) {
   const input = normalizeInput(a, b, c, d);
-  const items = asArray(input.lifelog)
+  const allItems = asArray(input.lifelog)
     .filter((item) => item && typeof item === 'object' && isIsoDate(item.date))
     .sort(compareItems);
   const records = asArray(input.checkins)
@@ -155,20 +155,28 @@ export function estimateState(a, b, c, d) {
   const argCondition = validCondition(input.condition);
 
   // Today: the ISO `today` input, else the latest dated event (demo passes a weekday).
-  const eventDates = [...items.map((i) => i.date), ...records.map(({ checkin }) => checkin.date).filter(isIsoDate)];
+  const eventDates = [...allItems.map((i) => i.date), ...records.map(({ checkin }) => checkin.date).filter(isIsoDate)];
   const todayDate = isIsoDate(input.today) ? input.today : eventDates.length > 0 ? eventDates.sort()[eventDates.length - 1] : null;
   const todayOrd = dateOrdinal(todayDate);
 
-  const dated = records.map(({ checkin, index }) => ({
-    ...checkin,
-    index,
-    id: checkinId(checkin),
-    resolvedDate: resolveCheckinDate(checkin, todayDate),
-  }));
+  // Nothing dated after today exists yet: a caller may pass the whole history with an earlier
+  // `today` to replay a past day, and the answer must equal the one for the history sliced at
+  // that day. Undated check-ins (no `date`, no resolvable weekday) cannot be placed and are kept.
+  const onOrBeforeToday = (date) => todayOrd === null || dateOrdinal(date) <= todayOrd;
+  const items = allItems.filter((item) => onOrBeforeToday(item.date));
+  const dated = records
+    .map(({ checkin, index }) => ({
+      ...checkin,
+      index,
+      id: checkinId(checkin),
+      resolvedDate: resolveCheckinDate(checkin, todayDate),
+    }))
+    .filter((r) => r.resolvedDate === null || onOrBeforeToday(r.resolvedDate));
 
-  // Trailing Not today count in check-in order (same reading as logic.progressSignals).
+  // Trailing Not today count in check-in order (same reading as logic.progressSignals),
+  // over the check-ins on or before today only.
   let consecRest = 0;
-  for (let i = records.length - 1; i >= 0 && records[i].checkin.kind === 'not_today'; i -= 1) consecRest += 1;
+  for (let i = dated.length - 1; i >= 0 && dated[i].kind === 'not_today'; i -= 1) consecRest += 1;
 
   const allDates = [...items.map((i) => i.date), ...dated.map((r) => r.resolvedDate).filter(Boolean)];
   const arcStart = isIsoDate(input.arcStart) ? input.arcStart : allDates.length > 0 ? allDates.sort()[0] : null;

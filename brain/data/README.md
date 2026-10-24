@@ -1,6 +1,6 @@
 # brain/data — 14일 합성 데모 시나리오 `[SIMULATION]`
 
-`dana-14d.json`은 Decision Brain의 테스트·REST·MCP가 함께 쓰는 **합성(synthetic) 데이터**입니다.
+`dana-14d.json`은 Dream Achieve Moments(코드명 Second Draft) Decision Brain의 테스트·REST·MCP가 함께 쓰는 **합성(synthetic) 데이터**입니다.
 Dana는 실존 인물이 아니며, 클라이언트·동료·링크·메시지 전부가 지어낸 것입니다. 파일 안의 `"_label": "synthetic"`과 `_note`가 이를 표시하고, 화면·발표에서는 항상 "시뮬레이션"으로 부릅니다.
 
 신원 블록(`id`·`persona`·`fields`·`skills`·`roles`·`fallback`)은 `app/data/persona-dana.json`을 그대로 복사했습니다. 새 페르소나를 만들지 않습니다. 이 파일을 고칠 때도 그 블록은 손대지 말고, 원본이 바뀌면 다시 복사합니다(`tests/data.test.mjs`가 동일성을 검사합니다).

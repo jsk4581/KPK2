@@ -12,3 +12,5 @@ import './monitor.test.mjs';
 import './server.test.mjs';
 import './think.test.mjs';
 import './integration.test.mjs';
+import './security.test.mjs';
+import './compat.test.mjs';

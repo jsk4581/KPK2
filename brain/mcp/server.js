@@ -21,11 +21,17 @@ import { z } from 'zod';
 
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 
-export const SERVER_NAME = 'second-draft-brain';
+export const SERVER_NAME = 'dream-achieve-moments-brain';
+export const SERVER_TITLE = 'Dream Achieve Moments Brain';
 export const SERVER_VERSION = pkg.version;
 export const SCENARIO_URI = 'brain://scenario/dana';
 
 // --- input shapes (shared by MCP tools and the REST routes in http.js) -------
+//
+// The top-level object is a strict zod object: keys that are not declared below are
+// DROPPED before the brain sees them. Every input the brain functions read must
+// therefore be declared here (optional when the brain treats it as optional), or a
+// REST/MCP caller silently gets a different answer than an in-process caller.
 
 const AnyObject = z.looseObject({});
 const Fields = z.object({
@@ -52,17 +58,32 @@ const Checkin = z.looseObject({
 });
 const Condition = z.number().int().min(1).max(5).describe('Condition 1-5 (input, never guessed)');
 const Today = z.string().describe('Demo "today": Mon..Sun or an ISO date. Never the real clock.');
+const Sources = z.array(z.string()).optional().describe('Enabled lifelog sources (privacy toggles); default note, saved_link, calendar');
+const ArcStart = z.string().optional().describe('ISO date the 12-week arc started; defaults to the first dated event');
+const FreeText = z
+  .union([z.string(), z.array(z.string())])
+  .optional()
+  .describe('User-typed notes scanned for crisis language. Never stored, never echoed back.');
+const Reason = z.string().optional().describe('Not-today reason chip: time | energy | skill | people | mood');
 
 const thinkShape = {
   fields: Fields.optional(),
   lifelog: z.array(LifelogItem).default([]),
-  enabledSources: z.array(z.string()).optional(),
+  enabledSources: Sources,
   rankedRoles: z.array(AnyObject).optional(),
   path: AnyObject.optional().describe('Chosen path draft (role_id, week.actions[3])'),
   week: AnyObject.optional().describe('Current week state from plan_week / check_in'),
   checkins: z.array(Checkin).default([]),
   condition: Condition.optional(),
-  today: Today.optional()
+  today: Today.optional(),
+  skills: z.array(AnyObject).optional().describe('Skill dictionary; defaults to the scenario catalog'),
+  roles: z.array(AnyObject).optional().describe('Role catalog; defaults to the scenario catalog'),
+  arcStart: ArcStart,
+  arc_start: ArcStart.describe('Alias of arcStart (the key used by the scenario file)'),
+  confirmedGates: z.array(z.string()).optional().describe('Gate ids (M1..M4) the user confirmed; a gate never passes without it'),
+  confirmed: z.boolean().optional().describe('Confirm every gate that has evidence (demo shortcut)'),
+  gates: z.array(AnyObject).optional().describe('Pre-evaluated gates; replaces the milestone evaluation'),
+  freeText: FreeText
 };
 
 // Tool table: name → brain function, description and input shape.
@@ -108,14 +129,14 @@ export const TOOLS = [
     title: 'Check in',
     description:
       'Apply one check-in (done | not_today) to the week. Not today moves the action, never deletes it; the reply follows acknowledge → reframe → 10-minute step.',
+    // check_in re-runs think on the new week, so it accepts every think input as well.
     input: {
-      week: AnyObject,
+      ...thinkShape,
+      week: AnyObject.describe('Current week state from plan_week / a previous check_in'),
       actionId: z.string(),
       kind: z.enum(['done', 'not_today']),
       today: Today,
-      checkins: z.array(Checkin).default([]),
-      lifelog: z.array(LifelogItem).default([]),
-      condition: Condition.optional()
+      reason: Reason
     }
   },
   {
@@ -128,7 +149,10 @@ export const TOOLS = [
       lifelog: z.array(LifelogItem).default([]),
       checkins: z.array(Checkin).default([]),
       today: Today.optional(),
-      condition: Condition.optional()
+      condition: Condition.optional(),
+      enabledSources: Sources,
+      arcStart: ArcStart,
+      arc_start: ArcStart.describe('Alias of arcStart (the key used by the scenario file)')
     }
   },
   {
@@ -211,7 +235,7 @@ function toolError(code, message) {
 const PURE_ANNOTATIONS = { readOnlyHint: true, idempotentHint: true, openWorldHint: false };
 
 const INSTRUCTIONS = [
-  'Second Draft Decision Brain: deterministic judgment rules for career second drafts.',
+  'Dream Achieve Moments Decision Brain (codename Second Draft): deterministic judgment rules for career second drafts.',
   'Tools never call a network or a clock; pass today and condition as inputs.',
   'Start with get_scenario or the brain://scenario/dana resource for synthetic demo data,',
   'then rank_roles → plan_week → check_in, or think for a full pass with explain.',
@@ -222,7 +246,7 @@ export function createBrainServer(brain, opts = {}) {
   if (!isPlainObject(brain)) throw new TypeError('createBrainServer: brain must be an object');
   const scenario = opts.scenario ?? brain.scenario;
   const server = new McpServer(
-    { name: SERVER_NAME, title: 'Second Draft Brain', version: opts.version ?? SERVER_VERSION },
+    { name: SERVER_NAME, title: SERVER_TITLE, version: opts.version ?? SERVER_VERSION },
     { instructions: INSTRUCTIONS }
   );
 

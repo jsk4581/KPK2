@@ -68,7 +68,7 @@ test('GET /v1/health → 200 with tool list and CORS header', async () => {
   assert.equal(res.headers.get('access-control-allow-origin'), 'https://demo.example');
   const body = await res.json();
   assert.equal(body.ok, true);
-  assert.equal(body.name, 'second-draft-brain');
+  assert.equal(body.name, 'dream-achieve-moments-brain');
   assert.match(body.version, /^\d+\.\d+\.\d+/);
   assert.deepEqual(body.tools, ['think', 'rank_roles', 'plan_week', 'check_in', 'analyze_state', 'explain', 'get_scenario']);
   assert.equal(typeof body.uptimeSec, 'number');
@@ -174,7 +174,7 @@ test('brain errors → 500 without a stack trace', async () => {
   }
 });
 
-test('MCP initialize via raw JSON-RPC POST → serverInfo.name second-draft-brain', async () => {
+test('MCP initialize via raw JSON-RPC POST → serverInfo.name dream-achieve-moments-brain', async () => {
   const res = await fetch(`${base}/mcp`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
@@ -189,7 +189,7 @@ test('MCP initialize via raw JSON-RPC POST → serverInfo.name second-draft-brai
   assert.equal(res.headers.get('access-control-allow-origin'), '*');
   const message = await readJsonRpc(res);
   assert.equal(message.id, 1);
-  assert.equal(message.result.serverInfo.name, 'second-draft-brain');
+  assert.equal(message.result.serverInfo.name, 'dream-achieve-moments-brain');
   assert.ok(message.result.capabilities.tools);
 });
 

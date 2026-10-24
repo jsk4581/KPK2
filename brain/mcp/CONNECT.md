@@ -1,4 +1,6 @@
-# Second Draft Brain — 연결 가이드 (CONNECT)
+# Dream Achieve Moments Brain — 연결 가이드 (CONNECT)
+
+> 제품명 Dream Achieve Moments, 코드명 Second Draft.
 
 > 브레인 서버 하나가 두 얼굴을 가진다: **MCP** (`/mcp`, Streamable HTTP) 와 **REST** (`/v1/*`).
 > 로컬은 `http://127.0.0.1:8787`, 공개 URL 은 cloudflared quick tunnel 로 연다.
@@ -21,7 +23,7 @@ https://stayed-stock-advancement-taxi.trycloudflare.com
 | health | `GET /v1/health` | 200, tools 7개 |
 | CORS preflight | `OPTIONS /mcp` (Origin: `https://kpk2-demo.vercel.app`) | 204, `access-control-allow-origin: https://kpk2-demo.vercel.app` + allow-methods/headers |
 | think | `POST /v1/think` (dana-14d.json 28KB) | 200, `intervention` + `explain` 포함 |
-| MCP initialize | `POST /mcp` JSON-RPC | 200, `serverInfo.name = second-draft-brain` |
+| MCP initialize | `POST /mcp` JSON-RPC | 200, `serverInfo.name = dream-achieve-moments-brain` |
 | MCP tools/list | `POST /mcp` JSON-RPC | 200, think · rank_roles · plan_week · check_in · analyze_state · explain · get_scenario |
 | SDK 클라이언트 | `StreamableHTTPClientTransport` → listTools → callTool(think) | initialize 189ms · tools/list 115ms · think 233ms |
 
@@ -112,12 +114,11 @@ curl -s -X POST "$BRAIN/v1/think" \
 ### Claude Code
 
 ```bash
-claude mcp add --transport http second-draft-brain \
-  https://stayed-stock-advancement-taxi.trycloudflare.com/mcp
+claude mcp add --transport http dam-brain https://stayed-stock-advancement-taxi.trycloudflare.com/mcp
 
 # 확인
 claude mcp list
-claude mcp get second-draft-brain
+claude mcp get dam-brain
 ```
 
 연결되면 Claude Code 안에서 `think`, `rank_roles`, `plan_week`, `check_in`, `analyze_state`, `explain`, `get_scenario` 도구와 `brain://scenario/dana` 리소스를 쓸 수 있다.
@@ -135,7 +136,7 @@ JSON 설정 파일(`claude_desktop_config.json`)로 넣어야 할 때는 stdio �
 ```json
 {
   "mcpServers": {
-    "second-draft-brain": {
+    "dam-brain": {
       "command": "npx",
       "args": [
         "-y",
@@ -190,7 +191,7 @@ import("@modelcontextprotocol/sdk/client/index.js").then(async ({ Client }) => {
 ### 토큰을 켠 경우
 
 서버를 `BRAIN_TOKEN=<secret>` 으로 띄웠다면 `/mcp` 와 `/v1/*` (health 제외) 에 `Authorization: Bearer <secret>` 이 필요하다.
-Claude Code: `claude mcp add --transport http second-draft-brain <url>/mcp --header "Authorization: Bearer <secret>"`.
+Claude Code: `claude mcp add --transport http dam-brain <url>/mcp --header "Authorization: Bearer <secret>"`.
 토큰 값은 파일에 적지 않는다.
 
 ---
@@ -202,12 +203,12 @@ cd brain
 node mcp/bin.js --stdio
 ```
 
-stdout 이 프로토콜 채널이므로 상태 메시지는 stderr 로만 나온다 (`second-draft-brain 0.1.0 ready on stdio`).
+stdout 이 프로토콜 채널이므로 상태 메시지는 stderr 로만 나온다 (`dream-achieve-moments-brain 0.1.0 ready on stdio`).
 
 ### Claude Code
 
 ```bash
-claude mcp add second-draft-brain -- node /ABSOLUTE/PATH/KPK2/brain/mcp/bin.js --stdio
+claude mcp add dam-brain -- node /ABSOLUTE/PATH/KPK2/brain/mcp/bin.js --stdio
 ```
 
 ### Claude Desktop (`claude_desktop_config.json`)
@@ -215,7 +216,7 @@ claude mcp add second-draft-brain -- node /ABSOLUTE/PATH/KPK2/brain/mcp/bin.js -
 ```json
 {
   "mcpServers": {
-    "second-draft-brain": {
+    "dam-brain": {
       "command": "node",
       "args": ["/ABSOLUTE/PATH/KPK2/brain/mcp/bin.js", "--stdio"]
     }
@@ -235,6 +236,83 @@ bash scripts/stop.sh
 
 ---
 
+## ④ Build 규격 경로(/v1/interview·paths·plan·checkin·voice/token)
+
+Build 의 web↔brain 계약(spec §3.2–3.4, §4)을 같은 서버가 `brain/mcp/compat.js` 로 받는다. 무상태다: 매 호출이 `scenario_id`·`persona`·`lifelog[]`(Build 모양, `date` 대신 `ts`)·`history[]` 를 전부 들고 온다. LLM·시계·네트워크 없이 `app/logic.js` + 브레인 모듈로만 판단하고, 200 응답마다 `trace[]`(L1–L4, `status: ran|designed`)가 붙는다. 오류는 `{ error: { code, message } }` 뿐이다. CORS·64KB 상한·rate limit·토큰은 ①과 같다.
+
+| 경로 | 본문 | 응답 |
+|---|---|---|
+| `POST /v1/interview` | `{ scenario_id, persona, lifelog[], history[], user_turn }` | `{ reply: { text }, ready_for_paths, trace[] }` — user 턴 3개면 `ready_for_paths: true` |
+| `POST /v1/paths` | `{ scenario_id, persona, lifelog[], history[] }` | `{ paths: [p1, p2, p3], trace[] }` — 항상 3개 |
+| `POST /v1/plan` | `{ …, path, today }` (`today` 는 `Mon..Sun` 또는 ISO 날짜) | `{ plan: { path_id, north_star, quarter, week: { start, actions[3] }, summary, pending_comeback, milestones }, trace[] }` |
+| `POST /v1/checkin` | `{ …, path, plan, today, action_id, kind: done\|not_today }` | `{ plan, message: { text, ten_minute_action }, adjustment, share_card, trace[] }` — done/NextWeek 행동은 409 `not_checkable`, 모르는 id 는 400 `unknown_action` |
+| `POST /v1/voice/token` | 아무거나 | 501 `voice_not_enabled` |
+
+- `plan` 의 추가 필드(`short`, `pending_comeback`, `milestones`)는 웹이 **그대로** 되돌려 보내야 한다 (무상태라 서버가 기억하지 않는다). 빼면 `ten_minute_action` 이 행동 제목으로 대체되고 comeback 줄이 사라진다.
+- `week.start` 는 요청의 `week_start`/`arc_start`/`persona.arc_start`/ISO `today` 중 있는 것의 그 주 월요일, 하나도 없으면 `2026-10-20`.
+- `share_card` 는 그 주 **첫 Done** 에만 온다(경로명·행동·`1/3 done` 만). Not today 메시지 첫 줄은 항상 `Today was a rest day, not a missed day.`
+
+### curl 로 바로 확인
+
+```bash
+BRAIN=https://stayed-stock-advancement-taxi.trycloudflare.com
+
+# interview — first call (user_turn null): greets with the lifelog count + question 1, ready_for_paths false
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/interview" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana","role":"freelance copywriter"},"lifelog":[{"id":"l01","ts":"2026-10-05T09:00:00-05:00","source":"note","title":"Starting the two-week arc","summary":"Picked the messaging consultant path. Discovery calls give me energy."},{"id":"l02","ts":"2026-10-05T11:00:00-05:00","source":"calendar","title":"Discovery call: meal-kit launch","summary":"45-minute discovery call with a founder. Left with two phrases customers actually use."}],"history":[],"user_turn":null}'
+
+# interview — third user turn (2 in history + user_turn): ready_for_paths true
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/interview" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana"},"lifelog":[],"history":[{"role":"agent","text":"What changed in your work this year?"},{"role":"user","text":"Three of five retainer clients now draft with AI and send polish-only jobs.","source":"script"},{"role":"agent","text":"When clients kept you on, what were they really keeping you for?"},{"role":"user","text":"They kept me because I could run a discovery call and turn founder talk into a positioning line.","source":"script"}],"user_turn":{"source":"script","text":"The discovery calls and the workshop questions pull me more than writing the drafts."}}'
+
+# paths — exactly 3 (p1..p3) with transfers[{skill, skill_id, evidence: lifelog ids}] and missing[]
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/paths" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana"},"lifelog":[{"id":"l02","ts":"2026-10-05T11:00:00-05:00","source":"calendar","title":"Discovery call: meal-kit launch","summary":"45-minute discovery call with a founder. Left with two phrases customers actually use."}],"history":[{"role":"user","text":"Three of five retainer clients now draft with AI and send polish-only jobs.","source":"script"},{"role":"user","text":"They kept me because I could run a discovery call and turn founder talk into a positioning line.","source":"script"},{"role":"user","text":"The discovery calls and the workshop questions pull me more than writing the drafts.","source":"script"}]}' | head -c 900; echo
+
+# plan — path p1, today Thu: 3 actions (a1 Tue · a2 Thu · a3 Sat), north_star, quarter, week.start
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/plan" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana"},"lifelog":[],"history":[],"path":{"id":"p1","role_id":"messaging-consultant","title":"Messaging & Positioning Consultant","one_liner":"Turn discovery calls into positioning clients repeat back.","transfers":[],"missing":[],"first_two_weeks":[]},"today":"Thu"}' | head -c 900; echo
+
+# checkin not_today — a2 (Thu) moves to Fri; message first line "Today was a rest day, not a missed day."
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/checkin" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana"},"path":{"id":"p1","title":"Messaging & Positioning Consultant"},"plan":{"path_id":"p1","week":{"start":"2026-10-19","actions":[{"id":"a1","title":"Turn one past project into a one-page before/after message story","minutes":30,"day":"Tue","status":"todo","moves":0,"short":"Write the first sentence."},{"id":"a2","title":"Draft a pilot offer email to one former client","minutes":25,"day":"Thu","status":"todo","moves":0,"short":"Write only the subject line of the pilot offer email."},{"id":"a3","title":"Write three lines on what the first two steps taught you","minutes":20,"day":"Sat","status":"todo","moves":0,"short":"Write one line."}]},"summary":"0/3 done","pending_comeback":false},"today":"Thu","action_id":"a2","kind":"not_today"}' | head -c 900; echo
+
+# checkin done — first Done of the week → share_card {headline, body, copy_text}; comeback line after a Not today
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/checkin" \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario_id":"dana-14d","persona":{"name":"Dana"},"path":{"id":"p1","title":"Messaging & Positioning Consultant"},"plan":{"path_id":"p1","week":{"start":"2026-10-19","actions":[{"id":"a1","title":"Turn one past project into a one-page before/after message story","minutes":30,"day":"Tue","status":"todo","moves":0,"short":"Write the first sentence."},{"id":"a2","title":"Draft a pilot offer email to one former client","minutes":25,"day":"Fri","status":"moved","moves":1,"short":"Write only the subject line of the pilot offer email."},{"id":"a3","title":"Write three lines on what the first two steps taught you","minutes":20,"day":"Sat","status":"todo","moves":0,"short":"Write one line."}]},"summary":"0/3 done · 1 moved","pending_comeback":true},"today":"Thu","action_id":"a1","kind":"done"}' | head -c 900; echo
+
+# checkin on an action that is already done → 409 not_checkable
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/checkin" \
+  -H 'Content-Type: application/json' \
+  -d '{"path":{"id":"p1","title":"Messaging & Positioning Consultant"},"plan":{"path_id":"p1","week":{"actions":[{"id":"a1","title":"Done already","minutes":30,"day":"Tue","status":"done","moves":0},{"id":"a2","title":"Still open","minutes":25,"day":"Fri","status":"todo","moves":0}]},"summary":"1/2 done"},"today":"Thu","action_id":"a1","kind":"done"}'
+
+# voice/token → 501 voice_not_enabled
+curl -s -w '\nHTTP %{http_code}\n' -X POST "$BRAIN/v1/voice/token" \
+  -H 'Content-Type: application/json' -d '{}'
+```
+
+### 검증 결과 (2026-10-24, 공개 URL 로 curl, Dana 합성 라이프로그 18건)
+
+| 단계 | 요청 | 결과 |
+|---|---|---|
+| interview ×4 | `user_turn: null` → script 턴 1 → 2 → 3 | 200 ×4, `ready_for_paths` false → false → false → **true** |
+| paths | 18건 lifelog + user 턴 3개 | 200, 정확히 3개 (p1 Messaging & Positioning Consultant 0.83 · p2 Brand Voice & Prompt Systems Designer 0.8 · p3 Copy Educator / Workshop Lead 0.6) |
+| plan | p1, `today: "Thu"` | 200, 행동 3개 (a1 Tue 30m · a2 Thu 25m · a3 Sat 20m), `summary "0/3 done"` |
+| checkin not_today | a2 (Thu) | 200, `adjustment {from: Thu, to: Fri}`, 첫 줄 `Today was a rest day, not a missed day.`, 4줄, `summary "0/3 done · 1 moved"`, `share_card null` |
+| checkin done | a1 (첫 Done) | 200, `share_card` 있음, `summary "1/3 done · 1 moved"`, 메시지에 `Welcome back.` 줄 |
+| checkin done 재시도 | 이미 done 인 a1 | **409** `not_checkable` |
+| voice/token | `{}` | **501** `voice_not_enabled` |
+| CORS preflight | `OPTIONS /v1/checkin` (Origin: `https://kpk2-second-draft.vercel.app`) | 204, `access-control-allow-origin` 에 그 Origin 을 echo + `vary: Origin` + allow-methods/headers (기본 `*` 모드는 정상 Origin 을 그대로 돌려준다) |
+| MCP | initialize · tools/list | 200, `serverInfo.name = dream-achieve-moments-brain` · 도구 7개 |
+
+---
+
 ## 터널 재시작 시
 
 ```bash
@@ -243,7 +321,7 @@ cloudflared tunnel --url http://localhost:8787 --no-autoupdate 2>&1 | tee contex
 
 새 `https://<random>.trycloudflare.com` 이 찍히면:
 
-1. 이 파일의 URL 세 곳(상단, ①, ②)을 바꾼다.
+1. 이 파일의 URL 네 곳(상단, ①, ②, ④)을 바꾼다.
 2. 웹 `VITE_BRAIN_URL` 을 바꾸고 재배포한다.
-3. Claude Code 는 `claude mcp remove second-draft-brain` 후 다시 `add` 한다.
+3. Claude Code 는 `claude mcp remove dam-brain` 후 다시 `add` 한다.
 4. 팀 채널에 새 URL 을 공유한다.

@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.play.services.location)
+    // Play services brings in fragment 1.1.0, which breaks activity result callbacks; require a fixed version.
+    implementation(libs.androidx.fragment)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

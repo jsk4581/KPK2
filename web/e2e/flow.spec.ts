@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 // -> Reset. Runs once per project: LLM double or no-key fallback, laptop or phone width.
 
 const SCREENS_DIR = fileURLToPath(new URL('./screens/', import.meta.url));
-const SOURCE_LABEL = { llm: 'AI-drafted', fallback: 'Sample output (offline)' } as const;
+const SOURCE_LABEL = { llm: 'AI-drafted', fallback: 'Sample result' } as const;
 const SIMULATION = '[SIMULATION] Sample persona: synthetic';
 const REST_LINE = 'Today was a rest day, not a missed day.';
 const COMEBACK_LINE = 'Welcome back. Showing up again is the hard part.';
@@ -69,7 +69,7 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   const story = page.locator('.prefill textarea');
   await expect(story).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) await expect(story.nth(i)).not.toHaveValue('');
-  await expect(page.getByRole('list', { name: 'Lifelog items' }).getByRole('listitem').first()).toBeVisible();
+  await expect(page.getByRole('list', { name: 'Your activity' }).getByRole('listitem').first()).toBeVisible();
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Inputs -> Paths through the real handler
@@ -87,10 +87,10 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   const cards = page.locator('article.p0-path');
   await expect(cards).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
-    await expect(cards.nth(i).getByText("What's missing")).toBeVisible();
-    await expect(cards.nth(i).getByText('What transfers')).toBeVisible();
-    await expect(cards.nth(i).getByText('First 2 weeks')).toBeVisible();
-    await expect(cards.nth(i).getByText(/Skill overlap: \d+%/)).toBeVisible();
+    await expect(cards.nth(i).getByText("What you'd need to build")).toBeVisible();
+    await expect(cards.nth(i).getByText('What carries over')).toBeVisible();
+    await expect(cards.nth(i).getByText("How you'd start")).toBeVisible();
+    await expect(cards.nth(i).getByText(/\d+% skill match/)).toBeVisible();
   }
   await expect(cards.first().getByText(body.paths[0].one_liner)).toBeVisible();
   if (source === 'llm') await expect(cards.first().getByText(/^E2E draft:/)).toBeVisible();
@@ -99,10 +99,10 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   const chosenTitle = (await cards.first().getByRole('heading', { level: 3 }).innerText()).trim();
   await cards.first().getByRole('button', { name: 'Choose this path' }).click();
 
-  // This week: three actions, progress starts at 1/4
+  // This week: three actions, progress starts at 0 of 3 done
   await expect(page.getByRole('heading', { name: 'This week' })).toBeVisible();
   await expect(page.locator('.week-path')).toHaveText(chosenTitle);
-  await expect(page.getByText('Progress 1/4')).toBeVisible();
+  await expect(page.getByText('0 of 3 done')).toBeVisible();
   const a1 = page.getByTestId('action-a1');
   const a2 = page.getByTestId('action-a2');
   await expect(page.locator('.week-actions > li')).toHaveCount(3);
@@ -113,9 +113,9 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   const shareCard = page.getByRole('region', { name: 'Share card' });
   await expect(shareCard).toBeVisible();
   await expect(shareCard.getByText('1/3 done')).toBeVisible();
-  await expect(shareCard.getByRole('button', { name: 'Copy text' })).toBeVisible();
+  await expect(shareCard.getByRole('button', { name: 'Copy' })).toBeVisible();
   await expect(a1.getByRole('button')).toHaveCount(0);
-  await expect(page.getByText('Progress 2/4')).toBeVisible();
+  await expect(page.getByText('1 of 3 done')).toBeVisible();
 
   // Not today on a Thursday action (demo today is Thu): rest-day reply, moved to Fri
   const a2Day = (await a2.locator('.week-action-meta span').first().innerText()).trim();
@@ -135,7 +135,7 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   await expect(reply.getByText(COMEBACK_LINE)).toBeVisible();
   await expect(page.getByRole('region', { name: 'Share card' })).toHaveCount(0);
   await expect(page.locator('.week-summary')).toHaveText('2/3 done');
-  await expect(page.getByText('Progress 3/4')).toBeVisible();
+  await expect(page.getByText('2 of 3 done')).toBeVisible();
 
   expect(await redColoredElements(page)).toEqual([]);
   expect(await failureWords(page)).toEqual([]);

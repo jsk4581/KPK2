@@ -1,4 +1,7 @@
-# 발표자료 초안 v2 (Sales, 2026-10-24 14:25) — GTM 인수용
+# 발표자료 초안 v3 (Sales, 2026-10-24 14:45) — GTM 인수용
+
+- v3: 시각 중심 재구성 — 1장 폰 목업 2대(Landing·Paths) + WHO/PAIN 필 + 큰 숫자 타일 3개 / 2장 폰 목업 3대 플로우(→) + "One brain · two doors" SVG 다이어그램 + Why us + Market·Next 7 days. 키트 규칙(2장·로고 띠·팀명·28px↑·행사 외 로고 없음) 준수.
+- v3 PDF: 2쪽 · 1,472,773바이트 · sha256 `be8051beb8929546b1351a3ccf2bfd69c3da4f9df38f1bed67f9292c31a2817b`
 
 - v2: 2장에 **실제 배포 스크린샷 3장** 삽입 (`shot-landing.png` · `shot-paths.png` · `shot-nottoday.png`, Playwright headless Chrome 430×932 @2x, 14:22 SMOKE 3/3 실행 중 캡처) · 우상단에 데모 URL `kpk2-second-draft.vercel.app` · `defect-phone-390.png`는 Build 전달용 결함 캡처(덱에 없음)
 - v2 PDF: 2쪽 · 488,472바이트 · sha256 `d4d3835e84c06a67f515e86147a966379d88d54ac35e9ff181f108cf86151b7a`

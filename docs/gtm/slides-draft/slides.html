@@ -1,101 +1,123 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Second Draft · Pitch (2 slides) · draft v1 Sales 15:00</title>
+<html lang="en"><head><meta charset="utf-8"><title>Second Draft · Pitch (2 slides) · draft v3 Sales</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
  @page{size:1920px 1080px;margin:0}
  *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
  body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#555}
  .s{width:1920px;height:1080px;position:relative;overflow:hidden;background:#140C09;color:#FFF4E8;page-break-after:always;margin:0 auto 40px}
- .s::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 15% 10%,rgba(255,106,43,.16),transparent 60%),radial-gradient(700px 400px at 90% 90%,rgba(232,196,154,.10),transparent 60%)}
+ .s::before{content:"";position:absolute;inset:0;background:radial-gradient(1000px 560px at 12% 8%,rgba(255,106,43,.18),transparent 60%),radial-gradient(800px 500px at 92% 85%,rgba(232,196,154,.12),transparent 60%)}
  @media print{body{background:none}.s{margin:0}}
  .team{position:absolute;top:56px;left:96px;font-size:26px;font-weight:700;color:rgba(255,244,232,.6)}
  .topic{position:absolute;top:56px;right:96px;font-size:22px;font-weight:700;color:#FF6A2B;letter-spacing:.06em}
- .body{position:absolute;left:96px;right:96px;top:130px;bottom:180px;display:flex;flex-direction:column;gap:28px}
+ .body{position:absolute;left:96px;right:96px;top:120px;height:770px}
  .o{color:#FF6A2B}.g{color:#E8C49A}.dim{color:rgba(255,244,232,.55)}
  .lab{font-size:22px;font-weight:700;color:#FF6A2B;letter-spacing:.1em}
  .src{font-size:22px;color:rgba(255,244,232,.5);font-weight:500}
+ /* phone mockup */
+ .phone{border-radius:40px;border:10px solid #2B2320;background:#000;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px rgba(255,244,232,.08)}
+ .phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
  /* slide 1 */
- .hero{display:flex;gap:48px;align-items:flex-end}
- .hero .l{flex:1.15}
- h1{font-size:132px;font-weight:900;line-height:1;letter-spacing:-.03em}
- .tag{font-size:44px;font-weight:800;color:#E8C49A;margin-top:14px;line-height:1.15}
- .sub{font-size:30px;line-height:1.35;margin-top:14px;color:rgba(255,244,232,.85)}
- .stats{flex:1;display:flex;flex-direction:column;gap:16px}
- .stat{display:flex;align-items:baseline;gap:22px;border-left:6px solid #FF6A2B;padding:6px 0 6px 24px}
- .stat .n{font-size:72px;font-weight:900;letter-spacing:-.03em;color:#FF6A2B;min-width:330px}
+ .s1{display:flex;flex-direction:column;gap:24px;height:770px}
+ .hero{display:flex;gap:40px;flex:0 0 530px}
+ .hero .l{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px}
+ h1{font-size:138px;font-weight:900;line-height:.98;letter-spacing:-.03em}
+ .tag{font-size:46px;font-weight:800;color:#E8C49A;line-height:1.15}
+ .sub{font-size:30px;line-height:1.35;color:rgba(255,244,232,.85)}
+ .strip{display:flex;gap:16px;margin-top:6px}
+ .pill{border:1px solid rgba(255,244,232,.22);border-radius:999px;padding:10px 22px;font-size:28px;line-height:1.2;background:rgba(255,244,232,.04)}
+ .pill b{color:#FF6A2B}
+ .hero .r{flex:0 0 620px;position:relative}
+ .hero .phone{position:absolute;right:10px;top:30px;width:270px;height:490px;transform:rotate(4deg)}
+ .hero .phone.two{right:330px;top:0;width:270px;height:490px;transform:rotate(-4deg);z-index:2}
+ .stats{display:flex;gap:24px;flex:0 0 200px}
+ .stat{flex:1;border-radius:26px;padding:18px 28px;background:linear-gradient(160deg,rgba(255,106,43,.16),rgba(255,106,43,.04));border:1px solid rgba(255,106,43,.35);display:flex;flex-direction:column;justify-content:center;gap:6px}
+ .stat .n{font-size:74px;font-weight:900;letter-spacing:-.03em;color:#FF6A2B;line-height:1}
  .stat .c{font-size:28px;line-height:1.3}
- .row{display:flex;gap:28px}
- .box{flex:1;border:1px solid rgba(255,244,232,.18);border-radius:24px;padding:24px 30px;background:rgba(255,244,232,.03)}
- .box .lab{display:block;margin-bottom:10px}
- .box p,.box li{font-size:28px;line-height:1.35}
- .box ul{list-style:none;display:flex;flex-direction:column;gap:8px}
- .box li::before{content:"—";color:#FF6A2B;margin-right:12px;font-weight:800}
- .big{font-size:36px;font-weight:800;line-height:1.2}
  /* slide 2 */
- .flow{display:flex;gap:24px;align-items:stretch;flex:0 0 430px;min-height:0}
- .shotp{flex:0 0 300px;border-radius:22px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);overflow:hidden;display:flex;flex-direction:column}
- .shotp img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:top;display:block}
- .shotp .cap{padding:12px 16px;font-size:22px;line-height:1.3;color:rgba(255,244,232,.85);background:#1C120D}
- .side{flex:1;display:flex}
- .side .box{flex:1}
- .row.fill{flex:1;min-height:0}.row.fill .box{overflow:hidden}
- .step{flex:1;border-radius:22px;background:#2A1A12;border:1px solid rgba(255,244,232,.18);padding:22px 26px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
- .step .num{position:absolute;top:14px;right:22px;font-size:88px;font-weight:900;color:rgba(255,106,43,.18);line-height:1}
- .step h3{font-size:30px;font-weight:800}
- .chip{display:inline-block;border:1px solid rgba(255,244,232,.3);border-radius:999px;padding:6px 16px;font-size:28px;line-height:1.2;margin:2px 6px 2px 0}
- .chip.hi{background:#FF6A2B;border-color:#FF6A2B;color:#140C09;font-weight:800}
- .quote{font-size:30px;font-weight:800;color:#E8C49A;line-height:1.25}
- .ladder{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
- .rung{border-radius:14px;padding:8px 16px;background:rgba(255,106,43,.14);font-size:28px;font-weight:800}
- .rung b{color:#FF6A2B;font-size:34px}
- .arrow{font-size:30px;color:rgba(255,244,232,.5)}
+ .s2{display:flex;gap:32px;height:770px}
+ .screens{flex:0 0 1000px;display:flex;flex-direction:column;justify-content:center}
+ .shots3{display:flex;gap:20px;align-items:flex-start}
+ .shotcol{flex:1;display:flex;flex-direction:column;gap:12px;align-items:center}
+ .shotcol .phone{width:290px;height:560px}
+ .shotcol .cap{font-size:28px;line-height:1.25;text-align:center;font-weight:700}
+ .shotcol .cap span{display:block;font-size:22px;color:rgba(255,244,232,.6);font-weight:500;margin-top:4px}
+ .arrowv{align-self:flex-start;margin-top:250px;font-size:48px;color:#FF6A2B;font-weight:900}
+ .right{flex:1;display:flex;flex-direction:column;gap:16px;min-height:0}
+ .right .box{overflow:hidden}
+ .box{border:1px solid rgba(255,244,232,.18);border-radius:24px;padding:14px 24px;background:rgba(255,244,232,.03)}
+ .box .lab{display:block;margin-bottom:8px}
+ .box li{font-size:28px;line-height:1.3;list-style:none}
+ .box ul{display:flex;flex-direction:column;gap:6px}
+ .box li::before{content:"—";color:#FF6A2B;margin-right:12px;font-weight:800}
+ .brain{display:flex;flex-direction:column;align-items:center;gap:8px}
+ .ladder{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+ .rung{border-radius:14px;padding:6px 14px;background:rgba(255,106,43,.14);font-size:28px;font-weight:800}
+ .rung b{color:#FF6A2B;font-size:32px}
  .foot{position:absolute;left:5%;right:5%;bottom:36px;height:auto}
  .foot img{width:100%;display:block}
 </style></head>
 <body>
 <section class="s">
   <div class="team">팀 김박구이</div><div class="topic">TOPIC · SAVE 10M JOBS FROM AI (SCHMIDT)</div>
-  <div class="body">
+  <div class="body s1">
     <div class="hero">
       <div class="l">
         <h1>Second Draft</h1>
         <div class="tag">Your expertise, redrafted for the AI era.</div>
         <div class="sub">An AI career agent that turns what you already know into your next career — and walks it with you, <b class="g">week by week</b>.</div>
+        <div class="strip">
+          <div class="pill"><b>WHO</b> &nbsp;US freelance copywriters &amp; writers, 3–10 yrs</div>
+          <div class="pill"><b>PAIN</b> &nbsp;“My clients draft with ChatGPT now.” — alone, from zero, quits halfway</div>
+        </div>
       </div>
-      <div class="stats">
-        <div class="stat"><div class="n">−5.2%</div><div class="c">freelance writers' income after ChatGPT launched <span class="src">· Hui, Reshef &amp; Zhou 2023</span></div></div>
-        <div class="stat"><div class="n">120,136</div><div class="c">US layoffs that named AI as the reason, Jan–Sep 2026 <span class="src">· Challenger</span></div></div>
-        <div class="stat"><div class="n">65%</div><div class="c">of 140,300 US writers are self-employed — nobody pays for their transition but them <span class="src">· BLS 2025</span></div></div>
+      <div class="r">
+        <div class="phone"><img src="shot-landing.png" alt=""></div>
+        <div class="phone two"><img src="shot-paths.png" alt=""></div>
       </div>
     </div>
-    <div class="row">
-      <div class="box"><span class="lab">TARGET MARKET</span><p class="big">US · freelance copywriters &amp; writers, <span class="o">3–10 years in</span></p><p class="dim">Next: translators · illustrators · designers → office roles AI is rewriting</p></div>
-      <div class="box"><span class="lab">PROBLEM</span><p class="big">“My clients draft with ChatGPT now.”</p><p>No employer, no outplacement. They prepare alone, start from zero — and <span class="o">quit halfway</span>.</p></div>
+    <div class="stats">
+      <div class="stat"><div class="n">−5.2%</div><div class="c">freelance writers' monthly income after ChatGPT <span class="src">· Hui, Reshef &amp; Zhou 2023</span></div></div>
+      <div class="stat"><div class="n">120,136</div><div class="c">US layoffs that named AI as the reason, Jan–Sep 2026 <span class="src">· Challenger</span></div></div>
+      <div class="stat"><div class="n">65%</div><div class="c">of 140,300 US writers are self-employed — no employer pays for their transition <span class="src">· BLS 2025</span></div></div>
     </div>
   </div>
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>
 </section>
 <section class="s">
   <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO kpk2-second-draft.vercel.app</div>
-  <div class="body">
-    <div class="flow">
-      <div class="shotp"><img src="shot-landing.png" alt=""><div class="cap"><b>1 · Tell your story</b> — no login, nothing stored · <span class="g">[SIMULATION] persona Dana</span></div></div>
-      <div class="shotp"><img src="shot-paths.png" alt=""><div class="cap"><b>2 · Three paths that <span class="o">transfer</span></b> — what transfers · what's missing · first 2 weeks</div></div>
-      <div class="shotp"><img src="shot-nottoday.png" alt=""><div class="cap"><b>3 · This week · <span class="o">Not today</span></b> — “a rest day, not a missed day” · moved, never deleted</div></div>
-      <div class="side">
-        <div class="box"><span class="lab">HOW IT WORKS</span><ul>
-          <li><b>One Claude call</b> → 3 paths + this week's 3 actions (≤30 min)</li>
-          <li>Check-ins never shame — <b>move, don't delete</b></li>
-          <li><b class="o">One brain, two doors:</b> the same logic runs the web <b>and an MCP server</b> any app can plug into</li></ul></div>
+  <div class="body s2">
+    <div class="screens">
+      <div class="shots3">
+        <div class="shotcol"><div class="phone"><img src="shot-landing.png" alt=""></div><div class="cap">1 · Tell your story<span>no login · nothing stored · [SIMULATION] persona</span></div></div>
+        <div class="arrowv">→</div>
+        <div class="shotcol"><div class="phone"><img src="shot-paths.png" alt=""></div><div class="cap">2 · Three paths that <span class="o" style="display:inline;font-size:28px;color:#FF6A2B;font-weight:800">transfer</span><span>what transfers · what's missing · first 2 weeks</span></div></div>
+        <div class="arrowv">→</div>
+        <div class="shotcol"><div class="phone"><img src="shot-nottoday.png" alt=""></div><div class="cap">3 · This week · <span class="o" style="display:inline;font-size:28px;color:#FF6A2B;font-weight:800">Not today</span><span>“a rest day, not a missed day” · moved, never deleted</span></div></div>
       </div>
     </div>
-    <div class="row fill">
+    <div class="right">
+      <div class="box brain">
+        <span class="lab" style="align-self:flex-start">ONE BRAIN · TWO DOORS</span>
+        <svg width="100%" height="160" viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" font-family="Pretendard Variable, Pretendard, sans-serif">
+          <defs><marker id="a" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#FF6A2B"/></marker></defs>
+          <rect x="120" y="10" width="460" height="96" rx="22" fill="#FF6A2B"/>
+          <text x="350" y="50" text-anchor="middle" font-size="30" font-weight="900" fill="#140C09">BRAIN · logic.js</text>
+          <text x="350" y="86" text-anchor="middle" font-size="22" font-weight="700" fill="#140C09">paths → week → check-in · one Claude call</text>
+          <line x1="260" y1="106" x2="160" y2="150" stroke="#FF6A2B" stroke-width="5" marker-end="url(#a)"/>
+          <line x1="440" y1="106" x2="540" y2="150" stroke="#FF6A2B" stroke-width="5" marker-end="url(#a)"/>
+          <rect x="20" y="152" width="280" height="50" rx="14" fill="none" stroke="#E8C49A" stroke-width="3"/>
+          <text x="160" y="186" text-anchor="middle" font-size="24" font-weight="800" fill="#E8C49A">Web demo (today)</text>
+          <rect x="400" y="152" width="280" height="50" rx="14" fill="none" stroke="#E8C49A" stroke-width="3"/>
+          <text x="540" y="186" text-anchor="middle" font-size="24" font-weight="800" fill="#E8C49A">MCP server · any app</text>
+        </svg>
+      </div>
       <div class="box"><span class="lab">WHY US</span><ul>
-        <li>Career Dreamer &amp; Coursera Coach <b>stop at a map</b> · outplacement sells résumés at <b class="o">$600–2,600</b>/employee <span class="src">· Intoo, RiseSmart</span></li>
-        <li><b>Nobody</b> pairs expertise transfer for AI-displaced roles with a <b class="g">weekly habit loop</b></li></ul></div>
+        <li>Career Dreamer &amp; Coursera Coach <b>stop at a map</b>; outplacement resells résumés, <b class="o">$600–2,600</b>/employee <span class="src">· Intoo, RiseSmart</span></li>
+        <li><b>Nobody</b> pairs expertise transfer with a <b class="g">habit loop</b></li></ul></div>
       <div class="box"><span class="lab">MARKET · NEXT 7 DAYS</span>
-        <div class="ladder"><span class="rung"><b>700K</b> creative</span><span class="arrow">→</span><span class="rung"><b>3M</b> payable</span><span class="arrow">→</span><span class="rung"><b>11.8M</b> declining</span><span class="src">BLS 2025–35 · estimates</span></div>
-        <ul style="margin-top:6px"><li>10 beta writers · <b>2-week check-in retention</b></li><li><b class="o">Ask:</b> intros — outplacement buyer · Upwork · career-tech VC</li></ul></div>
+        <div class="ladder"><span class="rung"><b>700K</b> creative</span><span class="o" style="font-size:28px">→</span><span class="rung"><b>3M</b> payable</span><span class="o" style="font-size:28px">→</span><span class="rung"><b>11.8M</b> declining</span><span class="src">BLS 2025–35 · est.</span></div>
+        <ul style="margin-top:6px"><li>10 beta writers · <b>2-week check-in retention</b></li><li><b class="o">Ask:</b> intros — outplacement buyer · Upwork · VC</li></ul></div>
     </div>
   </div>
   <div class="foot"><img src="footer-for-dark-slides.png" alt=""></div>

@@ -111,7 +111,7 @@ describe('Progress tab', () => {
 
     // Evidence items are shown in the Why panel too.
     const why = screen.getByTestId('why-panel');
-    expect(within(why).getByText(/Based on/)).toBeInTheDocument();
+    expect(within(why).getByText('How we got this')).toBeInTheDocument();
     expect(within(why).getByText(logic.PROGRESS_RULES.daysShownUp)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Hide why' }));
@@ -123,7 +123,7 @@ describe('Progress tab', () => {
     renderProgress(state);
     fireEvent.click(screen.getByRole('button', { name: 'Why?' }));
     const steps = within(screen.getByTestId('why-steps')).getAllByRole('listitem');
-    expect(steps[0]).toHaveTextContent('Sample output (offline)');
+    expect(steps[0]).toHaveTextContent('Sample result');
   });
 
   it('does not count lifelog that was never connected', () => {

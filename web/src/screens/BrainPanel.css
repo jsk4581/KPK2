@@ -7,8 +7,16 @@
   margin-top: var(--sp-8);
 }
 
-.brain-panel h3 {
+.brain-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
   margin: 0 0 var(--sp-2);
+}
+
+.brain-panel h3 {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: var(--fw-medium);

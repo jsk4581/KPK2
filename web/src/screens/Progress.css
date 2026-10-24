@@ -290,6 +290,11 @@
   letter-spacing: 0.02em;
 }
 
+/* Second part of "How we got this" (the steps), after the rules card. */
+.progress-why .progress-footnote-steps {
+  margin-top: var(--sp-6);
+}
+
 /* Step rail: a hairline drawn from the top, one node per step. */
 .progress-steps {
   position: relative;

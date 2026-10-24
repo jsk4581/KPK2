@@ -4,7 +4,7 @@ import { MIN_DATA_DAYS, dataDays, riskMeasured } from '../brain/dataDays';
 import type { BrainView } from '../brain/useBrain';
 import './BrainPanel.css';
 
-// Decision brain section of the Progress tab. Shows what the rules-only brain server
+// Decision brain section of the Progress tab ("Where you stand", labelled rules-based). Shows what the rules-only brain server
 // returned; while it is unreachable the on-device signals above stay as they are.
 
 const RISK_WORD: Record<string, string> = { green: 'Low', amber: 'Medium', red: 'High' };
@@ -15,8 +15,16 @@ const RISK_REASON: Record<string, string> = {
   low_momentum: 'Momentum is low',
   low_condition: 'Energy has been low the last 3 days',
   low_self_efficacy: 'Fewer steps finished than tried lately',
-  first_week: 'First week of the arc',
+  first_week: 'First week of the 12-week plan',
   data_gap: 'No lifelog item for 2 or more days',
+};
+
+// Plain names for the brain's milestone ids (UI only; the brain keeps its ids and names).
+const MILESTONE_NAME: Record<string, string> = {
+  M1: 'First sign this path fits',
+  M2: 'Proof your past work carries over',
+  M3: 'First contact with the market',
+  M4: 'Ready to apply or pitch',
 };
 
 const CONSTRAINT_NAME: Record<string, string> = {
@@ -83,8 +91,8 @@ function plural(n: number, word: string): string {
   return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
-// The on-device signals above the panel and the brain both name a momentum and a drop-off
-// risk. They read different inputs, so the panel says which inputs each one used.
+// The on-device signals above the panel and the brain both name a momentum and a risk of
+// stalling. They read different inputs, so the panel says which inputs each one used.
 function ScopeNote({ context }: { context: ThinkOutput['context'] }) {
   const checkins = context?.checkinCount;
   const lifelog = context?.lifelogCount;
@@ -95,7 +103,7 @@ function ScopeNote({ context }: { context: ThinkOutput['context'] }) {
   return (
     <p className="brain-muted brain-scope" data-testid="brain-scope">
       Why these can differ from the signals above: those count this week&apos;s check-ins on this device only.
-      The brain reads {counts}, day by day, so its momentum and drop-off risk can come out different.
+      These rules read {counts}, day by day, so their momentum and risk of stalling can come out different.
     </p>
   );
 }
@@ -128,6 +136,7 @@ function BrainData({ data }: { data: ThinkOutput }) {
   const level = measured ? state.risk.level : 'unknown';
   const attention = level === 'amber' || level === 'red';
   const next = goal.milestones.find((m) => m.passed !== true) ?? null;
+  const nextName = next ? MILESTONE_NAME[next.id] : undefined;
   const todo = suggestion(intervention);
   // Drift about this week's plan only: notes tied to an action of the server's synthetic
   // history (ids prefixed by the adapter) are not about the user's week.
@@ -151,14 +160,14 @@ function BrainData({ data }: { data: ThinkOutput }) {
           </dd>
         </div>
         <div className="brain-cell" data-testid="brain-efficacy">
-          <dt>Self-efficacy</dt>
+          <dt>Confidence</dt>
           <dd>
             {efficacyWord(state.selfEfficacy, days.checkins)}
             <DaysSoFar days={days.checkins} />
           </dd>
         </div>
         <div className={`brain-cell${attention ? ' brain-attention' : ''}`} data-testid="brain-risk" data-level={level}>
-          <dt>Drop-off risk</dt>
+          <dt>Risk of stalling</dt>
           <dd>{measured ? (RISK_WORD[level] ?? level) : NOT_ENOUGH}</dd>
         </div>
       </dl>
@@ -174,12 +183,10 @@ function BrainData({ data }: { data: ThinkOutput }) {
         <div className="brain-block" data-testid="brain-milestone">
           <h4>Next milestone</h4>
           <p>
-            <strong>
-              {[next.id, next.name].filter(Boolean).join(' ')}
-            </strong>
+            <strong>{nextName ?? [next.id, next.name].filter(Boolean).join(' ')}</strong>
             {next.date && <span className="brain-muted"> by {next.date}</span>}
           </p>
-          {next.outcome && <p>{next.outcome}</p>}
+          {!nextName && next.outcome && <p>{next.outcome}</p>}
           {next.evidence && <p className="brain-muted">Evidence: {next.evidence}</p>}
         </div>
       )}
@@ -225,8 +232,13 @@ export default function BrainPanel({ view }: { view: BrainView }) {
     );
   }
   return (
-    <section className="brain-panel" aria-label="Decision brain" aria-busy={view.status === 'loading'} data-testid="brain-panel">
-      <h3>Decision brain: rules, no AI</h3>
+    <section className="brain-panel" aria-label="Where you stand" aria-busy={view.status === 'loading'} data-testid="brain-panel">
+      <div className="brain-head">
+        <h3>Where you stand</h3>
+        <span className="brain-rules tag" data-testid="brain-rules">
+          Rules-based, no AI
+        </span>
+      </div>
       {view.status === 'ok' && view.synthetic && <p className="brain-sim tag tag-sim">[SIMULATION] synthetic history</p>}
       {view.status === 'loading' ? (
         <div className="brain-skeleton" data-testid="brain-loading" aria-hidden="true">

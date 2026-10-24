@@ -15,16 +15,17 @@ const data = thinkOut as unknown as ThinkOutput;
 describe('BrainPanel', () => {
   it('renders the brain state from a /v1/think answer', () => {
     render(<BrainPanel view={{ status: 'ok', data, synthetic: true }} />);
-    expect(screen.getByText('Decision brain: rules, no AI')).toBeInTheDocument();
+    expect(screen.getByText('Where you stand')).toBeInTheDocument();
+    expect(screen.getByTestId('brain-rules')).toHaveTextContent('Rules-based, no AI');
     expect(screen.getByText('[SIMULATION] synthetic history')).toBeInTheDocument();
     expect(screen.getByTestId('brain-energy')).toHaveTextContent('Good');
     expect(screen.getByTestId('brain-momentum')).toHaveTextContent('Strong');
     expect(screen.getByTestId('brain-efficacy')).toHaveTextContent('Solid');
     expect(screen.getByTestId('brain-risk')).toHaveTextContent('Low');
     expect(screen.getByTestId('brain-risk')).not.toHaveClass('brain-attention');
-    expect(screen.getByTestId('brain-milestone')).toHaveTextContent('M1 Fit');
+    expect(screen.getByTestId('brain-milestone')).toHaveTextContent('First sign this path fits');
+    expect(screen.getByTestId('brain-milestone')).not.toHaveTextContent('M1');
     expect(screen.getByTestId('brain-milestone')).toHaveTextContent('2026-10-19');
-    expect(screen.getByTestId('brain-milestone')).toHaveTextContent('First evidence that this path fits you');
     const constraint = screen.getByTestId('brain-constraint');
     expect(constraint).toHaveTextContent('Time');
     expect(constraint).toHaveTextContent('3 of 5 recent Not today reasons point to time (weighted score 0.65).');
@@ -40,7 +41,7 @@ describe('BrainPanel', () => {
     const note = screen.getByTestId('brain-scope');
     expect(note).toHaveTextContent('Why these can differ from the signals above');
     expect(note).toHaveTextContent("this week's check-ins on this device only");
-    expect(note).toHaveTextContent('The brain reads 8 check-ins and 31 lifelog items');
+    expect(note).toHaveTextContent('These rules read 8 check-ins and 31 lifelog items');
   });
 
   it('says Not enough data instead of showing the brain starting values (no data yet)', () => {

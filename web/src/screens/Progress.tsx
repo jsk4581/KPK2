@@ -51,7 +51,7 @@ const SOURCE_LABEL: Record<string, string> = {
 const VIA_LABEL: Record<NonNullable<TraceEntry['via']>, string> = {
   logic: 'Rule (logic.js)',
   llm: 'AI-drafted',
-  fallback: 'Sample output (offline)',
+  fallback: 'Sample result',
   brain: 'Brain',
 };
 
@@ -151,7 +151,7 @@ export default function Progress() {
           data-reveal
           style={staggerStyle(1, 60)}
         >
-          <dt>Drop-off risk</dt>
+          <dt>Risk of stalling</dt>
           <dd>
             <span className="progress-value">{capitalize(signals.dropoutRisk)}</span>
           </dd>
@@ -190,7 +190,8 @@ export default function Progress() {
 
       {showWhy && (
         <div className="progress-why anim-rise-sm" data-testid="why-panel">
-          <h3 className="progress-subhead">Based on</h3>
+          <h3 className="progress-subhead">How we got this</h3>
+          <p className="progress-muted progress-footnote">What counted, and how much:</p>
           <ul className="progress-evidence">
             {signals.evidence.map((item, i) => (
               <li key={`why-${item.type}-${i}`} className="anim-rise-sm" style={staggerStyle(i, 40, 60)}>
@@ -206,8 +207,9 @@ export default function Progress() {
             <li>{signals.rules.daysShownUp}</li>
           </ul>
 
-          <h3 className="progress-subhead">How it was worked out</h3>
-          <p className="progress-muted progress-footnote">Only the steps that actually ran, in order.</p>
+          <p className="progress-muted progress-footnote progress-footnote-steps">
+            Each step that ran, in order. Steps tagged Rule or Brain follow fixed rules, not AI.
+          </p>
           <ol className="progress-steps" data-testid="why-steps">
             {steps.map((step, i) => {
               const via = step.via ?? 'logic';
@@ -223,10 +225,10 @@ export default function Progress() {
                     <span className={`progress-tag ${VIA_TAG[via]}`}>{VIA_LABEL[via]}</span>
                   </div>
                   <div className="progress-io">
-                    <span className="progress-muted">In:</span> {step.input}
+                    <span className="progress-muted">Used:</span> {step.input}
                   </div>
                   <div className="progress-io">
-                    <span className="progress-muted">Out:</span> {step.output}
+                    <span className="progress-muted">Result:</span> {step.output}
                   </div>
                 </li>
               );

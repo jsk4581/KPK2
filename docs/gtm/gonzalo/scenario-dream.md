@@ -14,6 +14,8 @@ When AI pushes you out of your job, you don't have to wait for "someday" (*The M
 
 Maya R., 38, Austin, Texas. Freelance copywriter for 8 years (B2B SaaS). She was good at it, but it was never her passion. Needs at least USD 4,000/month. 10–12 free hours a week, one child. Her parents ran a family bakery for 25 years. It closed in 2019, and she still has her mother's recipe notebook. (simulation)
 
+**Her real problem is fear, not skills.** Every day she spends about 2 hours on Upwork and LinkedIn looking for copywriting gigs, sends proposals, gets almost no replies, and goes to bed worried. The bakery dream feels too big and too risky to start. (simulation)
+
 ## Step 0 — The push
 
 Her biggest client emails: "We now write with AI. We only need light editing: USD 800/month instead of USD 3,300." She loses 40% of her income in one email.
@@ -43,7 +45,7 @@ The agent doesn't give advice yet. It asks, one at a time:
 2. **Values:** Who do you want to do good for, and why? (Maya: "My neighborhood. A place where people meet, like my parents' bakery.")
 3. **Life:** How many hours a week, how much money, how long can you go without full income?
 4. **Assets:** What do you already have: recipes, an oven, skills, contacts, savings?
-5. **Fear:** What would make you quit?
+5. **Fear:** What would make you quit? (Maya: "Losing our savings, and failing in front of my family.")
 
 Maya's answers become a one-page **Dream Brief**: dream, values, constraints, assets, fears.
 
@@ -104,6 +106,28 @@ She keeps her 2 remaining copywriting clients as a bridge. She is not asked to q
 | Rules: what Texas allows, label text, when she needs a registration | Decides how much she wants to grow |
 | Operations: shopping list, baking schedule, delivery route, shared-kitchen booking based on the orders | Approves the plan each week |
 
+## Step 5b — Daily nudges: from fear to one small step a day
+
+A plan alone doesn't beat fear. Every day the agent sends Maya one small nudge: a step that takes 15–60 minutes and is too small to be scary. It celebrates each one. (all simulation)
+
+| Day | Nudge | Why it works |
+|---|---|---|
+| Mon | "Good morning. Today's step: 20 minutes to finish the food handler course. That's all." | Tiny, clear, done today |
+| Tue | "Pick the one recipe from your mother's notebook you'd bake for a stranger." | Emotional, not business |
+| Wed | "Your label text is ready. Read it and change one word if you want." | AI did the hard part, she only approves |
+| Thu | "Your copywriting search is done for today: I checked Upwork and LinkedIn, 1 match, I saved it for you. Now 30 minutes for the bakery." | Takes the job-search worry off her plate |
+| Fri | "Bake tonight. Send me a photo when it's out of the oven." | Action, and progress collected by photo |
+| Sat | "Week 1 done: course ✓, recipe ✓, labels ✓, first bake ✓. Your mom's bread is coming back." | Celebrates progress, builds the habit |
+
+**Her time shifts from worry to the dream:**
+
+| | Before (week 0) | After (week 4) |
+|---|---|---|
+| Copywriting job search | About 2 hours a day, anxious | About 15 minutes a day: the agent watches for gigs and only shows real matches |
+| Copywriting work | 2 remaining clients | Same 2 clients, as a bridge. The job didn't die, she just stopped chasing it every day |
+| Bakery | 0 hours, "someday" | About 1 hour a day + Friday night baking |
+| How she feels | Worried every night | "It's starting to take shape." |
+
 ## Step 6 — Progress, the day off, and the "vaccine"
 
 - **Progress is collected, not reported.** Connectors see new photos of test bakes and the pre-order count, so Maya doesn't fill in forms.
@@ -114,6 +138,8 @@ She keeps her 2 remaining copywriting clients as a bridge. She is not asked to q
 ## Step 7 — Week 4
 
 The neighbors taste the bread. Pre-orders reach 18 boxes, and her first Saturday sells out: USD 630 in sales (simulation). **First income from her dream.** A café down the street asks to sell her bread. The agent flags that this needs a separate state registration and more oven space. It updates the business plan: book a shared-kitchen night slot in month 2, register for café sales in month 3. Next goal: 25 boxes a weekend, with delivery. Total invested so far: under USD 200 (simulation).
+
+That night Maya realizes she hasn't opened Upwork in 3 days, and she didn't worry about it. Her copywriting clients are still there as a bridge, but her time and energy now go to the dream, which is slowly taking shape.
 
 ## Behind the scenes: why it gets better with every user
 
@@ -131,7 +157,8 @@ The neighbors taste the bread. Pre-orders reach 18 boxes, and her first Saturday
 | 3 | "This isn't a new dream" insight | Notes with "Bakery?" × 4 |
 | 4 | 3 options + reality check | Prepared numbers above, plus the Texas rule |
 | 5 | Business plan (3 stages) + "AI does / Maya does" + the website AI built | 4-week plan, stage table, a generated pre-order page |
-| 6 | Day off + vaccine | Fake progress: 40 likes, 3 pre-orders |
+| 6 | Daily nudges + "before / after" time table | 6 nudge messages (Mon–Sat), 1 saved Upwork match |
+| 6b | Day off + vaccine | Fake progress: 40 likes, 3 pre-orders |
 | 7 | First Saturday sold out | Photo of 18 boxes, USD 630 |
 
 ## Open questions for the team

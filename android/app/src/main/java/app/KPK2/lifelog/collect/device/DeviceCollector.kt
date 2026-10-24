@@ -1,10 +1,12 @@
 package app.KPK2.lifelog.collect.device
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import app.KPK2.lifelog.data.LifelogRepository
 import app.KPK2.lifelog.sources.Collector
+import app.KPK2.lifelog.sources.ForegroundWatcher
 import app.KPK2.lifelog.sources.SourceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +18,9 @@ import java.time.ZoneId
 
 /**
  * Records charging, battery band, Do Not Disturb and headphones as a "Device state" item, only when
- * one of them changed since the last reading. Reads when the source starts (app open, or the person
- * turning it on) and on every periodic pull. Needs no runtime permission.
+ * one of them changed since the last reading. Reads when the source starts (the person turning it on,
+ * or a new app process), whenever the app comes to the foreground, and on every periodic pull. Needs
+ * no runtime permission.
  */
 class DeviceCollector(
     private val read: (Context) -> DeviceState = { DeviceStateReader.read(it).toState() },
@@ -30,24 +33,33 @@ class DeviceCollector(
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val lock = Mutex()
 
-    @Volatile
-    private var started = false
+    private var foregroundWatcher: ForegroundWatcher? = null
 
+    @Synchronized
     override fun start(context: Context, repository: LifelogRepository) {
-        if (started) return
-        started = true
-        val app = context.applicationContext
-        scope.launch {
-            runCatching { snapshot(app, repository) }.onFailure { Log.w(TAG, "reading on start failed", it) }
-        }
+        if (foregroundWatcher != null) return
+        val app = context.applicationContext as Application
+        // A warm reopen does not start the source again, so read on every return to the foreground too.
+        foregroundWatcher = ForegroundWatcher { readSoon(app, repository, "foreground") }
+            .also(app::registerActivityLifecycleCallbacks)
+        readSoon(app, repository, "start")
     }
 
     /** Forgets the last state, so turning the source back on records a fresh starting point. */
+    @Synchronized
     override fun stop(context: Context) {
-        if (!started && !memory(context).contains(KEY_LAST)) return
-        started = false
-        val app = context.applicationContext
+        val app = context.applicationContext as Application
+        val watcher = foregroundWatcher
+        if (watcher == null && !memory(app).contains(KEY_LAST)) return
+        watcher?.let(app::unregisterActivityLifecycleCallbacks)
+        foregroundWatcher = null
         scope.launch { lock.withLock { memory(app).edit().remove(KEY_LAST).commit() } }
+    }
+
+    private fun readSoon(app: Context, repository: LifelogRepository, reason: String) {
+        scope.launch {
+            runCatching { snapshot(app, repository) }.onFailure { Log.w(TAG, "reading on $reason failed", it) }
+        }
     }
 
     override suspend fun pull(context: Context, repository: LifelogRepository): Int =

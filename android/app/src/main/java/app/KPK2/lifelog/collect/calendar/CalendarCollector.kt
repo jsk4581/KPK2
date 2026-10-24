@@ -1,13 +1,12 @@
 package app.KPK2.lifelog.collect.calendar
 
 import android.Manifest
-import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import app.KPK2.lifelog.data.LifelogRepository
 import app.KPK2.lifelog.sources.Collector
+import app.KPK2.lifelog.sources.ForegroundWatcher
 import app.KPK2.lifelog.sources.SourceId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -58,25 +57,6 @@ class CalendarCollector(
             }
         }
         return repository.record(CalendarItems.toItems(instances))
-    }
-
-    /** Calls [onForeground] each time the first of the app's activities becomes visible. */
-    private class ForegroundWatcher(private val onForeground: () -> Unit) : Application.ActivityLifecycleCallbacks {
-        private var visible = 0
-
-        override fun onActivityStarted(activity: Activity) {
-            if (visible++ == 0) onForeground()
-        }
-
-        override fun onActivityStopped(activity: Activity) {
-            visible = (visible - 1).coerceAtLeast(0)
-        }
-
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-        override fun onActivityResumed(activity: Activity) {}
-        override fun onActivityPaused(activity: Activity) {}
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-        override fun onActivityDestroyed(activity: Activity) {}
     }
 
     private companion object {

@@ -1,0 +1,118 @@
+/* Phone front frame, pure CSS. Everything scales from --phone-w (1em = 1/43 of the frame width).
+   Markup:
+   <div class="phone" style="--phone-w:340px">
+     <div class="phone__bezel">
+       <div class="phone__screen">
+         <div class="phone__island"></div>
+         ...screen content (or <iframe class="phone__iframe">)...
+       </div>
+     </div>
+   </div> */
+.phone {
+  --phone-w: 320px;
+  position: relative;
+  width: var(--phone-w);
+  font-size: calc(var(--phone-w) / 43);
+  aspect-ratio: 43 / 88;
+  border-radius: 6.6em;
+  padding: 0.38em;
+  background: linear-gradient(140deg, #f4f4f6 0%, #a3a3aa 20%, #e6e6ea 46%, #85858c 74%, #dcdce0 100%);
+  box-shadow:
+    0 0 0 0.05em rgba(0, 0, 0, .35),
+    inset 0 0 0.1em rgba(255, 255, 255, .8),
+    0 3.2em 6em -1.6em rgba(60, 24, 90, .35),
+    0 1.2em 2.4em -1em rgba(0, 0, 0, .28);
+  isolation: isolate;
+  flex: none;
+}
+
+/* Side buttons: action + volume on the left, power on the right */
+.phone::before,
+.phone::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 0.5em;
+  border-radius: 0.3em;
+  background: linear-gradient(90deg, #77777e, #d4d4d8 60%, #8d8d94);
+}
+.phone::before {
+  left: -0.28em;
+  top: 15em;
+  height: 15.6em;
+  /* three buttons in one element: action (short), gap, volume up, gap, volume down */
+  -webkit-mask: linear-gradient(#000 0 2.8em, transparent 2.8em 4.6em, #000 4.6em 9.6em, transparent 9.6em 10.6em, #000 10.6em);
+          mask: linear-gradient(#000 0 2.8em, transparent 2.8em 4.6em, #000 4.6em 9.6em, transparent 9.6em 10.6em, #000 10.6em);
+}
+.phone::after {
+  right: -0.28em;
+  top: 22em;
+  height: 8.6em;
+}
+
+.phone__bezel {
+  height: 100%;
+  border-radius: 6.22em;
+  padding: 1.45em;
+  background: #050507;
+  box-shadow: inset 0 0 0 0.14em #1c1c21, inset 0 0 0 0.3em #0b0b0e;
+}
+
+.phone__screen {
+  position: relative;
+  height: 100%;
+  border-radius: 4.78em;
+  overflow: hidden;
+  background: #fff;
+  font-size: 1em;
+  isolation: isolate;
+}
+/* Glass glare on top of the content */
+.phone__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(125deg, rgba(255, 255, 255, .22) 0%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, .06) 100%);
+}
+
+.phone__island {
+  position: absolute;
+  z-index: 11;
+  top: 1.1em;
+  left: 50%;
+  width: 12.4em;
+  height: 3.6em;
+  transform: translateX(-50%);
+  border-radius: 2em;
+  background: #000;
+}
+
+.phone__iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding-top: 5.4em;
+  background: #fff;
+}
+
+/* Optional status bar row that sits beside the island */
+.phone__status {
+  position: relative;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* font-size is 1.6x the frame unit, so lengths here are frame units / 1.6 */
+  height: 3.375em;
+  padding: 0.375em 2.1em 0 2.4em;
+  font: 600 1.6em/1 Inter, system-ui, sans-serif;
+  color: #0f0f0f;
+}
+.phone__status-icons { display: flex; gap: 0.35em; align-items: center; }
+.phone__status-icons i { display: block; background: currentColor; border-radius: 0.12em; }
+.phone__status-icons .sig { width: 1.05em; height: 0.7em; -webkit-mask: linear-gradient(90deg, #000 0 20%, transparent 20% 27%, #000 27% 47%, transparent 47% 54%, #000 54% 74%, transparent 74% 81%, #000 81%) ; mask: linear-gradient(90deg, #000 0 20%, transparent 20% 27%, #000 27% 47%, transparent 47% 54%, #000 54% 74%, transparent 74% 81%, #000 81%); }
+.phone__status-icons .bat { width: 1.55em; height: 0.75em; border-radius: 0.22em; }

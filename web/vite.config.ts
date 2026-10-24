@@ -13,6 +13,17 @@ export default defineConfig({
       '@app': appDir,
     },
   },
+  build: {
+    // The landing page's module script uses top-level await.
+    target: 'es2022',
+    rollupOptions: {
+      // index.html is the landing page; app.html is the app shown inside its phone.
+      input: {
+        index: fileURLToPath(new URL('./index.html', import.meta.url)),
+        app: fileURLToPath(new URL('./app.html', import.meta.url)),
+      },
+    },
+  },
   server: {
     fs: {
       allow: [webDir, appDir],

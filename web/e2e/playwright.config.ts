@@ -3,8 +3,9 @@ import { defineConfig } from '@playwright/test';
 // Local end-to-end run: two dev servers with the real /api/paths handler and a
 // Claude double (server.mjs). One answers with the labelled fallback (no key),
 // the other with a fake LLM answer. Each flow runs at laptop and phone width.
-const FALLBACK_PORT = 5181;
-const LLM_PORT = 5182;
+// Ports can be overridden so two checkouts can run the suite at the same time.
+const FALLBACK_PORT = Number(process.env.E2E_FALLBACK_PORT || 5181);
+const LLM_PORT = Number(process.env.E2E_LLM_PORT || 5182);
 
 const LAPTOP = { viewport: { width: 1280, height: 900 } };
 const PHONE = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, deviceScaleFactor: 2 };

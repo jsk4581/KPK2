@@ -1,19 +1,454 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Second Draft</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Geist+Mono:wght@500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dream Achieve Moments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="phone-frame.css">
+  <style>
+    :root {
+      --accent: #8e48b1;
+      --accent-soft: #f1e6f8;
+      --ink: #0f0f0f;
+      --muted: #6e6e6e;
+      --faint: #b5b5b5;
+      --surface: #f4f5f5;
+      --line: #ececec;
+      --bg: #ffffff;
+      --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: "Geist Mono", ui-monospace, monospace;
+      --wrap: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Vertical guide lines, as in the reference */
+    .guides { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .guides::before, .guides::after { content: ""; position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
+    .guides::before { left: max(16px, calc(50% - var(--wrap) / 2 - 40px)); }
+    .guides::after { right: max(16px, calc(50% - var(--wrap) / 2 - 40px)); }
+
+    .wrap { position: relative; z-index: 1; width: min(var(--wrap), 100% - 32px); margin: 0 auto; }
+
+    /* Nav */
+    nav { position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px); background: rgba(255, 255, 255, .6); border-bottom: 1px solid rgba(0,0,0,.05); }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; letter-spacing: -.01em; }
+    .brand-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; box-shadow: inset 0 -2px 0 rgba(0,0,0,.18); }
+    .brand-mark svg { width: 16px; height: 16px; }
+    .nav-links { display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
+    .nav-links a { opacity: .82; }
+    .nav-links a:hover { opacity: 1; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 999px; font: 500 15px/1 var(--sans); border: 1px solid transparent; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-dark { background: var(--ink); color: #fff; box-shadow: 0 6px 18px -8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
+    .btn-light { background: #fff; color: var(--ink); border-color: var(--line); box-shadow: 0 4px 14px -8px rgba(0,0,0,.18); }
+    .btn-sm { height: 36px; padding: 0 16px; font-size: 14px; }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 2px; background: currentColor; transform: rotate(45deg); }
+
+    /* Hero */
+    .hero { position: relative; text-align: center; padding: 72px 0 0; overflow: hidden; margin-top: -65px; padding-top: 137px; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(40% 35% at 30% 30%, rgba(220, 190, 240, .65), transparent 70%),
+        radial-gradient(35% 30% at 72% 22%, rgba(245, 225, 250, .9), transparent 70%),
+        radial-gradient(30% 25% at 18% 12%, rgba(250, 244, 205, .7), transparent 70%),
+        radial-gradient(45% 40% at 60% 70%, rgba(236, 222, 248, .7), transparent 70%);
+      -webkit-mask: linear-gradient(#000 55%, transparent 96%); mask: linear-gradient(#000 55%, transparent 96%); }
+    .hero-bg canvas { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s; }
+    .hero-bg canvas.on { opacity: 1; }
+    .hero > .wrap, .hero > .stage { position: relative; z-index: 1; }
+    .hero h1 { margin: 22px auto 0; max-width: 820px; font-size: clamp(38px, 6vw, 68px); line-height: 1.04; letter-spacing: -.04em; font-weight: 600; text-wrap: balance; }
+    .hero p.sub { margin: 20px auto 0; max-width: 560px; color: #555; font-size: 17px; text-wrap: pretty; }
+    .cta { display: flex; justify-content: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
+    .trust { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 26px; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .avatars { display: flex; }
+    .avatars span { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-left: -8px; }
+    .avatars span:first-child { margin-left: 0; }
+
+    .stage { height: 640px; margin-top: 18px; }
+    .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .stage .phone-fallback { display: none; position: absolute; left: 50%; top: 30px; transform: translateX(-50%) rotate(-4deg); }
+    .stage.no-webgl .phone-fallback { display: block; }
+    .stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, #fff); pointer-events: none; }
+
+    .float-card { position: absolute; z-index: 2; width: 230px; padding: 12px; border-radius: 16px; background: rgba(255,255,255,.88); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,.05); box-shadow: 0 20px 40px -18px rgba(60,24,90,.35); text-align: left; animation: bob 6s ease-in-out infinite; }
+    .float-card.right { left: calc(50% + 150px); top: 120px; }
+    .float-card.left { right: calc(50% + 160px); top: 330px; animation-delay: -3s; }
+    .fc-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; }
+    .fc-row + .fc-row { border-top: 1px solid var(--line); }
+    .fc-ico { width: 30px; height: 30px; border-radius: 8px; flex: none; }
+    .fc-row b { display: block; font-size: 13px; font-weight: 600; }
+    .fc-row small { display: block; font: 400 11px/1.3 var(--mono); color: var(--muted); }
+    @keyframes bob { 50% { transform: translateY(-10px); } }
+
+    /* Marquee */
+    .strip { padding: 56px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+    .strip p { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
+    .marquee { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); mask: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); }
+    .marquee-track { display: flex; gap: 56px; width: max-content; animation: slide 28s linear infinite; }
+    .marquee-track span { font-weight: 600; font-size: 19px; color: #8a8a8a; white-space: nowrap; letter-spacing: -.01em; }
+    @keyframes slide { to { transform: translateX(-50%); } }
+
+    /* WHY: word reveal, then the files merge into one, then the result line */
+    .why { padding-top: 120px; text-align: center; }
+    .reveal { margin: 26px auto 0; max-width: 840px; font-size: clamp(26px, 3.6vw, 40px); line-height: 1.2; letter-spacing: -.03em; font-weight: 500; text-wrap: balance; }
+    .reveal span { color: #d0d0d0; transition: color .2s; }
+    .reveal span.on { color: var(--ink); }
+
+    .merge { position: relative; height: 300vh; margin-top: -10vh; }
+    .merge-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; display: grid; place-items: center; }
+    .chip { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 9px; border-radius: 12px; background: var(--surface); text-align: left; white-space: nowrap; will-change: transform, opacity; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+    .chip-ico { width: 30px; height: 36px; border-radius: 5px; display: grid; place-items: end center; padding-bottom: 5px; font: 700 7px/1 var(--sans); color: #fff; letter-spacing: .02em; position: relative; }
+    .chip-ico::before { content: ""; position: absolute; right: 0; top: 0; width: 9px; height: 9px; background: linear-gradient(225deg, #fff 50%, rgba(255,255,255,.55) 50%); border-radius: 0 5px 0 2px; }
+    .chip b { display: block; font-size: 14px; font-weight: 500; }
+    .chip small { display: block; font: 400 11px/1.4 var(--mono); color: var(--muted); letter-spacing: .06em; }
+    .core { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 18px; background: linear-gradient(160deg, #a35fc6, #8e48b1 55%, #7a3a9b); display: grid; place-items: center; will-change: transform, opacity;
+      box-shadow: inset 0 -3px 0 rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.25), 0 18px 40px -12px rgba(142,72,177,.55); }
+    .core svg { width: 32px; height: 32px; }
+    .core::after { content: ""; position: absolute; inset: -18px; border-radius: 30px; background: radial-gradient(closest-side, rgba(142,72,177,.35), transparent); opacity: var(--glow, 0); z-index: -1; }
+    .result { position: absolute; left: 50%; top: 50%; width: min(760px, 100% - 32px); transform: translate(-50%, -50%); margin: 0; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.22; letter-spacing: -.03em; font-weight: 500; opacity: 0; will-change: filter, opacity, transform; text-wrap: balance; }
+
+    /* Demo card rising after the merge */
+    .reel { margin-top: -30vh; }
+    .reel-card { display: block; position: relative; height: clamp(320px, 46vw, 520px); border-radius: 24px; overflow: hidden; transform-origin: 50% 100%; will-change: transform;
+      background: radial-gradient(60% 80% at 25% 30%, #ecd6f6, transparent 70%), radial-gradient(50% 70% at 80% 70%, #f7f0d6, transparent 70%), #f3eef7; }
+    .reel-card .phone { position: absolute; left: 50%; top: 9%; transform: translateX(-50%); }
+    .reel-card .phone .app { pointer-events: none; }
+    .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 999px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); font: 500 14px/1 var(--sans); box-shadow: 0 10px 30px -10px rgba(0,0,0,.35); }
+    .play i { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; }
+    .play i::before { content: ""; border-left: 7px solid #fff; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; margin-left: 2px; }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; text-align: left; }
+    .feature { padding: 22px; border-radius: 18px; background: var(--surface); min-height: 180px; display: flex; flex-direction: column; opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .feature.in { opacity: 1; transform: none; }
+    .feature:nth-child(2) { transition-delay: .1s; }
+    .feature:nth-child(3) { transition-delay: .2s; }
+    .feature svg { width: 30px; height: 30px; padding: 7px; border-radius: 8px; background: #fff; }
+    .feature b { margin-top: auto; font-weight: 600; font-size: 15px; }
+    .feature span { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    .quote { padding: 110px 0 120px; text-align: center; }
+    .quote-av { width: 52px; height: 52px; border-radius: 14px; margin: 0 auto; background: linear-gradient(135deg, #cdb4e6, #8e48b1); }
+    .quote blockquote { margin: 22px auto 0; max-width: 640px; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.3; letter-spacing: -.02em; font-weight: 500; text-wrap: balance; }
+    .quote cite { display: block; margin-top: 14px; font: 500 11px/1 var(--mono); letter-spacing: .1em; color: var(--muted); font-style: normal; text-transform: uppercase; }
+    .quote .btn { margin-top: 26px; }
+
+    /* How it works, with the CSS phone */
+    .demo { padding: 90px 0 140px; border-top: 1px solid var(--line); }
+    .demo-grid { display: grid; grid-template-columns: 1fr auto; gap: 72px; align-items: center; }
+    .demo h2 { margin: 18px 0 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; letter-spacing: -.035em; font-weight: 600; }
+    .steps { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 12px; }
+    .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 18px; border-radius: 18px; background: var(--surface); }
+    .steps li i { font: 500 13px/44px var(--mono); text-align: center; width: 44px; height: 44px; border-radius: 12px; background: #fff; color: var(--accent); font-style: normal; }
+    .steps b { display: block; font-weight: 600; }
+    .steps span { color: var(--muted); font-size: 14px; }
+    .toggle { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--surface); margin-top: 26px; }
+    .toggle button { border: 0; background: transparent; height: 32px; padding: 0 14px; border-radius: 999px; font: 500 13px var(--sans); color: var(--muted); cursor: pointer; }
+    .toggle button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 8px -4px rgba(0,0,0,.25); }
+    .phone-wrap { position: relative; }
+    .phone-wrap::before { content: ""; position: absolute; inset: 10% -30%; z-index: -1; background: radial-gradient(closest-side, rgba(142,72,177,.22), transparent); filter: blur(20px); }
+
+    /* Mock app inside the CSS phone (units: 1em = 1/43 of the frame) */
+    .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(#f6f0fb, #fff 35%); font-family: var(--sans); text-align: left; }
+    .app-body { flex: 1; padding: 1em 2.6em 2.6em; display: flex; flex-direction: column; gap: 1.6em; overflow: auto; }
+    .app-tag { font: 500 1.2em/1 var(--mono); letter-spacing: .08em; color: var(--accent); }
+    .app h3 { margin: .3em 0 0; font-size: 2.9em; letter-spacing: -.035em; line-height: 1.1; }
+    .app-sub { margin: 0; color: var(--muted); font-size: 1.4em; }
+    .app form { display: flex; flex-direction: column; gap: .9em; }
+    .app input { height: 2.9em; border-radius: .9em; border: 1px solid var(--line); background: #fff; padding: 0 .9em; font: 400 1.5em var(--sans); }
+    .app .go { height: 3.2em; border-radius: 999px; border: 0; background: var(--ink); color: #fff; font: 600 1.5em var(--sans); cursor: pointer; }
+    .app-result { border-radius: 2em; background: var(--accent); color: #fff; padding: 1.8em; }
+    .app-result small { font: 500 1.2em/1 var(--mono); letter-spacing: .06em; opacity: .8; }
+    .app-result p { margin: .5em 0 0; font-size: 2em; font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
+    .app-row { display: flex; align-items: center; gap: 1.2em; padding: 1.3em; border-radius: 1.6em; background: var(--surface); }
+    .app-row i { width: 3.6em; height: 3.6em; border-radius: 1em; flex: none; }
+    .app-row b { display: block; font-size: 1.5em; }
+    .app-row span { font-size: 1.2em; color: #858585; }
+    .home-bar { position: absolute; z-index: 12; bottom: .9em; left: 50%; width: 13.5em; height: .5em; transform: translateX(-50%); border-radius: 1em; background: #0f0f0f; }
+
+    footer { padding: 40px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .demo-grid { grid-template-columns: 1fr; justify-items: center; gap: 48px; }
+      .demo-copy { width: 100%; }
+      .float-card { display: none; }
+      .stage { height: 520px; }
+      .features { grid-template-columns: 1fr; }
+      .feature { min-height: 0; gap: 18px; }
+      .chip { padding: 7px 10px 7px 7px; }
+      .chip b { font-size: 12px; }
+      .chip-ico { width: 24px; height: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track, .float-card { animation: none; }
+      .feature { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guides" aria-hidden="true"></div>
+
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="#">
+        <span class="brand-mark"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 11.5 8 4.5l4 7M5.6 9h4.8"/></svg></span>
+        Dream Achieve Moments
+      </a>
+      <div class="nav-links"><a href="#why">Why</a><a href="#how">How it works</a><a href="#demo">Demo</a></div>
+      <a class="btn btn-light btn-sm" href="#demo">Try the demo</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-bg" aria-hidden="true"><canvas id="silk"></canvas></div>
+    <div class="wrap">
+      <span class="eyebrow">AI demo</span>
+      <h1>Turn scattered material into your next move</h1>
+      <p class="sub">Drop in one line. The demo turns it into the next action worth taking. Everything on this page runs on synthetic data.</p>
+      <div class="cta">
+        <a class="btn btn-dark" href="#demo">Try the demo</a>
+        <a class="btn btn-light" href="#how">See how it works</a>
+      </div>
+      <div class="trust">
+        <span class="avatars">
+          <span style="background:linear-gradient(135deg,#e9c9a8,#b57b52)"></span>
+          <span style="background:linear-gradient(135deg,#cdb4e6,#8e48b1)"></span>
+          <span style="background:linear-gradient(135deg,#f3dca2,#c9963a)"></span>
+        </span>
+        Simulation · synthetic data
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="float-card right" aria-hidden="true">
+        <div class="fc-row"><i class="fc-ico" style="background:#3d7bf5"></i><div><b>Sources sorted</b><small>3 FILES</small></div></div>
+        <div class="fc-row"><i class="fc-ico" style="background:#f59a3d"></i><div><b>Key points</b><small>12 ITEMS</small></div></div>
+      </div>
+      <div class="float-card left" aria-hidden="true">
+        <div class="fc-row"><i class="fc-ico" style="background:var(--accent)"></i><div><b>1 next action</b><small>SIMULATION</small></div></div>
+      </div>
+      <!-- Shown only when WebGL or the CDN fails -->
+      <div class="phone phone-fallback" style="--phone-w:290px"><div class="phone__bezel"><div class="phone__screen">
+        <div class="phone__island"></div><img id="fallback-shot" alt="" style="width:100%;height:100%;object-fit:cover">
+      </div></div></div>
+    </div>
+  </header>
+
+  <section class="strip">
+    <div class="wrap">
+      <p>Built for everyday work</p>
+      <div class="marquee"><div class="marquee-track" id="marquee">
+        <span>Meeting notes</span><span>Quote drafts</span><span>Support triage</span><span>Task extraction</span><span>Report summaries</span><span>Scheduling</span>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="why" id="why">
+    <div class="wrap">
+      <span class="eyebrow">Why it matters</span>
+      <p class="reveal" id="reveal">Every workday starts the same way. Notes, files and threads pile up, and the next step quietly gets lost somewhere between them. This demo changes that.</p>
+    </div>
+
+    <div class="merge" id="merge">
+      <div class="merge-pin">
+        <div class="chip" data-x="-1" data-y="-1"><span class="chip-ico" style="background:#e5484d">PDF</span><div><b>Meeting_Notes.pdf</b><small>14 PAGES</small></div></div>
+        <div class="chip" data-x="1" data-y="-1"><span class="chip-ico" style="background:#e5664d">PPT</span><div><b>Pricing_Deck.pptx</b><small>26 SLIDES</small></div></div>
+        <div class="chip" data-x="-1" data-y="1"><span class="chip-ico" style="background:#1f8a4c">MP4</span><div><b>Client_Call.mp4</b><small>51 MIN</small></div></div>
+        <div class="chip" data-x="1" data-y="1"><span class="chip-ico" style="background:#f0a020">DOC</span><div><b>Proposal_Draft.docx</b><small>2,100 WORDS</small></div></div>
+        <div class="core" id="core"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h9a5 5 0 0 1 0 10h-3"/><path d="M25 23h-9a5 5 0 0 1 0-10h3"/><path d="m10 6-3 3 3 3M22 26l3-3-3-3"/></svg></div>
+        <p class="result" id="result">One input turns into a clear summary, the key points, and the next step to take.</p>
+      </div>
+    </div>
+
+    <div class="wrap reel">
+      <a class="reel-card" id="reel" href="#demo" aria-label="Play demo">
+        <div class="phone" style="--phone-w:min(300px, 60vw)"><div class="phone__bezel"><div class="phone__screen" id="reel-screen"><div class="phone__island"></div></div></div></div>
+        <span class="play"><i></i>Play demo</span>
+      </a>
+      <div class="features">
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><b>Instant clarity</b><span>Long notes and messy threads become a summary you can read in seconds.</span></div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><b>One clear next step</b><span>Not a list of ten. The single action that moves things forward.</span></div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16l4-5 3 3 5-7"/></svg><b>Visible progress</b><span>See what is done and what still needs attention.</span></div>
+      </div>
+    </div>
+
+    <div class="quote">
+      <div class="wrap">
+        <div class="quote-av" aria-hidden="true"></div>
+        <blockquote>"I paste in my notes and get the one thing to do next. That is all I wanted."</blockquote>
+        <cite>Simulated persona · not a real user</cite>
+        <a class="btn btn-dark" href="#demo">Try the demo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo" id="demo">
+    <div class="wrap demo-grid">
+      <div class="demo-copy" id="how">
+        <span class="eyebrow">How it works</span>
+        <h2>From scattered input to one next action, in three steps</h2>
+        <ul class="steps">
+          <li><i>01</i><div><b>Input</b><span>Describe the situation in one line.</span></div></li>
+          <li><i>02</i><div><b>Organize</b><span>Key points and priorities are pulled out.</span></div></li>
+          <li><i>03</i><div><b>Next action</b><span>You get the one thing to do now.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="phone" style="--phone-w:min(360px, 86vw)">
+          <div class="phone__bezel">
+            <div class="phone__screen" id="screen">
+              <div class="phone__island"></div>
+              <iframe class="phone__iframe" src="/app.html" title="Dream Achieve Moments demo app" loading="lazy"></iframe>
+              <div class="home-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap"><span>Dream Achieve Moments · simulated screens, synthetic data</span><span>Phone kit: CSS frame · SVG frame · three.js hero</span></div>
+  </footer>
+
+  <template id="mock-tpl">
+              <div class="app">
+                <div class="phone__status"><span>9:41</span><span class="phone__status-icons"><i class="sig"></i><i class="bat"></i></span></div>
+                <div class="app-body">
+                  <div>
+                    <div class="app-tag">SIMULATION</div>
+                    <h3>Today's summary</h3>
+                    <p class="app-sub">Type one line, get the next action.</p>
+                  </div>
+                  <form id="mock-form">
+                    <input id="mock-input" placeholder="e.g. Need a quote before tomorrow's call" autocomplete="off">
+                    <button class="go">Organize</button>
+                  </form>
+                  <div class="app-result">
+                    <small>NEXT ACTION · EXAMPLE</small>
+                    <p id="mock-out">Send the quote draft</p>
+                  </div>
+                  <div class="app-row"><i style="background:#e9dcf3"></i><div><b>Files added</b><br><span>3 files</span></div></div>
+                  <div class="app-row"><i style="background:#e3e9f3"></i><div><b>Key points</b><br><span>12 items</span></div></div>
+                </div>
+              </div>
+  </template>
+
+  <script>
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+    const seg = (p, a, b) => clamp01((p - a) / (b - a));        // progress of p inside [a, b]
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+    const easeIn = (t) => t * t * t;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Duplicate marquee items so the loop is seamless
+    const track = document.getElementById('marquee');
+    track.innerHTML += track.innerHTML;
+
+    // Mock screen, cloned into the reel card as a still preview
+    const mock = document.getElementById('mock-tpl').content.firstElementChild;
+    window.cloneMock = () => {
+      const c = mock.cloneNode(true);
+      [c, ...c.querySelectorAll('[id]')].forEach(e => e.removeAttribute('id'));
+      return c;
+    };
+    document.getElementById('reel-screen').append(cloneMock());
+
+    // Word-by-word reveal
+    const reveal = document.getElementById('reveal');
+    reveal.innerHTML = reveal.textContent.trim().split(/\s+/).map(w => `<span>${w}</span>`).join(' ');
+    const words = [...reveal.children];
+
+    // Merge: four file chips fly into the core, the core fades, the result line comes into focus
+    const merge = document.getElementById('merge');
+    const chips = [...merge.querySelectorAll('.chip')];
+    const core = document.getElementById('core');
+    const result = document.getElementById('result');
+    const reel = document.getElementById('reel');
+
+    function spread() {
+      const w = innerWidth, h = innerHeight;
+      return { x: Math.min(w * 0.34, 470), y: Math.min(h * 0.14, 120) * (w < 860 ? 1.8 : 1) };
+    }
+
+    function onScroll() {
+      const vh = innerHeight;
+
+      const r = reveal.getBoundingClientRect();
+      const pr = clamp01((vh * 0.82 - r.top) / (r.height + vh * 0.3));
+      const n = Math.round(pr * words.length);
+      words.forEach((w, i) => w.classList.toggle('on', i < n));
+
+      // 0 when the pinned stage first fills the screen, 1 when it is released
+      const m = merge.getBoundingClientRect();
+      const p = still ? 1 : clamp01(-m.top / (m.height - vh));
+      const enter = clamp01((vh - m.top) / vh);                 // chips drift in before the pin
+      const s = spread();
+      const pull = easeIn(seg(p, 0.08, 0.5));
+      chips.forEach((c) => {
+        const dx = +c.dataset.x, dy = +c.dataset.y;
+        const sx = Math.min(s.x, (innerWidth - c.offsetWidth) / 2 - 12);   // keep chips on screen
+        const x = dx * sx * (1 - pull) * lerp(1.25, 1, ease(enter));
+        const y = dy * s.y * (1 - pull) + lerp(60, 0, ease(enter));
+        const k = lerp(1, 0.25, pull);
+        c.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${k})`;
+        c.style.opacity = (1 - seg(p, 0.38, 0.52)) * ease(enter);
+        c.style.filter = `blur(${seg(p, 0.3, 0.5) * 6}px)`;
+      });
+      const absorb = seg(p, 0.3, 0.52);
+      const leave = seg(p, 0.55, 0.68);
+      core.style.setProperty('--glow', absorb * (1 - leave));
+      core.style.transform = `scale(${(1 + 0.18 * Math.sin(absorb * Math.PI)) * lerp(1, 0.6, leave)})`;
+      core.style.opacity = (1 - leave) * ease(enter);
+      const show = ease(seg(p, 0.66, 0.9));
+      result.style.opacity = show;
+      result.style.filter = `blur(${(1 - show) * 14}px)`;
+      result.style.transform = `translate(-50%, calc(-50% + ${(1 - show) * 24}px))`;
+
+      // Reel card grows into place as it rises
+      const rr = reel.getBoundingClientRect();
+      const g = still ? 1 : ease(clamp01((vh - rr.top) / (vh * 0.7)));
+      reel.style.transform = `scale(${lerp(0.86, 1, g)})`;
+      reel.style.borderRadius = `${lerp(40, 24, g)}px`;
+    }
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    onScroll();
+
+    // Feature cards fade up once
+    const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.3 });
+    document.querySelectorAll('.feature').forEach(f => io.observe(f));
+  </script>
+  <script type="module">
+    import { mountSilk } from './bg.js';
+    try { mountSilk(document.getElementById('silk')); } catch (err) { console.warn('silk background unavailable', err); }
+
+    // ?screen=<image url> puts a screenshot of the real app on the 3D phone
+    const stage = document.getElementById('stage');
+    const screen = new URLSearchParams(location.search).get('screen') || undefined;
+    try {
+      await document.fonts.ready;
+      const { mount } = await import('./hero3d.js');
+      window.heroPhone = mount(stage, { screen });
+    } catch (err) {
+      console.warn('3D hero unavailable, using CSS phone', err);
+      const shot = document.getElementById('fallback-shot');
+      if (screen) shot.src = screen;
+      else shot.replaceWith(window.cloneMock());
+      stage.classList.add('no-webgl');
+    }
+  </script>
+</body>
 </html>

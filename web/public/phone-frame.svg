@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 0 442 880" width="442" height="880">
+  <!-- Phone front frame. The screen area (x 18, y 18, 394 x 844, r 48) is transparent:
+       place a screenshot under this file, or use it as an overlay in Figma or slides. -->
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f4f6"/>
+      <stop offset=".2" stop-color="#a3a3aa"/>
+      <stop offset=".46" stop-color="#e6e6ea"/>
+      <stop offset=".74" stop-color="#85858c"/>
+      <stop offset="1" stop-color="#dcdce0"/>
+    </linearGradient>
+    <linearGradient id="btn" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#77777e"/>
+      <stop offset=".6" stop-color="#d4d4d8"/>
+      <stop offset="1" stop-color="#8d8d94"/>
+    </linearGradient>
+    <mask id="hole">
+      <rect x="-6" y="0" width="442" height="880" fill="#fff"/>
+      <rect x="18" y="18" width="394" height="844" rx="48" fill="#000"/>
+    </mask>
+  </defs>
+  <!-- side buttons -->
+  <rect x="-3" y="150" width="6" height="28" rx="3" fill="url(#btn)"/>
+  <rect x="-3" y="196" width="6" height="50" rx="3" fill="url(#btn)"/>
+  <rect x="-3" y="256" width="6" height="50" rx="3" fill="url(#btn)"/>
+  <rect x="427" y="220" width="6" height="86" rx="3" fill="url(#btn)"/>
+  <g mask="url(#hole)">
+    <rect x="0" y="0" width="430" height="880" rx="66" fill="url(#rim)"/>
+    <rect x="3.8" y="3.8" width="422.4" height="872.4" rx="62.2" fill="#050507"/>
+    <rect x="5.2" y="5.2" width="419.6" height="869.6" rx="60.8" fill="none" stroke="#1c1c21" stroke-width="1.4"/>
+  </g>
+  <!-- dynamic island -->
+  <rect x="153" y="29" width="124" height="36" rx="18" fill="#000"/>
+  <circle cx="259" cy="47" r="6" fill="#0c0c18"/>
+  <circle cx="259" cy="47" r="2.4" fill="#1b2140"/>
+</svg>

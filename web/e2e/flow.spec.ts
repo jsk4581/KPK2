@@ -50,7 +50,7 @@ test('sample persona runs end to end and resets', async ({ page }, testInfo) => 
   const source = testInfo.project.metadata.source as Source;
   const width = testInfo.project.metadata.width as string;
 
-  await page.goto('/');
+  await page.goto('/app.html');
 
   // Landing
   await expect(page.getByText('My clients use ChatGPT now.')).toBeVisible();
@@ -183,7 +183,7 @@ test('browser falls back to the labelled sample when the function is unreachable
   test.skip(testInfo.project.metadata.source !== 'fallback', 'browser-side fallback runs once per width');
   await page.route('**/api/paths', (route) => route.abort('connectionrefused'));
 
-  await page.goto('/');
+  await page.goto('/app.html');
   await page.getByRole('button', { name: 'Load sample persona' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Show my paths' }).click();
@@ -197,4 +197,22 @@ test('browser falls back to the labelled sample when the function is unreachable
   await expect(page.getByTestId('why-panel').locator('.progress-step').nth(3)).toContainText(
     'server unreachable, browser used the sample output',
   );
+});
+
+test('landing page is the phone kit with the app inside its phone', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveTitle('Dream Achieve Moments');
+  await expect(page.locator('nav .brand')).toHaveText('Dream Achieve Moments');
+  await expect(page.locator('#why')).toBeAttached();
+  await expect(page.locator('#reel-screen .app')).toBeAttached();
+
+  const iframe = page.locator('#demo .phone__screen iframe.phone__iframe');
+  await expect(iframe).toHaveAttribute('src', '/app.html');
+  await iframe.scrollIntoViewIfNeeded();
+
+  // The app inside renders full-bleed: no outer frame label, Reset and the notice visible.
+  const app = page.frameLocator('#demo iframe.phone__iframe');
+  await expect(app.getByText('Nothing you type is stored.')).toBeVisible();
+  await expect(app.getByRole('button', { name: 'Reset' })).toBeVisible();
+  await expect(app.locator('.stage-frame')).toBeHidden();
 });

@@ -87,12 +87,10 @@
     .float-card.left { right: calc(50% + 160px); top: 330px; animation-delay: -3s; }
     .fc-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; }
     .fc-row + .fc-row { border-top: 1px solid var(--line); }
-    .fc-ico { width: 30px; height: 30px; border-radius: 8px; flex: none; display: grid; place-items: center; }
-    .fc-ico svg { width: 18px; height: 18px; }
-    /* Soft tinted icon tiles (Phosphor Icons, regular weight) */
-    .ico-purple { background: var(--accent-soft); color: var(--accent); }
-    .ico-green { background: #e2f3e8; color: #1f8a4c; }
-    .ico-amber { background: #fdf0d8; color: #b46d00; }
+    /* Timeline badges (Octicons 16px): grey round badge, the key metric row in accent */
+    .fc-ico { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--surface); color: #59636e; box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--line); }
+    .fc-ico svg { width: 16px; height: 16px; }
+    .fc-ico.hot { background: var(--accent); color: #fff; box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgba(142,72,177,.25); }
     .fc-row b { display: block; font-size: 13px; font-weight: 600; }
     .fc-row small { display: block; font: 400 11px/1.3 var(--mono); color: var(--muted); }
     @keyframes bob { 50% { transform: translateY(-10px); } }
@@ -294,13 +292,14 @@
     </div>
 
     <!-- Icons: Phosphor Icons (MIT License, Copyright (c) 2023 Phosphor Icons), https://phosphoricons.com -->
+    <!-- Icons: Octicons (MIT License, Copyright (c) GitHub Inc.), https://primer.style/octicons -->
     <div class="stage" id="stage">
       <div class="float-card right" aria-hidden="true">
-        <div class="fc-row"><i class="fc-ico ico-green"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M213.66,181.66l-32,32a8,8,0,0,1-11.32-11.32L188.69,184H48a8,8,0,0,1,0-16H188.69l-18.35-18.34a8,8,0,0,1,11.32-11.32l32,32A8,8,0,0,1,213.66,181.66Zm-139.32-64a8,8,0,0,0,11.32-11.32L67.31,88H208a8,8,0,0,0,0-16H67.31L85.66,53.66A8,8,0,0,0,74.34,42.34l-32,32a8,8,0,0,0,0,11.32Z"/></svg></i><div><b>What carries over</b><small>DISCOVERY CALLS · POSITIONING</small></div></div>
-        <div class="fc-row"><i class="fc-ico ico-purple"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg></i><div><b>67% skill match</b><small>PATH 1 OF 3 · SYNTHETIC</small></div></div>
+        <div class="fc-row"><i class="fc-ico"><svg fill="currentColor" aria-hidden="true" viewBox="0 0 16 16"><path d="M5.22 14.78a.75.75 0 0 0 1.06-1.06L4.56 12h8.69a.75.75 0 0 0 0-1.5H4.56l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3a.75.75 0 0 0 0 1.06l3 3Zm5.56-6.5a.75.75 0 1 1-1.06-1.06l1.72-1.72H2.75a.75.75 0 0 1 0-1.5h8.69L9.72 2.28a.75.75 0 0 1 1.06-1.06l3 3a.75.75 0 0 1 0 1.06l-3 3Z"/></svg></i><div><b>What carries over</b><small>DISCOVERY CALLS · POSITIONING</small></div></div>
+        <div class="fc-row"><i class="fc-ico hot"><svg fill="currentColor" aria-hidden="true" viewBox="0 0 16 16"><path d="M13.637 2.363h-.001l1.676.335c.09.018.164.084.19.173a.25.25 0 0 1-.062.249l-1.373 1.374a.876.876 0 0 1-.619.256H12.31L9.45 7.611A1.5 1.5 0 1 1 6.5 8a1.501 1.501 0 0 1 1.889-1.449l2.861-2.862V2.552c0-.232.092-.455.256-.619L12.88.559a.25.25 0 0 1 .249-.062c.089.026.155.1.173.19Z"/><path d="M2 8a6 6 0 1 0 11.769-1.656.751.751 0 1 1 1.442-.413 7.502 7.502 0 0 1-12.513 7.371A7.501 7.501 0 0 1 10.069.789a.75.75 0 0 1-.413 1.442A6.001 6.001 0 0 0 2 8Z"/><path d="M5 8a3.002 3.002 0 0 0 4.699 2.476 3 3 0 0 0 1.28-2.827.748.748 0 0 1 1.045-.782.75.75 0 0 1 .445.61A4.5 4.5 0 1 1 8.516 3.53a.75.75 0 1 1-.17 1.49A3 3 0 0 0 5 8Z"/></svg></i><div><b>67% skill match</b><small>PATH 1 OF 3 · SYNTHETIC</small></div></div>
       </div>
       <div class="float-card left" aria-hidden="true">
-        <div class="fc-row"><i class="fc-ico ico-amber"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED · SAMPLE</small></div></div>
+        <div class="fc-row"><i class="fc-ico"><svg fill="currentColor" aria-hidden="true" viewBox="0 0 16 16"><path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"/></svg></i><div><b>A rest day, not a missed day</b><small>1/3 DONE · 1 MOVED · SAMPLE</small></div></div>
       </div>
       <!-- Shown only when WebGL or the CDN fails -->
       <div class="phone phone-fallback" style="--phone-w:290px"><div class="phone__bezel"><div class="phone__screen">

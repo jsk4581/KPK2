@@ -6,8 +6,14 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
-/** What happened at one instant, reduced to the three things the aggregation needs. In memory only. */
-data class UsageEvent(val atMillis: Long, val kind: Kind, val packageName: String? = null) {
+/** What happened at one instant, reduced to what the aggregation needs. In memory only. */
+data class UsageEvent(
+    val atMillis: Long,
+    val kind: Kind,
+    val packageName: String? = null,
+    /** The activity within [packageName], when known; tells a late event from an earlier screen apart. */
+    val className: String? = null,
+) {
     enum class Kind {
         /** An activity of [packageName] came to the front. */
         APP_FOREGROUND,
@@ -98,14 +104,19 @@ object UsageAggregator {
      * Rebuilds the stretches during which one app was in front. Moving between two activities of the
      * same app keeps one stretch; another app coming to the front ends the previous one, because the
      * system does not always report the previous app leaving before the next one arrives.
+     *
+     * Within one app the system reports A paused, B resumed, then A stopped. Only the activity in front
+     * can end the stretch, so the late "A stopped" does not cut B's time.
      */
     private fun spans(events: List<UsageEvent>, untilMillis: Long): List<Span> {
         val out = mutableListOf<Span>()
         var openPackage: String? = null
+        var openClass: String? = null
         var openSince = 0L
         fun close(at: Long) {
             openPackage?.let { if (at > openSince) out += Span(it, openSince, at) }
             openPackage = null
+            openClass = null
         }
         for (event in events.sortedBy { it.atMillis }) {
             if (event.atMillis > untilMillis) break
@@ -117,8 +128,12 @@ object UsageAggregator {
                         openPackage = pkg
                         openSince = event.atMillis
                     }
+                    openClass = event.className
                 }
-                UsageEvent.Kind.APP_BACKGROUND -> if (event.packageName == openPackage) close(event.atMillis)
+                UsageEvent.Kind.APP_BACKGROUND -> {
+                    val inFront = event.className == null || openClass == null || event.className == openClass
+                    if (event.packageName == openPackage && inFront) close(event.atMillis)
+                }
                 UsageEvent.Kind.SCREEN_OFF -> close(event.atMillis)
             }
         }

@@ -30,6 +30,8 @@ class UsageAggregatorTest {
     private fun fg(t: Long, pkg: String) = UsageEvent(t, APP_FOREGROUND, pkg)
     private fun bg(t: Long, pkg: String) = UsageEvent(t, APP_BACKGROUND, pkg)
     private fun off(t: Long) = UsageEvent(t, SCREEN_OFF)
+    private fun fg(t: Long, pkg: String, activity: String) = UsageEvent(t, APP_FOREGROUND, pkg, activity)
+    private fun bg(t: Long, pkg: String, activity: String) = UsageEvent(t, APP_BACKGROUND, pkg, activity)
 
     private fun totals(
         events: List<UsageEvent>,
@@ -188,5 +190,29 @@ class UsageAggregatorTest {
     fun windowStartsAtLocalMidnightOfYesterday() {
         assertEquals(at(19, 0), AppUsageCollector.startOfYesterday(at(20, 14, 30), zone))
         assertEquals(at(19, 0), AppUsageCollector.startOfYesterday(at(20, 0, 0), zone))
+    }
+
+    @Test
+    fun aLateStopOfTheAppsPreviousScreenDoesNotEndTheNewScreen() {
+        // Paused, resumed, stopped: the order Android reports when an app moves to another of its screens.
+        val events = listOf(
+            fg(at(20, 9, 0), "com.example.chat", ".Main"),
+            bg(at(20, 9, 1), "com.example.chat", ".Main"),
+            fg(at(20, 9, 1), "com.example.chat", ".SignIn"),
+            bg(at(20, 9, 1, 1), "com.example.chat", ".Main"),
+            bg(at(20, 9, 21), "com.example.chat", ".SignIn"),
+            fg(at(20, 10, 0), "com.example.clips", ".Launcher"),
+            bg(at(20, 10, 0, 1), "com.example.clips", ".Launcher"),
+            fg(at(20, 10, 0, 1), "com.example.clips", ".Player"),
+            bg(at(20, 10, 0, 2), "com.example.clips", ".Launcher"),
+            bg(at(20, 10, 10), "com.example.clips", ".Player"),
+        )
+        assertEquals(
+            mapOf(
+                ("2026-10-20" to UsageCategory.COMMUNICATION) to 21L,
+                ("2026-10-20" to UsageCategory.VIDEO) to 10L,
+            ),
+            totals(events),
+        )
     }
 }

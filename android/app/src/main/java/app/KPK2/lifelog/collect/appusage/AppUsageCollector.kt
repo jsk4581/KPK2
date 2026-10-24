@@ -104,7 +104,7 @@ class AppUsageCollector(
                 UsageEvents.Event.DEVICE_SHUTDOWN -> UsageEvent.Kind.SCREEN_OFF
                 else -> null
             } ?: continue
-            out += UsageEvent(event.timeStamp, kind, event.packageName)
+            out += UsageEvent(event.timeStamp, kind, event.packageName, event.className)
         }
         return out
     }

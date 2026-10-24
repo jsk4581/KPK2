@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import persona from '@app/data/persona-dana.json';
 import { getScenario, think, type BrainFailure, type ThinkOutput } from '../api/brain';
 import type { AppState, TraceEntry } from '../state/types';
-import { isSampleUser, toThinkInput } from './adapter';
+import { isSampleUser, sendsSyntheticHistory, toThinkInput } from './adapter';
 
 export type BrainView =
   | { status: 'loading' }
-  | { status: 'ok'; data: ThinkOutput }
+  // synthetic: the input carried synthetic history (sample persona), so the panel labels it.
+  | { status: 'ok'; data: ThinkOutput; synthetic: boolean }
   | { status: 'offline'; reason: BrainFailure };
 
 // Calls the brain when the screen opens and again after every new check-in while it stays
@@ -28,7 +29,11 @@ export function useBrain(state: AppState): BrainView {
       const input = toThinkInput(current, persona, scenario && scenario.ok ? scenario.data : null);
       const result = await think(input);
       if (!alive) return;
-      setView(result.ok ? { status: 'ok', data: result.data } : { status: 'offline', reason: result.reason });
+      setView(
+        result.ok
+          ? { status: 'ok', data: result.data, synthetic: sendsSyntheticHistory(input) }
+          : { status: 'offline', reason: result.reason },
+      );
     })();
     return () => {
       alive = false;

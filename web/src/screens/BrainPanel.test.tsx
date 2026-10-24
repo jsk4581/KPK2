@@ -14,7 +14,7 @@ const data = thinkOut as unknown as ThinkOutput;
 
 describe('BrainPanel', () => {
   it('renders the brain state from a /v1/think answer', () => {
-    render(<BrainPanel view={{ status: 'ok', data }} />);
+    render(<BrainPanel view={{ status: 'ok', data, synthetic: true }} />);
     expect(screen.getByText('Decision brain: rules, no AI')).toBeInTheDocument();
     expect(screen.getByText('[SIMULATION] synthetic history')).toBeInTheDocument();
     expect(screen.getByTestId('brain-energy')).toHaveTextContent('Good');
@@ -49,7 +49,7 @@ describe('BrainPanel', () => {
         risk: { level: 'green', reasons: [], points: 0 },
       },
     };
-    render(<BrainPanel view={{ status: 'ok', data: empty }} />);
+    render(<BrainPanel view={{ status: 'ok', data: empty, synthetic: false }} />);
     expect(screen.getByTestId('brain-energy')).toHaveTextContent('Not reported');
     expect(screen.getByTestId('brain-momentum')).toHaveTextContent('Not enough data');
     expect(screen.getByTestId('brain-efficacy')).toHaveTextContent('Not enough data');
@@ -70,7 +70,7 @@ describe('BrainPanel', () => {
         risk: { level: 'green', reasons: ['first_week'], points: 1 },
       },
     };
-    render(<BrainPanel view={{ status: 'ok', data: oneDay }} />);
+    render(<BrainPanel view={{ status: 'ok', data: oneDay, synthetic: true }} />);
     expect(screen.getByTestId('brain-momentum')).toHaveTextContent('Not enough data (1 of 3 days so far)');
     expect(screen.getByTestId('brain-efficacy')).toHaveTextContent('Not enough data (1 of 3 days so far)');
     // The risk rules read real counts, so the level shows once there is a day of data.
@@ -82,7 +82,7 @@ describe('BrainPanel', () => {
       ...data,
       state: { ...data.state, risk: { ...data.state.risk, level: 'amber', reasons: ['consec_rest', 'low_condition'] } },
     };
-    render(<BrainPanel view={{ status: 'ok', data: amber }} />);
+    render(<BrainPanel view={{ status: 'ok', data: amber, synthetic: true }} />);
     const risk = screen.getByTestId('brain-risk');
     expect(risk).toHaveTextContent('Medium');
     expect(risk).toHaveClass('brain-attention');
@@ -104,10 +104,18 @@ describe('BrainPanel', () => {
         ],
       },
     };
-    render(<BrainPanel view={{ status: 'ok', data: mixed }} />);
+    render(<BrainPanel view={{ status: 'ok', data: mixed, synthetic: true }} />);
     const drift = screen.getByTestId('brain-drift');
     expect(drift).toHaveTextContent('2 steps land on Fri');
     expect(drift).not.toHaveTextContent('scenario-a1');
+  });
+
+  it('labels synthetic history only when synthetic history was sent', () => {
+    const { unmount } = render(<BrainPanel view={{ status: 'ok', data, synthetic: true }} />);
+    expect(screen.getByText('[SIMULATION] synthetic history')).toBeInTheDocument();
+    unmount();
+    render(<BrainPanel view={{ status: 'ok', data, synthetic: false }} />);
+    expect(screen.queryByText('[SIMULATION] synthetic history')).not.toBeInTheDocument();
   });
 
   it('shows a quiet skeleton while loading', () => {
@@ -191,6 +199,34 @@ describe('Progress with the decision brain', () => {
       .getAllByRole('listitem')
       .map((s) => within(s).getByTestId('step-fn').textContent);
     expect(fns).toEqual(['buildWeek', 'progressSignals']);
+  });
+
+  it('Start user: no SIMULATION label, and no synthetic history in the request', async () => {
+    const fetchMock = vi.fn(async (url: string, _init?: RequestInit) =>
+      jsonResponse(url.endsWith('/v1/scenario') ? scenario : thinkOut),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    render(
+      <StoreProvider initialState={{ ...sampleState(), lifelogConnected: false }}>
+        <Progress />
+      </StoreProvider>,
+    );
+    await waitFor(() => expect(screen.getByTestId('brain-energy')).toBeInTheDocument());
+    expect(screen.queryByText(/\[SIMULATION\]/)).not.toBeInTheDocument();
+    const thinkCall = fetchMock.mock.calls.find((c) => c[0].endsWith('/v1/think'))!;
+    const body = JSON.parse(String(thinkCall[1]!.body)) as Record<string, unknown>;
+    expect(body.lifelog).toBeUndefined();
+    expect(fetchMock.mock.calls.some((c) => c[0].endsWith('/v1/scenario'))).toBe(false);
+  });
+
+  it('Sample user: the brain section carries the SIMULATION label', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => jsonResponse(url.endsWith('/v1/scenario') ? scenario : thinkOut)));
+    render(
+      <StoreProvider initialState={sampleState()}>
+        <Progress />
+      </StoreProvider>,
+    );
+    await waitFor(() => expect(screen.getByText('[SIMULATION] synthetic history')).toBeInTheDocument());
   });
 
   it('shows the offline line when VITE_BRAIN_URL is not set', async () => {

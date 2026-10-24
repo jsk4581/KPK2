@@ -5,7 +5,7 @@ import type { BrainScenario } from '../api/brain';
 import { createInitialState, reducer } from '../state/store';
 import type { AppState, CheckinRecord, Day, LifelogSource, RankedRole, Week } from '../state/types';
 import scenarioJson from './__fixtures__/scenario.json';
-import { SCENARIO_ID_PREFIX, demoTodayIso, isoForWeekday, toThinkInput } from './adapter';
+import { SCENARIO_ID_PREFIX, demoTodayIso, isoForWeekday, sendsSyntheticHistory, toThinkInput } from './adapter';
 
 const scenario = scenarioJson as unknown as BrainScenario;
 const draft = persona.fallback.paths[0];
@@ -173,6 +173,13 @@ describe('toThinkInput', () => {
       { actionId: 'a2', kind: 'not_today', day: 'Thu', date: '2026-10-22' },
     ]);
     expect(input.today).toBe('2026-10-22');
+  });
+
+  it('flags synthetic history for sample users only', () => {
+    expect(sendsSyntheticHistory(toThinkInput(flowState({ sample: true }), persona, scenario))).toBe(true);
+    expect(sendsSyntheticHistory(toThinkInput(flowState({ sample: false }), persona, scenario))).toBe(false);
+    // Sources all off and no scenario: nothing synthetic left in the input.
+    expect(sendsSyntheticHistory(toThinkInput(flowState({ sample: true, sources: [] }), persona, null))).toBe(false);
   });
 
   it('stays under the server body limit (64 KB) with every source on', () => {

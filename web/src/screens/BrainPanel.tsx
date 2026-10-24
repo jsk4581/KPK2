@@ -205,7 +205,7 @@ export default function BrainPanel({ view }: { view: BrainView }) {
   return (
     <section className="brain-panel" aria-label="Decision brain" aria-busy={view.status === 'loading'} data-testid="brain-panel">
       <h3>Decision brain: rules, no AI</h3>
-      <p className="brain-sim tag tag-sim">[SIMULATION] synthetic history</p>
+      {view.status === 'ok' && view.synthetic && <p className="brain-sim tag tag-sim">[SIMULATION] synthetic history</p>}
       {view.status === 'loading' ? (
         <div className="brain-skeleton" data-testid="brain-loading" aria-hidden="true">
           <span />

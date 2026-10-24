@@ -124,3 +124,11 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
     ...(path ? { path } : {}),
   };
 }
+
+// True when the input carries synthetic history: persona lifelog items or scenario check-ins.
+// A Start user's input never does (own text and own taps only).
+export function sendsSyntheticHistory(input: ThinkInput): boolean {
+  return (
+    (input.lifelog?.length ?? 0) > 0 || (input.checkins ?? []).some((c) => c.actionId.startsWith(SCENARIO_ID_PREFIX))
+  );
+}

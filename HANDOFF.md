@@ -42,6 +42,10 @@ stage: decide
 
 > 사용법: 남의 파일·팀 방향에 대한 제안은 여기 덧붙인다 (전원 append-only — `CONTRACT.md` §C 3) — `작성:<역할> <HH:MM> · 대상 파일 · 제안 한 줄 · 출처(Discord 링크 등)`. 충돌이 나면 양쪽 줄을 다 남긴다. PM이 읽고 「결정」으로 올리거나 기각한다.
 > T0 중계(git 없는 팀원이 Discord로 보낸 변경)는 4항목을 붙여 여기 옮긴다 — `기준 버전(커밋 또는 ZIP 시각) · 대상 경로 · 변경 ID · 반영 확인 요청`. 그 파일 소유자가 검토해 반영한다 (`CONTRACT.md` §C 7).
+- 작성:Sales 11:55 · `mission/EVIDENCE.md#Buyer simulation` · S1–S3 초안(14:00 실행 전 예상 표기) + 합성 페르소나 저니·시나리오 3개(카피라이터·번역가·일러스트) → `docs/gtm/journey-io.md` · 출처: 팀 채널 11:11–11:20 논의
+- 작성:Sales 11:55 · `mission/PRD.md` → PM · 인풋 범위를 3단계로 닫는 제안 — 오늘: 텍스트 3칸만 / MVP: 포트폴리오 링크 1~3개 + 1탭 체크인 / 로드맵: 라이프로깅·생체·SNS (`docs/gtm/journey-io.md` 「인풋·아웃풋 범위」)
+- 작성:Sales 11:55 · `app/` 시드 데이터 → Build · 샘플 페르소나 "Dana" [SIMULATION] 입력 3칸·경로 3개·이번 주 행동 3개·Not today 문구를 [Load sample persona] 시드로 제안 (`docs/gtm/journey-io.md` 「대표 저니」)
+- 작성:Sales 11:55 · `mission/PITCH.md` → GTM · 아키텍처 문구 1줄 제안 "오늘 URL에서 도는 것은 filter·planner·monitor의 최소 버전, gateway·status·자동 수집은 설계 주장" + VC 지표 가설 "2주차 체크인 잔존율" (`docs/gtm/journey-io.md` 「GTM 한 줄」)
 
 ## 블로커
 

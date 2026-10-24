@@ -67,4 +67,14 @@ describe('brain and Week screen agree on today', () => {
     expect(out.intervention.reasons).not.toContain('overdue');
     expect(out.intervention.actionId).not.toBe('a2');
   });
+
+  it('counts every lifelog item it is sent, on one timeline that ends today', () => {
+    const input = toThinkInput(freshState(true), persona, scenario);
+    const out = brain.think(input);
+    const features = out.state.features as Array<{ date: string; lifelogIds: string[] }>;
+    expect(features[features.length - 1].date).toBe(input.today);
+    const counted = new Set(features.flatMap((f) => f.lifelogIds));
+    expect(input.lifelog!.every((item) => counted.has(item.id))).toBe(true);
+    expect(out.context?.lifelogCount).toBe(input.lifelog!.length);
+  });
 });

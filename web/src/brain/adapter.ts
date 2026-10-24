@@ -7,13 +7,16 @@ import type { AppState, Day } from '../state/types';
 //    Everyone else is a Start user (own text, no lifelog).
 // 2. Start users send fields, rankedRoles and the week only. No lifelog, no check-in history,
 //    no sources, no today.
-// 3. Sample persona users use the server's synthetic history shape:
-//    a. lifelog = our persona lifelog plus, when the scenario loaded, the scenario lifelog.
-//       Both are filtered to the sources switched on (disabled sources never leave the browser);
-//       enabledSources is sent too. Scenario item ids get the prefix "scenario-" because the two
-//       synthetic sets reuse ids (l01...) for different items.
-//    b. checkins = the scenario check-ins (history; actionId prefixed "scenario-" so the history
-//       is never counted against this week's actions a1-a3) followed by this session's check-ins.
+// 3. Sample persona users send one Dana timeline, the app's own (the persona lifelog the
+//    screens show), in the server's synthetic history shape:
+//    a. lifelog = our persona lifelog items dated on or before the demo today (see d), filtered
+//       to the sources switched on (disabled sources never leave the browser); enabledSources is
+//       sent too. The scenario's lifelog is never sent: it is a second Dana timeline whose items
+//       overlap ours under other dates, and mixing the two would count the same events twice.
+//    b. checkins = the scenario check-ins dated before the Monday of the demo week (earlier
+//       weeks of the arc; actionId prefixed "scenario-" so the history is never counted against
+//       this week's actions a1-a3) followed by this session's check-ins. Without a demo today
+//       the history cannot be placed and is not sent.
 //    c. Session check-ins keep their weekday label and get an ISO date: the day with that label
 //       in the demo week (Monday to Sunday, the week that holds the demo today, see d).
 //    d. today = the demo today as an ISO date: the persona's `today` weekday (the same day the
@@ -86,19 +89,17 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
   const input = baseInput(state);
   if (!isSampleUser(state)) return input;
 
+  const today = demoTodayIso(persona);
   const enabled = new Set<string>(state.enabledSources);
   const ours: BrainLifelogItem[] = persona.lifelog
-    .filter((item) => enabled.has(item.source))
+    .filter((item) => enabled.has(item.source) && (today === null || item.date <= today))
     .map((item) => ({ ...item }));
-  const history: BrainLifelogItem[] = (scenario?.lifelog ?? [])
-    .filter((item) => enabled.has(item.source))
-    .map((item) => ({ ...item, id: `${SCENARIO_ID_PREFIX}${item.id}` }));
 
-  const pastCheckins: BrainCheckin[] = (scenario?.checkins ?? []).map((c) => ({
-    ...c,
-    actionId: `${SCENARIO_ID_PREFIX}${c.actionId}`,
-  }));
-  const today = demoTodayIso(persona);
+  // ISO dates compare correctly as strings.
+  const weekStart = today ? isoForWeekday('Mon', today) : null;
+  const pastCheckins: BrainCheckin[] = (weekStart ? (scenario?.checkins ?? []) : [])
+    .filter((c) => typeof c.date === 'string' && parseIso(c.date) !== null && c.date < weekStart!)
+    .map((c) => ({ ...c, actionId: `${SCENARIO_ID_PREFIX}${c.actionId}` }));
   const sessionCheckins: BrainCheckin[] = state.checkins.map((c) => {
     const record: BrainCheckin = { actionId: c.actionId, kind: c.kind, day: c.day };
     const date = today ? isoForWeekday(c.day, today) : null;
@@ -109,7 +110,7 @@ export function toThinkInput(state: AppState, persona: PersonaLike, scenario?: B
   const path = chosenPath(state);
   return {
     ...input,
-    lifelog: [...ours, ...history],
+    lifelog: ours,
     enabledSources: [...state.enabledSources],
     checkins: [...pastCheckins, ...sessionCheckins],
     ...(path ? { path } : {}),

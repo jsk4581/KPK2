@@ -81,19 +81,46 @@ describe('toThinkInput', () => {
     }
   });
 
-  it('sample users send our lifelog plus the scenario history, enabled sources only', () => {
+  it('sample users send one timeline: our lifelog only, enabled sources only', () => {
     const state = flowState({ sample: true });
     const input = toThinkInput(state, persona, scenario);
     const enabled = new Set(['note', 'saved_link', 'calendar']);
     const ours = persona.lifelog.filter((i) => enabled.has(i.source));
-    const theirs = scenario.lifelog.filter((i) => enabled.has(i.source));
     expect(input.enabledSources).toEqual(['note', 'saved_link', 'calendar']);
-    expect(input.lifelog).toHaveLength(ours.length + theirs.length);
-    expect(input.lifelog!.every((i) => enabled.has(i.source))).toBe(true);
-    expect(input.lifelog!.slice(0, ours.length).map((i) => i.id)).toEqual(ours.map((i) => i.id));
-    expect(input.lifelog!.slice(ours.length).map((i) => i.id)).toEqual(theirs.map((i) => `${SCENARIO_ID_PREFIX}${i.id}`));
-    // No id collides between the two synthetic sets.
-    expect(new Set(input.lifelog!.map((i) => i.id)).size).toBe(input.lifelog!.length);
+    expect(input.lifelog!.map((i) => i.id)).toEqual(ours.map((i) => i.id));
+    // The scenario's lifelog (a second Dana timeline) never goes along.
+    expect(input.lifelog!.some((i) => i.id.startsWith(SCENARIO_ID_PREFIX))).toBe(false);
+    expect(new Set(input.lifelog!.map((i) => i.title)).size).toBe(input.lifelog!.length);
+    expect(input.lifelog!.every((i) => i.date <= input.today!)).toBe(true);
+  });
+
+  it('drops lifelog items dated after the demo today', () => {
+    const early = {
+      today: 'Mon',
+      lifelog: [
+        { id: 'p1', date: '2026-10-19', source: 'note' },
+        { id: 'p2', date: '2026-10-22', source: 'note' },
+      ],
+    };
+    const input = toThinkInput(flowState({ sample: true }), early, null);
+    expect(input.today).toBe('2026-10-19');
+    expect(input.lifelog!.map((i) => i.id)).toEqual(['p1']);
+  });
+
+  it('sends scenario check-ins from earlier weeks only', () => {
+    const withLate: BrainScenario = {
+      ...scenario,
+      checkins: [
+        ...scenario.checkins,
+        { actionId: 'a1', kind: 'done', day: 'Tue', date: '2026-10-20' },
+        { actionId: 'a2', kind: 'done', day: 'Tue' },
+      ],
+    };
+    const input = toThinkInput(flowState({ sample: true }), persona, withLate);
+    const history = input.checkins!.filter((c) => c.actionId.startsWith(SCENARIO_ID_PREFIX));
+    expect(history.map((c) => c.date)).toEqual(scenario.checkins.map((c) => c.date));
+    // The demo week starts on Monday 2026-10-19.
+    expect(history.every((c) => c.date! < '2026-10-19')).toBe(true);
   });
 
   it('follows the source toggles', () => {

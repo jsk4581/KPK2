@@ -10,8 +10,9 @@ export type BrainView =
   | { status: 'offline'; reason: BrainFailure };
 
 // Calls the brain when the screen opens and again after every new check-in while it stays
-// mounted. Sample persona users get the server's synthetic history (fetched once); if that
-// fetch fails only our own lifelog is sent.
+// mounted. Sample persona users also get the check-ins of earlier weeks from the server's
+// synthetic history (fetched once); if that fetch fails only our own lifelog and this week's
+// check-ins are sent.
 export function useBrain(state: AppState): BrainView {
   const [view, setView] = useState<BrainView>({ status: 'loading' });
   const latest = useRef(state);

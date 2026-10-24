@@ -4,3 +4,4 @@ import './logic.test.mjs';
 import './scaffold-core.test.mjs';
 import './fallback.test.mjs';
 import './serve.test.mjs';
+import './persona-data.test.mjs';

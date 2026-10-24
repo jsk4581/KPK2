@@ -35,6 +35,9 @@ stage: board
 - 슬롯 8 · 12:00 · 화면 직접 관측 (12:55 늦게 기록) · Sales — 11:00 | 미관측 | - (보드 없음 → PM이 G2 「슬롯」으로 옮김)
 - 2026-10-24 12:55 · Sales(태진) · 행사 모드 ① 행사 계정 yes(사람 확인 12:55, Console 크레딧 충분) · ② 최초 허용 호출 11:10 · ③ off → `log/2026-10-24_sales-buyer_2.md` · 산출물 `docs/gtm/` 5건(journey-io · market-claims · ai-displaced-occupations · verify-e68-e59 · competitors) · 「제안」 9줄 · 검증 pii hits=0 · 블로커 없음 · 다음: 14:00 배포 URL에서 S1–S3 실행 → SUBMISSION 「테스트」 · 커밋 974451a
 
+- T12 done · 커밋 (EVIDENCE) · Sales — mission/EVIDENCE.md 생성: 「주장」은 PM 에이전트 초안(`docs/brain/drafts-mission/EVIDENCE.md`) 그대로 채택(GTM ✓ 대기), 「Buyer simulation」 S1–S3 전부 배포 URL 실행 결과로 교체(S2·S3 15:57 Playwright, 출처 `AI-drafted`) · `validate_mission.py mission --stage evidence` PASS 11/0 · 발견: 번역가·일러스트 입력에선 경로가 카피라이터 템플릿에 머묾(S2 1/3 · S3 0/3 적합) → 피치에 "오늘 데모는 비치헤드 직군 전용" 명시 필요
+- T13 done · T14 doing(체크 1·2 PASS, 3–10 소유자 대기) · T21 todo(PITCH·pitch/slides.pdf 생기면 즉시) · T23: 13:00~15:30 회차 미관측 — Sales(사람) 슬롯 수 확인 요청 중
+
 ## 결정
 
 > 사용법: PM(결정자)이 「제안」이나 🚨 승인 답을 승격할 때만 쓴다 — `시각 · 결정 한 줄 · 결정자 · 근거(파일 경로나 제안 번호)`.

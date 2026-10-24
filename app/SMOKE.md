@@ -1,30 +1,31 @@
-# SMOKE — 앱 스모크 테스트 3단계
+# SMOKE · 2026-10-24
 
-> 심사위원이 데모 링크를 열고 하는 3단계다. **코드보다 먼저 쓴다** (SMOKE.md → `app/tests/` → 코드).
-> 아래는 미션과 무관한 **골격 기준**이다. 골격의 PRD(행사 전 예시, `[SIMULATION]`)는 `app/tests/scaffold-prd.md`에 있고, 2단계와 「완료 조건」은 그 3번·6번 문장의 빈칸 텍스트를 글자 그대로 담는다 (검증기 X-2·X-4와 같은 규칙 — `node --test app/tests`가 확인한다. `mission/PRD.md`가 생기면 node도 그 파일을 기준으로 본다).
-> 구조는 `templates/SMOKE.md`와 같다. 당일 Build는 `mission/PRD.md`가 정해지면: 2단계 맨 앞에 PRD 3번 빈칸 텍스트를, 「완료 조건」 첫 줄에 PRD 6번 빈칸 텍스트를 **글자 그대로** 옮기고, 2단계 입력·기대를 바꾸고, 같은 입력을 `app/tests/smoke-input.js`의 `SMOKE_INPUT` 한 곳에 넣는다 (node 테스트와 브라우저 러너가 그 파일을 같이 읽는다). 대상 URL 줄 끝에 옮겨 온 PRD 버전(`PRD v<n>`)을 적는다 — 그 표시가 생기기 전(G1 → T3)에는 node의 X-2·X-4가 NOT_RUN으로 SKIP된다. PRD 버전이 오르면(`CONTRACT.md` §C 4) 이 파일을 다시 맞추고 확인(✓)한다.
-> 화면의 데이터는 전부 가상(synthetic)이다.
+> 심사위원이 배포 URL을 열고 하는 3단계다. 화면의 페르소나(Dana)와 라이프로그는 전부 가상(synthetic, `[SIMULATION]`)이다.
+> 2단계 맨 앞은 `mission/PRD.md` v2 3번 문장의 빈칸, 「완료 조건」 첫 줄은 6번 문장의 빈칸을 글자 그대로 옮긴 것이다 (X-2 · X-4, `node --test app/tests`가 확인). PRD 버전이 오르면 이 파일을 다시 맞추고 HANDOFF 「체크포인트」에 ✓.
+> 2단계 입력칸 문장은 `app/tests/smoke-input.js`의 `SMOKE_INPUT`과 같다 (`app/data/persona-dana.json` `fields.career` 첫 문장).
+> LLM 키가 없으면 `/api/paths`가 표시된 폴백을 돌려준다. 경로 카드 아래 출처 표시가 `Sample output (offline)`이면 폴백, `AI-drafted`면 LLM 응답이다. 둘 다 통과로 본다.
 
-대상 URL: `<배포 URL>`
-자동 실행: 브라우저 `<배포 URL>/tests/` (T0, 3/3 PASS 표시 — Vercel·Pages 모두 `app/`이 사이트 루트) · 터미널 `node --test app/tests` (T2) · 배포 전 로컬은 `app/fallback.html` 더블클릭 후 아래 3단계를 손으로
+대상 URL: https://kpk2-second-draft.vercel.app · PRD v2
+자동 실행: 터미널 `npm --prefix web test` (화면 · 서버 함수 단위 시험) · `npm --prefix web run test:e2e` (로컬 개발 서버 + `/api/paths` 대역, 폰 · 노트북 너비) · `node --test app/tests` (판단 함수 `app/logic.js` · 하네스 규칙)
 
 ## 단계
 
-1. 페이지를 연다 (로그인 없이 · 팀 노트북이 아닌 기기에서도 한 번).
-   - 기대: 탭 제목과 화면 제목 "HTHn 데모"가 보이고, 입력칸 · 「핵심 행동」 버튼 · 출력 패널 · 데이터 표시기가 보인다. 오류 배너는 보이지 않는다.
-2. 한 줄 입력으로 다음 행동 고르기: 입력칸에 `스모크 입력 123`을 넣고 「핵심 행동」 버튼을 누른다.
-   - 기대: 출력 패널에 입력한 문장 `스모크 입력 123`과 `다음 행동:`이 든 결과 한 줄이 나온다. 페이지가 새로고침되지 않는다.
-3. 데이터 표시기와 데이터 목록을 본다.
-   - 기대: 표시기가 `fixture`라고 표시하고(`app/config.js`의 `SHEET_API_URL`을 채웠다면 `sheet`), 가상(synthetic) 행 5개가 목록에 보인다. `sheet 실패 → fixture 대체`가 보이거나 오류 배너가 뜨면 실패로 기록한다.
+1. 페이지를 연다 (로그인 없이 · 폰 너비와 노트북 너비에서 한 번씩).
+   - 기대: 제목 "Second Draft"(Landing)와 「Load sample persona」 · 「Start」 버튼, 위쪽 「Reset」 버튼, "Nothing you type is stored." 문구, `[SIMULATION] Sample persona: synthetic` 표시가 보인다. 로그인 화면이나 오류 배너는 없다.
+2. 사용자의 경력과 쌓인 라이프로그를 읽어 전문성이 이어지는 커리어 경로 3개와 지금 상태에 맞춘 이번 주 행동 3개로 바꾸는 것: 「Load sample persona」를 누른다 → 라이프로그 카드(Connected data)를 보고 「Continue」 → 「Show my paths」 → 경로 카드 하나에서 「Choose this path」. 이어서 입력칸으로 한 번 더: 「Reset」 → 「Start」 → 경력 칸(Career and what you were good at)에 `Seven years as a freelance copywriter for DTC and SaaS brands: email flows, landing pages, product launches.`를 넣고 「Show my paths」 → 「Choose this path」.
+   - 기대: 라이프로그 카드에 가상 라이프로그 목록과 미리 채워진 3칸이 보인다. 두 번 모두 경로 카드 3장이 나오고 카드마다 What transfers · What's missing · First 2 weeks가 있으며, 카드 아래에 출처 표시(키 없음 `Sample output (offline)` · 키 있음 `AI-drafted`)가 보인다. 경로를 고르면 This week 화면에 이번 주 행동 3개가 보인다. 페이지는 새로고침되지 않는다.
+3. This week 화면에서 행동 하나의 「Not today」를 누른 뒤 「Reset」을 누른다.
+   - 기대: "Today was a rest day, not a missed day."와 10분 행동 한 줄(`If you have 10 minutes: …`), `Moved to <요일>` 줄이 보인다. 행동은 그대로 3개이고 지워진 것이 없다 (요약 `0/3 done · 1 moved`). 빨간 경고색이나 실패 표현은 없다. 「Reset」을 누르면 Landing(「Load sample persona」)으로 돌아가고, 「Start」의 입력칸 3개는 비어 있다.
 
 ## 완료 조건
 
-- 입력한 문장과 다음 행동 한 줄을 출력 패널에 표시 — 위 3단계가 배포 URL에서 3/3 PASS (기록은 아래 「실행 기록」)
-- 「초기화」 버튼을 누르면 입력칸과 출력 패널이 처음 상태로 돌아간다 (다음 심사자를 위한 것 — `app/DEPLOY.md` 「공개 데모 운영」).
+- 배포 URL에서 샘플 페르소나의 라이프로그 카드 또는 입력칸으로 경로 3개가 나오고 하나를 고르면 이번 주 행동 3개와 Not today 응답이 이동만 하고 삭제 없이 작동 (위 3단계가 배포 URL에서 3/3 PASS, 기록은 아래 「실행 기록」)
+- 「Reset」을 누르면 Landing으로 돌아가고 입력이 남지 않는다 (다음 심사자를 위한 것).
 
 ## 실행 기록
 
-Build가 적는다. 「통과 단계」 칸 끝에 대상과 방식을 붙인다 — `3/3 (배포 URL · 브라우저)` · `3/3 (로컬 · 브라우저)` · `3/3 (fallback · 브라우저)`. G3·체크 2·F1의 근거는 `(배포 URL …)` 행뿐이다. red 실행은 커밋 메시지나 `log/`에 남긴다. 14:00–14:45 테스트 회차는 Sales가 `mission/SUBMISSION.md` 「테스트」에 따로 적는다 (이 표를 옮기지 않는다).
+Build가 적는다. 「통과 단계」 칸 끝에 대상과 방식을 붙인다: `3/3 (배포 URL · 브라우저)` · `3/3 (로컬 · 브라우저)`. G3 · 체크 2 · F1의 근거는 `(배포 URL …)` 행뿐이다. 14:00–14:45 테스트 회차는 Sales가 `mission/SUBMISSION.md` 「테스트」에 따로 적는다.
 
 | 회차 | 시각 | 통과 단계 | 실패 | 조치 |
 |---|---|---|---|---|
+| 1 | 13:12 | 3/3 (배포 URL · 브라우저) | 없음 | 없음 · Playwright chromium 자동 실행, 폰 390x844 3/3 · 노트북 1280x800 3/3, `/api/paths` 대역 없이 실제 함수(키 없음, 출처 `Sample output (offline)`), 화면 사진 `web/e2e/screens/smoke-*.png` |

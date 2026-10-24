@@ -1,0 +1,145 @@
+.lifelog h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.lifelog h3 {
+  margin: 20px 0 4px;
+  font-size: 15px;
+}
+
+.sim-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lifelog-intro,
+.prefill-note {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.sources {
+  margin: 0;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.sources legend {
+  padding: 0 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.source-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.source-toggle + .source-toggle {
+  border-top: 1px solid var(--border);
+}
+
+.source-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.source-hint {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.source-toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
+
+.prefill-field {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.prefill-field span {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.prefill-field textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.item-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.item-off {
+  opacity: 0.5;
+}
+
+.item-icon {
+  flex: none;
+  width: 20px;
+  text-align: center;
+}
+
+.item-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.item-date {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.item-off-tag {
+  flex: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lifelog .primary {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -54,6 +54,7 @@ stage: decide
 - 작성:Sales 11:55 · `mission/PITCH.md` → GTM · 아키텍처 문구 1줄 제안 "오늘 URL에서 도는 것은 filter·planner·monitor의 최소 버전, gateway·status·자동 수집은 설계 주장" + VC 지표 가설 "2주차 체크인 잔존율" (`docs/gtm/journey-io.md` 「GTM 한 줄」)
 - 작성:Sales 12:05 · `mission/EVIDENCE.md#주장` → GTM · E1–E27 후보 `docs/gtm/market-claims.md` — 강한 근거: BLS 2025 직군 규모(E1–E4) · Upwork 소득 −5.2%/−9.4% 연구(E11 verified) · 코치 시급 $139·아웃플레이스먼트 1인당 $1,660(E17·E18 verified) / 약한 가설: 10M 도달(E27, 비율 출처 없음) · 지불 전환율(E23·E24) — 슬라이드엔 공식 합계 70만 명(E25) + "10M은 가설"로 쓰길 제안
 - 작성:Sales 12:40 · `mission/EVIDENCE.md#주장` → GTM · AI 피해 전 직무 스캔 E28–E69 `docs/gtm/ai-displaced-occupations.md` — 사이징 3층 제안: TAM = 고노출 직업 종사자 3,240만(Eloundou 19%)~5,110만(Brookings 30%, E65) · SAM = BLS 2025–35 감소·정체 + 자동화/AI 사유 직업 ≈1,180만(E66, hypothesis 4; OOH가 AI 직접 명시한 직업만 ≈460만) · SOM = 25–44세·연봉 ≥$45k 필터 ≈300만(E67) + 창작 5직군 70만(E25). 확장 순위: 작가(비치헤드) → 고객서비스 266만 → 비서·행정 352만 → 경리 153만 → 그래픽디자이너 → PR → 프로그래머 → 통번역. 주의: "BLS가 AI 때문"이라는 표현은 작가·비서·패러리걸·프로그래머·그래픽디자이너·통번역·PR·테크라이터에만(고객서비스·경리 OOH는 '자동화'만 명시). Stanford Canaries(E43 verified)는 초년차 감소만 입증 — 3–10년차 대체는 프리랜스 소득 증거(E11)로만
+- 작성:Sales 12:58 · `mission/EVIDENCE.md#주장` → GTM · E68·E59 1차 출처 검증 완료 `docs/gtm/verify-e68-e59.md` — TAM 상한을 BLS 공식 수치로 교체 가능: **Very high 노출 206개 직업 2025 고용 5,321만 명**(XLSX 직접 집계, 단 "노출 ≠ 감소" BLS 원문 병기 필수) · Challenger AI 사유 감원 2026년 9월까지 **120,136명**(원문 PDF Table 4, 5월 87,714 → 갱신). 둘 다 single-source 5 (동일 기관 1차 자료라 verified 아님)
 
 ## 블로커
 

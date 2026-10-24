@@ -1,6 +1,6 @@
 ---
-mode: pre_event
-stage: intake
+mode: event
+stage: decide
 ---
 # HANDOFF — HTHn 팀 상태
 
@@ -36,6 +36,7 @@ stage: intake
 
 > 사용법: PM(결정자)이 「제안」이나 🚨 승인 답을 승격할 때만 쓴다 — `시각 · 결정 한 줄 · 결정자 · 근거(파일 경로나 제안 번호)`.
 > G2 뒤 PRD를 바꾸면 여기 `PRD v<n> → v<n+1>` 한 줄을 남기고, 영향받는 `app/SMOKE.md`·`mission/PITCH.md` 소유자가 다시 ✓한다 (`CONTRACT.md` §C 4).
+- 11:30 · G1: 후보 A(미국 프리랜서 카피라이터 · Second Draft) 선택, PRD v1 · 결정자 PM(우영) · 근거 mission/DECISION.md · mission/PRD.md
 
 ## 제안
 

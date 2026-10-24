@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dream Achieve Moments · Combined slides proposal v2 (Gonzalo + Jin)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- Visual system (light brand theme, phone mockups, brain diagram, stat tiles) adapted from Jin's draft v4 in docs/gtm/slides-draft/.
+     Story and copy (crisis-to-opportunity hook, problem timeline, solution, personalized-consulting edge, growth path, revenue) from Gonzalo's proposal. -->
+<style>
+ @page{size:1920px 1080px;margin:0}
+ *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
+ body{font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif;background:#555}
+ .s{width:1920px;height:1080px;position:relative;overflow:hidden;background:#FBF9FE;color:#141018;page-break-after:always;margin:0 auto 40px}
+ .s::before{content:"";position:absolute;inset:0;background:radial-gradient(1100px 600px at 10% 5%,rgba(139,92,246,.22),transparent 60%),radial-gradient(900px 520px at 95% 90%,rgba(251,191,36,.18),transparent 60%),radial-gradient(700px 400px at 60% 40%,rgba(236,72,153,.08),transparent 60%)}
+ @media print{body{background:none}.s{margin:0}}
+ .team{position:absolute;top:52px;left:96px;font-size:26px;font-weight:700;color:rgba(20,16,24,.55)}
+ .topic{position:absolute;top:52px;right:96px;font-size:22px;font-weight:700;color:#7C3AED;letter-spacing:.06em}
+ .body{position:absolute;left:96px;right:96px;top:112px;height:780px}
+ .p{color:#7C3AED}.a{color:#D97706}
+ .lab{font-size:22px;font-weight:800;color:#7C3AED;letter-spacing:.1em}
+ .src{font-size:22px;color:rgba(20,16,24,.5);font-weight:500}
+ .phone{border-radius:40px;border:10px solid #1C1A22;background:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(60,30,120,.28)}
+ .phone img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+ .browser{border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 30px 70px rgba(60,30,120,.25);border:1px solid rgba(20,16,24,.08)}
+ .browser .bar{height:34px;background:#EFEAF8;display:flex;align-items:center;gap:8px;padding:0 16px}
+ .browser .bar i{width:12px;height:12px;border-radius:50%;background:#C9BFE6;display:block}
+ .browser img{width:100%;display:block;object-fit:cover;object-position:top}
+ /* slide 1 */
+ .s1{display:flex;flex-direction:column;gap:22px}
+ .hero{display:flex;gap:40px;flex:0 0 548px}
+ .hero .l{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px}
+ .brand{display:flex;align-items:center;gap:16px;font-size:32px;font-weight:800;color:#7C3AED}
+ .brand img{width:72px;height:72px;border-radius:18px;box-shadow:0 8px 22px rgba(60,30,120,.22);display:block}
+ .brand{font-size:36px}
+ h1{font-size:100px;font-weight:900;line-height:1;letter-spacing:-.03em}
+ h1 span{color:#7C3AED}
+ .sub{font-size:31px;line-height:1.35;color:rgba(20,16,24,.82)}
+ .strip{display:flex;gap:14px}
+ .pill{border:1px solid rgba(124,58,237,.3);border-radius:28px;padding:10px 22px;font-size:28px;line-height:1.25;background:#fff}
+ .pill b{color:#7C3AED}
+ .hero .r{flex:0 0 700px;position:relative}
+ .hero .browser{position:absolute;left:0;top:20px;width:620px;height:400px}
+ .hero .browser img{height:366px}
+ .hero .phone{position:absolute;right:0;top:100px;width:240px;height:440px;transform:rotate(5deg);z-index:2}
+ .stats{display:flex;gap:22px;flex:1}
+ .stat{flex:1;border-radius:26px;padding:16px 26px;background:#fff;border:1px solid rgba(124,58,237,.18);box-shadow:0 12px 30px rgba(60,30,120,.08);display:flex;flex-direction:column;justify-content:center;gap:4px}
+ .stat .when{font-size:22px;font-weight:800;letter-spacing:.1em;color:#D97706}
+ .stat .n{font-size:68px;font-weight:900;letter-spacing:-.03em;color:#7C3AED;line-height:1}
+ .stat .c{font-size:28px;line-height:1.28}
+ /* slide 2 */
+ .s2{display:flex;gap:30px}
+ .screens{flex:0 0 960px;display:flex;flex-direction:column;justify-content:center}
+ .shots3{display:flex;gap:16px;align-items:flex-start}
+ .shotcol{flex:1;display:flex;flex-direction:column;gap:12px;align-items:center}
+ .shotcol .phone{width:280px;height:560px}
+ .shotcol .cap{font-size:28px;line-height:1.22;text-align:center;font-weight:800}
+ .shotcol .cap span{display:block;font-size:22px;color:rgba(20,16,24,.6);font-weight:500;margin-top:4px}
+ .shotcol .cap em{font-style:normal;color:#7C3AED}
+ .arrowv{align-self:flex-start;margin-top:250px;font-size:44px;color:#7C3AED;font-weight:900}
+ .right{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
+ .box{border:1px solid rgba(124,58,237,.18);border-radius:24px;padding:14px 24px;background:#fff;box-shadow:0 12px 30px rgba(60,30,120,.06)}
+ .box .lab{display:block;margin-bottom:6px}
+ .box p{font-size:28px;line-height:1.3}
+ .steps{display:flex;flex-direction:column;gap:6px}
+ .step{display:flex;gap:14px;align-items:flex-start;font-size:28px;line-height:1.28}
+ .step .k{flex:0 0 40px;height:40px;border-radius:50%;background:#7C3AED;color:#fff;font-size:24px;font-weight:900;text-align:center;line-height:40px;margin-top:1px}
+ .foot{position:absolute;left:5%;right:5%;bottom:36px;height:auto}
+ .foot img{width:100%;display:block}
+</style></head>
+<body>
+
+<section class="s">
+  <div class="team">팀 김박구이</div><div class="topic">TOPIC · SAVE 10M JOBS FROM AI (SCHMIDT)</div>
+  <div class="body s1">
+    <div class="hero">
+      <div class="l">
+        <div class="brand"><img src="logo.svg" alt="">Dream Achieve Moments</div>
+        <h1>AI: from crisis<br><span>to opportunity.</span></h1>
+        <div class="sub">A personal AI agent that turns what you already know into your next career, and walks it with you, <b class="p">week by week</b>.</div>
+        <div class="strip">
+          <div class="pill"><b>WHO</b> US freelance copywriters, 3–10 years in</div>
+          <div class="pill"><b>PAIN</b> “My clients write with ChatGPT now.” Alone, most give up.</div>
+        </div>
+      </div>
+      <div class="r">
+        <div class="browser"><div class="bar"><i></i><i></i><i></i></div><img src="shot-landing-web.png" alt=""></div>
+        <div class="phone"><img src="app-2-paths.png" alt=""></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="when">TODAY</div><div class="n">120,136</div><div class="c">US job cuts blamed on AI in 2026, the #1 reason <span class="src">· Challenger</span></div></div>
+      <div class="stat"><div class="when">BY 2027</div><div class="n">83M</div><div class="c">jobs employers expect to cut worldwide <span class="src">· WEF 2023, all causes</span></div></div>
+      <div class="stat"><div class="when">NEXT DECADE</div><div class="n">10–12M</div><div class="c">US workers AI could displace <span class="src">· Goldman Sachs 2025</span></div></div>
+    </div>
+  </div>
+  <div class="foot"><img src="footer-for-light-slides.png" alt=""></div>
+</section>
+
+<section class="s">
+  <div class="team">팀 김박구이</div><div class="topic">BUILT TODAY · LIVE DEMO kpk2-second-draft.vercel.app</div>
+  <div class="body s2">
+    <div class="screens">
+      <div class="shots3">
+        <div class="shotcol"><div class="phone"><img src="app-1-story.png" alt=""></div><div class="cap">1 · Your story, your data<span>sources opt-in · messages off by default · synthetic persona</span></div></div>
+        <div class="arrowv">→</div>
+        <div class="shotcol"><div class="phone"><img src="app-2-paths.png" alt=""></div><div class="cap">2 · Paths that <em>fit your life</em><span>what transfers · what's missing · first 2 weeks</span></div></div>
+        <div class="arrowv">→</div>
+        <div class="shotcol"><div class="phone"><img src="app-4-nottoday.png" alt="" style="object-position:bottom"></div><div class="cap">3 · A <em>rest day</em>, not a failure<span>the plan bends with your life and keeps going</span></div></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="box">
+        <span class="lab">ONE BRAIN · TWO DOORS</span>
+        <svg width="100%" height="128" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" font-family="Pretendard Variable, Pretendard, sans-serif">
+          <defs><marker id="a" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/></marker></defs>
+          <rect x="110" y="6" width="480" height="92" rx="22" fill="#7C3AED"/>
+          <text x="350" y="46" text-anchor="middle" font-size="30" font-weight="900" fill="#FFFFFF">DECISION BRAIN + Claude</text>
+          <text x="350" y="80" text-anchor="middle" font-size="22" font-weight="700" fill="#EDE9FE">paths → week → check-in</text>
+          <line x1="260" y1="98" x2="160" y2="140" stroke="#7C3AED" stroke-width="5" marker-end="url(#a)"/>
+          <line x1="440" y1="98" x2="540" y2="140" stroke="#7C3AED" stroke-width="5" marker-end="url(#a)"/>
+          <rect x="20" y="144" width="280" height="50" rx="14" fill="#F3EEFF" stroke="#7C3AED" stroke-width="3"/>
+          <text x="160" y="178" text-anchor="middle" font-size="24" font-weight="800" fill="#4C1D95">Web app (today)</text>
+          <rect x="400" y="144" width="280" height="50" rx="14" fill="#F3EEFF" stroke="#7C3AED" stroke-width="3"/>
+          <text x="540" y="178" text-anchor="middle" font-size="24" font-weight="800" fill="#4C1D95">MCP / API · any app</text>
+        </svg>
+      </div>
+      <div class="box"><span class="lab">WHY WE WIN</span><p>Personalized medicine for careers. Others <b>stop at a map</b>; we walk it with you, and <b class="p">every plan makes the brain smarter</b>.</p></div>
+      <div class="box"><span class="lab">HOW WE GROW</span>
+        <div class="steps">
+          <div class="step"><div class="k">1</div><div><b>Copywriters</b> · 91,200 in the US <span class="src">· BLS</span></div></div>
+          <div class="step"><div class="k">2</div><div><b>Everyone AI pushes out</b> · 1.8M layoffs/mo <span class="src">· BLS</span></div></div>
+          <div class="step"><div class="k">3</div><div><b>B2B</b> · employers per employee, apps per API call</div></div>
+        </div>
+      </div>
+      <div class="box"><span class="lab">HOW WE MAKE MONEY</span><p>Coaching (<b>$2.1B</b>) + habit apps (<b>$1.7B</b>), combined. Free → <b class="a">$12/mo</b> <span class="src">· ICF · Straits · est.</span></p></div>
+    </div>
+  </div>
+  <div class="foot"><img src="footer-for-light-slides.png" alt=""></div>
+</section>
+
+</body></html>

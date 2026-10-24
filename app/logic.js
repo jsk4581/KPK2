@@ -88,17 +88,17 @@ export function sortByUrgency(rows) {
 //
 // Returns { ok, input, reason, action, pickedId, matchedIds, rowCount }
 //   reason: 'empty-input' | 'no-rows' | 'match' | 'no-match'
-//   action: Korean sentence shown in the output panel; contains the input when non-empty.
+//   action: English sentence shown in the output panel; contains the input when non-empty.
 export function decideNextAction(input, rows) {
   const text = normalizeInput(input);
   const usable = Array.isArray(rows) ? rows.filter(isSyntheticRow) : [];
   const base = { input: text, pickedId: null, matchedIds: [], rowCount: usable.length };
 
   if (text === '') {
-    return { ...base, ok: false, reason: 'empty-input', action: '입력이 비어 있습니다. 한 줄을 입력하세요.' };
+    return { ...base, ok: false, reason: 'empty-input', action: 'The input is empty. Type one line.' };
   }
   if (usable.length === 0) {
-    return { ...base, ok: false, reason: 'no-rows', action: `「${text}」 → 불러온 가상 데이터가 없습니다.` };
+    return { ...base, ok: false, reason: 'no-rows', action: `"${text}" → No synthetic data loaded.` };
   }
 
   const tokens = tokenize(text);
@@ -117,7 +117,7 @@ export function decideNextAction(input, rows) {
     reason,
     pickedId: String(picked.id),
     matchedIds: matched.map((row) => String(row.id)),
-    action: `「${text}」 → 다음 행동: ${picked.goal} (${picked.id} · 상태 ${picked.status})`,
+    action: `"${text}" → Next action: ${picked.goal} (${picked.id} · status ${picked.status})`,
   };
 }
 

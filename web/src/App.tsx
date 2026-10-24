@@ -50,7 +50,7 @@ function Shell() {
     <div className="stage">
       <div className="stage-frame" aria-hidden="true">
         <span>Dream Achieve Moments</span>
-        <span>[SIMULATION] Demo · nothing is stored</span>
+        <span>[SIMULATION] Demo</span>
       </div>
       <div className="phone">
         <div className="phone-screen">

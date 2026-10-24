@@ -64,6 +64,7 @@ stage: decide
 - 작성:Sales 13:50 · `docs/research/product-concept-report.md` §11 PM 결정 2·3 → PM · 구매자 관점 의견 — (결정 3) 피치 B2B 대표 예시는 **HR·아웃플레이스먼트**: 예산이 이미 있고(E18 1인당 $1,660) 모수가 숫자로 있으며(E59 AI 사유 감원 120,136명) 미션 문장과 직결. 도서 플랫폼은 비전 한 줄로. (결정 2) 데이터 크레딧·Data License는 2장 덱에서 빼고 Q&A 답변용으로만 — 데이터 판매 선례(Datacoup 종료)와 CCPA 금전적 인센티브 고지 리스크가 VC 첫 반론이 되기 쉬움(`docs/gtm/competitors.md` §3). 첫 문장은 "브레인을 판다" 유지. 돈을 낼 기업 우선순위표는 다음 커밋 `docs/gtm/payers.md`
 - 작성:Sales 14:10 · `docs/research/product-concept-report.md`(Roy) · `mission/PITCH.md`(GTM) → 정정 — **"아웃플레이스먼트 1인당 $1,660(E18)" 사용 금지**: 14:05 재검증에서 공식 출처 재확인 실패(E18 → single-source 2). 대신 **E70 벤더 공개가 $600–2,600/인**(Intoo·RiseSmart, 3개월) 사용. 또 LHH·Careerminds·Intoo·RiseSmart가 이미 "AI 커리어 전환"을 마케팅 중이라 차별점은 "AI 대체 직군 특화 + 주간 습관 팔로업"으로 좁힐 것. 세일즈 가이드 §3 Employer-sponsored ~$100/인 비교문·§6·§10 세 곳에 $1,660이 있음 · 상세 `docs/gtm/verify-payers.md`
 - 작성:Sales 14:35 · `pitch/slides.html` → GTM · 발표자료 초안 v0 `docs/gtm/slides-draft/`(slides.html · slides.pdf 2쪽 · preview.png · README) — 키트 템플릿에 Slide 1(타깃·문제·Why now, E1·E11·E59·E40 라벨)·Slide 2(화면 목업·How it works·Why us·10M path E25/E67/E66·Next 7 days·Ask) 채움. 스크린샷·URL은 PENDING 표기. NEXT 7 DAYS·Ask는 Sales 판단 → PM 확정 필요. GTM이 `pitch/`로 복사해 이어 쓰면 됨. Windows 내보내기 명령은 README에
+- 작성:Sales 15:18 · `web/` Landing → Build · 폰 폭 390px에서 소개 문단("Your expertise, redrafted… Tell us what you di…")이 오른쪽으로 잘림 — 노트북 폭의 폰 프레임에선 정상. 실제 폰으로 여는 심사위원에게 보임. 기능 영향 없음(SMOKE 3/3 PASS 15:15, `mission/SUBMISSION.md` 「테스트」 회차 1) · 캡처 `docs/gtm/slides-draft/` 예정
 
 ## 블로커
 

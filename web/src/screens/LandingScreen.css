@@ -65,6 +65,12 @@
   min-width: 0;
 }
 
+/* The label is a little wider than the card body: wrap it into two even lines
+   instead of leaving one word alone on the second line. */
+.landing-persona .tag-sim {
+  text-wrap: balance;
+}
+
 .landing-persona-name {
   font-size: 16px;
   font-weight: var(--fw-medium);

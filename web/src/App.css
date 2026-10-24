@@ -84,9 +84,9 @@
   flex: none;
   margin: 0;
   padding: var(--sp-2) var(--gutter);
-  background: rgba(255, 255, 255, 0.86);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  /* Opaque: on the phone view the page scrolls under it, and see-through text
+     behind the storage notice made the notice itself hard to read. */
+  background: var(--bg);
   box-shadow: 0 1px 0 var(--hairline);
   font-family: var(--font-mono);
   font-size: 12px;

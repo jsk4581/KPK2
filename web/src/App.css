@@ -1,87 +1,261 @@
-:root {
-  --bg: #eef0f3;
-  --surface: #ffffff;
-  --text: #1f2933;
-  --muted: #5f6b7a;
-  --accent: #2f6fdb;
-  --border: #d5dae1;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-}
+/* Shell: laptop stage, phone frame, top bar, notice and the screen container.
+   Tokens live in styles/tokens.css, primitives in styles/components.css. */
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-}
-
-/* Narrow screens: the phone screen fills the viewport. */
+/* ---------- Phone view (< 900px): the screen fills the viewport ---------- */
 .stage {
   min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.stage-frame {
+  display: none;
 }
 
 .phone {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: var(--surface);
-}
-
-/* Laptop width: a centered phone frame with a 390x844 aspect ratio. */
-@media (min-width: 900px) {
-  .stage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .phone {
-    width: 390px;
-    height: 844px;
-    min-height: 0;
-    border: 10px solid #1f2933;
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(31, 41, 51, 0.18);
-  }
+  min-height: 100dvh;
+  background: var(--bg);
 }
 
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
+  flex: none;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
+  gap: var(--sp-3);
+  height: var(--topbar-h);
+  padding: 0 var(--gutter);
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  box-shadow: 0 1px 0 var(--hairline);
 }
 
 .brand {
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
+.brand::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Reset: tertiary small pill. */
 .reset {
-  border: 1px solid var(--border);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 44px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
   background: var(--surface);
-  color: var(--text);
-  border-radius: 8px;
-  padding: 6px 12px;
-  font: inherit;
-  cursor: pointer;
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--ls-small);
+  transition: transform var(--dur-press) ease-out;
 }
 
+/* Storage notice: always visible right under the top bar, text as written. */
 .notice {
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 9;
+  flex: none;
   margin: 0;
-  padding: 6px 16px;
+  padding: var(--sp-2) var(--gutter);
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--hairline);
+  font-family: var(--font-mono);
   font-size: 12px;
+  font-weight: var(--fw-medium);
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--muted);
 }
 
 .screen {
   flex: 1;
-  overflow-y: auto;
-  padding: 16px;
+  min-width: 0;
+  padding: var(--sp-6) var(--gutter) var(--sp-9);
+  scroll-padding-top: 72px;
+  scroll-padding-bottom: 96px;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Screen enter: each top-level block rises in, staggered ----------
+   .is-entering is set by the shell for one second after each screen change. */
+.screen.is-entering > section > :not([data-reveal]) {
+  animation: sd-rise var(--dur-enter) var(--ease-out) backwards;
+}
+
+.screen.is-entering > section > :nth-child(2) { animation-delay: calc(1 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(3) { animation-delay: calc(2 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(4) { animation-delay: calc(3 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(5) { animation-delay: calc(4 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(6) { animation-delay: calc(5 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(7) { animation-delay: calc(6 * var(--stagger)); }
+.screen.is-entering > section > :nth-child(n + 8) { animation-delay: calc(7 * var(--stagger)); }
+
+/* First load (Landing): the first four blocks rise further and a little slower. */
+.screen[data-first] > section > :nth-child(-n + 4):not([data-reveal]) {
+  --sd-rise: var(--rise-lg);
+  animation-duration: var(--dur-screen);
+}
+
+.screen[data-first] > section > :nth-child(1) { animation-delay: 60ms; }
+.screen[data-first] > section > :nth-child(2) { animation-delay: calc(60ms + 1 * var(--stagger)); }
+.screen[data-first] > section > :nth-child(3) { animation-delay: calc(60ms + 2 * var(--stagger)); }
+.screen[data-first] > section > :nth-child(4) { animation-delay: calc(60ms + 3 * var(--stagger)); }
+
+/* ---------- Laptop (>= 900px): the stage around a framed phone ---------- */
+@media (min-width: 900px) {
+  .stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 80px 80px var(--sp-4);
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(40% 50% at 30% 30%, var(--wash-1), transparent 70%),
+      radial-gradient(35% 45% at 72% 38%, var(--wash-2), transparent 70%),
+      radial-gradient(45% 40% at 50% 85%, var(--wash-3), transparent 70%),
+      var(--bg);
+  }
+
+  /* Vertical rails, 80px in from each side. */
+  .stage::before,
+  .stage::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--hairline);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .stage::before {
+    left: 80px;
+  }
+
+  .stage::after {
+    right: 80px;
+  }
+
+  /* Decorative label row above a hairline, 64px from the top, rail to rail. */
+  .stage-frame {
+    position: absolute;
+    top: 0;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 var(--sp-4) var(--sp-3);
+    box-shadow: 0 1px 0 var(--hairline);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--muted);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .phone {
+    /* 390 x 844 screen in a 10px bezel; shrinks with short windows. */
+    height: clamp(640px, calc(100vh - 96px), 864px);
+    width: auto;
+    aspect-ratio: 410 / 864;
+    min-height: 0;
+    padding: 10px;
+    border-radius: var(--r-phone);
+    background: var(--ink);
+    box-shadow: var(--lift-phone);
+  }
+
+  /* The screen inside the bezel: clips content to the inner radius. */
+  .phone-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: var(--r-screen);
+    overflow: hidden;
+    background: var(--bg);
+    transform: translateZ(0);
+  }
+
+  .phone .topbar {
+    padding-top: 6px;
+  }
+
+  .phone .screen {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .phone .screen::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* The label row only fits on wide screens. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .stage-frame > span {
+    visibility: hidden;
+  }
+}
+
+/* Ambient: the wash drifts slowly on the stage only, never inside the phone. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .stage {
+    background-size: 103% 103%;
+    animation: sd-wash 18s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes sd-wash {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+/* ---------- Phone view without the frame ---------- */
+@media (max-width: 899px) {
+  .phone-screen {
+    display: contents;
+  }
 }

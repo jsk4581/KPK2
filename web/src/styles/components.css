@@ -1,0 +1,693 @@
+/* Shared primitives. Stable class names: screens compose these and may alias
+   their own classes onto them. Pills or 12/16 radius cards, no gray borders,
+   no weight above 500, no red. */
+
+/* ---------- Buttons ---------- */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-tertiary,
+.btn-on-ink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  height: 48px;
+  min-width: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--ls-small);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-fast) ease-out,
+    color var(--dur-fast) ease-out,
+    box-shadow var(--dur-fast) ease-out,
+    transform var(--dur-press) ease-out;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--on-dark);
+  box-shadow: var(--lift-1);
+}
+
+.btn-secondary {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--lift-1);
+}
+
+.btn-tertiary {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+/* White pill for use on .card-ink. */
+.btn-on-ink {
+  background: var(--on-dark);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.btn-sm {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-tertiary:disabled,
+.btn-on-ink:disabled {
+  background: var(--surface-2);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+/* Button pairs: 8px gap, stacked full width on the phone. */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.btn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.btn-stack > * {
+  width: 100%;
+}
+
+/* Busy state: three pulsing dots after the label. Static under reduced motion. */
+.busy-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.busy-dots > i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: sd-pulse 900ms ease-in-out infinite;
+}
+
+.busy-dots > i:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.busy-dots > i:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  position: relative;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.card-sm {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+}
+
+/* Use sparingly: one raised card per screen. */
+.card-raised {
+  position: relative;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--lift-1);
+}
+
+/* Inverted card with a violet glow at the bottom left. */
+.card-ink {
+  position: relative;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(120% 80% at 0% 100%, var(--accent-glow), transparent 60%),
+    var(--ink-card);
+  color: var(--on-dark);
+  --muted: var(--on-dark-muted);
+}
+
+.card-ink h1,
+.card-ink h2,
+.card-ink h3,
+.card-ink h4 {
+  color: var(--on-dark);
+}
+
+/* Accent bar on the left, drawn as an inset shadow (no border). */
+.card-accent-bar {
+  box-shadow: inset 3px 0 0 var(--accent), var(--lift-1);
+}
+
+/* ---------- Section header: eyebrow, H2, lead ---------- */
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--r-xs);
+  background: var(--accent-tint);
+  color: var(--accent);
+  font: var(--fw-medium) var(--fs-label) / 1 var(--font-mono);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.display {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-lead);
+  color: var(--muted);
+  max-width: 36ch;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  letter-spacing: var(--ls-small);
+}
+
+/* Small uppercase mono label: subheads, metadata, captions. */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Same mono face, sentence case (keeps app text exactly as written). */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+}
+
+/* Big numbers: overlap %, signals. */
+.number {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--ls-h2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Tags (mono, sentence case, never hidden or faded) ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-label);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Synthetic / [SIMULATION] label: always visible, full opacity. */
+.tag-sim {
+  opacity: 1;
+}
+
+.tag-accent {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.tag-ok {
+  background: var(--ok-tint);
+  color: var(--ok);
+}
+
+.tag-attention {
+  background: var(--attention-tint);
+  color: var(--attention);
+}
+
+.card .tag:not(.tag-accent):not(.tag-ok):not(.tag-attention) {
+  background: var(--bg);
+}
+
+.card-ink .tag:not(.tag-accent):not(.tag-ok):not(.tag-attention) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--on-dark-muted);
+}
+
+/* ---------- Chips ---------- */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.chip,
+.chip-have,
+.chip-build {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-small);
+}
+
+.chip,
+.chip-have {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--ring);
+}
+
+/* "Have": check glyph before the name (decorative). */
+.chip-have::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* "To build": dashed outline (the only dashed line in the system), plus glyph. */
+.chip-build {
+  background: transparent;
+  color: var(--muted);
+  outline: 1px dashed rgba(17, 18, 20, 0.18);
+  outline-offset: -1px;
+}
+
+.chip-build::before {
+  content: '+';
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.card-ink .chip,
+.card-ink .chip-have {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--on-dark);
+  box-shadow: none;
+}
+
+.card-ink .chip-build {
+  color: var(--on-dark-muted);
+  outline-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- Banner (calm notice inside a screen; never red) ---------- */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.banner::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.55em;
+  border-radius: 50%;
+  background: var(--subtle);
+}
+
+.banner-accent {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.banner-accent::before {
+  background: currentColor;
+}
+
+.banner-attention {
+  background: var(--attention-tint);
+  color: var(--attention);
+}
+
+.banner-attention::before {
+  background: currentColor;
+}
+
+.banner-ok {
+  background: var(--ok-tint);
+  color: var(--ok);
+}
+
+.banner-ok::before {
+  background: currentColor;
+}
+
+/* ---------- Fields ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.field-label,
+.field > label {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+}
+
+.input,
+.field textarea,
+.field input[type='text'] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  resize: vertical;
+  transition:
+    background-color var(--dur-fast) ease-out,
+    box-shadow var(--dur-fast) ease-out;
+}
+
+.input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+}
+
+.input:focus,
+.field textarea:focus,
+.field input[type='text']:focus {
+  background: var(--bg);
+  box-shadow: var(--ring), 0 0 0 3px var(--accent-tint);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Switch (native checkbox, role="switch") ---------- */
+.switch {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease-out;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--lift-1);
+  transition: transform var(--dur-spring) var(--ease-spring);
+}
+
+.switch:checked {
+  background: var(--accent);
+}
+
+.switch:checked::after {
+  transform: translateX(18px);
+}
+
+/* ---------- Segmented control: one moving indicator ---------- */
+/* Markup: <div class="segmented" style="--n:5; --i:2"><span class="segmented-indicator"/>
+   <button class="segmented-item" aria-pressed>... */
+.segmented {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  height: 44px;
+  padding: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  isolation: isolate;
+}
+
+.segmented-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--n, 1));
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  box-shadow: var(--pill-active);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform var(--dur-spring) var(--ease-spring);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.segmented-item {
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  transition: color var(--dur-fast) ease-out;
+}
+
+.segmented-item[aria-pressed='true'],
+.segmented-item[aria-selected='true'] {
+  color: var(--on-dark);
+}
+
+/* ---------- Accordion (details/summary) ---------- */
+.accordion {
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.accordion > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: 52px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion > summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion > summary::after {
+  content: '+';
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--muted);
+  transition: transform var(--dur-spring) var(--ease-spring);
+}
+
+.accordion[open] > summary::after {
+  transform: rotate(45deg);
+}
+
+.accordion > :not(summary) {
+  padding: 0 var(--sp-4) var(--sp-4);
+}
+
+.accordion[open] > :not(summary) {
+  --sd-rise: 8px;
+  animation: sd-rise var(--dur-enter) var(--ease-out) backwards;
+}
+
+/* ---------- List rows ---------- */
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 48px;
+  padding: var(--sp-3) 0;
+  box-shadow: inset 0 -1px 0 var(--hairline);
+}
+
+.list-row:last-child {
+  box-shadow: none;
+}
+
+/* ---------- Meter (4px pill bar) ---------- */
+.meter {
+  position: relative;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  width: var(--value, 0%);
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width var(--dur-spring) var(--ease-spring);
+}
+
+.card .meter {
+  background: var(--surface-2);
+}
+
+.card-ink .meter {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.card-ink .meter > span {
+  background: var(--accent-soft);
+}
+
+/* ---------- Sticky action dock ---------- */
+.dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: var(--sp-3) var(--gutter) var(--sp-4);
+  background: linear-gradient(to top, var(--bg) 70%, rgba(255, 255, 255, 0));
+}
+
+.dock > .btn-primary,
+.dock > .btn-secondary,
+.dock > button {
+  width: 100%;
+}
+
+/* ---------- Dot ---------- */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}

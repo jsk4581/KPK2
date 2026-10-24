@@ -1,0 +1,121 @@
+/* Design tokens. Light only: the stage and the phone are one light composition.
+   Text colors: use only --ink, --muted, --accent, --ok, --attention (and their
+   on-dark pairs). --subtle is for dots, rails and icons, never body text.
+   No red anywhere, including status. */
+:root {
+  /* Ink and surfaces */
+  --ink: #111214;
+  --ink-2: #2a2c31;
+  --text: var(--ink);
+  --muted: #5e6168;
+  --subtle: #8c8f97;
+  --bg: #ffffff;
+  --surface: #f3f4f5;
+  --surface-2: #e9eaec;
+  --hairline: rgba(17, 18, 20, 0.07);
+  --on-dark: #ffffff;
+  --on-dark-muted: #a7aab2;
+  --ink-card: #141416;
+
+  /* Accent: one deep violet */
+  --accent: #5b3db8;
+  --accent-tint: #efeafb;
+  --accent-soft: #b9a7f2;
+  --accent-glow: rgba(91, 61, 184, 0.35);
+
+  /* Status */
+  --ok: #1e6e47;
+  --ok-tint: #e7f4ec;
+  --attention: #8a5300;
+  --attention-tint: #fdf3e1;
+
+  /* Atmosphere (laptop stage, Landing wash) */
+  --wash-1: #ece6ff;
+  --wash-2: #e3f1ff;
+  --wash-3: #fbefe6;
+
+  /* Type */
+  --font-sans: 'Inter Tight', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --fs-display: 36px;
+  --lh-display: 1.04;
+  --ls-display: -0.045em;
+  --fs-h2: 28px;
+  --lh-h2: 1.12;
+  --ls-h2: -0.035em;
+  --fs-h3: 20px;
+  --lh-h3: 1.3;
+  --ls-h3: -0.025em;
+  --fs-lead: 17px;
+  --lh-lead: 1.45;
+  --ls-lead: -0.015em;
+  --fs-body: 15px;
+  --lh-body: 1.5;
+  --ls-body: -0.01em;
+  --fs-small: 13px;
+  --lh-small: 1.45;
+  --ls-small: -0.005em;
+  --fs-label: 11px;
+  --lh-label: 1.2;
+  --ls-label: 0.06em;
+  --fw-regular: 400;
+  --fw-medium: 500;
+
+  /* Spacing (4px base) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 48px;
+  --sp-9: 64px;
+  --sp-10: 96px;
+  --gutter: 20px;
+  --topbar-h: 56px;
+
+  /* Radii */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+  --r-phone: 52px;
+  --r-screen: 42px;
+
+  /* Shadows: a hairline ring plus faint layered lift. No visible borders. */
+  --ring: 0 0 0 0.5px rgba(17, 18, 20, 0.08);
+  --lift-1: var(--ring), 0 1px 2px rgba(17, 18, 20, 0.04), 0 3px 6px rgba(17, 18, 20, 0.03),
+    0 8px 16px rgba(17, 18, 20, 0.02);
+  --lift-2: var(--ring), 0 2px 4px rgba(17, 18, 20, 0.05), 0 8px 20px rgba(17, 18, 20, 0.05),
+    0 24px 48px rgba(17, 18, 20, 0.04);
+  --lift-phone: 0 0 0 1px rgba(17, 18, 20, 0.6), 0 30px 60px -10px rgba(40, 30, 90, 0.25),
+    0 80px 160px -20px rgba(40, 30, 90, 0.22);
+  --pill-active: 0 2px 4px rgba(17, 18, 20, 0.16);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  /* Motion */
+  --dur-press: 120ms;
+  --dur-fast: 180ms;
+  --dur-spring: 420ms;
+  --dur-enter: 560ms;
+  --dur-screen: 640ms;
+  --stagger: 45ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.25, 1.12, 0.4, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --rise-lg: 24px;
+  --rise-md: 16px;
+  --rise-sm: 12px;
+
+  /* Legacy alias kept until every screen stylesheet moves to the tokens above. */
+  --border: rgba(17, 18, 20, 0.12);
+}
+
+@media (max-width: 359px) {
+  :root {
+    --gutter: 16px;
+  }
+}

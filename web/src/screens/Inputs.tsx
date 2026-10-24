@@ -11,7 +11,7 @@ import type {
   RankedRole,
   TraceEntry,
 } from '../state/types';
-import './Landing.css';
+import './Inputs.css';
 import { SIMULATION_LABEL } from './Landing';
 
 export const FIELD_LABELS: Record<FieldKey, { label: string; placeholder: string }> = {
@@ -122,18 +122,24 @@ export default function Inputs() {
   };
 
   return (
-    <section aria-label="Inputs" className="p0">
-      <h2>Tell your story</h2>
-      {showsSample && <p className="p0-tag">{SIMULATION_LABEL}</p>}
+    <section aria-label="Inputs" className="inputs">
+      <div className="section-head">
+        <span className="eyebrow" aria-hidden="true">
+          YOUR STORY
+        </span>
+        <h2 className="h2">Tell your story</h2>
+        {showsSample && <p className="tag tag-sim">{SIMULATION_LABEL}</p>}
+      </div>
       <form
+        className="inputs-form"
         onSubmit={(e) => {
           e.preventDefault();
           if (canSubmit) void onShowPaths();
         }}
       >
         {FIELD_ORDER.map((key) => (
-          <label key={key} className="p0-field">
-            <span>{FIELD_LABELS[key].label}</span>
+          <label key={key} className="field inputs-field">
+            <span className="field-label">{FIELD_LABELS[key].label}</span>
             <textarea
               name={key}
               rows={5}
@@ -143,9 +149,18 @@ export default function Inputs() {
             />
           </label>
         ))}
-        <button type="submit" className="p0-primary" disabled={!canSubmit}>
-          {busy ? 'Drafting your paths...' : 'Show my paths'}
-        </button>
+        <div className="dock inputs-dock">
+          <button type="submit" className="btn-primary btn-block" disabled={!canSubmit}>
+            <span className="roll">{busy ? 'Drafting your paths...' : 'Show my paths'}</span>
+            {busy && (
+              <span className="busy-dots" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            )}
+          </button>
+        </div>
       </form>
     </section>
   );

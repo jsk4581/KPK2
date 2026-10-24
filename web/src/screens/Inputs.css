@@ -1,0 +1,42 @@
+/* Inputs: a calm form with lots of air; the submit sits in the sticky dock. */
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.inputs-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.inputs-field textarea {
+  min-height: 132px;
+}
+
+.inputs-dock {
+  margin-top: calc(-1 * var(--sp-2));
+}
+
+/* The 48px buttons need a longer roll than 1.6em, or the rolled copy peeks in
+   under the label at rest. */
+.inputs :is(.btn-primary, .btn-secondary) .roll {
+  text-shadow: 0 2.2em currentColor;
+}
+
+@media (hover: hover) {
+  .inputs :is(.btn-primary, .btn-secondary):not(:disabled):hover .roll {
+    transform: translateY(-2.2em);
+  }
+}
+
+/* Inside the laptop frame .screen is the scroll container, and sticky offsets
+   are measured from its content box, so bottom: 0 would float the dock above
+   the screen's bottom padding. Pin it to the visible bottom edge instead. */
+@media (min-width: 900px) {
+  .phone .screen .inputs-dock {
+    bottom: calc(-1 * var(--sp-9));
+    margin-bottom: calc(-1 * var(--sp-9));
+  }
+}

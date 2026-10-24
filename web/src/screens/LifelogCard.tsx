@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { flashBackground } from '../motion';
 import { mergePrefill, summarizeLifelog, withTrace } from '@app/logic.js';
 import persona from '@app/data/persona-dana.json';
 import { useStore } from '../state/store';
@@ -81,7 +82,22 @@ export default function LifelogCard() {
     // Runs on mount only; later recomputes happen in the toggle handler.
   }, []);
 
+  // Fields recomputed by a toggle flash briefly; edited fields never change, so never flash.
+  const fieldRefs = useRef<Partial<Record<FieldKey, HTMLTextAreaElement | null>>>({});
+  const flashFrom = useRef<Fields | null>(null);
+  useEffect(() => {
+    const before = flashFrom.current;
+    if (!before) return;
+    flashFrom.current = null;
+    for (const key of FIELD_ORDER) {
+      if (before[key] !== state.fields[key] && !state.editedFields.has(key)) {
+        flashBackground(fieldRefs.current[key], '--accent-tint', '--surface');
+      }
+    }
+  }, [state.fields, state.editedFields]);
+
   const toggle = (source: LifelogSource) => {
+    flashFrom.current = state.fields;
     const next = enabled.has(source)
       ? state.enabledSources.filter((s) => s !== source)
       : [...state.enabledSources, source];
@@ -93,36 +109,55 @@ export default function LifelogCard() {
 
   return (
     <section aria-label="LifelogCard" className="lifelog">
-      <h2>Connected data</h2>
-      <p className="sim-label">[SIMULATION] Sample persona: synthetic</p>
-      <p className="lifelog-intro">
-        {persona.persona.name}, {persona.persona.role.toLowerCase()}. Choose which sources can shape your story.
-      </p>
+      <div className="section-head">
+        <span className="eyebrow" aria-hidden="true">
+          CONNECTED DATA
+        </span>
+        <h2 className="h2">Connected data</h2>
+        <p className="tag tag-sim sim-label">[SIMULATION] Sample persona: synthetic</p>
+        <p className="lead lifelog-intro">
+          {persona.persona.name}, {persona.persona.role.toLowerCase()}. Choose which sources can shape your story.
+        </p>
+      </div>
 
-      <fieldset className="sources">
-        <legend>Sources</legend>
+      <fieldset className="card sources">
+        <legend className="label">Sources</legend>
         {PRESENT_SOURCES.map((source) => {
           const info = SOURCES[source];
           const on = enabled.has(source);
           return (
             <label key={source} className="source-toggle">
-              <span className="source-name">
-                <span aria-hidden="true">{info.icon}</span> {info.label}
-                {info.hint ? <span className="source-hint">{info.hint}</span> : null}
+              <span className="source-icon" aria-hidden="true">
+                {info.icon}
               </span>
-              <input type="checkbox" role="switch" checked={on} onChange={() => toggle(source)} />
+              <span className="source-name">
+                <span className="source-label">{info.label}</span>
+                {info.hint ? <span className="mono muted source-hint">{info.hint}</span> : null}
+              </span>
+              <input
+                type="checkbox"
+                role="switch"
+                className="switch"
+                checked={on}
+                onChange={() => toggle(source)}
+              />
             </label>
           );
         })}
       </fieldset>
 
       <div className="prefill">
-        <h3>Your story so far</h3>
-        <p className="prefill-note">Filled from the sources you turned on. Edit anything; your edits stay put.</p>
+        <h3 className="h3">Your story so far</h3>
+        <p className="small muted prefill-note">
+          Filled from the sources you turned on. Edit anything; your edits stay put.
+        </p>
         {FIELD_ORDER.map((key) => (
-          <label key={key} className="prefill-field">
-            <span>{FIELD_LABELS[key]}</span>
+          <label key={key} className="field prefill-field">
+            <span className="field-label">{FIELD_LABELS[key]}</span>
             <textarea
+              ref={(el) => {
+                fieldRefs.current[key] = el;
+              }}
               rows={4}
               value={state.fields[key]}
               onChange={(event) => dispatch({ type: 'editField', field: key, value: event.target.value })}
@@ -131,9 +166,9 @@ export default function LifelogCard() {
         ))}
       </div>
 
-      <div className="items">
-        <h3>Lifelog</h3>
-        <p className="sim-label">
+      <div className="items" data-reveal="">
+        <h3 className="h3">Lifelog</h3>
+        <p className="tag tag-sim sim-label">
           [SIMULATION] 14 days of synthetic lifelog. {usedCount} of {ITEMS.length} items in use.
         </p>
         <ul aria-label="Lifelog items" className="item-list">
@@ -142,23 +177,30 @@ export default function LifelogCard() {
             const on = enabled.has(source);
             return (
               <li key={item.id} className={on ? 'item' : 'item item-off'}>
-                <span role="img" aria-label={SINGULAR[source] ?? item.source} className="item-icon">
-                  {SOURCES[source]?.icon ?? '\u{2022}'}
-                </span>
+                <span className="mono item-date">{item.date}</span>
+                <span className="item-rail" aria-hidden="true" />
                 <span className="item-body">
-                  <span className="item-date">{item.date}</span>
+                  <span role="img" aria-label={SINGULAR[source] ?? item.source} className="item-icon">
+                    {SOURCES[source]?.icon ?? '\u{2022}'}
+                  </span>
                   <span className="item-title">{item.title}</span>
+                  {on ? null : <span className="tag item-off-tag">Not used</span>}
                 </span>
-                {on ? null : <span className="item-off-tag">Not used</span>}
               </li>
             );
           })}
         </ul>
       </div>
 
-      <button type="button" className="primary" onClick={() => dispatch({ type: 'go', screen: 'inputs' })}>
-        Continue
-      </button>
+      <div className="dock lifelog-dock">
+        <button
+          type="button"
+          className="btn-primary btn-block"
+          onClick={() => dispatch({ type: 'go', screen: 'inputs' })}
+        >
+          <span className="roll">Continue</span>
+        </button>
+      </div>
     </section>
   );
 }
